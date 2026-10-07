@@ -1,0 +1,9 @@
+# Core (required)
+pydantic>=2.0
+scikit-learn>=1.3
+nltk>=3.8          # only the PorterStemmer is used - no corpora/downloads needed
+# Exact OpenAI token counts (optional but strongly recommended; without it the
+# engine falls back to a clearly labelled estimate)
+tiktoken>=0.7
+# Tests
+pytest>=7.0

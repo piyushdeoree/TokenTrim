@@ -1,0 +1,11 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  /* Light mode */
+  :root { --color-page: #E0E8E2; --color-surface: #7EC0A9; --color-chart: #467770; --color-btn: #FBCB48; --color-card: #F3F7F4; }
+  /* Dark mode */
+  .dark { --color-page: #171919; --color-surface: #0D2922; --color-chart: #26344A; --color-btn: #FBCB48; --color-card: #212525; }
+  body { @apply bg-page text-slate-900 dark:text-slate-100; }
+}
