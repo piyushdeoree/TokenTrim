@@ -1,0 +1,302 @@
+[
+  {
+    "id": "exact_duplicate_01",
+    "category": "exact_duplicates",
+    "text": "Explain database architecture. Explain database architecture.",
+    "expected": "duplicate_detected"
+  },
+  {
+    "id": "exact_duplicate_02",
+    "category": "exact_duplicates",
+    "text": "Summarize the report. Summarize the report. List its key findings.",
+    "expected": "duplicate_detected"
+  },
+  {
+    "id": "paraphrase_01",
+    "category": "paraphrased_instructions",
+    "text": "Explain machine learning. Describe how machine learning works.",
+    "expected": "similarity_detected"
+  },
+  {
+    "id": "paraphrase_02",
+    "category": "paraphrased_instructions",
+    "text": "Find the average sales value. Calculate the mean sales amount.",
+    "expected": "similarity_detected"
+  },
+  {
+    "id": "different_meaning_01",
+    "category": "different_meanings",
+    "text": "Evaluate the model using precision. Evaluate the model using recall.",
+    "expected": "preserve_both"
+  },
+  {
+    "id": "different_meaning_02",
+    "category": "different_meanings",
+    "text": "Include active users. Exclude inactive users.",
+    "expected": "preserve_both"
+  },
+  {
+    "id": "negation_01",
+    "category": "negation",
+    "text": "Include security details. Do not include security details.",
+    "expected": "preserve_both"
+  },
+  {
+    "id": "negation_02",
+    "category": "negation",
+    "text": "Allow access to authenticated users. Do not allow access to unauthenticated users.",
+    "expected": "preserve_both"
+  },
+  {
+    "id": "numeric_01",
+    "category": "numeric_constraints",
+    "text": "Return exactly 5 examples. Return exactly 10 examples.",
+    "expected": "preserve_both"
+  },
+  {
+    "id": "numeric_02",
+    "category": "numeric_constraints",
+    "text": "Keep response time below 500 milliseconds. Keep response time below 200 milliseconds.",
+    "expected": "preserve_both"
+  },
+  {
+    "id": "technical_01",
+    "category": "technical_instructions",
+    "text": "Create a REST API using FastAPI. Build a PostgreSQL database for storing user records.",
+    "expected": "preserve_both"
+  },
+  {
+    "id": "technical_02",
+    "category": "technical_instructions",
+    "text": "Train a CNN using image data. Evaluate the model using precision, recall, and F1-score.",
+    "expected": "preserve_both"
+  },
+  {
+    "id": "conditional_01",
+    "category": "conditional_instructions",
+    "text": "If the dataset contains missing values, clean them first. Otherwise, continue to model training.",
+    "expected": "preserve_both"
+  },
+  {
+    "id": "conditional_02",
+    "category": "conditional_instructions",
+    "text": "Generate a chart only when at least 10 records are available. Generate a report after processing.",
+    "expected": "preserve_both"
+  },
+  {
+    "id": "sequence_01",
+    "category": "instruction_sequence",
+    "text": "First clean the data. Then train the model. Finally evaluate the model.",
+    "expected": "preserve_both"
+  },
+  {
+    "id": "sequence_02",
+    "category": "instruction_sequence",
+    "text": "Validate the input before processing. Save the output after validation succeeds.",
+    "expected": "preserve_both"
+  },
+  {
+    "id": "repeated_context_01",
+    "category": "repeated_with_context",
+    "text": "Explain database indexing. Describe its performance benefits. Explain database indexing again.",
+    "expected": "duplicate_detected"
+  },
+  {
+    "id": "repeated_context_02",
+    "category": "repeated_with_context",
+    "text": "Summarize the dataset. Explain its structure. Summarize the dataset again.",
+    "expected": "duplicate_detected"
+  },
+  {
+    "id": "scope_01",
+    "category": "scope_and_completeness",
+    "text": "Include every transaction, including successful and failed transactions. Return only the top 3 results.",
+    "expected": "preserve_both"
+  },
+  {
+    "id": "scope_02",
+    "category": "scope_and_completeness",
+    "text": "Summarize all chapters except the introduction. Include the appendix.",
+    "expected": "preserve_both"
+  },
+  {
+    "id": "exact_duplicate_03",
+    "category": "exact_duplicates",
+    "text": "Translate the document into French. Translate the document into French.",
+    "expected": "duplicate_detected"
+  },
+  {
+    "id": "exact_duplicate_04",
+    "category": "repeated_with_context",
+    "text": "Extract the key points from the article. Identify its publication date. Extract the key points from the article.",
+    "expected": "duplicate_detected"
+  },
+  {
+    "id": "exact_duplicate_05",
+    "category": "exact_duplicates",
+    "text": "Calculate total revenue. Calculate total revenue.",
+    "expected": "duplicate_detected"
+  },
+  {
+    "id": "exact_duplicate_06",
+    "category": "repeated_with_context",
+    "text": "Remove duplicate records. Remove duplicate records. Then export the cleaned dataset.",
+    "expected": "duplicate_detected"
+  },
+  {
+    "id": "exact_duplicate_07",
+    "category": "exact_duplicates",
+    "text": "Create a line chart. Create a line chart.",
+    "expected": "duplicate_detected"
+  },
+  {
+    "id": "exact_duplicate_08",
+    "category": "repeated_with_context",
+    "text": "Check the input format. Process the input data. Check the input format.",
+    "expected": "duplicate_detected"
+  },
+  {
+    "id": "paraphrase_03",
+    "category": "paraphrased_instructions",
+    "text": "Sort records by date. Arrange entries in chronological order.",
+    "expected": "similarity_detected"
+  },
+  {
+    "id": "paraphrase_04",
+    "category": "paraphrased_instructions",
+    "text": "Remove rows containing missing values. Drop records with null values.",
+    "expected": "similarity_detected"
+  },
+  {
+    "id": "paraphrase_05",
+    "category": "paraphrased_instructions",
+    "text": "Find the median of the dataset. Calculate the middle value of the data.",
+    "expected": "similarity_detected"
+  },
+  {
+    "id": "paraphrase_06",
+    "category": "paraphrased_instructions",
+    "text": "Convert all text to lowercase. Normalize the text by changing every character to lowercase.",
+    "expected": "similarity_detected"
+  },
+  {
+    "id": "paraphrase_07",
+    "category": "paraphrased_instructions",
+    "text": "Identify outliers in the dataset. Detect anomalous observations in the data.",
+    "expected": "similarity_detected"
+  },
+  {
+    "id": "paraphrase_08",
+    "category": "paraphrased_instructions",
+    "text": "Count the unique customers. Calculate the number of distinct customers.",
+    "expected": "similarity_detected"
+  },
+  {
+    "id": "paraphrase_09",
+    "category": "paraphrased_instructions",
+    "text": "Generate a bar chart for the categories. Visualize the categories using a bar graph.",
+    "expected": "similarity_detected"
+  },
+  {
+    "id": "paraphrase_10",
+    "category": "paraphrased_instructions",
+    "text": "Save the results as a CSV file. Export the output as a comma-separated values file.",
+    "expected": "similarity_detected"
+  },
+  {
+    "id": "different_meaning_03",
+    "category": "different_meanings",
+    "text": "Sort products by price. Sort products by customer rating.",
+    "expected": "preserve_both"
+  },
+  {
+    "id": "different_meaning_04",
+    "category": "different_meanings",
+    "text": "Predict customer churn. Segment customers by purchase history.",
+    "expected": "preserve_both"
+  },
+  {
+    "id": "different_meaning_05",
+    "category": "different_meanings",
+    "text": "Calculate the precision score. Calculate the recall score.",
+    "expected": "preserve_both"
+  },
+  {
+    "id": "negation_03",
+    "category": "negation",
+    "text": "Store customer email addresses. Do not store customer phone numbers.",
+    "expected": "preserve_both"
+  },
+  {
+    "id": "negation_04",
+    "category": "negation",
+    "text": "Allow administrators to delete records. Do not allow standard users to delete records.",
+    "expected": "preserve_both"
+  },
+  {
+    "id": "numeric_03",
+    "category": "numeric_constraints",
+    "text": "Generate exactly 3 charts. Generate exactly 5 charts.",
+    "expected": "preserve_both"
+  },
+  {
+    "id": "numeric_04",
+    "category": "numeric_constraints",
+    "text": "Keep the response below 1000 words. Keep the response above 500 words.",
+    "expected": "preserve_both"
+  },
+  {
+    "id": "technical_03",
+    "category": "technical_instructions",
+    "text": "Connect the application to PostgreSQL. Implement JWT authentication for user sessions.",
+    "expected": "preserve_both"
+  },
+  {
+    "id": "technical_04",
+    "category": "technical_instructions",
+    "text": "Generate vector embeddings for documents. Build a vector index for similarity search.",
+    "expected": "preserve_both"
+  },
+  {
+    "id": "technical_05",
+    "category": "technical_instructions",
+    "text": "Encrypt sensitive data using AES. Hash user passwords before storing them.",
+    "expected": "preserve_both"
+  },
+  {
+    "id": "conditional_03",
+    "category": "conditional_instructions",
+    "text": "If an API request fails, retry it up to 3 times. If the request succeeds, return the response.",
+    "expected": "preserve_both"
+  },
+  {
+    "id": "conditional_04",
+    "category": "conditional_instructions",
+    "text": "When the input is valid, store the record. When the input is invalid, return a validation error.",
+    "expected": "preserve_both"
+  },
+  {
+    "id": "sequence_03",
+    "category": "instruction_sequence",
+    "text": "First load the dataset. Then normalize the features. Finally split the data into training and testing sets.",
+    "expected": "preserve_both"
+  },
+  {
+    "id": "sequence_04",
+    "category": "instruction_sequence",
+    "text": "Authenticate the user before accessing the dashboard. Log out the user after the session expires.",
+    "expected": "preserve_both"
+  },
+  {
+    "id": "scope_03",
+    "category": "scope_and_completeness",
+    "text": "Include customer names and email addresses. Include account creation timestamps.",
+    "expected": "preserve_both"
+  },
+  {
+    "id": "scope_04",
+    "category": "scope_and_completeness",
+    "text": "Return the top 10 products by revenue. Include the product category for each result.",
+    "expected": "preserve_both"
+  }
+]
