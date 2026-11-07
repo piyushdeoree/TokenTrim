@@ -1,0 +1,42 @@
+{
+  "data_source": "SYNTHETIC",
+  "n_rows": 5000,
+  "n_train": 4000,
+  "n_test": 1000,
+  "models": {
+    "mean_baseline": {
+      "test": {
+        "MAE": 294.09444,
+        "RMSE": 553.2467180788333,
+        "R2": -0.0021826697565898723
+      }
+    },
+    "linear_regression": {
+      "cv_rmse_train": 383.6933791884822,
+      "test": {
+        "MAE": 206.71770042139124,
+        "RMSE": 400.0657708255955,
+        "R2": 0.4759508918299905
+      }
+    },
+    "random_forest": {
+      "cv_rmse_train": 331.9135974862453,
+      "test": {
+        "MAE": 135.7368022837571,
+        "RMSE": 305.2319144422154,
+        "R2": 0.6949513712939763
+      }
+    },
+    "gradient_boosting": {
+      "cv_rmse_train": 357.6828317549662,
+      "test": {
+        "MAE": 137.0213733625926,
+        "RMSE": 306.11669221867396,
+        "R2": 0.6931803151530642
+      }
+    }
+  },
+  "selected_model": "random_forest",
+  "selection_rule": "lowest 5-fold CV RMSE on the train split",
+  "warning": "Trained on SYNTHETIC data. These metrics do not describe real-world accuracy."
+}

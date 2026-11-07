@@ -1,0 +1,16 @@
+{
+  "_meta": {
+    "currency": "USD",
+    "unit": "per 1,000,000 tokens",
+    "warning": "ILLUSTRATIVE DEVELOPMENT VALUES. Provider prices change often. Verify against the official pricing pages and update before reporting real costs.",
+    "last_verified": null
+  },
+  "models": [
+    {"model": "gpt-4o", "provider": "openai", "input_price_per_million": 2.50, "output_price_per_million": 10.00, "context_window": 128000, "quality_tier": 3, "notes": "illustrative"},
+    {"model": "gpt-4o-mini", "provider": "openai", "input_price_per_million": 0.15, "output_price_per_million": 0.60, "context_window": 128000, "quality_tier": 2, "notes": "illustrative"},
+    {"model": "claude-sonnet", "provider": "anthropic", "input_price_per_million": 3.00, "output_price_per_million": 15.00, "context_window": 200000, "quality_tier": 3, "notes": "illustrative"},
+    {"model": "claude-haiku", "provider": "anthropic", "input_price_per_million": 1.00, "output_price_per_million": 5.00, "context_window": 200000, "quality_tier": 2, "notes": "illustrative"},
+    {"model": "gemini-pro", "provider": "google", "input_price_per_million": 1.25, "output_price_per_million": 10.00, "context_window": 1000000, "quality_tier": 3, "notes": "illustrative"},
+    {"model": "gemini-flash", "provider": "google", "input_price_per_million": 0.30, "output_price_per_million": 2.50, "context_window": 1000000, "quality_tier": 2, "notes": "illustrative"}
+  ]
+}
