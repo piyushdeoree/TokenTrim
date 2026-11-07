@@ -115,6 +115,7 @@ def _stem(token: str) -> str:
 
 
 def canonical_text(text: str) -> str:
+    """Apply the original canonical phrase rules."""
     t = text.lower()
     for rx, rep in config.CANONICAL_PHRASES:
         t = rx.sub(rep, t)
@@ -122,13 +123,53 @@ def canonical_text(text: str) -> str:
 
 
 def content_stems(text: str) -> FrozenSet[str]:
-    """Stemmed, synonym-folded, stop-word-free token set of ``text``."""
+    """Original stemmed, synonym-folded, stop-word-free token set.
+
+    This representation is intentionally kept unchanged. It remains the
+    conservative lexical representation used by existing removal logic.
+    """
     out = set()
     for tok in words(canonical_text(text)):
         tok = config.SYNONYMS.get(tok, tok)
         if tok in config.STOPWORDS or tok in config.FILLER_WORDS:
             continue
         out.add(_stem(tok))
+    return frozenset(out)
+
+
+def similarity_canonical_text(text: str) -> str:
+    """Create a broader canonical form exclusively for similarity detection.
+
+    Original canonicalization runs first. The additional similarity-only
+    phrase rules must never be used to rewrite user-visible prompt text or
+    replace the original representation used for removal decisions.
+    """
+    t = canonical_text(text)
+    for rx, rep in config.SIMILARITY_CANONICAL_PHRASES:
+        t = rx.sub(rep, t)
+    return t
+
+
+def similarity_content_stems(text: str) -> FrozenSet[str]:
+    """Build an expanded stem set exclusively for paraphrase detection.
+
+    Similarity-only synonyms are applied before the original general
+    synonyms. This function must not replace content_stems() in the
+    conservative duplicate-removal path.
+    """
+    out = set()
+
+    for tok in words(similarity_canonical_text(text)):
+        tok = config.SIMILARITY_SYNONYMS.get(
+            tok,
+            config.SYNONYMS.get(tok, tok),
+        )
+
+        if tok in config.STOPWORDS or tok in config.FILLER_WORDS:
+            continue
+
+        out.add(_stem(tok))
+
     return frozenset(out)
 
 

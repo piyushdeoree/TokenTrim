@@ -1,3 +1,4 @@
+
 """
 config.py - central, documented configuration for the NLP engine.
 
@@ -192,6 +193,88 @@ SYNONYMS = {
     "brief": "concise", "succinct": "concise", "terse": "concise", "short": "concise",
     "comprehensive": "detailed", "thorough": "detailed", "elaborate": "detailed",
 }
+
+# Similarity-only vocabulary equivalences.
+#
+# IMPORTANT:
+# These mappings are intended for similarity detection only. They must NOT
+# be applied to the original clause stems used by the conservative removal
+# logic. Similarity does not prove that two instructions are interchangeable.
+#
+# Keep domain-specific terms distinct where they represent different concepts.
+# For example, precision and recall, price and rating, and include and exclude
+# must never be treated as synonyms.
+SIMILARITY_SYNONYMS = {
+    "arrange": "sort",
+    "entries": "records",
+    "entry": "record",
+    "rows": "records",
+    "row": "record",
+    "drop": "remove",
+    "null": "missing",
+    "middle": "median",
+    "anomalous": "outlier",
+    "anomaly": "outlier",
+    "anomalies": "outlier",
+    "observations": "data",
+    "observation": "data",
+    "normalize": "convert",
+    "normalise": "convert",
+    "export": "save",
+
+    # Statistical terminology.
+    "average": "mean",
+    "averages": "mean",
+    "amount": "value",
+
+    # Equivalent descriptions of distinct items.
+    "unique": "distinct",
+
+    # Chart terminology.
+    "graph": "chart",
+}
+
+# Similarity-only phrase normalization.
+#
+# These targeted patterns improve lexical overlap for known paraphrase forms.
+# They deliberately preserve the leading action verb wherever possible.
+#
+# Apply these patterns only when constructing the similarity representation.
+# Do not use them to overwrite original clause text, original stems, or the
+# strict subsumption/removal representation.
+#
+# The rules are heuristic and should be evaluated against both paraphrase
+# examples and preservation cases before changing thresholds.
+SIMILARITY_CANONICAL_PHRASES = [
+    # Sorting by chronological order versus sorting records by date.
+    (_rx(r"\bentries\s+in\s+chronological\s+order\b"), "records by date"),
+
+    # Missing-value terminology.
+    (_rx(r"\brows\s+containing\s+missing\s+values\b"), "records with missing values"),
+    (_rx(r"\bnull\s+values\b"), "missing values"),
+
+    # Median terminology.
+    (_rx(r"\bmiddle\s+value\s+of\s+the\s+data(?:set)?\b"), "median of the dataset"),
+
+    # Lowercase normalization terminology.
+    (_rx(r"\btext\s+by\s+changing\s+every\s+character\s+to\s+lowercase\b"), "text to lowercase"),
+
+    # Outlier terminology.
+    (_rx(r"\banomalous\s+observations\s+in\s+the\s+data(?:set)?\b"), "outliers in the dataset"),
+
+    # CSV terminology.
+    (_rx(r"\bcomma[- ]separated\s+values\s+file\b"), "CSV file"),
+
+    # "Describe how X works" and "explain X" express the same broad request.
+    # This is similarity-only; it does not change the original instruction.
+    (_rx(r"\bdescribe\s+how\s+(.+?)\s+works\b"), r"explain \1"),
+
+    # "Calculate the number of distinct X" and "count distinct X".
+    (_rx(r"\bcalculate\s+the\s+number\s+of\s+distinct\s+(.+?)\b"), r"count distinct \1"),
+
+    # Bar-chart generation and visualization phrasing.
+    (_rx(r"\bvisualize\s+(.+?)\s+using\s+a\s+bar\s+graph\b"), r"generate a bar chart for \1"),
+]
 
 # ---------------------------------------------------------------------------
 # 6. Rewrite rules

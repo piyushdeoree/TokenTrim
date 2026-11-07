@@ -1,9 +1,11 @@
+
 """
 redundancy.py - detection of repeated / duplicated content.
 
 Hybrid techniques:
   * clause extraction (sentence -> clauses split before instruction verbs)
-  * stem-set representation (Porter stemming + synonym folding)
+  * original stem-set representation for conservative removal
+  * similarity-only stem-set representation for paraphrase detection
   * TF-IDF-style binary-vector cosine similarity (scikit-learn)
   * optional pretrained sentence-embedding similarity
   * strict subsumption test for removal
@@ -15,8 +17,10 @@ Important safety rule:
     - same clause kind
     - same polarity
     - compatible numbers
-    - complete stem coverage
+    - complete original-stem coverage
     - matching head verb for instructions/questions
+
+Similarity-only canonicalization and synonyms are NEVER used for removal.
 
 The pretrained semantic model is optional and disabled by default.
 If it is unavailable, the existing lexical system continues working.
@@ -34,7 +38,13 @@ from . import config
 from .models import Finding
 from .semantic_similarity import semantic_similarity_matrix
 from .textutils import (
-    Segment, content_stems, extract_numbers, head_word, is_negated, words,
+    Segment,
+    content_stems,
+    similarity_content_stems,
+    extract_numbers,
+    head_word,
+    is_negated,
+    words,
 )
 
 
@@ -87,6 +97,9 @@ def build_clauses(segments: Sequence[Segment]) -> List[Clause]:
                 text=part,
                 kind=seg.kind,
                 seg_index=i,
+                # IMPORTANT:
+                # Keep original stems for strict subsumption/removal.
+                # Similarity-only mappings must never enter this field.
                 stems=content_stems(part),
                 head=head_word(part),
                 negated=is_negated(part),
@@ -101,14 +114,25 @@ def build_clauses(segments: Sequence[Segment]) -> List[Clause]:
 # ---------------------------------------------------------------------------
 
 def similarity_matrix(clauses: Sequence[Clause]):
-    """Cosine similarity between binary stem vectors; None if not computable."""
+    """
+    Calculate cosine similarity between similarity-only stem vectors.
+
+    Expanded canonicalization and synonym mappings are used exclusively
+    for similarity detection. Clause.stems remains unchanged and continues
+    to be used by the conservative subsumption/removal logic.
+
+    Returns None when the matrix cannot be computed.
+    """
     if len(clauses) < 2 or len(clauses) > config.MAX_CLAUSES_FOR_PAIRWISE:
         return None
 
     from sklearn.feature_extraction.text import CountVectorizer
     from sklearn.metrics.pairwise import cosine_similarity
 
-    docs = [" ".join(sorted(c.stems)) for c in clauses]
+    docs = [
+        " ".join(sorted(similarity_content_stems(c.text)))
+        for c in clauses
+    ]
 
     if not any(docs):
         return None
@@ -139,7 +163,9 @@ def _subsumed(small: Clause, big: Clause) -> bool:
     True only if ``small`` adds nothing that ``big`` does not already say.
 
     This remains the sole authority for removing clauses.
-    Semantic similarity never bypasses these checks.
+
+    It deliberately uses Clause.stems, which contain the original
+    conservative content stems, not similarity-only expanded stems.
     """
     if not small.stems or not _same_class(small, big):
         return False
@@ -218,8 +244,9 @@ def find_pairs(
     Returns:
         Pairs classified as equal, subsumed, or merely similar.
 
-    Semantic similarity can create a "similar" finding, but it cannot
-    create an "equal", "i_in_j", or "j_in_i" removal relationship.
+    Semantic and similarity-only lexical matching can create a "similar"
+    finding, but cannot create an "equal", "i_in_j", or "j_in_i"
+    removal relationship.
     """
     size = len(clauses)
 
@@ -260,7 +287,8 @@ def find_pairs(
             combined_score = max(lexical_score, semantic_score)
 
             # Strict subsumption is evaluated independently of semantic
-            # similarity. It remains the only route to a removal relation.
+            # and similarity-only lexical similarity.
+            # It remains the only route to a removal relationship.
             if a.stems == b.stems and _subsumed(a, b):
                 pairs.append(Pair(i, j, combined_score, "equal"))
 
@@ -318,7 +346,7 @@ def select_removals(
 
     The semantic matrix is accepted for API consistency and testing.
     It can help find_pairs() report similarity, but only strict
-    subsumption relationships can cause removal.
+    original-stem subsumption relationships can cause removal.
     """
     removed: List[Tuple[int, int]] = []
 
