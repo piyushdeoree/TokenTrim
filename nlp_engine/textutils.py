@@ -1,3 +1,4 @@
+
 """
 textutils.py - shared, deterministic text helpers.
 
@@ -15,6 +16,7 @@ Pipeline position:   raw prompt
 from __future__ import annotations
 
 import re
+import unicodedata
 from dataclasses import dataclass, field, replace
 from functools import lru_cache
 from typing import Dict, FrozenSet, List, Optional, Tuple
@@ -217,8 +219,20 @@ _PLACEHOLDER_ONLY = re.compile(r"^[\s\W]*(?:QZPH\d+QZ[\s\W]*)+$", re.I)
 
 
 def has_non_latin_letters(text: str) -> bool:
-    """True if the text contains letters outside Latin scripts (CJK, Cyrillic, Arabic...)."""
-    return any(ch.isalpha() and ord(ch) > 0x24F for ch in text)
+    """True if text contains alphabetic characters outside the Latin script.
+
+    Unicode character names are used instead of code-point ranges so that
+    Latin Extended characters, including Vietnamese letters, are accepted.
+    """
+    for ch in text:
+        if not ch.isalpha():
+            continue
+
+        unicode_name = unicodedata.name(ch, "")
+        if not unicode_name.startswith("LATIN "):
+            return True
+
+    return False
 
 
 def classify_sentence(text: str) -> str:

@@ -1,7 +1,7 @@
 """
 config.py - central, documented configuration for the NLP engine.
 
-Everything that is a *tunable decision* (thresholds, word lists, rewrite
+Everything here is a *tunable decision* (thresholds, word lists, rewrite
 rules, weights) lives here, so that it can be explained in the project report
 and changed without touching the algorithms.
 
@@ -38,31 +38,25 @@ OPENAI_PREFIX_ENCODINGS = (
 # ---------------------------------------------------------------------------
 # 2. Detection thresholds
 # ---------------------------------------------------------------------------
-# Cosine similarity (on binary stem vectors) at/above which two clauses are
-# reported as "similar". Removal additionally requires strict subsumption.
 SIMILARITY_THRESHOLD_INSTRUCTION = 0.60
 SIMILARITY_THRESHOLD_CONSTRAINT = 0.75
 
-# Repeated phrase detection (n-gram window, in words)
 REPEATED_PHRASE_MIN_WORDS = 3
 REPEATED_PHRASE_MAX_WORDS = 8
 REPEATED_PHRASE_MIN_COUNT = 2
 REPEATED_PHRASE_MAX_REPORTED = 5
 
-# Excessive context: flagged only if BOTH conditions hold
-CONTEXT_MIN_TOKENS = 400          # absolute size of the context
-CONTEXT_RATIO_THRESHOLD = 5.0     # context tokens / instruction tokens
-CONTEXT_HIGH_TOKENS = 3000        # -> severity "medium"/"high"
+CONTEXT_MIN_TOKENS = 400
+CONTEXT_RATIO_THRESHOLD = 5.0
+CONTEXT_HIGH_TOKENS = 3000
 
-# Formatting overload: number of DISTINCT formatting directives
 FORMAT_DIRECTIVE_THRESHOLD = 3
 FORMAT_DIRECTIVE_HIGH = 6
 
-# Very long sentences
 LONG_SENTENCE_WORDS = 40
 
 # ---------------------------------------------------------------------------
-# 3. Complexity score (0-100) = 100 * sum(weight_i * min(feature_i / cap_i, 1))
+# 3. Complexity score
 # ---------------------------------------------------------------------------
 COMPLEXITY_CAPS = {
     "token_count": 2000.0,
@@ -74,6 +68,7 @@ COMPLEXITY_CAPS = {
     "context_to_instruction_ratio": 10.0,
     "format_directive_count": 6.0,
 }
+
 COMPLEXITY_WEIGHTS = {
     "token_count": 0.20,
     "instruction_count": 0.15,
@@ -84,20 +79,20 @@ COMPLEXITY_WEIGHTS = {
     "context_to_instruction_ratio": 0.10,
     "format_directive_count": 0.10,
 }
+
 assert abs(sum(COMPLEXITY_WEIGHTS.values()) - 1.0) < 1e-9
 COMPLEXITY_BANDS = ((33.0, "low"), (66.0, "medium"), (101.0, "high"))
 
 # ---------------------------------------------------------------------------
 # 4. Validation thresholds
 # ---------------------------------------------------------------------------
-KEYWORD_COVERAGE_MIN = 0.90       # share of original content stems still present
-CONSTRAINT_COVERAGE_MIN = 0.85    # per constraint sentence
-MIN_LEXICAL_SIMILARITY = 0.35     # TF-IDF cosine(original, optimized)
+KEYWORD_COVERAGE_MIN = 0.90
+CONSTRAINT_COVERAGE_MIN = 0.85
+MIN_LEXICAL_SIMILARITY = 0.35
 
 # ---------------------------------------------------------------------------
 # 5. Linguistic resources
 # ---------------------------------------------------------------------------
-# Words ignored when comparing clauses / measuring keyword coverage.
 STOPWORDS = frozenset("""
 a an the this that these those it its they them their i me my we us our you your
 is are was were be been being am to of in on at for with by from as and or but
@@ -107,10 +102,10 @@ simply essentially following there here some any do does did have has had get le
 into onto such own same too
 """.split())
 
-# Words treated as filler (removed by the rewriter, ignored by the matcher)
 FILLER_WORDS = frozenset(
     ["please", "kindly", "carefully", "basically", "essentially", "really", "actually", "simply"]
 )
+
 FILLER_RE = _rx(r"\b(?:" + "|".join(sorted(FILLER_WORDS)) + r")\b[,]?\s*")
 
 CONNECTIVES = frozenset(
@@ -118,7 +113,6 @@ CONNECTIVES = frozenset(
      "additionally", "lastly", "second", "third", "firstly", "secondly"]
 )
 
-# Verbs that make a sentence an instruction when they are its first word.
 INSTRUCTION_VERBS = frozenset("""
 analyze summarize explain write list generate create return give provide describe
 translate extract classify compare identify tell show find rewrite improve fix debug
@@ -130,15 +124,12 @@ categorise tag label parse generate select choose complete continue fill refacto
 optimize optimise test document annotate transcribe
 """.split())
 
-# Safer subset used to split "do A and do B" inside one sentence. Words that are
-# very commonly nouns ("use", "list", "output", "format"...) are deliberately excluded.
 SPLIT_VERBS = frozenset("""
 analyze summarize explain write generate create provide describe translate extract
 classify compare identify rewrite convert calculate determine evaluate suggest
-recommend return give tell paraphrase categorize categorise
+recommend return give tell paraphrase categorize categorise include
 """.split())
 
-# Words that start a constraint-style sentence.
 CONSTRAINT_HEADS = frozenset(
     ["not", "never", "always", "only", "avoid", "keep", "limit", "stay", "be", "ensure", "remember"]
 )
@@ -149,15 +140,32 @@ CONSTRAINT_RE = _rx(
     r"|\b\d+\s*(?:words?|sentences?|paragraphs?|bullet points?|bullets?|characters?|lines?|items?|tokens?)\b"
 )
 
-# Pairwise clause comparison is O(n^2). A prompt with more comparable clauses than
-# this is almost certainly data, not instructions, so pairwise de-duplication is skipped.
 MAX_CLAUSES_FOR_PAIRWISE = 300
 
+# Negation detection.
+#
+# "No" is treated as negation except when it introduces a numerical
+# comparison phrase such as "no more than", "no fewer than", or
+# "no less than". Those phrases express quantity limits, not polarity.
+#
+# The negative lookahead prevents "no" in those phrases from being
+# interpreted as a negation signal.
 NEGATION_RE = _rx(
-    r"\b(?:not|no|never|without|avoid|except|exclude|excluding|don't|dont|doesn't|cannot|can't|"
-    r"shouldn't|mustn't|won't)\b"
+    r"\b(?:"
+    r"not|"
+    r"no(?!\s+(?:more|fewer|less)\s+than\b)|"
+    r"never|without|avoid|except|exclude|excluding|"
+    r"don't|dont|doesn't|doesnt|"
+    r"cannot|can't|cant|"
+    r"shouldn't|shouldnt|mustn't|mustnt|"
+    r"won't|wont"
+    r")\b"
 )
-NEGATION_WORDS = ("not", "no", "never", "without", "avoid", "except", "exclude", "don't", "cannot", "can't")
+
+NEGATION_WORDS = (
+    "not", "no", "never", "without", "avoid", "except", "exclude",
+    "don't", "cannot", "can't"
+)
 
 # Canonicalisation applied (in this order) to lower-cased text before comparison.
 CANONICAL_PHRASES = [
@@ -173,7 +181,6 @@ CANONICAL_PHRASES = [
     (_rx(r"\bplain[- ]text\b"), " plaintext "),
 ]
 
-# Light synonym folding so that "response"/"answer"/"output" compare equal.
 SYNONYMS = {
     "response": "answer", "responses": "answer", "reply": "answer", "replies": "answer",
     "output": "answer", "result": "answer", "results": "answer",
@@ -187,10 +194,8 @@ SYNONYMS = {
 }
 
 # ---------------------------------------------------------------------------
-# 6. Rewrite rules (heuristic optimisation)
+# 6. Rewrite rules
 # ---------------------------------------------------------------------------
-# Polite / verbose lead-ins. Only stripped when the next content word is an
-# instruction verb, so "I would like to know..." is never touched.
 LEADIN_RE = _rx(
     r"^(?:(?:so|now|then|also|next|and)[,]?\s+)?(?:(?:please|kindly)[,]?\s+)*"
     r"(?:"
@@ -201,8 +206,6 @@ LEADIN_RE = _rx(
     r")"
 )
 
-# (label, compiled pattern, replacement). Applied in order on instruction-like
-# sentences only (never on context, code, quotes, URLs, JSON...).
 VERBOSE_RULES = [
     ("'provide me with an explanation of' -> 'explain'",
      _rx(r"\b(?:provide|give)\s+me\s+(?:with\s+)?(?:an?\s+)?explanation\s+of\b"), "explain"),
@@ -232,21 +235,20 @@ VERBOSE_RULES = [
     ("'feel free to' -> (removed)", _rx(r"\bfeel\s+free\s+to\s+"), ""),
 ]
 
-# A *generic* persona sentence carries no task information, so it may be dropped.
-# Specific personas ("You are an expert Python developer.") never match this.
 GENERIC_PERSONA_RE = _rx(
     r"^\s*you\s+are\s+(?:an?|the)\s+(?:(?:very|highly|extremely)\s+)?"
     r"(?:(?:expert|helpful|friendly|professional|intelligent|smart|knowledgeable|useful|capable|"
     r"skilled|experienced|world[- ]class|great|good|honest|harmless)\s*,?\s*(?:and\s+)?)*"
     r"(?:ai\s+)?(?:assistant|ai|chatbot|language\s+model|llm|bot|helper)\s*[.!]?\s*$"
 )
+
 ROLE_RE = _rx(r"^\s*(?:you\s+are|act\s+as|as\s+an?|your\s+role\s+is|pretend\s+(?:to\s+be|you\s+are)|imagine\s+you\s+are)\b")
 
-# Label lines that introduce a block of user content ("Text: ...", "Context: ...")
 LABEL_RE = _rx(
     r"^\s*(?:text|context|document|article|passage|input|data|content|email|code|transcript|report|"
     r"review|story|background|source|excerpt|essay|paragraph|message|conversation|notes?)\s*[:\-]\s*"
 )
+
 CONTEXT_INTRO_RE = _rx(
     r"\b(?:following|below|here\s+is|here's|here\s+are|attached|given)\b.*:\s*$"
 )
@@ -254,7 +256,6 @@ CONTEXT_INTRO_RE = _rx(
 # ---------------------------------------------------------------------------
 # 7. Conflict / formatting detection
 # ---------------------------------------------------------------------------
-# Pairs of words that usually pull a response in opposite directions.
 OPPOSING_TERMS = (
     (("detailed", "in-depth", "thorough", "comprehensive", "elaborate"),
      ("concise", "brief", "short", "succinct", "terse")),
@@ -262,14 +263,13 @@ OPPOSING_TERMS = (
     (("technical",), ("non-technical", "layman", "layperson", "beginner-friendly")),
 )
 
-# Mutually exclusive *output* formats (one directive normally implies one format)
 EXCLUSIVE_FORMATS = ("json", "xml", "yaml", "csv", "html", "plain text", "table", "bullet points")
+
 OUTPUT_DIRECTIVE_RE = _rx(
     r"\b(?:respond|answer|reply|output|return|format|write|present|provide|give)\b[^.?!]*?"
     r"\b(?:in|as|using)\s+(?:a\s+|an\s+|the\s+)?(" + "|".join(re.escape(f) for f in EXCLUSIVE_FORMATS) + r")\b"
 )
 
-# Distinct formatting directives (counted once each).
 FORMAT_DIRECTIVES = {
     "bullet points": _rx(r"\bbullet(?:ed)?\s+(?:points?|lists?)\b|\bbullets\b"),
     "numbered list": _rx(r"\bnumbered\s+(?:list|steps|points)\b"),
@@ -283,8 +283,6 @@ FORMAT_DIRECTIVES = {
     "capitalization": _rx(r"\b(?:capitali[sz]e|uppercase|lowercase|title case)\b"),
 }
 
-# Keywords describing the REQUIRED OUTPUT FORMAT; the validator insists that
-# every one present in the original is still present in the optimized prompt.
 FORMAT_KEYWORDS = (
     "json", "xml", "yaml", "csv", "tsv", "markdown", "html", "latex", "sql", "table",
     "bullet", "numbered", "step by step", "step-by-step", "plain text",

@@ -29,7 +29,8 @@ from .textutils import (
 COMPARABLE_KINDS = {"instruction", "constraint", "question"}
 
 _SPLIT_RE = re.compile(
-    r"\s*(?:,\s*(?:and\s+)?(?:then\s+)?|;\s*|\s+and\s+(?:also\s+)?(?:then\s+)?)"
+    r"\s*(?:,\s*(?:and\s+)?(?:then\s+)?|;\s*|:\s*|"
+    r"\s+and\s+(?:also\s+)?(?:then\s+)?)"
     r"(?=(?:please\s+)?(?:" + "|".join(sorted(config.SPLIT_VERBS)) + r")\b)",
     re.IGNORECASE,
 )

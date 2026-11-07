@@ -50,6 +50,16 @@ def _event_text(ev) -> str:
     return f"Simplified wording: {ev.label}"
 
 
+def _clean_instruction_punctuation(text: str) -> str:
+    """Remove a comma before 'and' when it introduces another instruction."""
+    verbs = "|".join(re.escape(v) for v in sorted(config.INSTRUCTION_VERBS))
+    pattern = re.compile(
+        r",\s+(?=and\s+(?:then\s+)?(?:" + verbs + r")\b)",
+        re.IGNORECASE,
+    )
+    return pattern.sub(" ", text)
+
+
 def optimize_prompt(prompt: str, analysis: Optional[PromptAnalysis] = None,
                     model: Optional[str] = None) -> OptimizationResult:
     """Heuristic optimization. Returns a CANDIDATE (not yet validated)."""
@@ -74,22 +84,29 @@ def optimize_prompt(prompt: str, analysis: Optional[PromptAnalysis] = None,
     by_seg = {}
     for c in clauses:
         by_seg.setdefault(c.seg_index, []).append(c)
+
     for idx, cl in by_seg.items():
         kept = [c for c in cl if not c.removed]
         if len(kept) == len(cl):
             continue
+
         seg = segments[idx]
         if not kept:
             seg.removed = True
             continue
+
         terminal = re.search(r"[.!?:;]+$", seg.text)
-        body = " and ".join(c.text.strip().rstrip(".!?;, ") for c in kept)
+        body = " and ".join(
+            c.text.strip().rstrip(".!?;, ") for c in kept
+        )
+        body = _clean_instruction_punctuation(body)
         seg.text = capitalize_first(body) + (terminal.group(0) if terminal else "")
 
     optimized = prepared.unmask(render_segments(segments))
     original_tokens = count_tokens_only(prepared.original, model)
     optimized_tokens = count_tokens_only(optimized, model)
     saved, pct = _reduction(original_tokens, optimized_tokens)
+
     return OptimizationResult(
         optimized_prompt=optimized, original_tokens=original_tokens,
         optimized_tokens=optimized_tokens, tokens_saved=saved,
@@ -112,12 +129,15 @@ def optimize_with_llm(prompt: str, rewriter: Callable[[str], str],
         return None
     if not text:
         return None
+
     original_tokens = count_tokens_only(prompt, model)
     optimized_tokens = count_tokens_only(text, model)
     saved, pct = _reduction(original_tokens, optimized_tokens)
+
     return OptimizationResult(
         optimized_prompt=text, original_tokens=original_tokens,
         optimized_tokens=optimized_tokens, tokens_saved=saved,
-        reduction_percentage=pct, changes=["LLM-assisted rewrite (validated by the same safety check)"],
+        reduction_percentage=pct,
+        changes=["LLM-assisted rewrite (validated by the same safety check)"],
         method="llm",
     )
