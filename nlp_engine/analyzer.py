@@ -1,4 +1,3 @@
-
 """
 analyzer.py - orchestration and the remaining detectors.
 
@@ -665,6 +664,7 @@ def analyze_prompt_detailed(
 
     if best is not None:
         final = best
+        reported_candidate = best
         validation = best_validation
         accepted = True
 
@@ -686,6 +686,7 @@ def analyze_prompt_detailed(
             method="none",
         )
 
+        reported_candidate = candidates[0]
         accepted = False
 
         if rejected:
@@ -709,7 +710,7 @@ def analyze_prompt_detailed(
             for f in findings
         ],
         suggestions=suggestions,
-        candidate=candidates[0],
+        candidate=reported_candidate,
         validation=validation,
         final=final,
         optimization_accepted=accepted,

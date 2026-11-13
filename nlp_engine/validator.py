@@ -11,6 +11,7 @@ Hard checks:
   - Output format
   - Named items
   - Constraint coverage and negation preservation
+  - Explicit sequence and ordinal workflow preservation
 
 Soft checks:
   - Keyword coverage
@@ -96,6 +97,272 @@ def _lexical_similarity(a: str, b: str) -> float:
     return float(cosine_similarity(X[0], X[1])[0][0])
 
 
+def _sequence_relations(text: str) -> List[tuple]:
+    """
+    Extract explicit ordering relationships from text.
+
+    Each result contains:
+        (left_action_stems, right_action_stems, relation)
+
+    relation:
+        "left_before_right"
+        "right_before_left"
+
+    Only explicit markers are considered. This avoids guessing the order
+    of unrelated instructions.
+    """
+
+    marker_pattern = re.compile(
+        r"\b(prior\s+to|before|after|followed\s+by)\b",
+        re.IGNORECASE,
+    )
+
+    relations = []
+
+    for match in marker_pattern.finditer(text):
+        left_boundary = max(
+            text.rfind(".", 0, match.start()),
+            text.rfind(";", 0, match.start()),
+            text.rfind("\n", 0, match.start()),
+        )
+
+        right_candidates = [
+            pos
+            for pos in (
+                text.find(".", match.end()),
+                text.find(";", match.end()),
+                text.find("\n", match.end()),
+            )
+            if pos != -1
+        ]
+
+        right_boundary = (
+            min(right_candidates)
+            if right_candidates
+            else len(text)
+        )
+
+        left_text = text[left_boundary + 1:match.start()]
+        right_text = text[match.end():right_boundary]
+
+        left_stems = content_stems(left_text)
+        right_stems = content_stems(right_text)
+
+        if len(left_stems) < 2 or len(right_stems) < 2:
+            continue
+
+        marker = match.group(1).lower()
+
+        if marker == "after":
+            relation = "right_before_left"
+        else:
+            relation = "left_before_right"
+
+        relations.append(
+            (left_stems, right_stems, relation)
+        )
+
+    return relations
+
+
+def _phrase_match_score(first: Set[str], second: Set[str]) -> float:
+    """
+    Measure how much two action phrases overlap.
+
+    Dividing by the smaller set allows a phrase to gain harmless extra
+    descriptive words without losing its identity.
+    """
+    if not first or not second:
+        return 0.0
+
+    denominator = min(len(first), len(second))
+
+    if denominator == 0:
+        return 0.0
+
+    return len(first & second) / denominator
+
+
+def _ordinal_actions(text: str) -> List[str]:
+    """
+    Extract action-head stems from explicitly ordered workflow steps.
+
+    Recognized markers include:
+        First, Firstly, Second, Secondly, Third, Thirdly,
+        Then, Next, Finally, Lastly.
+
+    This is a surface-level detector, not a general natural-language
+    workflow parser.
+    """
+
+    marker_pattern = re.compile(
+        r"^\s*(?:"
+        r"first(?:ly)?|"
+        r"second(?:ly)?|"
+        r"third(?:ly)?|"
+        r"fourth(?:ly)?|"
+        r"fifth(?:ly)?|"
+        r"then|next|finally|lastly"
+        r")\b[\s,:-]*",
+        re.IGNORECASE,
+    )
+
+    # Split at sentence and clause boundaries.
+    chunks = re.split(r"(?<=[.!?;])\s+|\n+", text)
+
+    actions: List[str] = []
+
+    for chunk in chunks:
+        match = marker_pattern.match(chunk)
+
+        if not match:
+            continue
+
+        action_text = chunk[match.end():].strip()
+
+        if not action_text:
+            continue
+
+        # Identify the first meaningful word in the action phrase.
+        # content_stems handles the project's existing normalization.
+        words = re.findall(
+            r"[A-Za-z][A-Za-z0-9_]*",
+            action_text,
+        )
+
+        action_head = None
+
+        for word in words:
+            stems = content_stems(word)
+
+            if stems:
+                action_head = next(iter(stems))
+                break
+
+        if action_head:
+            actions.append(action_head)
+
+    return actions
+
+
+def _ordinal_order_preserved(
+    original: str,
+    optimized: str,
+) -> bool:
+    """
+    Check whether recognizable explicitly ordered actions remain in order.
+
+    The comparison uses action-head stems from marked workflow steps.
+    It rejects a candidate when at least two recognizable actions have
+    exchanged their relative positions.
+
+    This does not detect every possible workflow rewrite. In particular,
+    it cannot reliably understand unmarked or heavily paraphrased steps.
+    """
+
+    original_actions = _ordinal_actions(original)
+
+    if len(original_actions) < 2:
+        return True
+
+    optimized_actions = _ordinal_actions(optimized)
+
+    if len(optimized_actions) < 2:
+        return True
+
+    # Match original action heads to distinct optimized positions.
+    # Missing actions are left to the other validation checks.
+    matched_positions: List[int] = []
+    used_positions: Set[int] = set()
+
+    for original_action in original_actions:
+        for position, optimized_action in enumerate(optimized_actions):
+            if position in used_positions:
+                continue
+
+            if original_action == optimized_action:
+                matched_positions.append(position)
+                used_positions.add(position)
+                break
+
+    # At least two matched actions are needed to establish an ordering.
+    if len(matched_positions) < 2:
+        return True
+
+    return matched_positions == sorted(matched_positions)
+
+
+def _sequence_order_preserved(
+    original: str,
+    optimized: str,
+) -> bool:
+    """
+    Check whether recognizable explicit ordering relationships survive.
+
+    Reject:
+    - Reversing the two recognizable actions.
+    - Changing an action from before another action to after it.
+    - Reordering recognizable ordinal workflow steps.
+
+    This is deliberately conservative and does not claim to understand
+    arbitrary natural-language workflows.
+    """
+
+    # Check ordinal workflow markers independently.
+    if not _ordinal_order_preserved(original, optimized):
+        return False
+
+    original_relations = _sequence_relations(original)
+
+    if not original_relations:
+        return True
+
+    optimized_relations = _sequence_relations(optimized)
+
+    if not optimized_relations:
+        return True
+
+    minimum_match = 0.5
+
+    for orig_left, orig_right, orig_relation in original_relations:
+        for opt_left, opt_right, opt_relation in optimized_relations:
+            direct_left = _phrase_match_score(
+                orig_left,
+                opt_left,
+            )
+            direct_right = _phrase_match_score(
+                orig_right,
+                opt_right,
+            )
+
+            reversed_left = _phrase_match_score(
+                orig_left,
+                opt_right,
+            )
+            reversed_right = _phrase_match_score(
+                orig_right,
+                opt_left,
+            )
+
+            direct_match = (
+                direct_left >= minimum_match
+                and direct_right >= minimum_match
+            )
+
+            reversed_match = (
+                reversed_left >= minimum_match
+                and reversed_right >= minimum_match
+            )
+
+            if direct_match and orig_relation != opt_relation:
+                return False
+
+            if reversed_match:
+                return False
+
+    return True
+
+
 def _best_constraint_coverage(
     original_constraint: str,
     optimized_segments: List[str],
@@ -126,8 +393,6 @@ def _best_constraint_coverage(
     for candidate in optimized_segments:
         candidate_negated = is_negated(candidate)
 
-        # Do not allow a positive instruction to become negative,
-        # or a negative instruction to become positive.
         if original_negated != candidate_negated:
             continue
 
@@ -282,7 +547,6 @@ def validate_optimization(
 
     for i, seg in enumerate(prep.segments):
 
-        # Ignore removable generic persona statements.
         if i in persona_idx:
             continue
 
@@ -297,8 +561,6 @@ def validate_optimization(
         ):
             continue
 
-        # Check explicit constraints, negated instructions,
-        # and other instructions classified as constraints.
         if (
             seg.kind != "constraint"
             and not (
@@ -321,7 +583,6 @@ def validate_optimization(
 
         checked += 1
 
-        # Compare this constraint against individual optimized segments.
         coverage = _best_constraint_coverage(
             original_constraint,
             optimized_segments,
@@ -346,7 +607,17 @@ def validate_optimization(
             + "; ".join(bad[:3])
         )
 
-    # 6. Keyword coverage (soft) -----------------------------------------------
+    # 6. Explicit sequence preservation ---------------------------------------
+
+    if not _sequence_order_preserved(
+        core_original,
+        optimized,
+    ):
+        reasons.append(
+            "Explicit instruction sequence or ordering changed"
+        )
+
+    # 7. Keyword coverage (soft) -----------------------------------------------
 
     opt_stems = content_stems(optimized)
 
@@ -388,7 +659,7 @@ def validate_optimization(
             f"{config.KEYWORD_COVERAGE_MIN:.0%}"
         )
 
-    # 7. Lexical similarity (soft) ---------------------------------------------
+    # 8. Lexical similarity (soft) ---------------------------------------------
 
     sim = _lexical_similarity(
         core_original,

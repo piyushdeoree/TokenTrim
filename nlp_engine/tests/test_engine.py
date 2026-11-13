@@ -1,3 +1,4 @@
+
 """pytest suite. Run from the PARENT directory of nlp_engine: pytest nlp_engine/tests -v"""
 
 import pytest
@@ -155,6 +156,70 @@ def test_llm_hook_exceptions_are_ignored():
 
     r = analyze_prompt("Please summarize this text.", "gpt-4o", llm_rewriter=boom)
     assert r["optimized_prompt"]
+
+
+# ------------------------ LLM acceptance regression tests --------------------
+
+def test_valid_shorter_llm_rewrite_is_accepted():
+    prompt = "Give me a summary of the report. Please make the summary concise."
+    rewrite = "Summarize the report concisely."
+
+    d = analyze_prompt_detailed(
+        prompt,
+        "gpt-4o",
+        llm_rewriter=lambda _: rewrite,
+    )
+
+    assert validate_optimization(prompt, rewrite).is_valid
+    assert d.optimization_accepted
+    assert d.final.method == "llm"
+    assert d.final.optimized_prompt == rewrite
+    assert d.final.tokens_saved > 0
+    assert d.validation.is_valid
+
+
+def test_candidate_matches_accepted_llm_rewrite():
+    prompt = "Give me a summary of the report. Please make the summary concise."
+    rewrite = "Summarize the report concisely."
+
+    d = analyze_prompt_detailed(
+        prompt,
+        "gpt-4o",
+        llm_rewriter=lambda _: rewrite,
+    )
+
+    assert d.final.method == "llm"
+    assert d.candidate.optimized_prompt == d.final.optimized_prompt
+    assert d.validation.is_valid
+
+
+def test_llm_rewrite_without_token_savings_is_not_accepted():
+    prompt = "Explain indexing."
+
+    d = analyze_prompt_detailed(
+        prompt,
+        "gpt-4o",
+        llm_rewriter=lambda _: prompt,
+    )
+
+    assert not d.optimization_accepted
+    assert d.final.optimized_prompt == prompt
+    assert d.final.tokens_saved == 0
+    assert d.final.method == "none"
+
+
+def test_empty_llm_response_falls_back_safely():
+    prompt = "Explain indexing."
+
+    d = analyze_prompt_detailed(
+        prompt,
+        "gpt-4o",
+        llm_rewriter=lambda _: "",
+    )
+
+    assert d.final.optimized_prompt == prompt
+    assert d.final.method != "llm"
+    assert d.final.tokens_saved == 0
 
 
 # ------------------------------ individual detectors -------------------------
