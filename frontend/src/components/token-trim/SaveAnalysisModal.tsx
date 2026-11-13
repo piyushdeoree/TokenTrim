@@ -12,7 +12,8 @@ export function SaveAnalysisModal({ prompt, model, result, onClose }: { prompt: 
   const save = async () => {
     if (!pid) return setMsg('Select a project.');
     setBusy(true);
-    try { await send('post', '/api/analyses', { project_id: pid, prompt, model, result }); toast('Analysis saved.'); onClose(); }
+    try { await send('patch', `/history/${result.prompt_id}/project`, { project_id: Number(pid) });
+      window.dispatchEvent(new CustomEvent('tokentrim:analysis-saved')); toast('Analysis assigned to project.'); onClose(); }
     catch { setMsg('Unable to save analysis. Please try again.'); } finally { setBusy(false); }
   };
   return (

@@ -6,6 +6,6 @@ export function ModelPricingTable({ rows, selected, onToggle, inTok, outTok }: {
     { header: 'Compare', cell: (r) => <input type="checkbox" aria-label={`Compare ${r.model}`} checked={selected.includes(r.model)} onChange={() => onToggle(r.model)} /> },
     { header: 'Model', cell: (r) => r.model }, { header: 'Provider', cell: (r) => r.provider },
     { header: 'Input $/1M', cell: (r) => r.input }, { header: 'Output $/1M', cell: (r) => r.output },
-    { header: 'Context', cell: (r) => r.context.toLocaleString() },
+    { header: 'Context', cell: (r) => r.context == null ? 'Not specified' : r.context.toLocaleString() },
     { header: 'Estimated cost', cell: (r) => `$${estimate(r, inTok, outTok).toFixed(5)}` }]} />;
 }

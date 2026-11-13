@@ -3,7 +3,7 @@ export function groupByDate<T extends { date: string }>(items: T[], now = new Da
   const g: Record<string, T[]> = {};
   const today = Date.UTC(now.getFullYear(), now.getMonth(), now.getDate());
   for (const it of [...items].sort((a, b) => b.date.localeCompare(a.date))) {
-    const [y, m, d] = it.date.split('-').map(Number);
+    const [y, m, d] = it.date.slice(0, 10).split('-').map(Number);
     const diff = Math.round((today - Date.UTC(y, m - 1, d)) / 864e5);
     const k = diff <= 0 ? 'Today' : diff === 1 ? 'Yesterday' : diff <= 7 ? 'Previous 7 days' : 'Older';
     (g[k] ??= []).push(it);

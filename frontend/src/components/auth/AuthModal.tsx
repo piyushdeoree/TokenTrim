@@ -3,6 +3,7 @@ import { Modal } from '@/components/ui/Modal';
 import { Button } from '@/components/ui/Button';
 import { Field } from '@/components/ui/Field';
 import { useAuth } from '@/context/AuthContext';
+import { authErrorMessage } from '@/services/authService';
 export type AuthMode = 'login' | 'register';
 export function AuthModal({ mode, onModeChange, onClose, onSuccess }: { mode: AuthMode; onModeChange: (m: AuthMode) => void; onClose: () => void; onSuccess: () => void }) {
   const { login, register } = useAuth();
@@ -17,7 +18,11 @@ export function AuthModal({ mode, onModeChange, onClose, onSuccess }: { mode: Au
     if (isLogin ? !f.password : f.password.length < 8) return setErr(isLogin ? 'Enter your password.' : 'Password must be at least 8 characters.');
     setBusy(true); setErr('');
     try { isLogin ? await login(f.email, f.password) : await register(f.name, f.email, f.password); onSuccess(); }
-    catch { setErr(isLogin ? 'Sign in failed. Check your email and password.' : 'Unable to create account. Please try again.'); }
+    catch (error) {
+      setErr(authErrorMessage(error, isLogin
+        ? 'Sign in failed. Check your email and password.'
+        : 'Unable to create account. Please try again.'));
+    }
     finally { setBusy(false); }
   };
   return (

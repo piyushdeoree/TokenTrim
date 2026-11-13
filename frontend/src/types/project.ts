@@ -1,2 +1,1 @@
-export interface HistoryItem { title: string; saved: number; date: string }
-export interface Project { id: string; name: string; prompts: number; tokens: number; cost: number; history: HistoryItem[] }
+export interface Project { id: number; name: string; description: string | null; owner_id: number; team_id: number | null; created_at: string; updated_at: string }

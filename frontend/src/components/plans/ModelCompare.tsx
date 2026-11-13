@@ -12,7 +12,7 @@ export function ModelCompare({ models, inTok, outTok }: { models: ModelPricing[]
             <div className="flex justify-between"><dt>Provider</dt><dd>{m.provider}</dd></div>
             <div className="flex justify-between"><dt>Input / 1M</dt><dd>${m.input}</dd></div>
             <div className="flex justify-between"><dt>Output / 1M</dt><dd>${m.output}</dd></div>
-            <div className="flex justify-between"><dt>Context</dt><dd>{m.context.toLocaleString()}</dd></div>
+            <div className="flex justify-between"><dt>Context</dt><dd>{m.context == null ? 'Not specified' : m.context.toLocaleString()}</dd></div>
             <div className="flex justify-between font-semibold"><dt>Estimated cost</dt><dd>${costs[i].toFixed(5)}</dd></div>
           </dl>
           {costs[i] === min && <div className="mt-2"><Badge tone="good">Lowest cost</Badge></div>}

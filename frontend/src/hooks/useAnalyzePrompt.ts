@@ -9,7 +9,9 @@ export function useAnalyzePrompt() {
   const [state, setState] = useState<State>({ status: 'idle' });
   const run = useCallback(async (req: AnalyzePromptRequest) => {
     setState({ status: 'loading' });
-    try { setState({ status: 'success', data: await analyzePrompt(req) }); }
+    try { const data = await analyzePrompt(req); setState({ status: 'success', data });
+      if (typeof window !== 'undefined') window.dispatchEvent(new CustomEvent('tokentrim:analysis-saved'));
+    }
     catch (e) { setState({ status: 'error', message: toMessage(e) }); }
   }, []);
   return { state, run, reset: () => setState({ status: 'idle' }) };

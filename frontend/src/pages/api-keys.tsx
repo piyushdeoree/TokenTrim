@@ -8,9 +8,9 @@ import { useApiKeys } from '@/hooks/useApiKeys';
 import { send } from '@/services/data';
 export default function ApiKeys() {
   const { state, reload } = useApiKeys(); const [open, setOpen] = useState(false); const toast = useToast();
-  const revoke = async (id: string) => {
+  const revoke = async (id: number) => {
     if (!window.confirm('Revoke this key? Apps using it will stop working.')) return;
-    try { await send('delete', `/api/api-keys/${id}`, null); toast('Key revoked.'); reload(); } catch { toast('Unable to revoke key. Please try again.'); }
+    try { await send('delete', `/api-keys/${id}`, null); toast('Key revoked.'); reload(); } catch { toast('Unable to revoke key. Please try again.'); }
   };
   return (
     <main className="mx-auto max-w-5xl space-y-4 p-4 lg:p-8">

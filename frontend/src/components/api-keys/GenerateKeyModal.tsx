@@ -9,7 +9,7 @@ export function GenerateKeyModal({ onClose, onDone }: { onClose: () => void; onD
   const [name, setName] = useState(''); const [secret, setSecret] = useState(''); const [err, setErr] = useState('');
   const { copied, copy } = useCopyToClipboard();
   const generate = async () => {
-    try { setSecret((await send<NewApiKey>('post', '/api/api-keys', { name })).secret); onDone(); }
+    try { setSecret((await send<NewApiKey>('post', '/api-keys', { name })).key); onDone(); }
     catch { setErr('Unable to generate key. Please try again.'); }
   };
   return (

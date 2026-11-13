@@ -6,7 +6,10 @@ apiClient.interceptors.request.use((c) => {
   return c;
 });
 apiClient.interceptors.response.use((r) => r, (e) => {
-  if (axios.isAxiosError(e) && e.response?.status === 401 && typeof window !== 'undefined') {
+  const requestUrl = axios.isAxiosError(e) ? e.config?.url ?? '' : '';
+  const isAuthRequest = requestUrl.startsWith('/auth/');
+  if (axios.isAxiosError(e) && e.response?.status === 401 && !isAuthRequest
+      && typeof window !== 'undefined' && window.location.pathname !== '/login') {
     localStorage.removeItem('token'); window.location.href = '/login';
   }
   return Promise.reject(e);

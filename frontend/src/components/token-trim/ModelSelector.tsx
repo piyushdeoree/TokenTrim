@@ -1,7 +1,9 @@
 import { Select } from '@/components/ui/Select';
 import { useModelPricing } from '@/hooks/useModelPricing';
+import { useAuth } from '@/context/AuthContext';
 export function ModelSelector({ value, onChange, error }: { value: string; onChange: (v: string) => void; error?: string }) {
-  const { state } = useModelPricing(); // model list comes from GET /models/pricing
+  const { user } = useAuth();
+  const { state } = useModelPricing(!!user); // model list comes from GET /models/pricing
   const models = state.status === 'success' ? state.data : [];
   return (
     <Select label="Model" value={value} onChange={(e) => onChange(e.target.value)} error={error} disabled={state.status === 'loading'}>

@@ -8,7 +8,7 @@ export function CreateProjectModal({ onClose, onCreated }: { onClose: () => void
   const create = async () => {
     if (name.trim().length < 2) return setErr('Project name must be at least 2 characters.');
     setBusy(true);
-    try { await send('post', '/api/projects', { name }); onCreated(); onClose(); }
+    try { await send('post', '/projects', { name: name.trim() }); onCreated(); onClose(); }
     catch { setErr('Unable to create project. Please try again.'); } finally { setBusy(false); }
   };
   return (

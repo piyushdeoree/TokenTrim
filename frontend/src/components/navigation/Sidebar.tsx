@@ -3,9 +3,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { NAV } from '@/utils/constants';
 import { RecentActivity } from '@/components/dashboard/RecentActivity';
-import { ProjectHistoryTable } from '@/components/dashboard/ProjectHistoryTable';
 import { useActivity } from '@/hooks/useActivity';
-import { useProjects } from '@/hooks/useProjects';
 import { useTheme } from '@/context/ThemeContext';
 export function NavLinks({ onNavigate }: { onNavigate?: () => void }) {
   const { pathname } = useRouter();
@@ -24,7 +22,7 @@ function Status({ s, reload }: { s: { status: string }; reload: () => void }) {
     : <p className="px-2 text-xs">Unable to load. <button type="button" className="underline" onClick={reload}>Retry</button></p>;
 }
 export function Sidebar({ collapsed }: { collapsed: boolean }) {
-  const activity = useActivity(); const projects = useProjects();
+  const activity = useActivity();
   const { theme } = useTheme();
   return (
     <aside aria-label="Sidebar" className={`hidden shrink-0 flex-col overflow-hidden border-r border-black/10 bg-surface text-slate-900 transition-all duration-500 dark:border-white/10 dark:text-slate-100 lg:sticky lg:top-0 lg:flex lg:h-screen ${collapsed ? 'lg:w-0 lg:border-r-0 lg:opacity-0' : 'w-64 lg:w-64 lg:opacity-100'}`}>
@@ -33,10 +31,7 @@ export function Sidebar({ collapsed }: { collapsed: boolean }) {
       <div className="mt-2 space-y-5 border-t border-black/10 p-3 dark:border-white/10">
         <section aria-labelledby="sb-recent"><h3 id="sb-recent" className="mb-2 px-2 text-sm font-semibold">Recent activity</h3>
           {activity.state.status === 'success' ? <RecentActivity rows={activity.state.data} /> : <Status s={activity.state} reload={activity.reload} />}</section>
-        <section aria-labelledby="sb-history"><h3 id="sb-history" className="mb-2 px-2 text-sm font-semibold">Project history</h3>
-          {projects.state.status === 'success'
-            ? <ProjectHistoryTable compact rows={projects.state.data.flatMap((p) => p.history.map((h, i) => ({ ...h, id: Number(`${p.id}${i}`), project: p.name })))} />
-            : <Status s={projects.state} reload={projects.reload} />}</section>
+        <section aria-labelledby="sb-history"><Link id="sb-history" href="/history" className="px-2 text-sm font-semibold underline">View full prompt history</Link></section>
       </div>
     </aside>
   );

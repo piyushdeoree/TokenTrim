@@ -1,2 +1,2 @@
-export type Role = 'Owner' | 'Admin' | 'Member';
-export interface Member { id: string; name: string; email: string; role: Role }
+export type Role = 'owner' | 'admin' | 'member';
+export interface Member { id?: number; user_id: number; full_name: string; email: string; role: Role; joined_at: string }

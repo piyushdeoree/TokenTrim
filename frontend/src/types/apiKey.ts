@@ -1,2 +1,2 @@
-export interface ApiKey { id: string; name: string; prefix: string; created: string; limit: number; used: number }
-export interface NewApiKey { secret: string }
+export interface ApiKey { id: number; name: string; prefix: string; created_at: string; last_used_at: string | null; is_active: boolean }
+export interface NewApiKey { key: string }

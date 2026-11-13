@@ -30,7 +30,7 @@ export default function TokenTrimPage() {
     <main className={`mx-auto grid max-w-7xl gap-6 p-4 lg:grid-cols-2 lg:p-8 ${!user ? 'pointer-events-none blur-sm' : ''}`}>
       {!user && (
         <div className="flex flex-wrap items-center justify-between gap-3 rounded-lg bg-surface p-4 lg:col-span-2">
-          <p className="text-sm font-medium">Sign in to save analyses and track usage on your dashboard.</p>
+          <p className="text-sm font-medium">Sign in to optimize prompts and track usage on your dashboard.</p>
           <div className="flex gap-2"><Button>Sign in</Button><Button variant="ghost">Create account</Button></div>
         </div>
       )}

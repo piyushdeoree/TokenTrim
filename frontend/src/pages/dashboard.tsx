@@ -20,7 +20,7 @@ export default function Dashboard() {
   return (
     <main className="mx-auto max-w-7xl space-y-6 p-4 lg:p-8">
       <div className="flex flex-wrap items-end justify-between gap-4"><h1 className="text-xl font-semibold">Dashboard</h1><ChartFilter value={range} onChange={setRange} /></div>
-      <AsyncView state={state} reload={reload} isEmpty={(d) => d.totals.prompts === 0} empty={{ title: 'No analyses yet', body: 'Analyze a prompt in Token Trim and save it to see usage here.' }}>
+      <AsyncView state={state} reload={reload} isEmpty={(d) => d.totals.prompts === 0} empty={{ title: 'No analyses yet', body: 'Analyze a prompt in Token Trim to see usage here.' }}>
         {(d) => (<>
           <div className="grid grid-cols-2 gap-3 lg:grid-cols-3 xl:grid-cols-6">
             <TokenCard label="Total tokens" value={d.totals.tokens} />
