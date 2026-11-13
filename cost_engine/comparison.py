@@ -4,13 +4,15 @@ from __future__ import annotations
 from typing import Iterable, Optional
 
 from .calculator import calculate_cost
-from .pricing import get_pricing, list_models
+from .pricing import get_pricing, list_models, pricing_freshness
 
 
 def compare_models(
     input_tokens: int,
     predicted_output_tokens: int,
     models: Optional[Iterable[str]] = None,
+    *, cached_input_tokens: int = 0, context_window_required: Optional[int] = None,
+    provider: Optional[str] = None,
 ) -> dict:
     """Estimated cost per model, sorted cheapest first.
 
@@ -23,12 +25,25 @@ def compare_models(
         raise ValueError("No models to compare")
     rows = []
     for m in names:
-        b = calculate_cost(m, input_tokens, predicted_output_tokens)
+        pricing=get_pricing(m)
+        if provider and pricing.provider.lower()!=provider.lower(): continue
+        needed=max(input_tokens+predicted_output_tokens,context_window_required or 0)
+        if pricing.context_window is not None and pricing.context_window<needed: continue
+        supports_cache=pricing.cached_input_price_per_million is not None
+        freshness=pricing_freshness(pricing)
+        b = calculate_cost(m, input_tokens, predicted_output_tokens,
+                           cached_input_tokens=cached_input_tokens if supports_cache else 0)
         rows.append({
             "model": m,
-            "provider": get_pricing(m).provider,
+            "provider": pricing.provider,
             "estimated_cost": b.total_cost,
+            "pricing_version":pricing.pricing_version,"pricing_status":pricing.pricing_status,
+            "source_url":pricing.source_url,"context_window":pricing.context_window,
+            "currency":pricing.currency,"input_cost":b.input_cost,"output_cost":b.output_cost,
+            "cached_input_supported":supports_cache,
+            "pricing_freshness":freshness,
         })
+    if not rows: raise ValueError("No models with applicable pricing and context compatibility")
     rows.sort(key=lambda r: (r["estimated_cost"], r["model"]))
     cheapest = rows[0]["estimated_cost"]
     for r in rows:

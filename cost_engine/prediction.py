@@ -13,6 +13,7 @@ from __future__ import annotations
 
 import json
 import re
+import math
 from typing import Optional
 
 import joblib
@@ -207,7 +208,8 @@ def predict_output_tokens(
     Returns ``predicted_output_tokens`` plus ``source`` so callers can see
     whether a trained model or the naive fallback produced the number.
     """
-    if isinstance(input_tokens, bool) or not isinstance(input_tokens, (int, float)) or input_tokens < 0:
+    if (isinstance(input_tokens, bool) or not isinstance(input_tokens, (int, float))
+            or not math.isfinite(input_tokens) or input_tokens < 0 or int(input_tokens) != input_tokens):
         raise ValueError("input_tokens must be a non-negative number")
     input_tokens = int(input_tokens)
 
@@ -216,15 +218,26 @@ def predict_output_tokens(
         pred = int(round(config.FALLBACK_OUTPUT_RATIO * input_tokens))
         return {
             "predicted_output_tokens": max(config.MIN_PREDICTED_OUTPUT_TOKENS, pred),
+            "prediction_range": {"lower": max(0, int(pred * 0.5)), "upper": max(config.MIN_PREDICTED_OUTPUT_TOKENS, int(math.ceil(pred * 1.5)))},
             "source": "fallback_ratio",
-            "warning": "No trained predictor found; using naive ratio * input_tokens.",
+            "warning": "No trained predictor found; using configurable ratio * input_tokens with a broad heuristic range.",
         }
     row = build_feature_row(input_tokens, task_type, model, complexity, prompt_text, word_count, sentence_count)
     pred = float(art["pipeline"].predict(row)[0])
+    metrics={}
+    try:
+        metrics=json.loads(config.METRICS_FILE.read_text(encoding="utf-8"))
+    except (OSError, ValueError):
+        pass
+    mae=float(metrics.get("test_metrics",{}).get("MAE",0) or 0)
+    err=max(1, int(math.ceil(mae))) if math.isfinite(mae) else max(1,int(pred*0.25))
+    center=max(config.MIN_PREDICTED_OUTPUT_TOKENS, int(round(pred)))
     return {
-        "predicted_output_tokens": max(config.MIN_PREDICTED_OUTPUT_TOKENS, int(round(pred))),
+        "predicted_output_tokens": center,
+        "prediction_range": {"lower": max(0, center-err), "upper": center+err},
         "source": f"trained:{art['name']}",
         "training_data": art["data_source"],
+        "uncertainty_method": "held_out_MAE" if mae else "heuristic_25_percent",
     }
 
 

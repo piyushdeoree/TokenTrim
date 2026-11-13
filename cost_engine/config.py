@@ -10,6 +10,7 @@ ARTIFACT_DIR = DATA_DIR / "artifacts"
 
 # Pricing registry (user-editable JSON; see pricing.py)
 PRICING_FILE = DATA_DIR / "pricing.json"
+PRICING_HISTORY_FILE = DATA_DIR / "pricing_history.json"
 
 # Datasets
 SYNTHETIC_DATASET_FILE = DATA_DIR / "synthetic_prompts.csv"

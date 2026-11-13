@@ -15,6 +15,7 @@ budgets or guarantees.
 from __future__ import annotations
 
 from typing import List, Optional, Sequence, Union
+import math
 
 import numpy as np
 
@@ -126,13 +127,37 @@ def forecast_cost(
         raise ValueError(f"method must be 'auto' or one of {list(_METHODS)}")
 
     fc = np.clip(_METHODS[method](y, steps), 0, None)
+    residual = (backtest["scores"][method]["MAE"] if backtest else float(np.std(y)))
     return {
         "historical_cost": series,
         "forecast": [float(v) for v in fc],
         "forecast_period": forecast_period,
         "estimated_future_cost": float(fc.sum()),
+        "forecast_range": {"lower": [float(max(0, v-residual*1.96)) for v in fc],
+                           "upper": [float(v+residual*1.96) for v in fc]},
         "method": method,
         "backtest": backtest,
         "notes": notes,
         "disclaimer": "Statistical projection of past spend, not a guaranteed budget.",
+        "assumptions": {"frequency":"daily","uncertainty":"1.96 x holdout MAE" if backtest else "1.96 x historical standard deviation","historical_values_are_actuals":True},
     }
+
+
+def aggregate_usage_costs(records, frequency="daily"):
+    """Aggregate timestamped usage cost records; frequency is daily, weekly, or monthly."""
+    from datetime import date, datetime
+    if frequency not in {"daily","weekly","monthly"}: raise ValueError("frequency must be daily, weekly, or monthly")
+    buckets={}
+    for row in records:
+        stamp=row.get("date") or row.get("created_at")
+        if not stamp: raise ValueError("each record needs date or created_at")
+        day=date.fromisoformat(stamp[:10]) if isinstance(stamp,str) else stamp.date()
+        if frequency=="daily": key=day.isoformat()
+        elif frequency=="weekly": key=(day.fromordinal(day.toordinal()-day.weekday())).isoformat()
+        else: key=f"{day.year:04d}-{day.month:02d}"
+        value=row.get("cost")
+        if value is None: raise ValueError("cost must be non-negative")
+        number=float(value)
+        if not math.isfinite(number) or number<0: raise ValueError("cost must be finite and non-negative")
+        buckets[key]=buckets.get(key,0.0)+number
+    return [{"period":k,"cost":buckets[k]} for k in sorted(buckets)]

@@ -5,22 +5,51 @@ directly (or wrap them in Pydantic models).
 """
 from __future__ import annotations
 
-from dataclasses import dataclass, asdict, field
+from dataclasses import dataclass, asdict
 from typing import Optional
+from decimal import Decimal
 
 
 @dataclass
 class ModelPricing:
     model: str
     provider: str
-    input_price_per_million: float
-    output_price_per_million: float
+    input_price_per_million: Decimal
+    output_price_per_million: Decimal
     context_window: Optional[int] = None
     quality_tier: int = 2  # 1 = basic, 2 = standard, 3 = frontier (editable judgment)
     notes: str = ""
+    display_name: Optional[str] = None
+    cached_input_price_per_million: Optional[Decimal] = None
+    cache_write_price_per_million: Optional[Decimal] = None
+    batch_input_price_per_million: Optional[Decimal] = None
+    batch_output_price_per_million: Optional[Decimal] = None
+    currency: str = "USD"
+    pricing_tier: Optional[str] = None
+    effective_date: Optional[str] = None
+    source_url: Optional[str] = None
+    last_verified: Optional[str] = None
+    pricing_status: str = "manual_unverified"
+    pricing_version: int = 1
+    retrieved_at: Optional[str] = None
+    pricing_conditions: Optional[dict] = None
+    pricing_tiers: Optional[list] = None
+
+    def __post_init__(self):
+        for name in ("input_price_per_million", "output_price_per_million",
+                     "cached_input_price_per_million", "cache_write_price_per_million",
+                     "batch_input_price_per_million", "batch_output_price_per_million"):
+            value=getattr(self,name)
+            if value is not None and not isinstance(value,Decimal):
+                setattr(self,name,Decimal(str(value)))
 
     def to_dict(self) -> dict:
-        return asdict(self)
+        data=asdict(self)
+        for name in ("input_price_per_million", "output_price_per_million",
+                     "cached_input_price_per_million", "cache_write_price_per_million",
+                     "batch_input_price_per_million", "batch_output_price_per_million"):
+            if data[name] is not None: data[name]=str(data[name])
+        return data
 
 
 @dataclass
@@ -32,6 +61,15 @@ class CostBreakdown:
     input_cost: float
     output_cost: float
     total_cost: float
+    provider: Optional[str] = None
+    pricing_version: int = 1
+    cached_input_tokens: int = 0
+    applied_input_rate: Optional[float] = None
+    applied_output_rate: Optional[float] = None
+    other_charges: float = 0.0
+    currency: str = "USD"
+    calculation_timestamp: Optional[str] = None
+    estimate_type: str = "estimated"
 
     def to_dict(self) -> dict:
         return asdict(self)

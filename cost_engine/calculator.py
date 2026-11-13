@@ -9,11 +9,13 @@ None of these are actual provider invoices.
 """
 from __future__ import annotations
 
+from datetime import datetime, timezone
+from decimal import Decimal
 from typing import Optional
 
 from . import config
 from .models import CostBreakdown, CostEstimate, SavingsResult
-from .pricing import get_pricing
+from .pricing import get_pricing_decimal, get_pricing_version
 
 
 def _check_tokens(value, name: str) -> int:
@@ -28,13 +30,36 @@ def _check_tokens(value, name: str) -> int:
     return int(value)
 
 
-def calculate_cost(model: str, input_tokens: int, output_tokens: int) -> CostBreakdown:
+def calculate_cost(model: str, input_tokens: int, output_tokens: int, *,
+                   cached_input_tokens: int = 0, cache_write_tokens: int = 0,
+                   batch: bool = False, pricing_tier: Optional[str] = None,
+                   pricing_version: Optional[int] = None) -> CostBreakdown:
     """Cost from known (e.g. logged) token counts."""
     inp = _check_tokens(input_tokens, "input_tokens")
     out = _check_tokens(output_tokens, "output_tokens")
-    p = get_pricing(model)
-    input_cost = (inp / config.TOKENS_PER_MILLION) * p.input_price_per_million
-    output_cost = (out / config.TOKENS_PER_MILLION) * p.output_price_per_million
+    cached = _check_tokens(cached_input_tokens, "cached_input_tokens")
+    cache_write = _check_tokens(cache_write_tokens, "cache_write_tokens")
+    if cached > inp:
+        raise ValueError("cached_input_tokens cannot exceed input_tokens")
+    p = get_pricing_version(model,pricing_version) if pricing_version is not None else get_pricing_decimal(model)
+    if pricing_tier is not None and p.pricing_tier not in (None, pricing_tier):
+        raise ValueError(f"Model {model!r} does not have pricing tier {pricing_tier!r}")
+    ordinary_rate = p.batch_input_price_per_million if batch and p.batch_input_price_per_million is not None else p.input_price_per_million
+    output_rate = p.batch_output_price_per_million if batch and p.batch_output_price_per_million is not None else p.output_price_per_million
+    cache_rate = p.cached_input_price_per_million
+    if cached and cache_rate is None:
+        raise ValueError(f"Cached input pricing is unavailable for model {model!r}")
+    if cache_write and p.cache_write_price_per_million is None:
+        raise ValueError(f"Cache-write pricing is unavailable for model {model!r}")
+    scale = Decimal(config.TOKENS_PER_MILLION)
+    ordinary = Decimal(inp - cached)
+    input_cost_d = ordinary / scale * Decimal(str(ordinary_rate))
+    if cached:
+        input_cost_d += Decimal(cached) / scale * Decimal(str(cache_rate))
+    output_cost_d = Decimal(out) / scale * Decimal(str(output_rate))
+    other_d = Decimal(cache_write) / scale * Decimal(str(p.cache_write_price_per_million or 0))
+    # Keep Decimal through all arithmetic; floats are emitted only for backwards-compatible serialization.
+    input_cost, output_cost, other = float(input_cost_d), float(output_cost_d), float(other_d)
     return CostBreakdown(
         model=model,
         input_tokens=inp,
@@ -42,7 +67,15 @@ def calculate_cost(model: str, input_tokens: int, output_tokens: int) -> CostBre
         total_tokens=inp + out,
         input_cost=input_cost,
         output_cost=output_cost,
-        total_cost=input_cost + output_cost,
+        total_cost=float(input_cost_d + output_cost_d + other_d),
+        provider=p.provider,
+        pricing_version=p.pricing_version,
+        cached_input_tokens=cached,
+        applied_input_rate=float(ordinary_rate),
+        applied_output_rate=float(output_rate),
+        other_charges=other,
+        currency=p.currency,
+        calculation_timestamp=datetime.now(timezone.utc).isoformat(),
     )
 
 
@@ -116,16 +149,18 @@ def calculate_savings(
         raise ValueError(
             f"optimization_percentage ({optimization_percentage}) inconsistent with computed {pct:.2f}"
         )
-    p = get_pricing(model)
-    orig_cost = orig / config.TOKENS_PER_MILLION * p.input_price_per_million
-    opt_cost = opt / config.TOKENS_PER_MILLION * p.input_price_per_million
+    p = get_pricing_decimal(model)
+    scale = Decimal(config.TOKENS_PER_MILLION)
+    rate = p.input_price_per_million
+    orig_cost_d = Decimal(orig) / scale * rate
+    opt_cost_d = Decimal(opt) / scale * rate
     return SavingsResult(
         model=model,
         original_tokens=orig,
         optimized_tokens=opt,
         tokens_saved=saved,
         optimization_percentage=round(pct, 4),
-        original_input_cost=orig_cost,
-        optimized_input_cost=opt_cost,
-        input_cost_saved=orig_cost - opt_cost,
+        original_input_cost=float(orig_cost_d),
+        optimized_input_cost=float(opt_cost_d),
+        input_cost_saved=float(orig_cost_d - opt_cost_d),
     ).to_dict()
