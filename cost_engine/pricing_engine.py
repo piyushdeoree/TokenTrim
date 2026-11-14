@@ -4,6 +4,7 @@ from __future__ import annotations
 from datetime import datetime, timedelta, timezone
 from decimal import Decimal, InvalidOperation
 import json
+import logging
 import os
 from pathlib import Path
 import urllib.request
@@ -23,7 +24,11 @@ OFFICIAL_SOURCES={
     "google":"https://ai.google.dev/gemini-api/docs/pricing",
 }
 FETCH_URLS={"openai":OPENAI_FETCH_URL,"anthropic":ANTHROPIC_FETCH_URL,"google":GOOGLE_FETCH_URL}
-REFRESH_INTERVAL_HOURS=max(1,int(os.getenv("COST_ENGINE_REFRESH_INTERVAL_HOURS","24")))
+try:
+    REFRESH_INTERVAL_HOURS=max(1,int(os.getenv("COST_ENGINE_REFRESH_INTERVAL_HOURS","24")))
+except (TypeError, ValueError):
+    REFRESH_INTERVAL_HOURS = 24
+    logging.getLogger(__name__).warning("Invalid COST_ENGINE_REFRESH_INTERVAL_HOURS; using 24 hours")
 REFRESH_STATE_FILE=config.DATA_DIR/"pricing_refresh_state.json"
 _ADAPTER_PROVENANCE=_OFFICIAL_ADAPTER_PROVENANCE
 

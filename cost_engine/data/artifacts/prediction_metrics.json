@@ -38,5 +38,11 @@
   },
   "selected_model": "random_forest",
   "selection_rule": "lowest 5-fold CV RMSE on the train split",
+  "sklearn_version": "1.9.1",
+  "selected_model_metrics": {
+    "MAE": 135.7368022837571,
+    "RMSE": 305.2319144422154,
+    "R2": 0.6949513712939763
+  },
   "warning": "Trained on SYNTHETIC data. These metrics do not describe real-world accuracy."
 }

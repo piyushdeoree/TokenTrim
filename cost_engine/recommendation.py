@@ -16,8 +16,8 @@ from __future__ import annotations
 from typing import Optional
 
 from . import config
-from .calculator import calculate_cost
-from .pricing import get_pricing, list_models
+from .calculator import _calculate_cost_with_pricing, _check_tokens
+from .pricing import _get_pricing_cached, list_models, pricing_freshness
 
 _COMPLEX_TASKS = {"coding", "analysis"}
 
@@ -32,22 +32,27 @@ def recommend_model(
 ) -> dict:
     if required_quality not in config.QUALITY_LEVELS:
         raise ValueError(f"required_quality must be one of {list(config.QUALITY_LEVELS)}")
+    input_tokens = _check_tokens(input_tokens, "input_tokens")
+    predicted_output_tokens = _check_tokens(predicted_output_tokens, "predicted_output_tokens")
+    if context_size is not None:
+        context_size = _check_tokens(context_size, "context_size")
     min_tier = config.QUALITY_LEVELS[required_quality]
     floor_applied = False
     if task_type in _COMPLEX_TASKS and min_tier < config.QUALITY_LEVELS["medium"]:
         min_tier = config.QUALITY_LEVELS["medium"]
         floor_applied = True
-    needed_context = max(int(context_size or 0), int(input_tokens) + int(predicted_output_tokens))
+    needed_context = max(context_size or 0, input_tokens + predicted_output_tokens)
 
     eligible = []
     for m in list_models():
-        p = get_pricing(m)
+        p = _get_pricing_cached(m)
         if p.quality_tier < min_tier:
             continue
         if p.context_window is not None and p.context_window < needed_context:
             continue
-        eligible.append((calculate_cost(m, input_tokens, predicted_output_tokens).total_cost, m))
-    eligible.sort()
+        cost = _calculate_cost_with_pricing(m, p, input_tokens, predicted_output_tokens, 0, 0).total_cost
+        eligible.append((cost, m, p))
+    eligible.sort(key=lambda row: (row[0], row[1]))
 
     base = {"is_recommendation_only": True,
             "disclaimer": "Recommendation based on price, quality tier and context fit; not a guaranteed optimal choice."}
@@ -55,10 +60,12 @@ def recommend_model(
         return {**base, "recommended_model": None, "estimated_saving": 0.0,
                 "reason": "No supported model meets the quality and context requirements."}
 
-    cost, best = eligible[0]
+    cost, best, best_pricing = eligible[0]
     saving, saving_pct = 0.0, 0.0
     if current_model:
-        cur_cost = calculate_cost(current_model, input_tokens, predicted_output_tokens).total_cost
+        current_pricing = _get_pricing_cached(current_model)
+        cur_cost = _calculate_cost_with_pricing(current_model, current_pricing,
+                                               input_tokens, predicted_output_tokens, 0, 0).total_cost
         saving = max(0.0, cur_cost - cost)
         saving_pct = (saving / cur_cost * 100.0) if cur_cost > 0 else 0.0
 
@@ -72,4 +79,8 @@ def recommend_model(
         reason += f" Estimated saving vs {current_model}: {saving:.6f} ({saving_pct:.1f}%)."
     return {**base, "recommended_model": best, "estimated_cost": cost,
             "estimated_saving": saving, "estimated_saving_pct": saving_pct,
+            "pricing_status": best_pricing.pricing_status,
+            "pricing_freshness": pricing_freshness(best_pricing),
+            "verified_for_live_use": best_pricing.pricing_status == "official_verified" and not pricing_freshness(best_pricing)["stale"],
+            "quality_tier_basis": "editable subjective metadata; not a measured model evaluation",
             "reason": reason}

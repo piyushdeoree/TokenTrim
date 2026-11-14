@@ -204,3 +204,4 @@ def test_refresh_interval_skips_and_force_attempts_all_providers(monkeypatch):
     failed=pricing_engine.refresh_pricing(force=True)
     assert failed["providers"]["anthropic"]["last_successful_refresh"]==first["providers"]["anthropic"]["last_successful_refresh"]
     assert failed["last_successful_refresh"]==first["last_successful_refresh"]
+

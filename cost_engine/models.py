@@ -7,7 +7,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass, asdict
 from typing import Optional
-from decimal import Decimal
+from decimal import Decimal, InvalidOperation
 
 
 @dataclass
@@ -41,7 +41,26 @@ class ModelPricing:
                      "batch_input_price_per_million", "batch_output_price_per_million"):
             value=getattr(self,name)
             if value is not None and not isinstance(value,Decimal):
-                setattr(self,name,Decimal(str(value)))
+                try: setattr(self,name,Decimal(str(value)))
+                except (InvalidOperation, TypeError, ValueError):
+                    raise ValueError(f"{name} must be a decimal value") from None
+        if self.pricing_tiers is not None:
+            normalized = []
+            tier_rates = ("input", "output", "cached_input", "cache_write",
+                          "cache_write_5m", "cache_write_1h", "cache_write_30m", "cache_write_12h")
+            for tier in self.pricing_tiers:
+                if not isinstance(tier, dict):
+                    normalized.append(tier)
+                    continue
+                tier = dict(tier)
+                for name in tier_rates:
+                    value = tier.get(name)
+                    if value is not None and not isinstance(value, Decimal):
+                        try: tier[name] = Decimal(str(value))
+                        except (InvalidOperation, TypeError, ValueError):
+                            raise ValueError(f"pricing tier {name} must be a decimal value") from None
+                normalized.append(tier)
+            self.pricing_tiers = normalized
 
     def to_dict(self) -> dict:
         data=asdict(self)
@@ -64,6 +83,9 @@ class CostBreakdown:
     provider: Optional[str] = None
     pricing_version: int = 1
     cached_input_tokens: int = 0
+    cache_write_tokens: int = 0
+    batch: bool = False
+    pricing_tier: str = "standard"
     applied_input_rate: Optional[float] = None
     applied_output_rate: Optional[float] = None
     other_charges: float = 0.0

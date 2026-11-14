@@ -13,10 +13,12 @@ def test_decimal_cost_cached_and_cache_write():
     item=ModelPricing("unit-test-model","openai",2,4,cached_input_price_per_million=.5,cache_write_price_per_million=3)
     upsert_pricing(item,persist=False)
     result=calculate_cost(item.model,1_000_000,500_000,cached_input_tokens=400_000,cache_write_tokens=100_000)
-    assert Decimal(str(result.input_cost)) == Decimal("1.4")
+    # Cache-write tokens use the published write rate instead of being billed
+    # again at the ordinary input rate.
+    assert Decimal(str(result.input_cost)) == Decimal("1.2")
     assert Decimal(str(result.output_cost)) == Decimal("2.0")
     assert Decimal(str(result.other_charges)) == Decimal("0.3")
-    assert result.total_cost == pytest.approx(3.7)
+    assert result.total_cost == pytest.approx(3.5)
 
 
 def test_cached_tokens_cannot_exceed_input():

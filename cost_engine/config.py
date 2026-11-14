@@ -18,6 +18,7 @@ REAL_DATASET_FILE = DATA_DIR / "historical_prompts.csv"  # drop real logs here
 
 # Trained model artifacts
 PREDICTOR_FILE = ARTIFACT_DIR / "output_predictor.joblib"
+PREDICTOR_METADATA_FILE = DATA_DIR / "output_predictor_metadata.json"
 METRICS_FILE = ARTIFACT_DIR / "prediction_metrics.json"
 
 TOKENS_PER_MILLION = 1_000_000

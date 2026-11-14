@@ -11,11 +11,12 @@ from __future__ import annotations
 
 from datetime import datetime, timezone
 from decimal import Decimal
-from typing import Optional
+import math
+from typing import Iterable, Optional
 
 from . import config
 from .models import CostBreakdown, CostEstimate, SavingsResult
-from .pricing import get_pricing_decimal, get_pricing_version
+from .pricing import UnknownModelError, _get_pricing_cached, get_pricing_version
 
 
 def _check_tokens(value, name: str) -> int:
@@ -30,6 +31,19 @@ def _check_tokens(value, name: str) -> int:
     return int(value)
 
 
+def _compat_float(value: Decimal) -> float:
+    """Convert a finite Decimal to the legacy float response without Infinity."""
+    if not value.is_finite():
+        raise ValueError("financial calculation produced a non-finite amount")
+    try:
+        result = float(value)
+    except (OverflowError, ValueError):
+        raise ValueError("financial amount exceeds the legacy numeric response range") from None
+    if not math.isfinite(result):
+        raise ValueError("financial amount exceeds the legacy numeric response range")
+    return result
+
+
 def calculate_cost(model: str, input_tokens: int, output_tokens: int, *,
                    cached_input_tokens: int = 0, cache_write_tokens: int = 0,
                    batch: bool = False, pricing_tier: Optional[str] = None,
@@ -39,27 +53,75 @@ def calculate_cost(model: str, input_tokens: int, output_tokens: int, *,
     out = _check_tokens(output_tokens, "output_tokens")
     cached = _check_tokens(cached_input_tokens, "cached_input_tokens")
     cache_write = _check_tokens(cache_write_tokens, "cache_write_tokens")
-    if cached > inp:
-        raise ValueError("cached_input_tokens cannot exceed input_tokens")
-    p = get_pricing_version(model,pricing_version) if pricing_version is not None else get_pricing_decimal(model)
-    if pricing_tier is not None and p.pricing_tier not in (None, pricing_tier):
-        raise ValueError(f"Model {model!r} does not have pricing tier {pricing_tier!r}")
-    ordinary_rate = p.batch_input_price_per_million if batch and p.batch_input_price_per_million is not None else p.input_price_per_million
-    output_rate = p.batch_output_price_per_million if batch and p.batch_output_price_per_million is not None else p.output_price_per_million
-    cache_rate = p.cached_input_price_per_million
+    if cached + cache_write > inp:
+        raise ValueError("cached_input_tokens + cache_write_tokens cannot exceed input_tokens")
+    if not isinstance(batch, bool):
+        raise TypeError("batch must be a boolean")
+    p = get_pricing_version(model, pricing_version) if pricing_version is not None else _get_pricing_cached(model)
+    return _calculate_cost_with_pricing(model, p, inp, out, cached, cache_write,
+                                        batch=batch, pricing_tier=pricing_tier)
+
+
+def _calculate_cost_with_pricing(model, p, inp, out, cached, cache_write, *, batch=False, pricing_tier=None):
+    if pricing_tier is not None and not isinstance(pricing_tier, str):
+        raise TypeError("pricing_tier must be a string")
+    if not isinstance(batch, bool):
+        raise TypeError("batch must be a boolean")
+    selected = None
+    requested_tier = pricing_tier or ("batch" if batch else None)
+    if requested_tier:
+        for tier in p.pricing_tiers or []:
+            conditions = tier.get("conditions") or {}
+            label = tier.get("tier") or conditions.get("service_tier")
+            if isinstance(label, str) and label.casefold() == requested_tier.casefold():
+                selected = tier
+                break
+    if batch and pricing_tier and pricing_tier.casefold() != "batch":
+        raise ValueError("batch=True cannot be combined with a non-batch pricing_tier")
+    if selected is not None:
+        ordinary_rate = selected.get("input")
+        output_rate = selected.get("output")
+        cache_rate = selected.get("cached_input")
+        cache_write_rate = selected.get("cache_write")
+        if cache_write_rate is None:
+            cache_write_rate = selected.get("cache_write_5m")
+        if cache_write_rate is None:
+            cache_write_rate = selected.get("cache_write_30m")
+    elif requested_tier:
+        if requested_tier.casefold() == "batch":
+            ordinary_rate = p.batch_input_price_per_million
+            output_rate = p.batch_output_price_per_million
+            cache_rate = None
+            cache_write_rate = None
+        elif requested_tier.casefold() == "standard" and p.pricing_tier in (None, "standard"):
+            ordinary_rate, output_rate = p.input_price_per_million, p.output_price_per_million
+            cache_rate, cache_write_rate = p.cached_input_price_per_million, p.cache_write_price_per_million
+        else:
+            raise ValueError(f"Pricing tier {requested_tier!r} is unavailable for model {model!r}")
+    else:
+        ordinary_rate, output_rate = p.input_price_per_million, p.output_price_per_million
+        cache_rate, cache_write_rate = p.cached_input_price_per_million, p.cache_write_price_per_million
+    if ordinary_rate is None or output_rate is None:
+        raise ValueError(f"Complete {requested_tier or 'standard'} pricing is unavailable for model {model!r}")
     if cached and cache_rate is None:
-        raise ValueError(f"Cached input pricing is unavailable for model {model!r}")
-    if cache_write and p.cache_write_price_per_million is None:
-        raise ValueError(f"Cache-write pricing is unavailable for model {model!r}")
+        raise ValueError(f"Cached input pricing is unavailable for model {model!r} in {requested_tier or 'standard'} tier")
+    if cache_write and cache_write_rate is None:
+        raise ValueError(f"Cache-write pricing is unavailable for model {model!r} in {requested_tier or 'standard'} tier")
+    if batch and not (p.batch_input_price_per_million is not None and p.batch_output_price_per_million is not None):
+        raise ValueError(f"Batch pricing is unavailable for model {model!r}")
+    ordinary_rate = Decimal(str(ordinary_rate))
+    output_rate = Decimal(str(output_rate))
+    cache_rate = Decimal(str(cache_rate)) if cache_rate is not None else None
+    cache_write_rate = Decimal(str(cache_write_rate)) if cache_write_rate is not None else None
     scale = Decimal(config.TOKENS_PER_MILLION)
-    ordinary = Decimal(inp - cached)
-    input_cost_d = ordinary / scale * Decimal(str(ordinary_rate))
+    ordinary = Decimal(inp - cached - cache_write)
+    input_cost_d = ordinary / scale * ordinary_rate
     if cached:
-        input_cost_d += Decimal(cached) / scale * Decimal(str(cache_rate))
-    output_cost_d = Decimal(out) / scale * Decimal(str(output_rate))
-    other_d = Decimal(cache_write) / scale * Decimal(str(p.cache_write_price_per_million or 0))
+        input_cost_d += Decimal(cached) / scale * cache_rate
+    output_cost_d = Decimal(out) / scale * output_rate
+    other_d = Decimal(cache_write) / scale * (cache_write_rate or Decimal(0))
     # Keep Decimal through all arithmetic; floats are emitted only for backwards-compatible serialization.
-    input_cost, output_cost, other = float(input_cost_d), float(output_cost_d), float(other_d)
+    input_cost, output_cost, other = _compat_float(input_cost_d), _compat_float(output_cost_d), _compat_float(other_d)
     return CostBreakdown(
         model=model,
         input_tokens=inp,
@@ -67,16 +129,63 @@ def calculate_cost(model: str, input_tokens: int, output_tokens: int, *,
         total_tokens=inp + out,
         input_cost=input_cost,
         output_cost=output_cost,
-        total_cost=float(input_cost_d + output_cost_d + other_d),
+        total_cost=_compat_float(input_cost_d + output_cost_d + other_d),
         provider=p.provider,
         pricing_version=p.pricing_version,
         cached_input_tokens=cached,
-        applied_input_rate=float(ordinary_rate),
-        applied_output_rate=float(output_rate),
+        cache_write_tokens=cache_write,
+        batch=batch,
+        pricing_tier=requested_tier or "standard",
+        applied_input_rate=_compat_float(ordinary_rate),
+        applied_output_rate=_compat_float(output_rate),
         other_charges=other,
         currency=p.currency,
         calculation_timestamp=datetime.now(timezone.utc).isoformat(),
     )
+
+
+def calculate_cost_batch(usage_records: Iterable[dict]) -> list[dict]:
+    """Calculate a batch independently, reusing one pricing snapshot per key.
+
+    Each output includes its input index and optional caller ``id``. Invalid
+    records return an error entry while valid records continue processing.
+    """
+    results = []
+    pricing_cache = {}
+    for index, record in enumerate(usage_records):
+        record_id = record.get("id") if isinstance(record, dict) else None
+        try:
+            if not isinstance(record, dict):
+                raise TypeError("usage record must be a mapping")
+            model = record.get("model")
+            if not isinstance(model, str) or not model:
+                raise ValueError("model is required")
+            version = record.get("pricing_version")
+            key = (model, version)
+            if key not in pricing_cache:
+                pricing_cache[key] = (get_pricing_version(model, version) if version is not None
+                                      else _get_pricing_cached(model))
+            inp = _check_tokens(record.get("input_tokens"), "input_tokens")
+            out = _check_tokens(record.get("output_tokens"), "output_tokens")
+            cached = _check_tokens(record.get("cached_input_tokens", 0), "cached_input_tokens")
+            write = _check_tokens(record.get("cache_write_tokens", 0), "cache_write_tokens")
+            if cached + write > inp:
+                raise ValueError("cached_input_tokens + cache_write_tokens cannot exceed input_tokens")
+            batch = record.get("batch", False)
+            if not isinstance(batch, bool):
+                raise TypeError("batch must be a boolean")
+            breakdown = _calculate_cost_with_pricing(
+                model, pricing_cache[key], inp, out, cached, write,
+                batch=batch, pricing_tier=record.get("pricing_tier"),
+            )
+            # CostBreakdown contains scalar/immutable fields, so a shallow dict
+            # copy is sufficient and avoids dataclasses.asdict's recursive copy.
+            results.append({"index": index, "id": record_id, "ok": True,
+                            **breakdown.__dict__})
+        except (ValueError, TypeError, KeyError) as exc:
+            results.append({"index": index, "id": record_id, "ok": False,
+                            "error": {"type": type(exc).__name__, "message": str(exc)}})
+    return results
 
 
 def estimate_cost(
@@ -140,16 +249,22 @@ def calculate_savings(
     if opt > orig:
         raise ValueError("optimized_tokens cannot exceed original_tokens")
     saved = orig - opt
-    if tokens_saved is not None and int(tokens_saved) != saved:
-        raise ValueError(
-            f"tokens_saved ({tokens_saved}) inconsistent with original-optimized ({saved})"
-        )
-    pct = (saved / orig * 100.0) if orig else 0.0
-    if optimization_percentage is not None and abs(optimization_percentage - pct) > 0.5:
-        raise ValueError(
-            f"optimization_percentage ({optimization_percentage}) inconsistent with computed {pct:.2f}"
-        )
-    p = get_pricing_decimal(model)
+    if tokens_saved is not None:
+        provided_saved = _check_tokens(tokens_saved, "tokens_saved")
+        if provided_saved != saved:
+            raise ValueError(f"tokens_saved ({provided_saved}) inconsistent with original-optimized ({saved})")
+    pct_d = (Decimal(saved) / Decimal(orig) * Decimal(100)) if orig else Decimal(0)
+    if optimization_percentage is not None:
+        try:
+            provided_pct = Decimal(str(optimization_percentage))
+        except Exception:
+            raise ValueError("optimization_percentage must be a finite non-negative number") from None
+        if not provided_pct.is_finite() or provided_pct < 0:
+            raise ValueError("optimization_percentage must be a finite non-negative number")
+        if abs(provided_pct - pct_d) > Decimal("0.5"):
+            raise ValueError(f"optimization_percentage ({optimization_percentage}) inconsistent with computed {pct_d:.2f}")
+    pct = _compat_float(pct_d)
+    p = _get_pricing_cached(model)
     scale = Decimal(config.TOKENS_PER_MILLION)
     rate = p.input_price_per_million
     orig_cost_d = Decimal(orig) / scale * rate
@@ -160,7 +275,7 @@ def calculate_savings(
         optimized_tokens=opt,
         tokens_saved=saved,
         optimization_percentage=round(pct, 4),
-        original_input_cost=float(orig_cost_d),
-        optimized_input_cost=float(opt_cost_d),
-        input_cost_saved=float(orig_cost_d - opt_cost_d),
+        original_input_cost=_compat_float(orig_cost_d),
+        optimized_input_cost=_compat_float(opt_cost_d),
+        input_cost_saved=_compat_float(orig_cost_d - opt_cost_d),
     ).to_dict()

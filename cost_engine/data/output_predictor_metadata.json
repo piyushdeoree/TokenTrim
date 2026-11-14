@@ -1,0 +1,22 @@
+{
+  "artifact_schema_version": 1,
+  "sklearn_version": "1.9.1",
+  "trained_at": "2026-11-14T17:27:21.877844+00:00",
+  "data_source": "SYNTHETIC",
+  "training_rows": 5000,
+  "feature_schema": [
+    "input_tokens",
+    "word_count",
+    "sentence_count",
+    "complexity",
+    "task_type",
+    "model"
+  ],
+  "selected_model": "random_forest",
+  "selected_model_metrics": {
+    "MAE": 135.7368022837571,
+    "RMSE": 305.2319144422154,
+    "R2": 0.6949513712939763
+  },
+  "artifact_sha256": "df87e16bd02415353c9b6398bcd60c1b217af03f5637817b8ca52fbc80caeb7a"
+}

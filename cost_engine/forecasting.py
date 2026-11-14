@@ -16,6 +16,7 @@ from __future__ import annotations
 
 from typing import List, Optional, Sequence, Union
 import math
+from decimal import Decimal, InvalidOperation
 
 import numpy as np
 
@@ -34,13 +35,18 @@ def _to_series(historical_cost: Sequence[Union[float, dict, tuple]]) -> List[flo
             val = item[-1]
         else:
             val = item
-        if isinstance(val, bool) or val is None or not isinstance(val, (int, float)):
+        if isinstance(val, bool) or val is None or not isinstance(val, (int, float, Decimal)):
             raise TypeError(f"Invalid cost value: {item!r}")
-        if val != val or val in (float("inf"), float("-inf")):
-            raise ValueError("Cost values must be finite")
-        if val < 0:
-            raise ValueError("Cost values must be >= 0")
-        out.append(float(val))
+        if isinstance(val, Decimal):
+            if not val.is_finite(): raise ValueError("Cost values must be finite")
+            if val < 0: raise ValueError("Cost values must be >= 0")
+        else:
+            if not math.isfinite(val): raise ValueError("Cost values must be finite")
+            if val < 0: raise ValueError("Cost values must be >= 0")
+        try: converted = float(val)
+        except (OverflowError, ValueError): raise ValueError("Cost value exceeds forecasting numeric range") from None
+        if not math.isfinite(converted): raise ValueError("Cost value exceeds forecasting numeric range")
+        out.append(converted)
     return out
 
 
@@ -98,6 +104,7 @@ def forecast_cost(
     historical_cost: Sequence[Union[float, dict, tuple]],
     forecast_period: str = "30_days",
     method: str = "auto",
+    *, periods: Optional[int] = None,
 ) -> dict:
     """Forecast future spend from a daily cost series.
 
@@ -107,7 +114,9 @@ def forecast_cost(
     """
     if forecast_period not in config.FORECAST_HORIZONS:
         raise ValueError(f"forecast_period must be one of {list(config.FORECAST_HORIZONS)}")
-    steps = config.FORECAST_HORIZONS[forecast_period]
+    steps = config.FORECAST_HORIZONS[forecast_period] if periods is None else periods
+    if isinstance(steps, bool) or not isinstance(steps, int) or steps < 1:
+        raise ValueError("periods must be a positive integer")
     series = _to_series(historical_cost)
     if len(series) < config.MIN_HISTORY_POINTS:
         raise ValueError(
@@ -127,14 +136,25 @@ def forecast_cost(
         raise ValueError(f"method must be 'auto' or one of {list(_METHODS)}")
 
     fc = np.clip(_METHODS[method](y, steps), 0, None)
+    if not np.isfinite(fc).all():
+        raise ValueError("forecast values exceeded the supported finite numeric range")
     residual = (backtest["scores"][method]["MAE"] if backtest else float(np.std(y)))
+    if not math.isfinite(residual):
+        raise ValueError("forecast uncertainty exceeded the supported finite numeric range")
+    future_total = float(fc.sum())
+    if not math.isfinite(future_total):
+        raise ValueError("estimated future cost exceeded the supported finite numeric range")
+    lower = [float(max(0, v-residual*1.96)) for v in fc]
+    upper = [float(v+residual*1.96) for v in fc]
+    if not all(math.isfinite(value) for value in (*lower, *upper)):
+        raise ValueError("forecast range exceeded the supported finite numeric range")
     return {
         "historical_cost": series,
         "forecast": [float(v) for v in fc],
-        "forecast_period": forecast_period,
-        "estimated_future_cost": float(fc.sum()),
-        "forecast_range": {"lower": [float(max(0, v-residual*1.96)) for v in fc],
-                           "upper": [float(v+residual*1.96) for v in fc]},
+        "forecast_period": forecast_period if periods is None else f"{steps}_periods",
+        "forecast_steps": steps,
+        "estimated_future_cost": future_total,
+        "forecast_range": {"lower": lower, "upper": upper},
         "method": method,
         "backtest": backtest,
         "notes": notes,
@@ -143,21 +163,93 @@ def forecast_cost(
     }
 
 
-def aggregate_usage_costs(records, frequency="daily"):
-    """Aggregate timestamped usage cost records; frequency is daily, weekly, or monthly."""
-    from datetime import date, datetime
-    if frequency not in {"daily","weekly","monthly"}: raise ValueError("frequency must be daily, weekly, or monthly")
-    buckets={}
-    for row in records:
-        stamp=row.get("date") or row.get("created_at")
-        if not stamp: raise ValueError("each record needs date or created_at")
-        day=date.fromisoformat(stamp[:10]) if isinstance(stamp,str) else stamp.date()
-        if frequency=="daily": key=day.isoformat()
-        elif frequency=="weekly": key=(day.fromordinal(day.toordinal()-day.weekday())).isoformat()
-        else: key=f"{day.year:04d}-{day.month:02d}"
-        value=row.get("cost")
-        if value is None: raise ValueError("cost must be non-negative")
-        number=float(value)
-        if not math.isfinite(number) or number<0: raise ValueError("cost must be finite and non-negative")
-        buckets[key]=buckets.get(key,0.0)+number
-    return [{"period":k,"cost":buckets[k]} for k in sorted(buckets)]
+def aggregate_usage_costs(records, frequency="daily", *, group_by: Optional[str] = None):
+    """Aggregate dated actual usage costs, filling absent periods with zero.
+
+    ``group_by`` may be ``model`` or ``provider`` and returns a group key on
+    every row. Costs are accumulated as Decimal and converted at the API edge.
+    """
+    from datetime import date, datetime, timedelta
+    if frequency not in {"daily", "weekly", "monthly"}:
+        raise ValueError("frequency must be daily, weekly, or monthly")
+    if group_by not in {None, "model", "provider"}:
+        raise ValueError("group_by must be model, provider, or None")
+    buckets = {}
+    observed = []
+
+    def period_key(day):
+        if frequency == "daily": return day.isoformat()
+        if frequency == "weekly": return day.fromordinal(day.toordinal() - day.weekday()).isoformat()
+        return f"{day.year:04d}-{day.month:02d}"
+
+    for index, row in enumerate(records):
+        if not isinstance(row, dict): raise TypeError(f"record {index} must be a mapping")
+        stamp = row.get("date") or row.get("created_at")
+        if not stamp: raise ValueError(f"record {index} needs date or created_at")
+        try:
+            day = date.fromisoformat(stamp[:10]) if isinstance(stamp, str) else (stamp.date() if isinstance(stamp, datetime) else stamp)
+            if not isinstance(day, date): raise TypeError
+        except (ValueError, TypeError, AttributeError):
+            raise ValueError(f"record {index} has an invalid date") from None
+        try:
+            amount = Decimal(str(row.get("cost")))
+        except (InvalidOperation, TypeError):
+            raise ValueError(f"record {index} has an invalid cost") from None
+        if not amount.is_finite() or amount < 0:
+            raise ValueError(f"record {index} cost must be finite and non-negative")
+        group = row.get(group_by) if group_by else None
+        if group_by and (not isinstance(group, str) or not group.strip()):
+            raise ValueError(f"record {index} needs a non-empty {group_by}")
+        key = period_key(day)
+        bucket_key = (key, group)
+        buckets[bucket_key] = buckets.get(bucket_key, Decimal(0)) + amount
+        observed.append(day)
+
+    if not observed:
+        return []
+    if frequency == "daily":
+        start, end = min(observed), max(observed)
+        day = start
+        period_keys = []
+        while day <= end:
+            period_keys.append(period_key(day))
+            day += timedelta(days=1)
+    elif frequency == "weekly":
+        start = min(observed) - timedelta(days=min(observed).weekday())
+        end = max(observed) - timedelta(days=max(observed).weekday())
+        period_keys = []
+        while start <= end:
+            period_keys.append(period_key(start))
+            start += timedelta(days=7)
+    else:
+        start = min(observed).replace(day=1)
+        end = max(observed).replace(day=1)
+        period_keys = []
+        while start <= end:
+            period_keys.append(period_key(start))
+            start = start.replace(year=start.year + (start.month == 12), month=1 if start.month == 12 else start.month + 1)
+    groups = sorted({group for _, group in buckets}) if group_by else [None]
+    result = []
+    for group in groups:
+        for key in period_keys:
+            try: number = float(buckets.get((key, group), Decimal(0)))
+            except (OverflowError, ValueError): raise ValueError("aggregated cost exceeds forecasting numeric range") from None
+            if not math.isfinite(number): raise ValueError("aggregated cost exceeds forecasting numeric range")
+            item = {"period": key, "cost": number}
+            if group_by: item[group_by] = group
+            result.append(item)
+    return result
+
+
+def forecast_usage_costs(records, *, frequency="daily", periods=1, method="auto", group_by=None):
+    """Project the next daily, weekly, or monthly periods from actual usage rows."""
+    if frequency not in {"daily", "weekly", "monthly"}:
+        raise ValueError("frequency must be daily, weekly, or monthly")
+    grouped = aggregate_usage_costs(records, frequency=frequency, group_by=group_by)
+    groups = sorted({row.get(group_by) for row in grouped}) if group_by else [None]
+    projections = []
+    for group in groups:
+        values = [row["cost"] for row in grouped if not group_by or row[group_by] == group]
+        forecast = forecast_cost(values, "30_days", method, periods=periods)
+        projections.append({"group": group, "frequency": frequency, **forecast})
+    return projections if group_by else projections[0]

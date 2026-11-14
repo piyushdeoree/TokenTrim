@@ -10,7 +10,7 @@ Pipeline: `token data → output prediction → cost calculation → forecasting
 pip install -r cost_engine/requirements.txt
 python -m cost_engine.data.generate_synthetic --rows 5000   # SYNTHETIC data, dev only
 python -m cost_engine.prediction                            # trains + writes metrics
-python -m pytest cost_engine/tests -v
+python -m pytest cost_engine -v
 ```
 
 Run commands from the repo root so `cost_engine` is importable.
@@ -55,15 +55,21 @@ All prices are `Decimal` in memory and serialized to JSON as decimal strings. So
 
 Call `refresh_pricing()` to update providers whose 24-hour interval is due (`COST_ENGINE_REFRESH_INTERVAL_HOURS` configures the interval). Use `refresh_pricing(force=True)` for an immediate attempt, or `refresh_openai_pricing()`, `refresh_anthropic_pricing()`, and `refresh_google_pricing()` for one provider. There is no resident scheduler. A backend job can call these functions and inspect per-provider results, attempt/success timestamps, and changed model IDs.
 
-Use `get_pricing_history(model)` to inspect prior versions and `get_pricing_version(model, version)` plus `calculate_cost(..., pricing_version=version)` to calculate against a preserved version. A new version is created only for a rate/tier/condition change. `pricing_freshness()` computes stale status dynamically from `last_verified` (30 days by default; `COST_ENGINE_PRICING_MAX_AGE_DAYS` configures it). Manual/unverified records are always marked stale for “live verified” use. Stale status is not persisted on the price record.
+Use `get_pricing_history(model)` to inspect prior versions and `get_pricing_version(model, version)` plus `calculate_cost(..., pricing_version=version)` to calculate against a preserved version. A new version is created only when a rate, tier/condition, context limit, provider, or effective date changes. `pricing_freshness()` computes stale status dynamically from `last_verified` (30 days by default; `COST_ENGINE_PRICING_MAX_AGE_DAYS` configures it). Manual/unverified records are always marked stale for “live verified” use. Stale status is not persisted on the price record.
 
 ## Architecture and calculation
 
-The legacy package modules remain public. Pricing records carry source, status, version, effective date, tier, context, and optional cache/batch rates. `calculate_cost` performs monetary arithmetic with `Decimal` and returns float fields for backwards-compatible API serialization. Cached input is a subset of input tokens and is removed from ordinary input billing before its cache rate is applied. Unsupported cache or cache-write rates are rejected; batch rates fall back to standard rates only when no batch rate is listed. All estimates remain estimates, not actual provider invoices.
+The legacy package modules remain public. Pricing records carry source, status, version, effective date, tier, context, and optional cache/batch rates. The process keeps a synchronized in-memory catalogue and provider-to-model index; `reload_pricing()` invalidates/reloads it, while successful upserts update it immediately. Public pricing reads return detached snapshots so a caller cannot mutate cached catalogue state.
+
+`calculate_cost` performs financial arithmetic with `Decimal` and returns float fields only at the backwards-compatible API boundary. `calculate_cost_batch(records)` accepts mappings with `model`, `input_tokens`, `output_tokens`, and optional `id`, cache/batch/tier/version fields. It returns one identifiable result per row (`index`, `id`, `ok`, then the breakdown fields) and continues after an invalid row. Cached input and cache-write tokens must be non-overlapping subsets of input tokens; each uses its published rate in place of standard input pricing, avoiding double billing. A batch or other tier is used only when the selected tier has complete prices; unsupported tier combinations fail explicitly. All engine costs are estimates based on catalogue rates, not actual provider invoices.
+
+Pricing comparisons report unavailable model reasons, freshness, source, and whether an entry is currently verified for live use. The bundled examples remain explicitly unverified. `compare_models` ranks price only; subjective quality tiers are called out as such in recommendations.
 
 `compare_prompt_cost(prompt, model, expected_output_tokens=...)` calls the existing `nlp_engine.analyze_prompt()` interface and uses the same output-token assumption and pricing version for original and optimized prompt estimates. Prediction returns a point estimate plus a broad fallback or held-out-MAE range; synthetic training artifacts are not validated against real provider behavior. Model comparison ranks cost only and reports freshness/source/context. Recommendation quality tiers remain subjective metadata, not measured capability.
 
-Forecasting consumes caller-provided daily actual costs; `aggregate_usage_costs()` aggregates dated records daily, weekly, or monthly. Forecasts report a residual-based range when backtesting is possible and a standard-deviation fallback otherwise. Three points are the minimum; that is still too little history for a reliable forecast. `analyze_savings()` reports spend distribution and threshold findings without asserting an uncalculated model switch.
+Forecasting consumes caller-provided actual cost history; `aggregate_usage_costs()` aggregates dated records daily, weekly, or monthly and fills gaps within the supplied date range with zero-spend periods. `forecast_usage_costs()` projects caller-selected daily, weekly, or monthly periods. Forecast bands are heuristic ranges based on holdout error (or history spread when backtesting is unavailable), not calibrated confidence intervals. Three points are the minimum; that remains too little history for a reliable forecast. `analyze_savings()` reports model/provider spend and flags a configured observed daily increase without asserting an uncalculated model switch.
+
+Prediction training rejects incomplete, non-finite, negative, and insufficient (<25 row) datasets. The saved artifact is paired with `data/output_predictor_metadata.json`, which records the scikit-learn version, feature schema, training source, selected model metrics, and artifact hash. The loader checks metadata before unpickling; a mismatch or damaged artifact logs an explicit warning/error and uses the configured ratio fallback. Call `reload_prediction_model()` after replacing an artifact in a running process. The held-out MAE range is drawn from the selected model's test metrics. The bundled training data is synthetic; those measurements do not establish real-world prediction accuracy.
 
 Optional `convert_usd_to_inr()` fetches a timestamped USD/INR rate from Frankfurter and caches the last valid rate. Failure returns the cached rate marked stale, or raises when no valid rate exists. Provider catalogue rates remain USD; INR is a separate display conversion.
 
@@ -78,7 +84,7 @@ Backend storage/API work is described in [INTEGRATION_REQUIREMENTS.md](INTEGRATI
 Fixture tests use saved representative official layouts and require no network or API keys:
 
 ```bash
-python -m pytest cost_engine/tests -v
+python -m pytest cost_engine -v
 ```
 
 An optional live smoke test is skipped by default. Run with `COST_ENGINE_RUN_LIVE_PRICING=1 python -m pytest cost_engine/tests/test_live_pricing.py -v`. It fetches official pages but does not write the catalogue.
@@ -91,4 +97,8 @@ Unsupported formats include account-specific/private rates, third-party cloud ma
 - If no trained predictor exists, `predict_output_tokens` falls back to `output = input` and says so in `source`.
 - `data/artifacts/` (trained model, metrics) is generated; consider adding it to `.gitignore` and training in `scripts/setup.sh`.
 - The six bundled illustrative model records remain unverified until a successful official refresh matches those identifiers.
-- Install: `pip install -r cost_engine/requirements.txt`. Tests: `python -m pytest cost_engine/tests -v`.
+- Install: `pip install -r cost_engine/requirements.txt`. Tests: `python -m pytest cost_engine -v`.
+
+## Performance audit and benchmarks
+
+The implementation findings are in [PERFORMANCE_AUDIT.md](PERFORMANCE_AUDIT.md); repeatable measurements and baseline/optimized comparison are in [PERFORMANCE_BENCHMARKS.md](PERFORMANCE_BENCHMARKS.md). Run `python -m cost_engine.tests.benchmark_suite` from the repository root. Benchmarks use fixed synthetic timing inputs only, not training or forecasting history. Latency samples include Python allocation tracing, so compare them only with the same runtime and methodology.
