@@ -14,3 +14,53 @@ test('layout adapts to viewport', async ({ page, isMobile }) => {
   }
   expect(await page.evaluate(() => document.documentElement.scrollWidth > window.innerWidth)).toBe(false);
 });
+
+test('questionnaire stays within desktop, tablet, and narrow mobile viewports', async ({ page }) => {
+  await page.addInitScript(() => {
+    localStorage.setItem('token', 'questionnaire-audit-token');
+    localStorage.setItem('user', JSON.stringify({ id: 1, email: 'audit@example.com' }));
+  });
+  await page.route('**/projects*', async route => {
+    if (route.request().method() === 'GET') return route.fulfill({ status: 200, json: [] });
+    return route.fulfill({ status: 200, json: { id: 42, name: 'Viewport audit' } });
+  });
+
+  for (const viewport of [
+    { width: 1440, height: 900 }, { width: 768, height: 1024 },
+    { width: 390, height: 844 }, { width: 320, height: 740 },
+  ]) {
+    await page.setViewportSize(viewport);
+    await page.goto('/projects');
+    await page.getByRole('button', { name: 'Create project' }).click();
+    const dialog = page.getByRole('dialog', { name: 'Create a project' });
+    const checkLayout = async () => {
+      expect(await page.evaluate(() => document.documentElement.scrollWidth > window.innerWidth)).toBe(false);
+      expect(await dialog.evaluate(node => node.scrollWidth > node.clientWidth)).toBe(false);
+      for (const label of ['Previous', 'Continue']) {
+        const box = await dialog.getByRole('button', { name: label }).boundingBox();
+        expect(box).not.toBeNull();
+        expect(box!.height).toBeGreaterThanOrEqual(44);
+        expect(box!.x).toBeGreaterThanOrEqual(0);
+        expect(box!.x + box!.width).toBeLessThanOrEqual(viewport.width);
+      }
+    };
+    await checkLayout();
+    await dialog.getByLabel('Project name').fill('Viewport audit');
+    await dialog.getByRole('button', { name: 'Continue' }).click();
+    await dialog.getByRole('button', { name: 'Mobile Application' }).click();
+    await dialog.getByRole('button', { name: 'Android' }).click();
+    await dialog.getByRole('button', { name: 'iOS' }).click();
+    await checkLayout();
+    await dialog.getByRole('button', { name: 'Continue' }).click();
+    await dialog.getByRole('button', { name: 'Cross-platform' }).click();
+    await dialog.getByRole('button', { name: 'Next.js' }).click();
+    await dialog.getByRole('button', { name: /^No$/ }).click();
+    await dialog.getByRole('button', { name: 'Mobile devices' }).click();
+    await checkLayout();
+    await dialog.getByRole('button', { name: 'Skip' }).click();
+    await expect(dialog.getByRole('heading', { name: 'Review your project requirements' })).toBeVisible();
+    await checkLayout();
+    await dialog.getByRole('button', { name: 'Cancel' }).click();
+    await page.evaluate(() => localStorage.removeItem('tokentrim:project-questionnaire:draft'));
+  }
+});

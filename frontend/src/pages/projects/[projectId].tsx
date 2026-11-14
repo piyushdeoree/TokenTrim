@@ -9,6 +9,7 @@ import { TokenCard } from '@/components/metrics/TokenCard';
 import { CostCard } from '@/components/metrics/CostCard';
 import { ProjectHistoryTable } from '@/components/dashboard/ProjectHistoryTable';
 import { Tabs } from '@/components/ui/Tabs';
+import { ProjectRequirements } from '@/components/projects/ProjectRequirements';
 import type { Project } from '@/types/project';
 type History = { id:number; created_at:string; original_prompt:string; optimized_prompt:string; model:string; tokens_saved:number; reduction_percentage:number; original_tokens:number; optimized_tokens:number };
 type Usage = { total:number; items:{total_tokens:number; estimated_cost:number}[] };
@@ -32,6 +33,7 @@ export default function ProjectDetail() {
               <Button onClick={async () => { try { await send('put', `/projects/${p.id}`, {name:name.trim(), description:description || null}); setMessage('Project updated.'); reload(); } catch { setMessage('Unable to update project.'); } }}>Save</Button>
               <Button variant="ghost" onClick={async () => { if (!window.confirm('Delete this project?')) return; try { await send('delete', `/projects/${p.id}`); await router.push('/projects'); } catch { setMessage('Unable to delete project.'); } }}>Delete</Button>
             </div></div>{message && <p role="status" className="text-sm">{message}</p>}
+            <ProjectRequirements projectId={String(p.id)} />
             <Tabs tabs={[
               { id: 'usage', label: 'Usage and cost', content: <div className="grid grid-cols-3 gap-3"><TokenCard label="Prompts" value={d.usage.total} /><TokenCard label="Tokens" value={d.usage.items.reduce((n, x) => n + x.total_tokens, 0)} /><CostCard label="Cost" value={d.usage.items.reduce((n, x) => n + x.estimated_cost, 0)} /></div> },
               { id: 'history', label: 'History', content: <ProjectHistoryTable rows={d.history.map((h) => ({ id:h.id, title:h.original_prompt.slice(0, 50), saved:h.tokens_saved, date:new Date(h.created_at).toLocaleString() }))} /> }]} /></>); }}
