@@ -1,0 +1,46 @@
+70c3fced4d5d114d8548102ee8100efc
+"use strict";
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+Object.defineProperty(exports, "PromptComparison", {
+    enumerable: true,
+    get: function() {
+        return PromptComparison;
+    }
+});
+const _jsxruntime = require("react/jsx-runtime");
+function PromptComparison({ original, optimized }) {
+    const box = "max-h-64 overflow-auto whitespace-pre-wrap rounded-md border p-3 font-mono text-xs";
+    return /*#__PURE__*/ (0, _jsxruntime.jsxs)("div", {
+        className: "grid gap-3 md:grid-cols-2",
+        children: [
+            /*#__PURE__*/ (0, _jsxruntime.jsxs)("div", {
+                children: [
+                    /*#__PURE__*/ (0, _jsxruntime.jsx)("h3", {
+                        className: "mb-1 text-sm font-medium text-slate-900 dark:text-slate-100",
+                        children: "Original"
+                    }),
+                    /*#__PURE__*/ (0, _jsxruntime.jsx)("pre", {
+                        className: `${box} border-slate-300 bg-slate-50 text-slate-800 dark:border-slate-700 dark:bg-slate-950 dark:text-slate-200`,
+                        children: original
+                    })
+                ]
+            }),
+            /*#__PURE__*/ (0, _jsxruntime.jsxs)("div", {
+                children: [
+                    /*#__PURE__*/ (0, _jsxruntime.jsx)("h3", {
+                        className: "mb-1 text-sm font-medium text-slate-900 dark:text-slate-100",
+                        children: "Optimized"
+                    }),
+                    /*#__PURE__*/ (0, _jsxruntime.jsx)("pre", {
+                        className: `${box} border-teal-600 bg-teal-50 text-teal-950 dark:bg-teal-950 dark:text-teal-50`,
+                        children: optimized
+                    })
+                ]
+            })
+        ]
+    });
+}
+
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIkQ6XFxQcm9qZWN0c1xcTWFqb3JcXFRva2VuVHJpbVxcZnJvbnRlbmRcXHNyY1xcY29tcG9uZW50c1xcdG9rZW4tdHJpbVxcUHJvbXB0Q29tcGFyaXNvbi50c3giXSwic291cmNlc0NvbnRlbnQiOlsiZXhwb3J0IGZ1bmN0aW9uIFByb21wdENvbXBhcmlzb24oeyBvcmlnaW5hbCwgb3B0aW1pemVkIH06IHsgb3JpZ2luYWw6IHN0cmluZzsgb3B0aW1pemVkOiBzdHJpbmcgfSkge1xyXG4gIGNvbnN0IGJveCA9ICdtYXgtaC02NCBvdmVyZmxvdy1hdXRvIHdoaXRlc3BhY2UtcHJlLXdyYXAgcm91bmRlZC1tZCBib3JkZXIgcC0zIGZvbnQtbW9ubyB0ZXh0LXhzJztcclxuICByZXR1cm4gKFxyXG4gICAgPGRpdiBjbGFzc05hbWU9XCJncmlkIGdhcC0zIG1kOmdyaWQtY29scy0yXCI+XHJcbiAgICAgIDxkaXY+PGgzIGNsYXNzTmFtZT1cIm1iLTEgdGV4dC1zbSBmb250LW1lZGl1bSB0ZXh0LXNsYXRlLTkwMCBkYXJrOnRleHQtc2xhdGUtMTAwXCI+T3JpZ2luYWw8L2gzPlxyXG4gICAgICAgIDxwcmUgY2xhc3NOYW1lPXtgJHtib3h9IGJvcmRlci1zbGF0ZS0zMDAgYmctc2xhdGUtNTAgdGV4dC1zbGF0ZS04MDAgZGFyazpib3JkZXItc2xhdGUtNzAwIGRhcms6Ymctc2xhdGUtOTUwIGRhcms6dGV4dC1zbGF0ZS0yMDBgfT57b3JpZ2luYWx9PC9wcmU+PC9kaXY+XHJcbiAgICAgIDxkaXY+PGgzIGNsYXNzTmFtZT1cIm1iLTEgdGV4dC1zbSBmb250LW1lZGl1bSB0ZXh0LXNsYXRlLTkwMCBkYXJrOnRleHQtc2xhdGUtMTAwXCI+T3B0aW1pemVkPC9oMz5cclxuICAgICAgICA8cHJlIGNsYXNzTmFtZT17YCR7Ym94fSBib3JkZXItdGVhbC02MDAgYmctdGVhbC01MCB0ZXh0LXRlYWwtOTUwIGRhcms6YmctdGVhbC05NTAgZGFyazp0ZXh0LXRlYWwtNTBgfT57b3B0aW1pemVkfTwvcHJlPjwvZGl2PlxyXG4gICAgPC9kaXY+XHJcbiAgKTtcclxufVxyXG4iXSwibmFtZXMiOlsiUHJvbXB0Q29tcGFyaXNvbiIsIm9yaWdpbmFsIiwib3B0aW1pemVkIiwiYm94IiwiZGl2IiwiY2xhc3NOYW1lIiwiaDMiLCJwcmUiXSwibWFwcGluZ3MiOiI7Ozs7K0JBQWdCQTs7O2VBQUFBOzs7O0FBQVQsU0FBU0EsaUJBQWlCLEVBQUVDLFFBQVEsRUFBRUMsU0FBUyxFQUEyQztJQUMvRixNQUFNQyxNQUFNO0lBQ1oscUJBQ0Usc0JBQUNDO1FBQUlDLFdBQVU7OzBCQUNiLHNCQUFDRDs7a0NBQUkscUJBQUNFO3dCQUFHRCxXQUFVO2tDQUE4RDs7a0NBQy9FLHFCQUFDRTt3QkFBSUYsV0FBVyxDQUFDLEVBQUVGLElBQUksd0dBQXdHLENBQUM7a0NBQUdGOzs7OzBCQUNySSxzQkFBQ0c7O2tDQUFJLHFCQUFDRTt3QkFBR0QsV0FBVTtrQ0FBOEQ7O2tDQUMvRSxxQkFBQ0U7d0JBQUlGLFdBQVcsQ0FBQyxFQUFFRixJQUFJLDRFQUE0RSxDQUFDO2tDQUFHRDs7Ozs7O0FBRy9HIn0=

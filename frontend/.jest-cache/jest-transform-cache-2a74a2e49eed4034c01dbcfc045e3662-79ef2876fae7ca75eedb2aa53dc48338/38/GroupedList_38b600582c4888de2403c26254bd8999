@@ -1,0 +1,48 @@
+e7bef0a8c5920493019dbc42f5542c18
+"use strict";
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+Object.defineProperty(exports, "GroupedList", {
+    enumerable: true,
+    get: function() {
+        return GroupedList;
+    }
+});
+const _jsxruntime = require("react/jsx-runtime");
+const _groupByDate = require("../../utils/groupByDate");
+function GroupedList({ items }) {
+    if (!items.length) return /*#__PURE__*/ (0, _jsxruntime.jsx)("p", {
+        className: "px-2 text-xs opacity-70",
+        children: "Nothing here yet."
+    });
+    return /*#__PURE__*/ (0, _jsxruntime.jsx)("div", {
+        className: "space-y-3",
+        children: (0, _groupByDate.groupByDate)(items).map((g)=>/*#__PURE__*/ (0, _jsxruntime.jsxs)("div", {
+                children: [
+                    /*#__PURE__*/ (0, _jsxruntime.jsx)("h4", {
+                        className: "px-2 pb-1 text-xs font-semibold uppercase tracking-wide opacity-70",
+                        children: g.label
+                    }),
+                    /*#__PURE__*/ (0, _jsxruntime.jsx)("ul", {
+                        children: g.items.map((it)=>/*#__PURE__*/ (0, _jsxruntime.jsxs)("li", {
+                                title: it.label,
+                                className: "rounded-md px-2 py-1.5 hover:bg-black/10 dark:hover:bg-white/10",
+                                children: [
+                                    /*#__PURE__*/ (0, _jsxruntime.jsx)("p", {
+                                        className: "truncate text-sm",
+                                        children: it.label
+                                    }),
+                                    it.sub && /*#__PURE__*/ (0, _jsxruntime.jsx)("p", {
+                                        className: "truncate text-xs opacity-70",
+                                        children: it.sub
+                                    })
+                                ]
+                            }, it.id))
+                    })
+                ]
+            }, g.label))
+    });
+}
+
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIkQ6XFxQcm9qZWN0c1xcTWFqb3JcXFRva2VuVHJpbVxcZnJvbnRlbmRcXHNyY1xcY29tcG9uZW50c1xcZGFzaGJvYXJkXFxHcm91cGVkTGlzdC50c3giXSwic291cmNlc0NvbnRlbnQiOlsiaW1wb3J0IHsgZ3JvdXBCeURhdGUgfSBmcm9tICdAL3V0aWxzL2dyb3VwQnlEYXRlJztcclxuZXhwb3J0IGludGVyZmFjZSBMaXN0SXRlbSB7IGlkOiBudW1iZXIgfCBzdHJpbmc7IGxhYmVsOiBzdHJpbmc7IHN1Yj86IHN0cmluZzsgZGF0ZTogc3RyaW5nIH1cclxuZXhwb3J0IGZ1bmN0aW9uIEdyb3VwZWRMaXN0KHsgaXRlbXMgfTogeyBpdGVtczogTGlzdEl0ZW1bXSB9KSB7XHJcbiAgaWYgKCFpdGVtcy5sZW5ndGgpIHJldHVybiA8cCBjbGFzc05hbWU9XCJweC0yIHRleHQteHMgb3BhY2l0eS03MFwiPk5vdGhpbmcgaGVyZSB5ZXQuPC9wPjtcclxuICByZXR1cm4gKFxyXG4gICAgPGRpdiBjbGFzc05hbWU9XCJzcGFjZS15LTNcIj5cclxuICAgICAge2dyb3VwQnlEYXRlKGl0ZW1zKS5tYXAoKGcpID0+IChcclxuICAgICAgICA8ZGl2IGtleT17Zy5sYWJlbH0+XHJcbiAgICAgICAgICA8aDQgY2xhc3NOYW1lPVwicHgtMiBwYi0xIHRleHQteHMgZm9udC1zZW1pYm9sZCB1cHBlcmNhc2UgdHJhY2tpbmctd2lkZSBvcGFjaXR5LTcwXCI+e2cubGFiZWx9PC9oND5cclxuICAgICAgICAgIDx1bD57Zy5pdGVtcy5tYXAoKGl0KSA9PiAoXHJcbiAgICAgICAgICAgIDxsaSBrZXk9e2l0LmlkfSB0aXRsZT17aXQubGFiZWx9IGNsYXNzTmFtZT1cInJvdW5kZWQtbWQgcHgtMiBweS0xLjUgaG92ZXI6YmctYmxhY2svMTAgZGFyazpob3ZlcjpiZy13aGl0ZS8xMFwiPlxyXG4gICAgICAgICAgICAgIDxwIGNsYXNzTmFtZT1cInRydW5jYXRlIHRleHQtc21cIj57aXQubGFiZWx9PC9wPntpdC5zdWIgJiYgPHAgY2xhc3NOYW1lPVwidHJ1bmNhdGUgdGV4dC14cyBvcGFjaXR5LTcwXCI+e2l0LnN1Yn08L3A+fVxyXG4gICAgICAgICAgICA8L2xpPikpfTwvdWw+XHJcbiAgICAgICAgPC9kaXY+KSl9XHJcbiAgICA8L2Rpdj5cclxuICApO1xyXG59XHJcbiJdLCJuYW1lcyI6WyJHcm91cGVkTGlzdCIsIml0ZW1zIiwibGVuZ3RoIiwicCIsImNsYXNzTmFtZSIsImRpdiIsImdyb3VwQnlEYXRlIiwibWFwIiwiZyIsImg0IiwibGFiZWwiLCJ1bCIsIml0IiwibGkiLCJ0aXRsZSIsInN1YiIsImlkIl0sIm1hcHBpbmdzIjoiOzs7OytCQUVnQkE7OztlQUFBQTs7Ozs2QkFGWTtBQUVyQixTQUFTQSxZQUFZLEVBQUVDLEtBQUssRUFBeUI7SUFDMUQsSUFBSSxDQUFDQSxNQUFNQyxNQUFNLEVBQUUscUJBQU8scUJBQUNDO1FBQUVDLFdBQVU7a0JBQTBCOztJQUNqRSxxQkFDRSxxQkFBQ0M7UUFBSUQsV0FBVTtrQkFDWkUsSUFBQUEsd0JBQVcsRUFBQ0wsT0FBT00sR0FBRyxDQUFDLENBQUNDLGtCQUN2QixzQkFBQ0g7O2tDQUNDLHFCQUFDSTt3QkFBR0wsV0FBVTtrQ0FBc0VJLEVBQUVFLEtBQUs7O2tDQUMzRixxQkFBQ0M7a0NBQUlILEVBQUVQLEtBQUssQ0FBQ00sR0FBRyxDQUFDLENBQUNLLG1CQUNoQixzQkFBQ0M7Z0NBQWVDLE9BQU9GLEdBQUdGLEtBQUs7Z0NBQUVOLFdBQVU7O2tEQUN6QyxxQkFBQ0Q7d0NBQUVDLFdBQVU7a0RBQW9CUSxHQUFHRixLQUFLOztvQ0FBTUUsR0FBR0csR0FBRyxrQkFBSSxxQkFBQ1o7d0NBQUVDLFdBQVU7a0RBQStCUSxHQUFHRyxHQUFHOzs7K0JBRHBHSCxHQUFHSSxFQUFFOzs7ZUFIUlIsRUFBRUUsS0FBSzs7QUFTekIifQ==

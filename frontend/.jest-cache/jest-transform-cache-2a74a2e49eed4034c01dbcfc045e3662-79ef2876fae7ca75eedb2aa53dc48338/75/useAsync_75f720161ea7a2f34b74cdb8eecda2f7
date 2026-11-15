@@ -1,0 +1,42 @@
+fd288eddf59069933b114a8d4cf2b568
+"use strict";
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+Object.defineProperty(exports, "useAsync", {
+    enumerable: true,
+    get: function() {
+        return useAsync;
+    }
+});
+const _react = require("react");
+function useAsync(fn, deps = [], errorText = "Unable to load data. Please try again.") {
+    const [state, setState] = (0, _react.useState)({
+        status: "loading"
+    });
+    const req = (0, _react.useRef)(0);
+    const reload = (0, _react.useCallback)(()=>{
+        const id = ++req.current;
+        setState({
+            status: "loading"
+        });
+        fn().then((data)=>id === req.current && setState({
+                status: "success",
+                data
+            })).catch(()=>id === req.current && setState({
+                status: "error",
+                message: errorText
+            }));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, deps);
+    (0, _react.useEffect)(reload, [
+        reload
+    ]);
+    return {
+        state,
+        reload,
+        setState
+    };
+}
+
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIkQ6XFxQcm9qZWN0c1xcTWFqb3JcXFRva2VuVHJpbVxcZnJvbnRlbmRcXHNyY1xcaG9va3NcXHVzZUFzeW5jLnRzIl0sInNvdXJjZXNDb250ZW50IjpbImltcG9ydCB7IHVzZUNhbGxiYWNrLCB1c2VFZmZlY3QsIHVzZVJlZiwgdXNlU3RhdGUgfSBmcm9tICdyZWFjdCc7XHJcbnR5cGUgUzxUPiA9IHsgc3RhdHVzOiAnbG9hZGluZycgfSB8IHsgc3RhdHVzOiAnc3VjY2Vzcyc7IGRhdGE6IFQgfSB8IHsgc3RhdHVzOiAnZXJyb3InOyBtZXNzYWdlOiBzdHJpbmcgfTtcclxuLy8gZGVwczogcmUtZmV0Y2ggd2hlbiB0aGV5IGNoYW5nZSAoZS5nLiBkYXNoYm9hcmQgZGF0ZSByYW5nZSkuIFN0YWxlIHJlc3BvbnNlcyBhcmUgaWdub3JlZC5cclxuZXhwb3J0IGZ1bmN0aW9uIHVzZUFzeW5jPFQ+KGZuOiAoKSA9PiBQcm9taXNlPFQ+LCBkZXBzOiB1bmtub3duW10gPSBbXSwgZXJyb3JUZXh0ID0gJ1VuYWJsZSB0byBsb2FkIGRhdGEuIFBsZWFzZSB0cnkgYWdhaW4uJykge1xyXG4gIGNvbnN0IFtzdGF0ZSwgc2V0U3RhdGVdID0gdXNlU3RhdGU8UzxUPj4oeyBzdGF0dXM6ICdsb2FkaW5nJyB9KTtcclxuICBjb25zdCByZXEgPSB1c2VSZWYoMCk7XHJcbiAgY29uc3QgcmVsb2FkID0gdXNlQ2FsbGJhY2soKCkgPT4ge1xyXG4gICAgY29uc3QgaWQgPSArK3JlcS5jdXJyZW50O1xyXG4gICAgc2V0U3RhdGUoeyBzdGF0dXM6ICdsb2FkaW5nJyB9KTtcclxuICAgIGZuKCkudGhlbigoZGF0YSkgPT4gaWQgPT09IHJlcS5jdXJyZW50ICYmIHNldFN0YXRlKHsgc3RhdHVzOiAnc3VjY2VzcycsIGRhdGEgfSkpXHJcbiAgICAgIC5jYXRjaCgoKSA9PiBpZCA9PT0gcmVxLmN1cnJlbnQgJiYgc2V0U3RhdGUoeyBzdGF0dXM6ICdlcnJvcicsIG1lc3NhZ2U6IGVycm9yVGV4dCB9KSk7XHJcbiAgICAvLyBlc2xpbnQtZGlzYWJsZS1uZXh0LWxpbmUgcmVhY3QtaG9va3MvZXhoYXVzdGl2ZS1kZXBzXHJcbiAgfSwgZGVwcyk7XHJcbiAgdXNlRWZmZWN0KHJlbG9hZCwgW3JlbG9hZF0pO1xyXG4gIHJldHVybiB7IHN0YXRlLCByZWxvYWQsIHNldFN0YXRlIH07XHJcbn1cclxuIl0sIm5hbWVzIjpbInVzZUFzeW5jIiwiZm4iLCJkZXBzIiwiZXJyb3JUZXh0Iiwic3RhdGUiLCJzZXRTdGF0ZSIsInVzZVN0YXRlIiwic3RhdHVzIiwicmVxIiwidXNlUmVmIiwicmVsb2FkIiwidXNlQ2FsbGJhY2siLCJpZCIsImN1cnJlbnQiLCJ0aGVuIiwiZGF0YSIsImNhdGNoIiwibWVzc2FnZSIsInVzZUVmZmVjdCJdLCJtYXBwaW5ncyI6Ijs7OzsrQkFHZ0JBOzs7ZUFBQUE7Ozt1QkFIeUM7QUFHbEQsU0FBU0EsU0FBWUMsRUFBb0IsRUFBRUMsT0FBa0IsRUFBRSxFQUFFQyxZQUFZLHdDQUF3QztJQUMxSCxNQUFNLENBQUNDLE9BQU9DLFNBQVMsR0FBR0MsSUFBQUEsZUFBUSxFQUFPO1FBQUVDLFFBQVE7SUFBVTtJQUM3RCxNQUFNQyxNQUFNQyxJQUFBQSxhQUFNLEVBQUM7SUFDbkIsTUFBTUMsU0FBU0MsSUFBQUEsa0JBQVcsRUFBQztRQUN6QixNQUFNQyxLQUFLLEVBQUVKLElBQUlLLE9BQU87UUFDeEJSLFNBQVM7WUFBRUUsUUFBUTtRQUFVO1FBQzdCTixLQUFLYSxJQUFJLENBQUMsQ0FBQ0MsT0FBU0gsT0FBT0osSUFBSUssT0FBTyxJQUFJUixTQUFTO2dCQUFFRSxRQUFRO2dCQUFXUTtZQUFLLElBQzFFQyxLQUFLLENBQUMsSUFBTUosT0FBT0osSUFBSUssT0FBTyxJQUFJUixTQUFTO2dCQUFFRSxRQUFRO2dCQUFTVSxTQUFTZDtZQUFVO0lBQ3BGLHVEQUF1RDtJQUN6RCxHQUFHRDtJQUNIZ0IsSUFBQUEsZ0JBQVMsRUFBQ1IsUUFBUTtRQUFDQTtLQUFPO0lBQzFCLE9BQU87UUFBRU47UUFBT007UUFBUUw7SUFBUztBQUNuQyJ9

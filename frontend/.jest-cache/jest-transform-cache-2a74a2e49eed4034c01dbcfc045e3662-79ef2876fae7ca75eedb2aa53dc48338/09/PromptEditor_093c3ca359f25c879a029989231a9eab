@@ -1,0 +1,55 @@
+6cd7e628dda7e6cf562be5db0288a002
+"use strict";
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+Object.defineProperty(exports, "PromptEditor", {
+    enumerable: true,
+    get: function() {
+        return PromptEditor;
+    }
+});
+const _jsxruntime = require("react/jsx-runtime");
+const _validation = require("../../utils/validation");
+function PromptEditor({ value, onChange, error }) {
+    return /*#__PURE__*/ (0, _jsxruntime.jsxs)("div", {
+        children: [
+            /*#__PURE__*/ (0, _jsxruntime.jsx)("label", {
+                htmlFor: "prompt",
+                className: "mb-1 block text-sm font-medium text-slate-900 dark:text-slate-100",
+                children: "Original prompt"
+            }),
+            /*#__PURE__*/ (0, _jsxruntime.jsx)("textarea", {
+                id: "prompt",
+                value: value,
+                onChange: (e)=>onChange(e.target.value),
+                rows: 16,
+                placeholder: "Enter or paste your prompt",
+                "aria-invalid": !!error,
+                "aria-describedby": error ? "prompt-err" : "prompt-count",
+                className: "w-full resize-y rounded-md border border-slate-300 bg-white p-3 font-mono text-sm text-slate-900 focus-visible:outline focus-visible:outline-2 focus-visible:outline-teal-600 dark:border-slate-600 dark:bg-slate-950 dark:text-slate-100"
+            }),
+            /*#__PURE__*/ (0, _jsxruntime.jsxs)("div", {
+                className: "mt-1 flex justify-between text-xs",
+                children: [
+                    error ? /*#__PURE__*/ (0, _jsxruntime.jsx)("p", {
+                        id: "prompt-err",
+                        className: "text-red-700 dark:text-red-400",
+                        children: error
+                    }) : /*#__PURE__*/ (0, _jsxruntime.jsx)("span", {}),
+                    /*#__PURE__*/ (0, _jsxruntime.jsxs)("span", {
+                        id: "prompt-count",
+                        className: "text-slate-500",
+                        children: [
+                            value.length.toLocaleString(),
+                            " / ",
+                            _validation.MAX_PROMPT_CHARS.toLocaleString()
+                        ]
+                    })
+                ]
+            })
+        ]
+    });
+}
+
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIkQ6XFxQcm9qZWN0c1xcTWFqb3JcXFRva2VuVHJpbVxcZnJvbnRlbmRcXHNyY1xcY29tcG9uZW50c1xcdG9rZW4tdHJpbVxcUHJvbXB0RWRpdG9yLnRzeCJdLCJzb3VyY2VzQ29udGVudCI6WyJpbXBvcnQgeyBNQVhfUFJPTVBUX0NIQVJTIH0gZnJvbSAnQC91dGlscy92YWxpZGF0aW9uJztcclxuZXhwb3J0IGZ1bmN0aW9uIFByb21wdEVkaXRvcih7IHZhbHVlLCBvbkNoYW5nZSwgZXJyb3IgfTogeyB2YWx1ZTogc3RyaW5nOyBvbkNoYW5nZTogKHY6IHN0cmluZykgPT4gdm9pZDsgZXJyb3I/OiBzdHJpbmcgfSkge1xyXG4gIHJldHVybiAoXHJcbiAgICA8ZGl2PlxyXG4gICAgICA8bGFiZWwgaHRtbEZvcj1cInByb21wdFwiIGNsYXNzTmFtZT1cIm1iLTEgYmxvY2sgdGV4dC1zbSBmb250LW1lZGl1bSB0ZXh0LXNsYXRlLTkwMCBkYXJrOnRleHQtc2xhdGUtMTAwXCI+T3JpZ2luYWwgcHJvbXB0PC9sYWJlbD5cclxuICAgICAgPHRleHRhcmVhIGlkPVwicHJvbXB0XCIgdmFsdWU9e3ZhbHVlfSBvbkNoYW5nZT17KGUpID0+IG9uQ2hhbmdlKGUudGFyZ2V0LnZhbHVlKX0gcm93cz17MTZ9XHJcbiAgICAgICAgcGxhY2Vob2xkZXI9XCJFbnRlciBvciBwYXN0ZSB5b3VyIHByb21wdFwiXHJcbiAgICAgICAgYXJpYS1pbnZhbGlkPXshIWVycm9yfSBhcmlhLWRlc2NyaWJlZGJ5PXtlcnJvciA/ICdwcm9tcHQtZXJyJyA6ICdwcm9tcHQtY291bnQnfVxyXG4gICAgICAgIGNsYXNzTmFtZT1cInctZnVsbCByZXNpemUteSByb3VuZGVkLW1kIGJvcmRlciBib3JkZXItc2xhdGUtMzAwIGJnLXdoaXRlIHAtMyBmb250LW1vbm8gdGV4dC1zbSB0ZXh0LXNsYXRlLTkwMCBmb2N1cy12aXNpYmxlOm91dGxpbmUgZm9jdXMtdmlzaWJsZTpvdXRsaW5lLTIgZm9jdXMtdmlzaWJsZTpvdXRsaW5lLXRlYWwtNjAwIGRhcms6Ym9yZGVyLXNsYXRlLTYwMCBkYXJrOmJnLXNsYXRlLTk1MCBkYXJrOnRleHQtc2xhdGUtMTAwXCIgLz5cclxuICAgICAgPGRpdiBjbGFzc05hbWU9XCJtdC0xIGZsZXgganVzdGlmeS1iZXR3ZWVuIHRleHQteHNcIj5cclxuICAgICAgICB7ZXJyb3IgPyA8cCBpZD1cInByb21wdC1lcnJcIiBjbGFzc05hbWU9XCJ0ZXh0LXJlZC03MDAgZGFyazp0ZXh0LXJlZC00MDBcIj57ZXJyb3J9PC9wPiA6IDxzcGFuIC8+fVxyXG4gICAgICAgIDxzcGFuIGlkPVwicHJvbXB0LWNvdW50XCIgY2xhc3NOYW1lPVwidGV4dC1zbGF0ZS01MDBcIj57dmFsdWUubGVuZ3RoLnRvTG9jYWxlU3RyaW5nKCl9IC8ge01BWF9QUk9NUFRfQ0hBUlMudG9Mb2NhbGVTdHJpbmcoKX08L3NwYW4+XHJcbiAgICAgIDwvZGl2PlxyXG4gICAgPC9kaXY+XHJcbiAgKTtcclxufVxyXG4iXSwibmFtZXMiOlsiUHJvbXB0RWRpdG9yIiwidmFsdWUiLCJvbkNoYW5nZSIsImVycm9yIiwiZGl2IiwibGFiZWwiLCJodG1sRm9yIiwiY2xhc3NOYW1lIiwidGV4dGFyZWEiLCJpZCIsImUiLCJ0YXJnZXQiLCJyb3dzIiwicGxhY2Vob2xkZXIiLCJhcmlhLWludmFsaWQiLCJhcmlhLWRlc2NyaWJlZGJ5IiwicCIsInNwYW4iLCJsZW5ndGgiLCJ0b0xvY2FsZVN0cmluZyIsIk1BWF9QUk9NUFRfQ0hBUlMiXSwibWFwcGluZ3MiOiI7Ozs7K0JBQ2dCQTs7O2VBQUFBOzs7OzRCQURpQjtBQUMxQixTQUFTQSxhQUFhLEVBQUVDLEtBQUssRUFBRUMsUUFBUSxFQUFFQyxLQUFLLEVBQW9FO0lBQ3ZILHFCQUNFLHNCQUFDQzs7MEJBQ0MscUJBQUNDO2dCQUFNQyxTQUFRO2dCQUFTQyxXQUFVOzBCQUFvRTs7MEJBQ3RHLHFCQUFDQztnQkFBU0MsSUFBRztnQkFBU1IsT0FBT0E7Z0JBQU9DLFVBQVUsQ0FBQ1EsSUFBTVIsU0FBU1EsRUFBRUMsTUFBTSxDQUFDVixLQUFLO2dCQUFHVyxNQUFNO2dCQUNuRkMsYUFBWTtnQkFDWkMsZ0JBQWMsQ0FBQyxDQUFDWDtnQkFBT1ksb0JBQWtCWixRQUFRLGVBQWU7Z0JBQ2hFSSxXQUFVOzswQkFDWixzQkFBQ0g7Z0JBQUlHLFdBQVU7O29CQUNaSixzQkFBUSxxQkFBQ2E7d0JBQUVQLElBQUc7d0JBQWFGLFdBQVU7a0NBQWtDSjt1Q0FBYSxxQkFBQ2M7a0NBQ3RGLHNCQUFDQTt3QkFBS1IsSUFBRzt3QkFBZUYsV0FBVTs7NEJBQWtCTixNQUFNaUIsTUFBTSxDQUFDQyxjQUFjOzRCQUFHOzRCQUFJQyw0QkFBZ0IsQ0FBQ0QsY0FBYzs7Ozs7OztBQUk3SCJ9

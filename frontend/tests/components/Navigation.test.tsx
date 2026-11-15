@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react';
+import { render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { AppLayout } from '@/layouts/AppLayout';
 import { AuthProvider } from '@/context/AuthContext';
@@ -12,6 +12,9 @@ describe('navigation', () => {
     setup();
     for (const n of ['Token Trim', 'Dashboard', 'Projects', 'API Key', 'Team', 'Profile', 'Settings', 'LLM Plans', 'Guide', 'About'])
       expect(await screen.findByRole('link', { name: n })).toBeInTheDocument();
+    const nav = screen.getByRole('navigation', { name: 'Main' });
+    expect(within(nav).queryByRole('link', { name: 'Prompt History' })).not.toBeInTheDocument();
+    expect(screen.getByRole('link', { name: 'View full prompt history' })).toHaveAttribute('href', '/history');
     expect(screen.getByRole('link', { name: 'Dashboard' })).toHaveAttribute('aria-current', 'page');
   });
   it('shows recent activity and project history in the sidebar', async () => {
@@ -30,7 +33,10 @@ describe('navigation', () => {
   it('opens the mobile menu', async () => {
     const user = userEvent.setup(); setup();
     await user.click(await screen.findByRole('button', { name: 'Menu' }));
-    expect(screen.getAllByRole('link', { name: 'Dashboard' })).toHaveLength(2);
+    const menus = screen.getAllByRole('navigation', { name: 'Main' });
+    const mobileMenu = menus[menus.length - 1];
+    expect(within(mobileMenu).getByRole('link', { name: 'Dashboard' })).toBeInTheDocument();
+    expect(within(mobileMenu).queryByRole('link', { name: 'Prompt History' })).not.toBeInTheDocument();
   });
   it('toggles and persists the theme', async () => {
     const user = userEvent.setup(); setup();

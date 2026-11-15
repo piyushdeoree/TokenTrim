@@ -1,0 +1,22 @@
+3d5a66b94f253041c7faf96b301cee61
+"use strict";
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+Object.defineProperty(exports, "ProjectUsageChart", {
+    enumerable: true,
+    get: function() {
+        return ProjectUsageChart;
+    }
+});
+const _jsxruntime = require("react/jsx-runtime");
+const _ChartCard = require("./ChartCard");
+const ProjectUsageChart = ({ data })=>/*#__PURE__*/ (0, _jsxruntime.jsx)(_ChartCard.ChartCard, {
+        title: "Usage by project",
+        data: data,
+        x: "name",
+        y: "tokens",
+        kind: "bar"
+    });
+
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIkQ6XFxQcm9qZWN0c1xcTWFqb3JcXFRva2VuVHJpbVxcZnJvbnRlbmRcXHNyY1xcY29tcG9uZW50c1xcY2hhcnRzXFxQcm9qZWN0VXNhZ2VDaGFydC50c3giXSwic291cmNlc0NvbnRlbnQiOlsiaW1wb3J0IHsgQ2hhcnRDYXJkIH0gZnJvbSAnLi9DaGFydENhcmQnO1xyXG5leHBvcnQgY29uc3QgUHJvamVjdFVzYWdlQ2hhcnQgPSAoeyBkYXRhIH06IHsgZGF0YTogb2JqZWN0W10gfSkgPT4gPENoYXJ0Q2FyZCB0aXRsZT1cIlVzYWdlIGJ5IHByb2plY3RcIiBkYXRhPXtkYXRhfSB4PVwibmFtZVwiIHk9XCJ0b2tlbnNcIiBraW5kPVwiYmFyXCIgLz47XHJcbiJdLCJuYW1lcyI6WyJQcm9qZWN0VXNhZ2VDaGFydCIsImRhdGEiLCJDaGFydENhcmQiLCJ0aXRsZSIsIngiLCJ5Iiwia2luZCJdLCJtYXBwaW5ncyI6Ijs7OzsrQkFDYUE7OztlQUFBQTs7OzsyQkFEYTtBQUNuQixNQUFNQSxvQkFBb0IsQ0FBQyxFQUFFQyxJQUFJLEVBQXNCLGlCQUFLLHFCQUFDQyxvQkFBUztRQUFDQyxPQUFNO1FBQW1CRixNQUFNQTtRQUFNRyxHQUFFO1FBQU9DLEdBQUU7UUFBU0MsTUFBSyJ9

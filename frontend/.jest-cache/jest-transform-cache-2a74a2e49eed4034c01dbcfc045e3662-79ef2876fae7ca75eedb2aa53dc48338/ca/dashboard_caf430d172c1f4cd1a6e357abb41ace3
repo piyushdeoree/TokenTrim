@@ -1,0 +1,120 @@
+4b4c1fbe3a90c0794c67c47c96305d7d
+"use strict";
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+Object.defineProperty(exports, "default", {
+    enumerable: true,
+    get: function() {
+        return Dashboard;
+    }
+});
+const _jsxruntime = require("react/jsx-runtime");
+const _react = require("react");
+const _AsyncView = require("../components/states/AsyncView");
+const _TokenCard = require("../components/metrics/TokenCard");
+const _CostCard = require("../components/metrics/CostCard");
+const _SavingsCard = require("../components/metrics/SavingsCard");
+const _MetricCard = require("../components/metrics/MetricCard");
+const _ChartFilter = require("../components/charts/ChartFilter");
+const _UsageChart = require("../components/charts/UsageChart");
+const _CostChart = require("../components/charts/CostChart");
+const _CostByModelChart = require("../components/charts/CostByModelChart");
+const _TokenUsageByModelChart = require("../components/charts/TokenUsageByModelChart");
+const _ProjectUsageChart = require("../components/charts/ProjectUsageChart");
+const _SavingsChart = require("../components/charts/SavingsChart");
+const _useDashboardData = require("../hooks/useDashboardData");
+const _format = require("../utils/format");
+function Dashboard() {
+    const [range, setRange] = (0, _react.useState)({
+        preset: "weekly"
+    });
+    const { state, reload } = (0, _useDashboardData.useDashboardData)(range);
+    return /*#__PURE__*/ (0, _jsxruntime.jsxs)("main", {
+        className: "mx-auto max-w-7xl space-y-6 p-4 lg:p-8",
+        children: [
+            /*#__PURE__*/ (0, _jsxruntime.jsxs)("div", {
+                className: "flex flex-wrap items-end justify-between gap-4",
+                children: [
+                    /*#__PURE__*/ (0, _jsxruntime.jsx)("h1", {
+                        className: "text-xl font-semibold",
+                        children: "Dashboard"
+                    }),
+                    /*#__PURE__*/ (0, _jsxruntime.jsx)(_ChartFilter.ChartFilter, {
+                        value: range,
+                        onChange: setRange
+                    })
+                ]
+            }),
+            /*#__PURE__*/ (0, _jsxruntime.jsx)(_AsyncView.AsyncView, {
+                state: state,
+                reload: reload,
+                isEmpty: (d)=>d.totals.prompts === 0,
+                empty: {
+                    title: "No analyses yet",
+                    body: "Analyze a prompt in Token Trim to see usage here."
+                },
+                children: (d)=>/*#__PURE__*/ (0, _jsxruntime.jsxs)(_jsxruntime.Fragment, {
+                        children: [
+                            /*#__PURE__*/ (0, _jsxruntime.jsxs)("div", {
+                                className: "grid grid-cols-2 gap-3 lg:grid-cols-3 xl:grid-cols-6",
+                                children: [
+                                    /*#__PURE__*/ (0, _jsxruntime.jsx)(_TokenCard.TokenCard, {
+                                        label: "Total tokens",
+                                        value: d.totals.tokens
+                                    }),
+                                    /*#__PURE__*/ (0, _jsxruntime.jsx)(_CostCard.CostCard, {
+                                        label: "Estimated cost",
+                                        value: d.totals.cost
+                                    }),
+                                    /*#__PURE__*/ (0, _jsxruntime.jsx)(_TokenCard.TokenCard, {
+                                        label: "Prompts analyzed",
+                                        value: d.totals.prompts
+                                    }),
+                                    /*#__PURE__*/ (0, _jsxruntime.jsx)(_TokenCard.TokenCard, {
+                                        label: "Tokens saved",
+                                        value: d.totals.saved,
+                                        tone: "good"
+                                    }),
+                                    /*#__PURE__*/ (0, _jsxruntime.jsx)(_SavingsCard.SavingsCard, {
+                                        label: "Potential savings",
+                                        value: d.totals.potential
+                                    }),
+                                    /*#__PURE__*/ (0, _jsxruntime.jsx)(_MetricCard.MetricCard, {
+                                        label: "Avg. reduction",
+                                        value: (0, _format.fmtPercent)(d.totals.avg_reduction),
+                                        tone: "good"
+                                    })
+                                ]
+                            }),
+                            /*#__PURE__*/ (0, _jsxruntime.jsxs)("div", {
+                                className: "grid gap-4 md:grid-cols-2",
+                                children: [
+                                    /*#__PURE__*/ (0, _jsxruntime.jsx)(_UsageChart.UsageChart, {
+                                        data: d.usage
+                                    }),
+                                    /*#__PURE__*/ (0, _jsxruntime.jsx)(_CostChart.CostChart, {
+                                        data: d.usage
+                                    }),
+                                    /*#__PURE__*/ (0, _jsxruntime.jsx)(_CostByModelChart.CostByModelChart, {
+                                        data: d.byModel
+                                    }),
+                                    /*#__PURE__*/ (0, _jsxruntime.jsx)(_TokenUsageByModelChart.TokenUsageByModelChart, {
+                                        data: d.byModelTokens
+                                    }),
+                                    /*#__PURE__*/ (0, _jsxruntime.jsx)(_ProjectUsageChart.ProjectUsageChart, {
+                                        data: d.byProject
+                                    }),
+                                    /*#__PURE__*/ (0, _jsxruntime.jsx)(_SavingsChart.SavingsChart, {
+                                        data: d.usage
+                                    })
+                                ]
+                            })
+                        ]
+                    })
+            })
+        ]
+    });
+}
+
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIkQ6XFxQcm9qZWN0c1xcTWFqb3JcXFRva2VuVHJpbVxcZnJvbnRlbmRcXHNyY1xccGFnZXNcXGRhc2hib2FyZC50c3giXSwic291cmNlc0NvbnRlbnQiOlsiaW1wb3J0IHsgdXNlU3RhdGUgfSBmcm9tICdyZWFjdCc7XHJcbmltcG9ydCB7IEFzeW5jVmlldyB9IGZyb20gJ0AvY29tcG9uZW50cy9zdGF0ZXMvQXN5bmNWaWV3JztcclxuaW1wb3J0IHsgVG9rZW5DYXJkIH0gZnJvbSAnQC9jb21wb25lbnRzL21ldHJpY3MvVG9rZW5DYXJkJztcclxuaW1wb3J0IHsgQ29zdENhcmQgfSBmcm9tICdAL2NvbXBvbmVudHMvbWV0cmljcy9Db3N0Q2FyZCc7XHJcbmltcG9ydCB7IFNhdmluZ3NDYXJkIH0gZnJvbSAnQC9jb21wb25lbnRzL21ldHJpY3MvU2F2aW5nc0NhcmQnO1xyXG5pbXBvcnQgeyBNZXRyaWNDYXJkIH0gZnJvbSAnQC9jb21wb25lbnRzL21ldHJpY3MvTWV0cmljQ2FyZCc7XHJcbmltcG9ydCB7IENoYXJ0RmlsdGVyIH0gZnJvbSAnQC9jb21wb25lbnRzL2NoYXJ0cy9DaGFydEZpbHRlcic7XHJcbmltcG9ydCB7IFVzYWdlQ2hhcnQgfSBmcm9tICdAL2NvbXBvbmVudHMvY2hhcnRzL1VzYWdlQ2hhcnQnO1xyXG5pbXBvcnQgeyBDb3N0Q2hhcnQgfSBmcm9tICdAL2NvbXBvbmVudHMvY2hhcnRzL0Nvc3RDaGFydCc7XHJcbmltcG9ydCB7IENvc3RCeU1vZGVsQ2hhcnQgfSBmcm9tICdAL2NvbXBvbmVudHMvY2hhcnRzL0Nvc3RCeU1vZGVsQ2hhcnQnO1xyXG5pbXBvcnQgeyBUb2tlblVzYWdlQnlNb2RlbENoYXJ0IH0gZnJvbSAnQC9jb21wb25lbnRzL2NoYXJ0cy9Ub2tlblVzYWdlQnlNb2RlbENoYXJ0JztcclxuaW1wb3J0IHsgUHJvamVjdFVzYWdlQ2hhcnQgfSBmcm9tICdAL2NvbXBvbmVudHMvY2hhcnRzL1Byb2plY3RVc2FnZUNoYXJ0JztcclxuaW1wb3J0IHsgU2F2aW5nc0NoYXJ0IH0gZnJvbSAnQC9jb21wb25lbnRzL2NoYXJ0cy9TYXZpbmdzQ2hhcnQnO1xyXG5pbXBvcnQgeyB1c2VEYXNoYm9hcmREYXRhIH0gZnJvbSAnQC9ob29rcy91c2VEYXNoYm9hcmREYXRhJztcclxuaW1wb3J0IHsgZm10UGVyY2VudCB9IGZyb20gJ0AvdXRpbHMvZm9ybWF0JztcclxuaW1wb3J0IHR5cGUgeyBEYXNoYm9hcmRSYW5nZSB9IGZyb20gJ0AvdHlwZXMvZGFzaGJvYXJkJztcclxuZXhwb3J0IGRlZmF1bHQgZnVuY3Rpb24gRGFzaGJvYXJkKCkge1xyXG4gIGNvbnN0IFtyYW5nZSwgc2V0UmFuZ2VdID0gdXNlU3RhdGU8RGFzaGJvYXJkUmFuZ2U+KHsgcHJlc2V0OiAnd2Vla2x5JyB9KTtcclxuICBjb25zdCB7IHN0YXRlLCByZWxvYWQgfSA9IHVzZURhc2hib2FyZERhdGEocmFuZ2UpO1xyXG4gIHJldHVybiAoXHJcbiAgICA8bWFpbiBjbGFzc05hbWU9XCJteC1hdXRvIG1heC13LTd4bCBzcGFjZS15LTYgcC00IGxnOnAtOFwiPlxyXG4gICAgICA8ZGl2IGNsYXNzTmFtZT1cImZsZXggZmxleC13cmFwIGl0ZW1zLWVuZCBqdXN0aWZ5LWJldHdlZW4gZ2FwLTRcIj48aDEgY2xhc3NOYW1lPVwidGV4dC14bCBmb250LXNlbWlib2xkXCI+RGFzaGJvYXJkPC9oMT48Q2hhcnRGaWx0ZXIgdmFsdWU9e3JhbmdlfSBvbkNoYW5nZT17c2V0UmFuZ2V9IC8+PC9kaXY+XHJcbiAgICAgIDxBc3luY1ZpZXcgc3RhdGU9e3N0YXRlfSByZWxvYWQ9e3JlbG9hZH0gaXNFbXB0eT17KGQpID0+IGQudG90YWxzLnByb21wdHMgPT09IDB9IGVtcHR5PXt7IHRpdGxlOiAnTm8gYW5hbHlzZXMgeWV0JywgYm9keTogJ0FuYWx5emUgYSBwcm9tcHQgaW4gVG9rZW4gVHJpbSB0byBzZWUgdXNhZ2UgaGVyZS4nIH19PlxyXG4gICAgICAgIHsoZCkgPT4gKDw+XHJcbiAgICAgICAgICA8ZGl2IGNsYXNzTmFtZT1cImdyaWQgZ3JpZC1jb2xzLTIgZ2FwLTMgbGc6Z3JpZC1jb2xzLTMgeGw6Z3JpZC1jb2xzLTZcIj5cclxuICAgICAgICAgICAgPFRva2VuQ2FyZCBsYWJlbD1cIlRvdGFsIHRva2Vuc1wiIHZhbHVlPXtkLnRvdGFscy50b2tlbnN9IC8+XHJcbiAgICAgICAgICAgIDxDb3N0Q2FyZCBsYWJlbD1cIkVzdGltYXRlZCBjb3N0XCIgdmFsdWU9e2QudG90YWxzLmNvc3R9IC8+XHJcbiAgICAgICAgICAgIDxUb2tlbkNhcmQgbGFiZWw9XCJQcm9tcHRzIGFuYWx5emVkXCIgdmFsdWU9e2QudG90YWxzLnByb21wdHN9IC8+XHJcbiAgICAgICAgICAgIDxUb2tlbkNhcmQgbGFiZWw9XCJUb2tlbnMgc2F2ZWRcIiB2YWx1ZT17ZC50b3RhbHMuc2F2ZWR9IHRvbmU9XCJnb29kXCIgLz5cclxuICAgICAgICAgICAgPFNhdmluZ3NDYXJkIGxhYmVsPVwiUG90ZW50aWFsIHNhdmluZ3NcIiB2YWx1ZT17ZC50b3RhbHMucG90ZW50aWFsfSAvPlxyXG4gICAgICAgICAgICA8TWV0cmljQ2FyZCBsYWJlbD1cIkF2Zy4gcmVkdWN0aW9uXCIgdmFsdWU9e2ZtdFBlcmNlbnQoZC50b3RhbHMuYXZnX3JlZHVjdGlvbil9IHRvbmU9XCJnb29kXCIgLz5cclxuICAgICAgICAgIDwvZGl2PlxyXG4gICAgICAgICAgPGRpdiBjbGFzc05hbWU9XCJncmlkIGdhcC00IG1kOmdyaWQtY29scy0yXCI+XHJcbiAgICAgICAgICAgIDxVc2FnZUNoYXJ0IGRhdGE9e2QudXNhZ2V9IC8+PENvc3RDaGFydCBkYXRhPXtkLnVzYWdlfSAvPjxDb3N0QnlNb2RlbENoYXJ0IGRhdGE9e2QuYnlNb2RlbH0gLz5cclxuICAgICAgICAgICAgPFRva2VuVXNhZ2VCeU1vZGVsQ2hhcnQgZGF0YT17ZC5ieU1vZGVsVG9rZW5zfSAvPjxQcm9qZWN0VXNhZ2VDaGFydCBkYXRhPXtkLmJ5UHJvamVjdH0gLz48U2F2aW5nc0NoYXJ0IGRhdGE9e2QudXNhZ2V9IC8+XHJcbiAgICAgICAgICA8L2Rpdj5cclxuICAgICAgICA8Lz4pfVxyXG4gICAgICA8L0FzeW5jVmlldz5cclxuICAgIDwvbWFpbj5cclxuICApO1xyXG59XHJcbiJdLCJuYW1lcyI6WyJEYXNoYm9hcmQiLCJyYW5nZSIsInNldFJhbmdlIiwidXNlU3RhdGUiLCJwcmVzZXQiLCJzdGF0ZSIsInJlbG9hZCIsInVzZURhc2hib2FyZERhdGEiLCJtYWluIiwiY2xhc3NOYW1lIiwiZGl2IiwiaDEiLCJDaGFydEZpbHRlciIsInZhbHVlIiwib25DaGFuZ2UiLCJBc3luY1ZpZXciLCJpc0VtcHR5IiwiZCIsInRvdGFscyIsInByb21wdHMiLCJlbXB0eSIsInRpdGxlIiwiYm9keSIsIlRva2VuQ2FyZCIsImxhYmVsIiwidG9rZW5zIiwiQ29zdENhcmQiLCJjb3N0Iiwic2F2ZWQiLCJ0b25lIiwiU2F2aW5nc0NhcmQiLCJwb3RlbnRpYWwiLCJNZXRyaWNDYXJkIiwiZm10UGVyY2VudCIsImF2Z19yZWR1Y3Rpb24iLCJVc2FnZUNoYXJ0IiwiZGF0YSIsInVzYWdlIiwiQ29zdENoYXJ0IiwiQ29zdEJ5TW9kZWxDaGFydCIsImJ5TW9kZWwiLCJUb2tlblVzYWdlQnlNb2RlbENoYXJ0IiwiYnlNb2RlbFRva2VucyIsIlByb2plY3RVc2FnZUNoYXJ0IiwiYnlQcm9qZWN0IiwiU2F2aW5nc0NoYXJ0Il0sIm1hcHBpbmdzIjoiOzs7OytCQWdCQTs7O2VBQXdCQTs7Ozt1QkFoQkM7MkJBQ0M7MkJBQ0E7MEJBQ0Q7NkJBQ0c7NEJBQ0Q7NkJBQ0M7NEJBQ0Q7MkJBQ0Q7a0NBQ087d0NBQ007bUNBQ0w7OEJBQ0w7a0NBQ0k7d0JBQ047QUFFWixTQUFTQTtJQUN0QixNQUFNLENBQUNDLE9BQU9DLFNBQVMsR0FBR0MsSUFBQUEsZUFBUSxFQUFpQjtRQUFFQyxRQUFRO0lBQVM7SUFDdEUsTUFBTSxFQUFFQyxLQUFLLEVBQUVDLE1BQU0sRUFBRSxHQUFHQyxJQUFBQSxrQ0FBZ0IsRUFBQ047SUFDM0MscUJBQ0Usc0JBQUNPO1FBQUtDLFdBQVU7OzBCQUNkLHNCQUFDQztnQkFBSUQsV0FBVTs7a0NBQWlELHFCQUFDRTt3QkFBR0YsV0FBVTtrQ0FBd0I7O2tDQUFjLHFCQUFDRyx3QkFBVzt3QkFBQ0MsT0FBT1o7d0JBQU9hLFVBQVVaOzs7OzBCQUN6SixxQkFBQ2Esb0JBQVM7Z0JBQUNWLE9BQU9BO2dCQUFPQyxRQUFRQTtnQkFBUVUsU0FBUyxDQUFDQyxJQUFNQSxFQUFFQyxNQUFNLENBQUNDLE9BQU8sS0FBSztnQkFBR0MsT0FBTztvQkFBRUMsT0FBTztvQkFBbUJDLE1BQU07Z0JBQW9EOzBCQUMzSyxDQUFDTCxrQkFBTzs7MENBQ1Asc0JBQUNQO2dDQUFJRCxXQUFVOztrREFDYixxQkFBQ2Msb0JBQVM7d0NBQUNDLE9BQU07d0NBQWVYLE9BQU9JLEVBQUVDLE1BQU0sQ0FBQ08sTUFBTTs7a0RBQ3RELHFCQUFDQyxrQkFBUTt3Q0FBQ0YsT0FBTTt3Q0FBaUJYLE9BQU9JLEVBQUVDLE1BQU0sQ0FBQ1MsSUFBSTs7a0RBQ3JELHFCQUFDSixvQkFBUzt3Q0FBQ0MsT0FBTTt3Q0FBbUJYLE9BQU9JLEVBQUVDLE1BQU0sQ0FBQ0MsT0FBTzs7a0RBQzNELHFCQUFDSSxvQkFBUzt3Q0FBQ0MsT0FBTTt3Q0FBZVgsT0FBT0ksRUFBRUMsTUFBTSxDQUFDVSxLQUFLO3dDQUFFQyxNQUFLOztrREFDNUQscUJBQUNDLHdCQUFXO3dDQUFDTixPQUFNO3dDQUFvQlgsT0FBT0ksRUFBRUMsTUFBTSxDQUFDYSxTQUFTOztrREFDaEUscUJBQUNDLHNCQUFVO3dDQUFDUixPQUFNO3dDQUFpQlgsT0FBT29CLElBQUFBLGtCQUFVLEVBQUNoQixFQUFFQyxNQUFNLENBQUNnQixhQUFhO3dDQUFHTCxNQUFLOzs7OzBDQUVyRixzQkFBQ25CO2dDQUFJRCxXQUFVOztrREFDYixxQkFBQzBCLHNCQUFVO3dDQUFDQyxNQUFNbkIsRUFBRW9CLEtBQUs7O2tEQUFJLHFCQUFDQyxvQkFBUzt3Q0FBQ0YsTUFBTW5CLEVBQUVvQixLQUFLOztrREFBSSxxQkFBQ0Usa0NBQWdCO3dDQUFDSCxNQUFNbkIsRUFBRXVCLE9BQU87O2tEQUMxRixxQkFBQ0MsOENBQXNCO3dDQUFDTCxNQUFNbkIsRUFBRXlCLGFBQWE7O2tEQUFJLHFCQUFDQyxvQ0FBaUI7d0NBQUNQLE1BQU1uQixFQUFFMkIsU0FBUzs7a0RBQUkscUJBQUNDLDBCQUFZO3dDQUFDVCxNQUFNbkIsRUFBRW9CLEtBQUs7Ozs7Ozs7OztBQU1oSSJ9

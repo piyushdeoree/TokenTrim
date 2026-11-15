@@ -1,0 +1,20 @@
+f206ed6210d4d42f2ef327c693504e12
+"use strict";
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+Object.defineProperty(exports, "CostCard", {
+    enumerable: true,
+    get: function() {
+        return CostCard;
+    }
+});
+const _jsxruntime = require("react/jsx-runtime");
+const _MetricCard = require("./MetricCard");
+const _format = require("../../utils/format");
+const CostCard = (p)=>/*#__PURE__*/ (0, _jsxruntime.jsx)(_MetricCard.MetricCard, {
+        ...p,
+        value: (0, _format.fmtCurrency)(p.value)
+    });
+
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIkQ6XFxQcm9qZWN0c1xcTWFqb3JcXFRva2VuVHJpbVxcZnJvbnRlbmRcXHNyY1xcY29tcG9uZW50c1xcbWV0cmljc1xcQ29zdENhcmQudHN4Il0sInNvdXJjZXNDb250ZW50IjpbImltcG9ydCB7IE1ldHJpY0NhcmQgfSBmcm9tICcuL01ldHJpY0NhcmQnO1xyXG5pbXBvcnQgeyBmbXRDdXJyZW5jeSB9IGZyb20gJ0AvdXRpbHMvZm9ybWF0JztcclxuZXhwb3J0IGNvbnN0IENvc3RDYXJkID0gKHA6IHsgbGFiZWw6IHN0cmluZzsgdmFsdWU6IG51bWJlcjsgaGludD86IHN0cmluZyB9KSA9PiA8TWV0cmljQ2FyZCB7Li4ucH0gdmFsdWU9e2ZtdEN1cnJlbmN5KHAudmFsdWUpfSAvPjtcclxuIl0sIm5hbWVzIjpbIkNvc3RDYXJkIiwicCIsIk1ldHJpY0NhcmQiLCJ2YWx1ZSIsImZtdEN1cnJlbmN5Il0sIm1hcHBpbmdzIjoiOzs7OytCQUVhQTs7O2VBQUFBOzs7OzRCQUZjO3dCQUNDO0FBQ3JCLE1BQU1BLFdBQVcsQ0FBQ0Msa0JBQXVELHFCQUFDQyxzQkFBVTtRQUFFLEdBQUdELENBQUM7UUFBRUUsT0FBT0MsSUFBQUEsbUJBQVcsRUFBQ0gsRUFBRUUsS0FBSyJ9

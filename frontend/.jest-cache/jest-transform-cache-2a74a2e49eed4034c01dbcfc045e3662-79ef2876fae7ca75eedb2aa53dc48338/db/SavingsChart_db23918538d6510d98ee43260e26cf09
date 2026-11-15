@@ -1,0 +1,22 @@
+573865a2a3af037a25e933fa9b269fdf
+"use strict";
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+Object.defineProperty(exports, "SavingsChart", {
+    enumerable: true,
+    get: function() {
+        return SavingsChart;
+    }
+});
+const _jsxruntime = require("react/jsx-runtime");
+const _ChartCard = require("./ChartCard");
+const SavingsChart = ({ data })=>/*#__PURE__*/ (0, _jsxruntime.jsx)(_ChartCard.ChartCard, {
+        title: "Savings over time",
+        data: data,
+        x: "day",
+        y: "saved",
+        kind: "line"
+    });
+
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIkQ6XFxQcm9qZWN0c1xcTWFqb3JcXFRva2VuVHJpbVxcZnJvbnRlbmRcXHNyY1xcY29tcG9uZW50c1xcY2hhcnRzXFxTYXZpbmdzQ2hhcnQudHN4Il0sInNvdXJjZXNDb250ZW50IjpbImltcG9ydCB7IENoYXJ0Q2FyZCB9IGZyb20gJy4vQ2hhcnRDYXJkJztcclxuZXhwb3J0IGNvbnN0IFNhdmluZ3NDaGFydCA9ICh7IGRhdGEgfTogeyBkYXRhOiBvYmplY3RbXSB9KSA9PiA8Q2hhcnRDYXJkIHRpdGxlPVwiU2F2aW5ncyBvdmVyIHRpbWVcIiBkYXRhPXtkYXRhfSB4PVwiZGF5XCIgeT1cInNhdmVkXCIga2luZD1cImxpbmVcIiAvPjtcclxuIl0sIm5hbWVzIjpbIlNhdmluZ3NDaGFydCIsImRhdGEiLCJDaGFydENhcmQiLCJ0aXRsZSIsIngiLCJ5Iiwia2luZCJdLCJtYXBwaW5ncyI6Ijs7OzsrQkFDYUE7OztlQUFBQTs7OzsyQkFEYTtBQUNuQixNQUFNQSxlQUFlLENBQUMsRUFBRUMsSUFBSSxFQUFzQixpQkFBSyxxQkFBQ0Msb0JBQVM7UUFBQ0MsT0FBTTtRQUFvQkYsTUFBTUE7UUFBTUcsR0FBRTtRQUFNQyxHQUFFO1FBQVFDLE1BQUsifQ==

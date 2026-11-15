@@ -1,0 +1,60 @@
+0ee659ae5b8c7fc4cd011970552f3259
+"use strict";
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+Object.defineProperty(exports, "AppLayout", {
+    enumerable: true,
+    get: function() {
+        return AppLayout;
+    }
+});
+const _jsxruntime = require("react/jsx-runtime");
+const _react = require("react");
+const _Navbar = require("../components/navigation/Navbar");
+const _Sidebar = require("../components/navigation/Sidebar");
+const _MobileNav = require("../components/navigation/MobileNav");
+const _AuthContext = require("../context/AuthContext");
+function AppLayout({ children }) {
+    const { user } = (0, _AuthContext.useAuth)();
+    const [mobile, setMobile] = (0, _react.useState)(false);
+    const [collapsed, setCollapsed] = (0, _react.useState)(false);
+    (0, _react.useEffect)(()=>{
+        try {
+            setCollapsed(localStorage.getItem("sidebarCollapsed") === "1");
+        } catch  {}
+    }, []);
+    const toggleSidebar = ()=>{
+        const next = !collapsed;
+        setCollapsed(next);
+        try {
+            localStorage.setItem("sidebarCollapsed", next ? "1" : "0");
+        } catch  {}
+    };
+    return /*#__PURE__*/ (0, _jsxruntime.jsxs)("div", {
+        className: "min-h-screen lg:flex",
+        children: [
+            user && /*#__PURE__*/ (0, _jsxruntime.jsx)(_Sidebar.Sidebar, {
+                collapsed: collapsed
+            }),
+            /*#__PURE__*/ (0, _jsxruntime.jsxs)("div", {
+                className: "min-w-0 flex-1",
+                children: [
+                    /*#__PURE__*/ (0, _jsxruntime.jsx)(_Navbar.Navbar, {
+                        sidebarOpen: !collapsed,
+                        mobileOpen: mobile,
+                        onToggleSidebar: toggleSidebar,
+                        onMenu: ()=>setMobile(!mobile)
+                    }),
+                    user && /*#__PURE__*/ (0, _jsxruntime.jsx)(_MobileNav.MobileNav, {
+                        open: mobile,
+                        onClose: ()=>setMobile(false)
+                    }),
+                    children
+                ]
+            })
+        ]
+    });
+}
+
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIkQ6XFxQcm9qZWN0c1xcTWFqb3JcXFRva2VuVHJpbVxcZnJvbnRlbmRcXHNyY1xcbGF5b3V0c1xcQXBwTGF5b3V0LnRzeCJdLCJzb3VyY2VzQ29udGVudCI6WyJpbXBvcnQgeyBSZWFjdE5vZGUsIHVzZUVmZmVjdCwgdXNlU3RhdGUgfSBmcm9tICdyZWFjdCc7XHJcbmltcG9ydCB7IE5hdmJhciB9IGZyb20gJ0AvY29tcG9uZW50cy9uYXZpZ2F0aW9uL05hdmJhcic7XHJcbmltcG9ydCB7IFNpZGViYXIgfSBmcm9tICdAL2NvbXBvbmVudHMvbmF2aWdhdGlvbi9TaWRlYmFyJztcclxuaW1wb3J0IHsgTW9iaWxlTmF2IH0gZnJvbSAnQC9jb21wb25lbnRzL25hdmlnYXRpb24vTW9iaWxlTmF2JztcclxuaW1wb3J0IHsgdXNlQXV0aCB9IGZyb20gJ0AvY29udGV4dC9BdXRoQ29udGV4dCc7XHJcbmV4cG9ydCBmdW5jdGlvbiBBcHBMYXlvdXQoeyBjaGlsZHJlbiB9OiB7IGNoaWxkcmVuOiBSZWFjdE5vZGUgfSkge1xyXG4gIGNvbnN0IHsgdXNlciB9ID0gdXNlQXV0aCgpO1xyXG4gIGNvbnN0IFttb2JpbGUsIHNldE1vYmlsZV0gPSB1c2VTdGF0ZShmYWxzZSk7IGNvbnN0IFtjb2xsYXBzZWQsIHNldENvbGxhcHNlZF0gPSB1c2VTdGF0ZShmYWxzZSk7XHJcbiAgdXNlRWZmZWN0KCgpID0+IHsgdHJ5IHsgc2V0Q29sbGFwc2VkKGxvY2FsU3RvcmFnZS5nZXRJdGVtKCdzaWRlYmFyQ29sbGFwc2VkJykgPT09ICcxJyk7IH0gY2F0Y2gge30gfSwgW10pO1xyXG4gIGNvbnN0IHRvZ2dsZVNpZGViYXIgPSAoKSA9PiB7IGNvbnN0IG5leHQgPSAhY29sbGFwc2VkOyBzZXRDb2xsYXBzZWQobmV4dCk7IHRyeSB7IGxvY2FsU3RvcmFnZS5zZXRJdGVtKCdzaWRlYmFyQ29sbGFwc2VkJywgbmV4dCA/ICcxJyA6ICcwJyk7IH0gY2F0Y2gge30gfTtcclxuICByZXR1cm4gKFxyXG4gICAgPGRpdiBjbGFzc05hbWU9XCJtaW4taC1zY3JlZW4gbGc6ZmxleFwiPlxyXG4gICAgICB7dXNlciAmJiA8U2lkZWJhciBjb2xsYXBzZWQ9e2NvbGxhcHNlZH0gLz59XHJcbiAgICAgIDxkaXYgY2xhc3NOYW1lPVwibWluLXctMCBmbGV4LTFcIj5cclxuICAgICAgICA8TmF2YmFyIHNpZGViYXJPcGVuPXshY29sbGFwc2VkfSBtb2JpbGVPcGVuPXttb2JpbGV9IG9uVG9nZ2xlU2lkZWJhcj17dG9nZ2xlU2lkZWJhcn0gb25NZW51PXsoKSA9PiBzZXRNb2JpbGUoIW1vYmlsZSl9IC8+XHJcbiAgICAgICAge3VzZXIgJiYgPE1vYmlsZU5hdiBvcGVuPXttb2JpbGV9IG9uQ2xvc2U9eygpID0+IHNldE1vYmlsZShmYWxzZSl9IC8+fVxyXG4gICAgICAgIHtjaGlsZHJlbn1cclxuICAgICAgPC9kaXY+XHJcbiAgICA8L2Rpdj5cclxuICApO1xyXG59XHJcbiJdLCJuYW1lcyI6WyJBcHBMYXlvdXQiLCJjaGlsZHJlbiIsInVzZXIiLCJ1c2VBdXRoIiwibW9iaWxlIiwic2V0TW9iaWxlIiwidXNlU3RhdGUiLCJjb2xsYXBzZWQiLCJzZXRDb2xsYXBzZWQiLCJ1c2VFZmZlY3QiLCJsb2NhbFN0b3JhZ2UiLCJnZXRJdGVtIiwidG9nZ2xlU2lkZWJhciIsIm5leHQiLCJzZXRJdGVtIiwiZGl2IiwiY2xhc3NOYW1lIiwiU2lkZWJhciIsIk5hdmJhciIsInNpZGViYXJPcGVuIiwibW9iaWxlT3BlbiIsIm9uVG9nZ2xlU2lkZWJhciIsIm9uTWVudSIsIk1vYmlsZU5hdiIsIm9wZW4iLCJvbkNsb3NlIl0sIm1hcHBpbmdzIjoiOzs7OytCQUtnQkE7OztlQUFBQTs7Ozt1QkFMK0I7d0JBQ3hCO3lCQUNDOzJCQUNFOzZCQUNGO0FBQ2pCLFNBQVNBLFVBQVUsRUFBRUMsUUFBUSxFQUEyQjtJQUM3RCxNQUFNLEVBQUVDLElBQUksRUFBRSxHQUFHQyxJQUFBQSxvQkFBTztJQUN4QixNQUFNLENBQUNDLFFBQVFDLFVBQVUsR0FBR0MsSUFBQUEsZUFBUSxFQUFDO0lBQVEsTUFBTSxDQUFDQyxXQUFXQyxhQUFhLEdBQUdGLElBQUFBLGVBQVEsRUFBQztJQUN4RkcsSUFBQUEsZ0JBQVMsRUFBQztRQUFRLElBQUk7WUFBRUQsYUFBYUUsYUFBYUMsT0FBTyxDQUFDLHdCQUF3QjtRQUFNLEVBQUUsT0FBTSxDQUFDO0lBQUUsR0FBRyxFQUFFO0lBQ3hHLE1BQU1DLGdCQUFnQjtRQUFRLE1BQU1DLE9BQU8sQ0FBQ047UUFBV0MsYUFBYUs7UUFBTyxJQUFJO1lBQUVILGFBQWFJLE9BQU8sQ0FBQyxvQkFBb0JELE9BQU8sTUFBTTtRQUFNLEVBQUUsT0FBTSxDQUFDO0lBQUU7SUFDeEoscUJBQ0Usc0JBQUNFO1FBQUlDLFdBQVU7O1lBQ1pkLHNCQUFRLHFCQUFDZSxnQkFBTztnQkFBQ1YsV0FBV0E7OzBCQUM3QixzQkFBQ1E7Z0JBQUlDLFdBQVU7O2tDQUNiLHFCQUFDRSxjQUFNO3dCQUFDQyxhQUFhLENBQUNaO3dCQUFXYSxZQUFZaEI7d0JBQVFpQixpQkFBaUJUO3dCQUFlVSxRQUFRLElBQU1qQixVQUFVLENBQUNEOztvQkFDN0dGLHNCQUFRLHFCQUFDcUIsb0JBQVM7d0JBQUNDLE1BQU1wQjt3QkFBUXFCLFNBQVMsSUFBTXBCLFVBQVU7O29CQUMxREo7Ozs7O0FBSVQifQ==

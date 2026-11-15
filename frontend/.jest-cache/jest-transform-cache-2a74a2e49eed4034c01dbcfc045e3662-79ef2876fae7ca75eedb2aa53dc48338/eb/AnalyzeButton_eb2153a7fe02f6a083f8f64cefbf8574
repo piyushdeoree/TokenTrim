@@ -1,0 +1,20 @@
+cb0205eca1dbed9c14713038b482f314
+"use strict";
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+Object.defineProperty(exports, "AnalyzeButton", {
+    enumerable: true,
+    get: function() {
+        return AnalyzeButton;
+    }
+});
+const _jsxruntime = require("react/jsx-runtime");
+const _Button = require("../ui/Button");
+const AnalyzeButton = ({ onClick, loading })=>/*#__PURE__*/ (0, _jsxruntime.jsx)(_Button.Button, {
+        onClick: onClick,
+        loading: loading,
+        children: loading ? "Analyzing..." : "Analyze prompt"
+    });
+
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIkQ6XFxQcm9qZWN0c1xcTWFqb3JcXFRva2VuVHJpbVxcZnJvbnRlbmRcXHNyY1xcY29tcG9uZW50c1xcdG9rZW4tdHJpbVxcQW5hbHl6ZUJ1dHRvbi50c3giXSwic291cmNlc0NvbnRlbnQiOlsiaW1wb3J0IHsgQnV0dG9uIH0gZnJvbSAnQC9jb21wb25lbnRzL3VpL0J1dHRvbic7XHJcbmV4cG9ydCBjb25zdCBBbmFseXplQnV0dG9uID0gKHsgb25DbGljaywgbG9hZGluZyB9OiB7IG9uQ2xpY2s6ICgpID0+IHZvaWQ7IGxvYWRpbmc6IGJvb2xlYW4gfSkgPT5cclxuICA8QnV0dG9uIG9uQ2xpY2s9e29uQ2xpY2t9IGxvYWRpbmc9e2xvYWRpbmd9Pntsb2FkaW5nID8gJ0FuYWx5emluZy4uLicgOiAnQW5hbHl6ZSBwcm9tcHQnfTwvQnV0dG9uPjtcclxuIl0sIm5hbWVzIjpbIkFuYWx5emVCdXR0b24iLCJvbkNsaWNrIiwibG9hZGluZyIsIkJ1dHRvbiJdLCJtYXBwaW5ncyI6Ijs7OzsrQkFDYUE7OztlQUFBQTs7Ozt3QkFEVTtBQUNoQixNQUFNQSxnQkFBZ0IsQ0FBQyxFQUFFQyxPQUFPLEVBQUVDLE9BQU8sRUFBNkMsaUJBQzNGLHFCQUFDQyxjQUFNO1FBQUNGLFNBQVNBO1FBQVNDLFNBQVNBO2tCQUFVQSxVQUFVLGlCQUFpQiJ9

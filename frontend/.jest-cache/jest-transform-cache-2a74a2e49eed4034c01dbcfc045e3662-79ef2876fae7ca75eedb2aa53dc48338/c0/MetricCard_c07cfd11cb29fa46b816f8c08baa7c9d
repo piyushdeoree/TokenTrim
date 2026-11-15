@@ -1,0 +1,33 @@
+8c1e203a8ee4e32522205209ea0e167b
+"use strict";
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+Object.defineProperty(exports, "MetricCard", {
+    enumerable: true,
+    get: function() {
+        return MetricCard;
+    }
+});
+const _jsxruntime = require("react/jsx-runtime");
+function MetricCard({ label, value, hint, tone = "default" }) {
+    return /*#__PURE__*/ (0, _jsxruntime.jsxs)("div", {
+        className: "rounded-lg border border-white/10 bg-chart p-4 text-white",
+        children: [
+            /*#__PURE__*/ (0, _jsxruntime.jsx)("p", {
+                className: "text-sm text-white/80",
+                children: label
+            }),
+            /*#__PURE__*/ (0, _jsxruntime.jsx)("p", {
+                className: `mt-1 text-2xl font-semibold tabular-nums ${tone === "good" ? "text-btn" : "text-white"}`,
+                children: value
+            }),
+            hint && /*#__PURE__*/ (0, _jsxruntime.jsx)("p", {
+                className: "mt-1 text-xs text-white/70",
+                children: hint
+            })
+        ]
+    });
+}
+
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIkQ6XFxQcm9qZWN0c1xcTWFqb3JcXFRva2VuVHJpbVxcZnJvbnRlbmRcXHNyY1xcY29tcG9uZW50c1xcbWV0cmljc1xcTWV0cmljQ2FyZC50c3giXSwic291cmNlc0NvbnRlbnQiOlsiZXhwb3J0IGZ1bmN0aW9uIE1ldHJpY0NhcmQoeyBsYWJlbCwgdmFsdWUsIGhpbnQsIHRvbmUgPSAnZGVmYXVsdCcgfTpcclxuICB7IGxhYmVsOiBzdHJpbmc7IHZhbHVlOiBzdHJpbmc7IGhpbnQ/OiBzdHJpbmc7IHRvbmU/OiAnZGVmYXVsdCcgfCAnZ29vZCcgfSkge1xyXG4gIHJldHVybiAoXHJcbiAgICA8ZGl2IGNsYXNzTmFtZT1cInJvdW5kZWQtbGcgYm9yZGVyIGJvcmRlci13aGl0ZS8xMCBiZy1jaGFydCBwLTQgdGV4dC13aGl0ZVwiPlxyXG4gICAgICA8cCBjbGFzc05hbWU9XCJ0ZXh0LXNtIHRleHQtd2hpdGUvODBcIj57bGFiZWx9PC9wPlxyXG4gICAgICA8cCBjbGFzc05hbWU9e2BtdC0xIHRleHQtMnhsIGZvbnQtc2VtaWJvbGQgdGFidWxhci1udW1zICR7dG9uZSA9PT0gJ2dvb2QnID8gJ3RleHQtYnRuJyA6ICd0ZXh0LXdoaXRlJ31gfT57dmFsdWV9PC9wPlxyXG4gICAgICB7aGludCAmJiA8cCBjbGFzc05hbWU9XCJtdC0xIHRleHQteHMgdGV4dC13aGl0ZS83MFwiPntoaW50fTwvcD59XHJcbiAgICA8L2Rpdj5cclxuICApO1xyXG59XHJcbiJdLCJuYW1lcyI6WyJNZXRyaWNDYXJkIiwibGFiZWwiLCJ2YWx1ZSIsImhpbnQiLCJ0b25lIiwiZGl2IiwiY2xhc3NOYW1lIiwicCJdLCJtYXBwaW5ncyI6Ijs7OzsrQkFBZ0JBOzs7ZUFBQUE7Ozs7QUFBVCxTQUFTQSxXQUFXLEVBQUVDLEtBQUssRUFBRUMsS0FBSyxFQUFFQyxJQUFJLEVBQUVDLE9BQU8sU0FBUyxFQUNXO0lBQzFFLHFCQUNFLHNCQUFDQztRQUFJQyxXQUFVOzswQkFDYixxQkFBQ0M7Z0JBQUVELFdBQVU7MEJBQXlCTDs7MEJBQ3RDLHFCQUFDTTtnQkFBRUQsV0FBVyxDQUFDLHlDQUF5QyxFQUFFRixTQUFTLFNBQVMsYUFBYSxhQUFhLENBQUM7MEJBQUdGOztZQUN6R0Msc0JBQVEscUJBQUNJO2dCQUFFRCxXQUFVOzBCQUE4Qkg7Ozs7QUFHMUQifQ==
