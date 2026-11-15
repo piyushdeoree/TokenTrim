@@ -6,6 +6,7 @@ import { SavingsCard } from '@/components/metrics/SavingsCard';
 import { IssueList } from './IssueList';
 import { SuggestionList } from './SuggestionList';
 import { OptimizedPrompt } from './OptimizedPrompt';
+import { ModelCostComparison } from './ModelCostComparison';
 import { fmtPercent, fmtTokens } from '@/utils/format';
 import type { AnalyzePromptResponse } from '@/types/analysis';
 export function AnalysisResult({ data, original, onSave }: { data: AnalyzePromptResponse; original: string; onSave?: () => void }) {
@@ -20,6 +21,7 @@ export function AnalysisResult({ data, original, onSave }: { data: AnalyzePrompt
         <CostCard label="Estimated cost" value={data.estimated_cost} hint={`~${fmtTokens(data.predicted_output_tokens)} output tokens`} />
         <SavingsCard label="Potential saving" value={data.potential_saving} />
       </div>
+      <ModelCostComparison />
       <Card title="Detected issues"><IssueList issues={data.issues} /></Card>
       <Card title="Optimization suggestions"><SuggestionList items={data.suggestions} /></Card>
       <Card title="Optimized prompt"><OptimizedPrompt original={original} optimized={data.optimized_prompt} onSave={onSave} /></Card>
