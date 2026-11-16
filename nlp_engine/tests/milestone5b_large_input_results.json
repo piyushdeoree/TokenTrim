@@ -1,0 +1,2352 @@
+{
+  "format_version": 1,
+  "benchmark": "TokenTrim Milestone 5B large-input/resource characterization",
+  "source_revision": "fdd6022f962ae593db5dc2c2d9c7453bbe4377a7",
+  "source_sha256": {
+    "nlp_engine/analyzer.py": "6915a0ba6c3b10483376a0a36cf4b004b35d08e9c9e833cc43780b90e3dfd0f2",
+    "nlp_engine/optimizer.py": "d1b4046be1a73effced23fd25091c56fc6ffde61420c37ee51555f7e6b04934f",
+    "nlp_engine/validator.py": "ac3d961c3a3a99cc2956eb42ac0846377661547b621caf41abd2af1f37897198",
+    "nlp_engine/config.py": "3a3881eff6e305e36fc647822e7e10787d69a7de9554bfe160704b1f9ac6a76e",
+    "nlp_engine/redundancy.py": "1cd05f686a75f75509199550f5d341505b6e21a66aabe57da10c488c99703497",
+    "nlp_engine/textutils.py": "eaa7c03a1e24748aee3790de23c45b985ab1d1a7e19bccce65c71c757bed49e2",
+    "nlp_engine/models.py": "48ad3d7748ecfd236ac5884d05b3d8a174ac9f5ee73af03cb991a39505e2cc70",
+    "nlp_engine/tokenizer.py": "e07982e246d467c6fb5d649f0ae929dd6992e0750892d016ed58b13b5f60b94e",
+    "nlp_engine/semantic_similarity.py": "0360af932e3aa79aa422a6d77012c3bd7d6248909c9934f6e05be5a76cdb7140",
+    "nlp_engine/tests/milestone5b_large_input_benchmark.py": "88513256be097429bd88b401960a81a440d92c76760418483f4b535b120742db",
+    "nlp_engine/tests/milestone4a_ab_benchmark.py": null,
+    "nlp_engine/tests/milestone4a_ab_benchmark_results.json": null,
+    "nlp_engine/tests/milestone4a_ab_benchmark_results.md": null,
+    "nlp_engine/tests/milestone4a_ab_raw_samples.json": null,
+    "nlp_engine/tests/milestone4a_ab_profile_results.md": null,
+    "nlp_engine/tests/baselines/milestone4_pre_optimization_validator.py": null,
+    "nlp_engine/tests/test_milestone5_reliability.py": null
+  },
+  "environment": {
+    "python_version": "3.13.5",
+    "python_implementation": "CPython",
+    "operating_system": "Windows-11-10.0.26300-SP0",
+    "cpu": {
+      "logical_processors": 4,
+      "processor": "Intel64 Family 6 Model 126 Stepping 5, GenuineIntel",
+      "windows_cpu_name": null
+    },
+    "packages": {
+      "numpy": "2.5.4",
+      "scikit-learn": "1.9.1",
+      "nltk": "3.10.4",
+      "pydantic": "2.14.3",
+      "tiktoken": "0.14.0",
+      "pytest": "9.2.0",
+      "sentence-transformers": null,
+      "psutil": null
+    },
+    "semantic_model_enabled": false,
+    "semantic_model_downloads": false,
+    "llm_provider_calls": false,
+    "tokenizer_model": "tokentrim-milestone5b-estimate",
+    "token_count_mode": "heuristic estimate; unknown model name avoids tokenizer downloads"
+  },
+  "configuration": {
+    "prompt_sizes_characters": {
+      "512KiB": 524288,
+      "1MiB": 1048576,
+      "2MiB": 2097152
+    },
+    "prompt_types": [
+      "clause_heavy",
+      "technical_protected"
+    ],
+    "warmups_per_size_type": 1,
+    "measured_iterations_by_size": {
+      "512KiB": 5,
+      "1MiB": 3,
+      "2MiB": 2
+    },
+    "large_prompt_4mib": {
+      "status": "not_run",
+      "reason": "Exploratory 4 MiB runs were deferred to avoid an unbounded multi-minute stress workload; no automatic size limit was added."
+    },
+    "concurrency": {
+      "mode": "threads",
+      "worker_counts": [
+        1,
+        2,
+        4
+      ],
+      "process_mode": "not investigated",
+      "semantic_model": "disabled"
+    },
+    "memory_repetitions": 2,
+    "memory_prompt_type": "technical_protected (1 warm-up, 2 measured calls per size)",
+    "tracemalloc_separate_from_latency": true
+  },
+  "prompt_inputs": [
+    {
+      "size": "512KiB",
+      "prompt_type": "clause_heavy",
+      "characters": 524288,
+      "utf8_bytes": 524324,
+      "sha256": "715c8d5dd80b1b3c69fde82d3d09d42726ebe54d9766128cfeadf10fcf46c06f",
+      "estimated_tokens": 157332,
+      "tokenizer": {
+        "model": "tokentrim-milestone5b-estimate",
+        "family": "unknown",
+        "method": "heuristic_estimate",
+        "exact": false,
+        "note": "No offline tokenizer for this model; count is an estimate."
+      },
+      "segment_count": 343,
+      "comparable_clause_count": 329,
+      "guard_applies": true,
+      "warmups": 1,
+      "requested_iterations": 5,
+      "full_pipeline": {
+        "timing": {
+          "sample_count": 5,
+          "samples_ms": [
+            8523.258000001078,
+            8259.760599999936,
+            11423.817900000358,
+            11751.717399998597,
+            20666.312299999845
+          ],
+          "min_ms": 8259.760599999936,
+          "median_ms": 11423.817900000358,
+          "mean_ms": 12124.973239999963,
+          "max_ms": 20666.312299999845,
+          "stdev_ms": 5037.301685755007,
+          "p95_ms": null,
+          "p95_note": "reported only for at least 20 samples"
+        },
+        "standalone_validation_timing": {
+          "sample_count": 5,
+          "samples_ms": [
+            4973.090299999967,
+            5166.0011999993,
+            6458.371200000329,
+            7051.71429999973,
+            6148.481700000048
+          ],
+          "min_ms": 4973.090299999967,
+          "median_ms": 6148.481700000048,
+          "mean_ms": 5959.531739999875,
+          "max_ms": 7051.71429999973,
+          "stdev_ms": 877.5196680229088,
+          "p95_ms": null,
+          "p95_note": "reported only for at least 20 samples"
+        },
+        "warmups_completed": 1,
+        "quality_samples": [
+          {
+            "optimization_accepted": true,
+            "validation_valid_for_reported_result": true,
+            "accepted_candidate_is_valid": true,
+            "accepted_candidate_has_positive_savings": true,
+            "fallback_correct": true,
+            "original_prompt_retained": false,
+            "tokens_saved": 4,
+            "original_token_estimate": 157332,
+            "final_token_estimate": 157328,
+            "candidate_sha256": "67e304d99fedae4974d38ab43e339e756539b9f550bd41c37da196f1c0e7d234",
+            "final_sha256": "67e304d99fedae4974d38ab43e339e756539b9f550bd41c37da196f1c0e7d234",
+            "missing_required_literals": [],
+            "integrity_ok": true,
+            "candidate_validation_is_valid": true,
+            "candidate_validation_reasons": []
+          },
+          {
+            "optimization_accepted": true,
+            "validation_valid_for_reported_result": true,
+            "accepted_candidate_is_valid": true,
+            "accepted_candidate_has_positive_savings": true,
+            "fallback_correct": true,
+            "original_prompt_retained": false,
+            "tokens_saved": 4,
+            "original_token_estimate": 157332,
+            "final_token_estimate": 157328,
+            "candidate_sha256": "67e304d99fedae4974d38ab43e339e756539b9f550bd41c37da196f1c0e7d234",
+            "final_sha256": "67e304d99fedae4974d38ab43e339e756539b9f550bd41c37da196f1c0e7d234",
+            "missing_required_literals": [],
+            "integrity_ok": true,
+            "candidate_validation_is_valid": true,
+            "candidate_validation_reasons": []
+          },
+          {
+            "optimization_accepted": true,
+            "validation_valid_for_reported_result": true,
+            "accepted_candidate_is_valid": true,
+            "accepted_candidate_has_positive_savings": true,
+            "fallback_correct": true,
+            "original_prompt_retained": false,
+            "tokens_saved": 4,
+            "original_token_estimate": 157332,
+            "final_token_estimate": 157328,
+            "candidate_sha256": "67e304d99fedae4974d38ab43e339e756539b9f550bd41c37da196f1c0e7d234",
+            "final_sha256": "67e304d99fedae4974d38ab43e339e756539b9f550bd41c37da196f1c0e7d234",
+            "missing_required_literals": [],
+            "integrity_ok": true,
+            "candidate_validation_is_valid": true,
+            "candidate_validation_reasons": []
+          },
+          {
+            "optimization_accepted": true,
+            "validation_valid_for_reported_result": true,
+            "accepted_candidate_is_valid": true,
+            "accepted_candidate_has_positive_savings": true,
+            "fallback_correct": true,
+            "original_prompt_retained": false,
+            "tokens_saved": 4,
+            "original_token_estimate": 157332,
+            "final_token_estimate": 157328,
+            "candidate_sha256": "67e304d99fedae4974d38ab43e339e756539b9f550bd41c37da196f1c0e7d234",
+            "final_sha256": "67e304d99fedae4974d38ab43e339e756539b9f550bd41c37da196f1c0e7d234",
+            "missing_required_literals": [],
+            "integrity_ok": true,
+            "candidate_validation_is_valid": true,
+            "candidate_validation_reasons": []
+          },
+          {
+            "optimization_accepted": true,
+            "validation_valid_for_reported_result": true,
+            "accepted_candidate_is_valid": true,
+            "accepted_candidate_has_positive_savings": true,
+            "fallback_correct": true,
+            "original_prompt_retained": false,
+            "tokens_saved": 4,
+            "original_token_estimate": 157332,
+            "final_token_estimate": 157328,
+            "candidate_sha256": "67e304d99fedae4974d38ab43e339e756539b9f550bd41c37da196f1c0e7d234",
+            "final_sha256": "67e304d99fedae4974d38ab43e339e756539b9f550bd41c37da196f1c0e7d234",
+            "missing_required_literals": [],
+            "integrity_ok": true,
+            "candidate_validation_is_valid": true,
+            "candidate_validation_reasons": []
+          },
+          {
+            "optimization_accepted": true,
+            "validation_valid_for_reported_result": true,
+            "accepted_candidate_is_valid": true,
+            "accepted_candidate_has_positive_savings": true,
+            "fallback_correct": true,
+            "original_prompt_retained": false,
+            "tokens_saved": 4,
+            "original_token_estimate": 157332,
+            "final_token_estimate": 157328,
+            "candidate_sha256": "67e304d99fedae4974d38ab43e339e756539b9f550bd41c37da196f1c0e7d234",
+            "final_sha256": "67e304d99fedae4974d38ab43e339e756539b9f550bd41c37da196f1c0e7d234",
+            "missing_required_literals": [],
+            "integrity_ok": true,
+            "candidate_validation_is_valid": true,
+            "candidate_validation_reasons": []
+          }
+        ],
+        "output_deterministic": true,
+        "output_hashes": [
+          "67e304d99fedae4974d38ab43e339e756539b9f550bd41c37da196f1c0e7d234"
+        ],
+        "errors": [],
+        "candidate_available": true,
+        "status": "completed"
+      }
+    },
+    {
+      "size": "512KiB",
+      "prompt_type": "technical_protected",
+      "characters": 524288,
+      "utf8_bytes": 524326,
+      "sha256": "73b1cb6b0fed52921b697dfa5194bf87eb6d620b8dc2a5be3d2d056def679d83",
+      "estimated_tokens": 273866,
+      "tokenizer": {
+        "model": "tokentrim-milestone5b-estimate",
+        "family": "unknown",
+        "method": "heuristic_estimate",
+        "exact": false,
+        "note": "No offline tokenizer for this model; count is an estimate."
+      },
+      "segment_count": 26,
+      "comparable_clause_count": 9,
+      "guard_applies": false,
+      "warmups": 1,
+      "requested_iterations": 5,
+      "full_pipeline": {
+        "timing": {
+          "sample_count": 5,
+          "samples_ms": [
+            2924.012199999197,
+            3938.0709000015486,
+            3267.115399999966,
+            3326.052600001276,
+            3218.423199999961
+          ],
+          "min_ms": 2924.012199999197,
+          "median_ms": 3267.115399999966,
+          "mean_ms": 3334.7348600003897,
+          "max_ms": 3938.0709000015486,
+          "stdev_ms": 371.10768513473005,
+          "p95_ms": null,
+          "p95_note": "reported only for at least 20 samples"
+        },
+        "standalone_validation_timing": {
+          "sample_count": 5,
+          "samples_ms": [
+            2057.218299998567,
+            2298.7604000009014,
+            2368.522100001428,
+            2403.6799000004976,
+            2280.1223999995273
+          ],
+          "min_ms": 2057.218299998567,
+          "median_ms": 2298.7604000009014,
+          "mean_ms": 2281.6606200001843,
+          "max_ms": 2403.6799000004976,
+          "stdev_ms": 135.1875965134681,
+          "p95_ms": null,
+          "p95_note": "reported only for at least 20 samples"
+        },
+        "warmups_completed": 1,
+        "quality_samples": [
+          {
+            "optimization_accepted": true,
+            "validation_valid_for_reported_result": true,
+            "accepted_candidate_is_valid": true,
+            "accepted_candidate_has_positive_savings": true,
+            "fallback_correct": true,
+            "original_prompt_retained": false,
+            "tokens_saved": 14,
+            "original_token_estimate": 273866,
+            "final_token_estimate": 273852,
+            "candidate_sha256": "3fc2bbe44a79c601cbc15a9b274d89abd69987291636ccd58bf2de398918ea26",
+            "final_sha256": "3fc2bbe44a79c601cbc15a9b274d89abd69987291636ccd58bf2de398918ea26",
+            "missing_required_literals": [],
+            "integrity_ok": true,
+            "candidate_validation_is_valid": true,
+            "candidate_validation_reasons": []
+          },
+          {
+            "optimization_accepted": true,
+            "validation_valid_for_reported_result": true,
+            "accepted_candidate_is_valid": true,
+            "accepted_candidate_has_positive_savings": true,
+            "fallback_correct": true,
+            "original_prompt_retained": false,
+            "tokens_saved": 14,
+            "original_token_estimate": 273866,
+            "final_token_estimate": 273852,
+            "candidate_sha256": "3fc2bbe44a79c601cbc15a9b274d89abd69987291636ccd58bf2de398918ea26",
+            "final_sha256": "3fc2bbe44a79c601cbc15a9b274d89abd69987291636ccd58bf2de398918ea26",
+            "missing_required_literals": [],
+            "integrity_ok": true,
+            "candidate_validation_is_valid": true,
+            "candidate_validation_reasons": []
+          },
+          {
+            "optimization_accepted": true,
+            "validation_valid_for_reported_result": true,
+            "accepted_candidate_is_valid": true,
+            "accepted_candidate_has_positive_savings": true,
+            "fallback_correct": true,
+            "original_prompt_retained": false,
+            "tokens_saved": 14,
+            "original_token_estimate": 273866,
+            "final_token_estimate": 273852,
+            "candidate_sha256": "3fc2bbe44a79c601cbc15a9b274d89abd69987291636ccd58bf2de398918ea26",
+            "final_sha256": "3fc2bbe44a79c601cbc15a9b274d89abd69987291636ccd58bf2de398918ea26",
+            "missing_required_literals": [],
+            "integrity_ok": true,
+            "candidate_validation_is_valid": true,
+            "candidate_validation_reasons": []
+          },
+          {
+            "optimization_accepted": true,
+            "validation_valid_for_reported_result": true,
+            "accepted_candidate_is_valid": true,
+            "accepted_candidate_has_positive_savings": true,
+            "fallback_correct": true,
+            "original_prompt_retained": false,
+            "tokens_saved": 14,
+            "original_token_estimate": 273866,
+            "final_token_estimate": 273852,
+            "candidate_sha256": "3fc2bbe44a79c601cbc15a9b274d89abd69987291636ccd58bf2de398918ea26",
+            "final_sha256": "3fc2bbe44a79c601cbc15a9b274d89abd69987291636ccd58bf2de398918ea26",
+            "missing_required_literals": [],
+            "integrity_ok": true,
+            "candidate_validation_is_valid": true,
+            "candidate_validation_reasons": []
+          },
+          {
+            "optimization_accepted": true,
+            "validation_valid_for_reported_result": true,
+            "accepted_candidate_is_valid": true,
+            "accepted_candidate_has_positive_savings": true,
+            "fallback_correct": true,
+            "original_prompt_retained": false,
+            "tokens_saved": 14,
+            "original_token_estimate": 273866,
+            "final_token_estimate": 273852,
+            "candidate_sha256": "3fc2bbe44a79c601cbc15a9b274d89abd69987291636ccd58bf2de398918ea26",
+            "final_sha256": "3fc2bbe44a79c601cbc15a9b274d89abd69987291636ccd58bf2de398918ea26",
+            "missing_required_literals": [],
+            "integrity_ok": true,
+            "candidate_validation_is_valid": true,
+            "candidate_validation_reasons": []
+          },
+          {
+            "optimization_accepted": true,
+            "validation_valid_for_reported_result": true,
+            "accepted_candidate_is_valid": true,
+            "accepted_candidate_has_positive_savings": true,
+            "fallback_correct": true,
+            "original_prompt_retained": false,
+            "tokens_saved": 14,
+            "original_token_estimate": 273866,
+            "final_token_estimate": 273852,
+            "candidate_sha256": "3fc2bbe44a79c601cbc15a9b274d89abd69987291636ccd58bf2de398918ea26",
+            "final_sha256": "3fc2bbe44a79c601cbc15a9b274d89abd69987291636ccd58bf2de398918ea26",
+            "missing_required_literals": [],
+            "integrity_ok": true,
+            "candidate_validation_is_valid": true,
+            "candidate_validation_reasons": []
+          }
+        ],
+        "output_deterministic": true,
+        "output_hashes": [
+          "3fc2bbe44a79c601cbc15a9b274d89abd69987291636ccd58bf2de398918ea26"
+        ],
+        "errors": [],
+        "candidate_available": true,
+        "status": "completed"
+      }
+    },
+    {
+      "size": "1MiB",
+      "prompt_type": "clause_heavy",
+      "characters": 1048576,
+      "utf8_bytes": 1048612,
+      "sha256": "9b25be58288b8991941b157eb0538f4464080d514f209c8441635618d46a43f3",
+      "estimated_tokens": 313698,
+      "tokenizer": {
+        "model": "tokentrim-milestone5b-estimate",
+        "family": "unknown",
+        "method": "heuristic_estimate",
+        "exact": false,
+        "note": "No offline tokenizer for this model; count is an estimate."
+      },
+      "segment_count": 343,
+      "comparable_clause_count": 329,
+      "guard_applies": true,
+      "warmups": 1,
+      "requested_iterations": 3,
+      "full_pipeline": {
+        "timing": {
+          "sample_count": 3,
+          "samples_ms": [
+            15799.645099999907,
+            21711.51269999973,
+            18043.221500000072
+          ],
+          "min_ms": 15799.645099999907,
+          "median_ms": 18043.221500000072,
+          "mean_ms": 18518.126433333236,
+          "max_ms": 21711.51269999973,
+          "stdev_ms": 2984.4087608369014,
+          "p95_ms": null,
+          "p95_note": "reported only for at least 20 samples"
+        },
+        "standalone_validation_timing": {
+          "sample_count": 3,
+          "samples_ms": [
+            13105.619399999341,
+            10478.68279999966,
+            11188.554999998814
+          ],
+          "min_ms": 10478.68279999966,
+          "median_ms": 11188.554999998814,
+          "mean_ms": 11590.952399999273,
+          "max_ms": 13105.619399999341,
+          "stdev_ms": 1358.9119639438813,
+          "p95_ms": null,
+          "p95_note": "reported only for at least 20 samples"
+        },
+        "warmups_completed": 1,
+        "quality_samples": [
+          {
+            "optimization_accepted": true,
+            "validation_valid_for_reported_result": true,
+            "accepted_candidate_is_valid": true,
+            "accepted_candidate_has_positive_savings": true,
+            "fallback_correct": true,
+            "original_prompt_retained": false,
+            "tokens_saved": 4,
+            "original_token_estimate": 313698,
+            "final_token_estimate": 313694,
+            "candidate_sha256": "a7fa359373ee2cfbc2cbce4488ea130dd677d7a4d21ea277ef35e28306ab3a31",
+            "final_sha256": "a7fa359373ee2cfbc2cbce4488ea130dd677d7a4d21ea277ef35e28306ab3a31",
+            "missing_required_literals": [],
+            "integrity_ok": true,
+            "candidate_validation_is_valid": true,
+            "candidate_validation_reasons": []
+          },
+          {
+            "optimization_accepted": true,
+            "validation_valid_for_reported_result": true,
+            "accepted_candidate_is_valid": true,
+            "accepted_candidate_has_positive_savings": true,
+            "fallback_correct": true,
+            "original_prompt_retained": false,
+            "tokens_saved": 4,
+            "original_token_estimate": 313698,
+            "final_token_estimate": 313694,
+            "candidate_sha256": "a7fa359373ee2cfbc2cbce4488ea130dd677d7a4d21ea277ef35e28306ab3a31",
+            "final_sha256": "a7fa359373ee2cfbc2cbce4488ea130dd677d7a4d21ea277ef35e28306ab3a31",
+            "missing_required_literals": [],
+            "integrity_ok": true,
+            "candidate_validation_is_valid": true,
+            "candidate_validation_reasons": []
+          },
+          {
+            "optimization_accepted": true,
+            "validation_valid_for_reported_result": true,
+            "accepted_candidate_is_valid": true,
+            "accepted_candidate_has_positive_savings": true,
+            "fallback_correct": true,
+            "original_prompt_retained": false,
+            "tokens_saved": 4,
+            "original_token_estimate": 313698,
+            "final_token_estimate": 313694,
+            "candidate_sha256": "a7fa359373ee2cfbc2cbce4488ea130dd677d7a4d21ea277ef35e28306ab3a31",
+            "final_sha256": "a7fa359373ee2cfbc2cbce4488ea130dd677d7a4d21ea277ef35e28306ab3a31",
+            "missing_required_literals": [],
+            "integrity_ok": true,
+            "candidate_validation_is_valid": true,
+            "candidate_validation_reasons": []
+          },
+          {
+            "optimization_accepted": true,
+            "validation_valid_for_reported_result": true,
+            "accepted_candidate_is_valid": true,
+            "accepted_candidate_has_positive_savings": true,
+            "fallback_correct": true,
+            "original_prompt_retained": false,
+            "tokens_saved": 4,
+            "original_token_estimate": 313698,
+            "final_token_estimate": 313694,
+            "candidate_sha256": "a7fa359373ee2cfbc2cbce4488ea130dd677d7a4d21ea277ef35e28306ab3a31",
+            "final_sha256": "a7fa359373ee2cfbc2cbce4488ea130dd677d7a4d21ea277ef35e28306ab3a31",
+            "missing_required_literals": [],
+            "integrity_ok": true,
+            "candidate_validation_is_valid": true,
+            "candidate_validation_reasons": []
+          }
+        ],
+        "output_deterministic": true,
+        "output_hashes": [
+          "a7fa359373ee2cfbc2cbce4488ea130dd677d7a4d21ea277ef35e28306ab3a31"
+        ],
+        "errors": [],
+        "candidate_available": true,
+        "status": "completed"
+      }
+    },
+    {
+      "size": "1MiB",
+      "prompt_type": "technical_protected",
+      "characters": 1048576,
+      "utf8_bytes": 1048614,
+      "sha256": "2179d7a948a3aff4dae3f6988bb9ddc21d2a63a5b513a396dc2ffca1a1576a40",
+      "estimated_tokens": 547930,
+      "tokenizer": {
+        "model": "tokentrim-milestone5b-estimate",
+        "family": "unknown",
+        "method": "heuristic_estimate",
+        "exact": false,
+        "note": "No offline tokenizer for this model; count is an estimate."
+      },
+      "segment_count": 26,
+      "comparable_clause_count": 9,
+      "guard_applies": false,
+      "warmups": 1,
+      "requested_iterations": 3,
+      "full_pipeline": {
+        "timing": {
+          "sample_count": 3,
+          "samples_ms": [
+            6853.442899999209,
+            10874.93010000071,
+            6735.326299998633
+          ],
+          "min_ms": 6735.326299998633,
+          "median_ms": 6853.442899999209,
+          "mean_ms": 8154.5664333328505,
+          "max_ms": 10874.93010000071,
+          "stdev_ms": 2356.644169575432,
+          "p95_ms": null,
+          "p95_note": "reported only for at least 20 samples"
+        },
+        "standalone_validation_timing": {
+          "sample_count": 3,
+          "samples_ms": [
+            5865.754899999956,
+            10516.601200000878,
+            5248.811699999351
+          ],
+          "min_ms": 5248.811699999351,
+          "median_ms": 5865.754899999956,
+          "mean_ms": 7210.389266666728,
+          "max_ms": 10516.601200000878,
+          "stdev_ms": 2879.8320678639575,
+          "p95_ms": null,
+          "p95_note": "reported only for at least 20 samples"
+        },
+        "warmups_completed": 1,
+        "quality_samples": [
+          {
+            "optimization_accepted": true,
+            "validation_valid_for_reported_result": true,
+            "accepted_candidate_is_valid": true,
+            "accepted_candidate_has_positive_savings": true,
+            "fallback_correct": true,
+            "original_prompt_retained": false,
+            "tokens_saved": 14,
+            "original_token_estimate": 547930,
+            "final_token_estimate": 547916,
+            "candidate_sha256": "fe338f13d9e853f1f3a21fb11f8d76fabb2254e676e25bc9f89c9e4c333bc1ad",
+            "final_sha256": "fe338f13d9e853f1f3a21fb11f8d76fabb2254e676e25bc9f89c9e4c333bc1ad",
+            "missing_required_literals": [],
+            "integrity_ok": true,
+            "candidate_validation_is_valid": true,
+            "candidate_validation_reasons": []
+          },
+          {
+            "optimization_accepted": true,
+            "validation_valid_for_reported_result": true,
+            "accepted_candidate_is_valid": true,
+            "accepted_candidate_has_positive_savings": true,
+            "fallback_correct": true,
+            "original_prompt_retained": false,
+            "tokens_saved": 14,
+            "original_token_estimate": 547930,
+            "final_token_estimate": 547916,
+            "candidate_sha256": "fe338f13d9e853f1f3a21fb11f8d76fabb2254e676e25bc9f89c9e4c333bc1ad",
+            "final_sha256": "fe338f13d9e853f1f3a21fb11f8d76fabb2254e676e25bc9f89c9e4c333bc1ad",
+            "missing_required_literals": [],
+            "integrity_ok": true,
+            "candidate_validation_is_valid": true,
+            "candidate_validation_reasons": []
+          },
+          {
+            "optimization_accepted": true,
+            "validation_valid_for_reported_result": true,
+            "accepted_candidate_is_valid": true,
+            "accepted_candidate_has_positive_savings": true,
+            "fallback_correct": true,
+            "original_prompt_retained": false,
+            "tokens_saved": 14,
+            "original_token_estimate": 547930,
+            "final_token_estimate": 547916,
+            "candidate_sha256": "fe338f13d9e853f1f3a21fb11f8d76fabb2254e676e25bc9f89c9e4c333bc1ad",
+            "final_sha256": "fe338f13d9e853f1f3a21fb11f8d76fabb2254e676e25bc9f89c9e4c333bc1ad",
+            "missing_required_literals": [],
+            "integrity_ok": true,
+            "candidate_validation_is_valid": true,
+            "candidate_validation_reasons": []
+          },
+          {
+            "optimization_accepted": true,
+            "validation_valid_for_reported_result": true,
+            "accepted_candidate_is_valid": true,
+            "accepted_candidate_has_positive_savings": true,
+            "fallback_correct": true,
+            "original_prompt_retained": false,
+            "tokens_saved": 14,
+            "original_token_estimate": 547930,
+            "final_token_estimate": 547916,
+            "candidate_sha256": "fe338f13d9e853f1f3a21fb11f8d76fabb2254e676e25bc9f89c9e4c333bc1ad",
+            "final_sha256": "fe338f13d9e853f1f3a21fb11f8d76fabb2254e676e25bc9f89c9e4c333bc1ad",
+            "missing_required_literals": [],
+            "integrity_ok": true,
+            "candidate_validation_is_valid": true,
+            "candidate_validation_reasons": []
+          }
+        ],
+        "output_deterministic": true,
+        "output_hashes": [
+          "fe338f13d9e853f1f3a21fb11f8d76fabb2254e676e25bc9f89c9e4c333bc1ad"
+        ],
+        "errors": [],
+        "candidate_available": true,
+        "status": "completed"
+      }
+    },
+    {
+      "size": "2MiB",
+      "prompt_type": "clause_heavy",
+      "characters": 2097152,
+      "utf8_bytes": 2097188,
+      "sha256": "6bf08fd78d76fe7281c4932db6e0a25f9c1ae89cf75c09bab8de4c00dc7a35a1",
+      "estimated_tokens": 626431,
+      "tokenizer": {
+        "model": "tokentrim-milestone5b-estimate",
+        "family": "unknown",
+        "method": "heuristic_estimate",
+        "exact": false,
+        "note": "No offline tokenizer for this model; count is an estimate."
+      },
+      "segment_count": 343,
+      "comparable_clause_count": 329,
+      "guard_applies": true,
+      "warmups": 1,
+      "requested_iterations": 2,
+      "full_pipeline": {
+        "timing": {
+          "sample_count": 2,
+          "samples_ms": [
+            48195.58499999948,
+            51443.87000000097
+          ],
+          "min_ms": 48195.58499999948,
+          "median_ms": 49819.72750000023,
+          "mean_ms": 49819.72750000023,
+          "max_ms": 51443.87000000097,
+          "stdev_ms": 2296.8843507275965,
+          "p95_ms": null,
+          "p95_note": "reported only for at least 20 samples"
+        },
+        "standalone_validation_timing": {
+          "sample_count": 2,
+          "samples_ms": [
+            36047.63029999958,
+            31831.673600001523
+          ],
+          "min_ms": 31831.673600001523,
+          "median_ms": 33939.65195000055,
+          "mean_ms": 33939.65195000055,
+          "max_ms": 36047.63029999958,
+          "stdev_ms": 2981.131571757487,
+          "p95_ms": null,
+          "p95_note": "reported only for at least 20 samples"
+        },
+        "warmups_completed": 1,
+        "quality_samples": [
+          {
+            "optimization_accepted": true,
+            "validation_valid_for_reported_result": true,
+            "accepted_candidate_is_valid": true,
+            "accepted_candidate_has_positive_savings": true,
+            "fallback_correct": true,
+            "original_prompt_retained": false,
+            "tokens_saved": 4,
+            "original_token_estimate": 626431,
+            "final_token_estimate": 626427,
+            "candidate_sha256": "355e740596053870145144d0ee95a1f20993cc539bb678d208836ea2c7317947",
+            "final_sha256": "355e740596053870145144d0ee95a1f20993cc539bb678d208836ea2c7317947",
+            "missing_required_literals": [],
+            "integrity_ok": true,
+            "candidate_validation_is_valid": true,
+            "candidate_validation_reasons": []
+          },
+          {
+            "optimization_accepted": true,
+            "validation_valid_for_reported_result": true,
+            "accepted_candidate_is_valid": true,
+            "accepted_candidate_has_positive_savings": true,
+            "fallback_correct": true,
+            "original_prompt_retained": false,
+            "tokens_saved": 4,
+            "original_token_estimate": 626431,
+            "final_token_estimate": 626427,
+            "candidate_sha256": "355e740596053870145144d0ee95a1f20993cc539bb678d208836ea2c7317947",
+            "final_sha256": "355e740596053870145144d0ee95a1f20993cc539bb678d208836ea2c7317947",
+            "missing_required_literals": [],
+            "integrity_ok": true,
+            "candidate_validation_is_valid": true,
+            "candidate_validation_reasons": []
+          },
+          {
+            "optimization_accepted": true,
+            "validation_valid_for_reported_result": true,
+            "accepted_candidate_is_valid": true,
+            "accepted_candidate_has_positive_savings": true,
+            "fallback_correct": true,
+            "original_prompt_retained": false,
+            "tokens_saved": 4,
+            "original_token_estimate": 626431,
+            "final_token_estimate": 626427,
+            "candidate_sha256": "355e740596053870145144d0ee95a1f20993cc539bb678d208836ea2c7317947",
+            "final_sha256": "355e740596053870145144d0ee95a1f20993cc539bb678d208836ea2c7317947",
+            "missing_required_literals": [],
+            "integrity_ok": true,
+            "candidate_validation_is_valid": true,
+            "candidate_validation_reasons": []
+          }
+        ],
+        "output_deterministic": true,
+        "output_hashes": [
+          "355e740596053870145144d0ee95a1f20993cc539bb678d208836ea2c7317947"
+        ],
+        "errors": [],
+        "candidate_available": true,
+        "status": "completed"
+      }
+    },
+    {
+      "size": "2MiB",
+      "prompt_type": "technical_protected",
+      "characters": 2097152,
+      "utf8_bytes": 2097190,
+      "sha256": "caa45994bd0aee57f0e4007474b6aa613aa74a3b1e6648f4ab420f4b6f816869",
+      "estimated_tokens": 1096058,
+      "tokenizer": {
+        "model": "tokentrim-milestone5b-estimate",
+        "family": "unknown",
+        "method": "heuristic_estimate",
+        "exact": false,
+        "note": "No offline tokenizer for this model; count is an estimate."
+      },
+      "segment_count": 26,
+      "comparable_clause_count": 9,
+      "guard_applies": false,
+      "warmups": 1,
+      "requested_iterations": 2,
+      "full_pipeline": {
+        "timing": {
+          "sample_count": 2,
+          "samples_ms": [
+            14682.173000001058,
+            38535.912299999836
+          ],
+          "min_ms": 14682.173000001058,
+          "median_ms": 26609.042650000447,
+          "mean_ms": 26609.042650000447,
+          "max_ms": 38535.912299999836,
+          "stdev_ms": 16867.140815685187,
+          "p95_ms": null,
+          "p95_note": "reported only for at least 20 samples"
+        },
+        "standalone_validation_timing": {
+          "sample_count": 2,
+          "samples_ms": [
+            10484.61479999969,
+            15644.954399998824
+          ],
+          "min_ms": 10484.61479999969,
+          "median_ms": 13064.784599999257,
+          "mean_ms": 13064.784599999257,
+          "max_ms": 15644.954399998824,
+          "stdev_ms": 3648.9111243848633,
+          "p95_ms": null,
+          "p95_note": "reported only for at least 20 samples"
+        },
+        "warmups_completed": 1,
+        "quality_samples": [
+          {
+            "optimization_accepted": true,
+            "validation_valid_for_reported_result": true,
+            "accepted_candidate_is_valid": true,
+            "accepted_candidate_has_positive_savings": true,
+            "fallback_correct": true,
+            "original_prompt_retained": false,
+            "tokens_saved": 14,
+            "original_token_estimate": 1096058,
+            "final_token_estimate": 1096044,
+            "candidate_sha256": "4ee65d7ce19f311d65d06d35d6c6999bc6db5c7c9303e25a5c4e8bbda171a04e",
+            "final_sha256": "4ee65d7ce19f311d65d06d35d6c6999bc6db5c7c9303e25a5c4e8bbda171a04e",
+            "missing_required_literals": [],
+            "integrity_ok": true,
+            "candidate_validation_is_valid": true,
+            "candidate_validation_reasons": []
+          },
+          {
+            "optimization_accepted": true,
+            "validation_valid_for_reported_result": true,
+            "accepted_candidate_is_valid": true,
+            "accepted_candidate_has_positive_savings": true,
+            "fallback_correct": true,
+            "original_prompt_retained": false,
+            "tokens_saved": 14,
+            "original_token_estimate": 1096058,
+            "final_token_estimate": 1096044,
+            "candidate_sha256": "4ee65d7ce19f311d65d06d35d6c6999bc6db5c7c9303e25a5c4e8bbda171a04e",
+            "final_sha256": "4ee65d7ce19f311d65d06d35d6c6999bc6db5c7c9303e25a5c4e8bbda171a04e",
+            "missing_required_literals": [],
+            "integrity_ok": true,
+            "candidate_validation_is_valid": true,
+            "candidate_validation_reasons": []
+          },
+          {
+            "optimization_accepted": true,
+            "validation_valid_for_reported_result": true,
+            "accepted_candidate_is_valid": true,
+            "accepted_candidate_has_positive_savings": true,
+            "fallback_correct": true,
+            "original_prompt_retained": false,
+            "tokens_saved": 14,
+            "original_token_estimate": 1096058,
+            "final_token_estimate": 1096044,
+            "candidate_sha256": "4ee65d7ce19f311d65d06d35d6c6999bc6db5c7c9303e25a5c4e8bbda171a04e",
+            "final_sha256": "4ee65d7ce19f311d65d06d35d6c6999bc6db5c7c9303e25a5c4e8bbda171a04e",
+            "missing_required_literals": [],
+            "integrity_ok": true,
+            "candidate_validation_is_valid": true,
+            "candidate_validation_reasons": []
+          }
+        ],
+        "output_deterministic": true,
+        "output_hashes": [
+          "4ee65d7ce19f311d65d06d35d6c6999bc6db5c7c9303e25a5c4e8bbda171a04e"
+        ],
+        "errors": [],
+        "candidate_available": true,
+        "status": "completed"
+      }
+    }
+  ],
+  "memory": [
+    {
+      "size": "512KiB",
+      "prompt_type": "technical_protected",
+      "characters": 524288,
+      "sha256": "73b1cb6b0fed52921b697dfa5194bf87eb6d620b8dc2a5be3d2d056def679d83",
+      "warmup_completed": true,
+      "warmup_output_sha256": "3fc2bbe44a79c601cbc15a9b274d89abd69987291636ccd58bf2de398918ea26",
+      "iterations": 2,
+      "tracemalloc_current_before_bytes": 0,
+      "tracemalloc_current_after_bytes": 14117,
+      "tracemalloc_delta_after_repeats_bytes": 14117,
+      "tracemalloc_peak_bytes": 14377980,
+      "rss_before": {
+        "available": true,
+        "method": "Windows GetProcessMemoryInfo working set",
+        "rss_bytes": 165269504,
+        "peak_rss_bytes": 218365952
+      },
+      "rss_after": {
+        "available": true,
+        "method": "Windows GetProcessMemoryInfo working set",
+        "rss_bytes": 168079360,
+        "peak_rss_bytes": 218365952
+      },
+      "samples": [
+        {
+          "iteration": 1,
+          "current_before_bytes": 32,
+          "current_after_bytes": 1217591,
+          "current_delta_bytes": 1217559,
+          "peak_bytes_since_trace_start": 14370088,
+          "incremental_peak_bytes": 14370088,
+          "elapsed_ms_memory_instrumented": 18606.72970000087,
+          "outcome": "ok",
+          "exception_type": null
+        },
+        {
+          "iteration": 2,
+          "current_before_bytes": 6275,
+          "current_after_bytes": 1225497,
+          "current_delta_bytes": 1219222,
+          "peak_bytes_since_trace_start": 14377980,
+          "incremental_peak_bytes": 14377980,
+          "elapsed_ms_memory_instrumented": 29146.03999999963,
+          "outcome": "ok",
+          "exception_type": null
+        }
+      ],
+      "output_deterministic": true,
+      "all_integrity_checks_passed": true,
+      "limitations": [
+        "tracemalloc measures Python-traced allocations, not total process memory",
+        "RSS is sampled before/after; short-lived peak RSS may be missed",
+        "allocator retention after garbage collection is not itself evidence of a leak"
+      ]
+    },
+    {
+      "size": "1MiB",
+      "prompt_type": "technical_protected",
+      "characters": 1048576,
+      "sha256": "2179d7a948a3aff4dae3f6988bb9ddc21d2a63a5b513a396dc2ffca1a1576a40",
+      "warmup_completed": true,
+      "warmup_output_sha256": "fe338f13d9e853f1f3a21fb11f8d76fabb2254e676e25bc9f89c9e4c333bc1ad",
+      "iterations": 2,
+      "tracemalloc_current_before_bytes": 0,
+      "tracemalloc_current_after_bytes": 17886,
+      "tracemalloc_delta_after_repeats_bytes": 17886,
+      "tracemalloc_peak_bytes": 28537395,
+      "rss_before": {
+        "available": true,
+        "method": "Windows GetProcessMemoryInfo working set",
+        "rss_bytes": 175202304,
+        "peak_rss_bytes": 218365952
+      },
+      "rss_after": {
+        "available": true,
+        "method": "Windows GetProcessMemoryInfo working set",
+        "rss_bytes": 169099264,
+        "peak_rss_bytes": 218365952
+      },
+      "samples": [
+        {
+          "iteration": 1,
+          "current_before_bytes": 32,
+          "current_after_bytes": 2272502,
+          "current_delta_bytes": 2272470,
+          "peak_bytes_since_trace_start": 28531762,
+          "incremental_peak_bytes": 28531762,
+          "elapsed_ms_memory_instrumented": 43984.54519999905,
+          "outcome": "ok",
+          "exception_type": null
+        },
+        {
+          "iteration": 2,
+          "current_before_bytes": 12626,
+          "current_after_bytes": 2277826,
+          "current_delta_bytes": 2265200,
+          "peak_bytes_since_trace_start": 28537395,
+          "incremental_peak_bytes": 28537395,
+          "elapsed_ms_memory_instrumented": 45353.37889999937,
+          "outcome": "ok",
+          "exception_type": null
+        }
+      ],
+      "output_deterministic": true,
+      "all_integrity_checks_passed": true,
+      "limitations": [
+        "tracemalloc measures Python-traced allocations, not total process memory",
+        "RSS is sampled before/after; short-lived peak RSS may be missed",
+        "allocator retention after garbage collection is not itself evidence of a leak"
+      ]
+    },
+    {
+      "size": "2MiB",
+      "prompt_type": "technical_protected",
+      "characters": 2097152,
+      "sha256": "caa45994bd0aee57f0e4007474b6aa613aa74a3b1e6648f4ab420f4b6f816869",
+      "warmup_completed": true,
+      "warmup_output_sha256": "4ee65d7ce19f311d65d06d35d6c6999bc6db5c7c9303e25a5c4e8bbda171a04e",
+      "iterations": 2,
+      "tracemalloc_current_before_bytes": 0,
+      "tracemalloc_current_after_bytes": 28358,
+      "tracemalloc_delta_after_repeats_bytes": 28358,
+      "tracemalloc_peak_bytes": 56859860,
+      "rss_before": {
+        "available": true,
+        "method": "Windows GetProcessMemoryInfo working set",
+        "rss_bytes": 176136192,
+        "peak_rss_bytes": 220233728
+      },
+      "rss_after": {
+        "available": true,
+        "method": "Windows GetProcessMemoryInfo working set",
+        "rss_bytes": 173416448,
+        "peak_rss_bytes": 248537088
+      },
+      "samples": [
+        {
+          "iteration": 1,
+          "current_before_bytes": 32,
+          "current_after_bytes": 4378122,
+          "current_delta_bytes": 4378090,
+          "peak_bytes_since_trace_start": 56852006,
+          "incremental_peak_bytes": 56852006,
+          "elapsed_ms_memory_instrumented": 67702.57909999964,
+          "outcome": "ok",
+          "exception_type": null
+        },
+        {
+          "iteration": 2,
+          "current_before_bytes": 21124,
+          "current_after_bytes": 4385420,
+          "current_delta_bytes": 4364296,
+          "peak_bytes_since_trace_start": 56859860,
+          "incremental_peak_bytes": 56859860,
+          "elapsed_ms_memory_instrumented": 44595.58560000005,
+          "outcome": "ok",
+          "exception_type": null
+        }
+      ],
+      "output_deterministic": true,
+      "all_integrity_checks_passed": true,
+      "limitations": [
+        "tracemalloc measures Python-traced allocations, not total process memory",
+        "RSS is sampled before/after; short-lived peak RSS may be missed",
+        "allocator retention after garbage collection is not itself evidence of a leak"
+      ]
+    }
+  ],
+  "concurrency": [
+    {
+      "workload": "small_2k",
+      "workers": 1,
+      "tasks_per_round": 4,
+      "rounds": [
+        {
+          "round": 1,
+          "wall_ms": 588.593899999978,
+          "requests": [
+            {
+              "request_sha256": "91042d753935dff76eb17a9247bc8a8ea5e5bd0d6498e7658075637f555e7d7a",
+              "final_sha256": "91042d753935dff76eb17a9247bc8a8ea5e5bd0d6498e7658075637f555e7d7a",
+              "matches_serial_reference": true,
+              "request_marker_preserved": true,
+              "accepted": false,
+              "tokens_saved": 0,
+              "original_prompt_retained": true,
+              "elapsed_ms": 170.3510000006645,
+              "error_type": null
+            },
+            {
+              "request_sha256": "ed4e253909908da8cedd22b72d1e158ed28c1f7ed5addb2eb98df07460413868",
+              "final_sha256": "ed4e253909908da8cedd22b72d1e158ed28c1f7ed5addb2eb98df07460413868",
+              "matches_serial_reference": true,
+              "request_marker_preserved": true,
+              "accepted": false,
+              "tokens_saved": 0,
+              "original_prompt_retained": true,
+              "elapsed_ms": 129.74690000010014,
+              "error_type": null
+            },
+            {
+              "request_sha256": "b80b9ffcda144d04db8c6f060fb1078836304c99d5ee801dcafe36e77682c84c",
+              "final_sha256": "b80b9ffcda144d04db8c6f060fb1078836304c99d5ee801dcafe36e77682c84c",
+              "matches_serial_reference": true,
+              "request_marker_preserved": true,
+              "accepted": false,
+              "tokens_saved": 0,
+              "original_prompt_retained": true,
+              "elapsed_ms": 125.24219999977504,
+              "error_type": null
+            },
+            {
+              "request_sha256": "0fc19cf453913cb6475d37f27cbc35edc6b4fb69f8bd4271e0316dfb7e708953",
+              "final_sha256": "0fc19cf453913cb6475d37f27cbc35edc6b4fb69f8bd4271e0316dfb7e708953",
+              "matches_serial_reference": true,
+              "request_marker_preserved": true,
+              "accepted": false,
+              "tokens_saved": 0,
+              "original_prompt_retained": true,
+              "elapsed_ms": 159.73359999952663,
+              "error_type": null
+            }
+          ],
+          "success_count": 4,
+          "failure_count": 0,
+          "serial_consistency_count": 4,
+          "request_marker_preservation_count": 4,
+          "throughput_requests_per_second": 6.7958570416719395,
+          "per_request_latency_ms": [
+            170.3510000006645,
+            129.74690000010014,
+            125.24219999977504,
+            159.73359999952663
+          ]
+        },
+        {
+          "round": 2,
+          "wall_ms": 1085.7044999993377,
+          "requests": [
+            {
+              "request_sha256": "91042d753935dff76eb17a9247bc8a8ea5e5bd0d6498e7658075637f555e7d7a",
+              "final_sha256": "91042d753935dff76eb17a9247bc8a8ea5e5bd0d6498e7658075637f555e7d7a",
+              "matches_serial_reference": true,
+              "request_marker_preserved": true,
+              "accepted": false,
+              "tokens_saved": 0,
+              "original_prompt_retained": true,
+              "elapsed_ms": 351.3022000006458,
+              "error_type": null
+            },
+            {
+              "request_sha256": "ed4e253909908da8cedd22b72d1e158ed28c1f7ed5addb2eb98df07460413868",
+              "final_sha256": "ed4e253909908da8cedd22b72d1e158ed28c1f7ed5addb2eb98df07460413868",
+              "matches_serial_reference": true,
+              "request_marker_preserved": true,
+              "accepted": false,
+              "tokens_saved": 0,
+              "original_prompt_retained": true,
+              "elapsed_ms": 417.35850000077335,
+              "error_type": null
+            },
+            {
+              "request_sha256": "b80b9ffcda144d04db8c6f060fb1078836304c99d5ee801dcafe36e77682c84c",
+              "final_sha256": "b80b9ffcda144d04db8c6f060fb1078836304c99d5ee801dcafe36e77682c84c",
+              "matches_serial_reference": true,
+              "request_marker_preserved": true,
+              "accepted": false,
+              "tokens_saved": 0,
+              "original_prompt_retained": true,
+              "elapsed_ms": 130.05729999895266,
+              "error_type": null
+            },
+            {
+              "request_sha256": "0fc19cf453913cb6475d37f27cbc35edc6b4fb69f8bd4271e0316dfb7e708953",
+              "final_sha256": "0fc19cf453913cb6475d37f27cbc35edc6b4fb69f8bd4271e0316dfb7e708953",
+              "matches_serial_reference": true,
+              "request_marker_preserved": true,
+              "accepted": false,
+              "tokens_saved": 0,
+              "original_prompt_retained": true,
+              "elapsed_ms": 185.16379999891797,
+              "error_type": null
+            }
+          ],
+          "success_count": 4,
+          "failure_count": 0,
+          "serial_consistency_count": 4,
+          "request_marker_preservation_count": 4,
+          "throughput_requests_per_second": 3.684243732988525,
+          "per_request_latency_ms": [
+            351.3022000006458,
+            417.35850000077335,
+            130.05729999895266,
+            185.16379999891797
+          ]
+        }
+      ],
+      "serial_reference_latency_ms": [
+        336.9493999998667,
+        290.0542999996105,
+        200.8550999998988,
+        401.7017999995005
+      ],
+      "rss_before": {
+        "available": true,
+        "method": "Windows GetProcessMemoryInfo working set",
+        "rss_bytes": 175353856,
+        "peak_rss_bytes": 248537088
+      },
+      "rss_after": {
+        "available": true,
+        "method": "Windows GetProcessMemoryInfo working set",
+        "rss_bytes": 175390720,
+        "peak_rss_bytes": 248537088
+      },
+      "all_rounds_succeeded": true,
+      "all_outputs_match_serial": true,
+      "all_request_markers_preserved": true,
+      "mode": "threads"
+    },
+    {
+      "workload": "small_2k",
+      "workers": 2,
+      "tasks_per_round": 4,
+      "rounds": [
+        {
+          "round": 1,
+          "wall_ms": 1004.89319999906,
+          "requests": [
+            {
+              "request_sha256": "91042d753935dff76eb17a9247bc8a8ea5e5bd0d6498e7658075637f555e7d7a",
+              "final_sha256": "91042d753935dff76eb17a9247bc8a8ea5e5bd0d6498e7658075637f555e7d7a",
+              "matches_serial_reference": true,
+              "request_marker_preserved": true,
+              "accepted": false,
+              "tokens_saved": 0,
+              "original_prompt_retained": true,
+              "elapsed_ms": 552.3476999987906,
+              "error_type": null
+            },
+            {
+              "request_sha256": "ed4e253909908da8cedd22b72d1e158ed28c1f7ed5addb2eb98df07460413868",
+              "final_sha256": "ed4e253909908da8cedd22b72d1e158ed28c1f7ed5addb2eb98df07460413868",
+              "matches_serial_reference": true,
+              "request_marker_preserved": true,
+              "accepted": false,
+              "tokens_saved": 0,
+              "original_prompt_retained": true,
+              "elapsed_ms": 614.1235000013694,
+              "error_type": null
+            },
+            {
+              "request_sha256": "b80b9ffcda144d04db8c6f060fb1078836304c99d5ee801dcafe36e77682c84c",
+              "final_sha256": "b80b9ffcda144d04db8c6f060fb1078836304c99d5ee801dcafe36e77682c84c",
+              "matches_serial_reference": true,
+              "request_marker_preserved": true,
+              "accepted": false,
+              "tokens_saved": 0,
+              "original_prompt_retained": true,
+              "elapsed_ms": 355.1628000004712,
+              "error_type": null
+            },
+            {
+              "request_sha256": "0fc19cf453913cb6475d37f27cbc35edc6b4fb69f8bd4271e0316dfb7e708953",
+              "final_sha256": "0fc19cf453913cb6475d37f27cbc35edc6b4fb69f8bd4271e0316dfb7e708953",
+              "matches_serial_reference": true,
+              "request_marker_preserved": true,
+              "accepted": false,
+              "tokens_saved": 0,
+              "original_prompt_retained": true,
+              "elapsed_ms": 356.8067999985942,
+              "error_type": null
+            }
+          ],
+          "success_count": 4,
+          "failure_count": 0,
+          "serial_consistency_count": 4,
+          "request_marker_preservation_count": 4,
+          "throughput_requests_per_second": 3.9805225072711625,
+          "per_request_latency_ms": [
+            552.3476999987906,
+            614.1235000013694,
+            355.1628000004712,
+            356.8067999985942
+          ]
+        },
+        {
+          "round": 2,
+          "wall_ms": 1703.9358000001812,
+          "requests": [
+            {
+              "request_sha256": "91042d753935dff76eb17a9247bc8a8ea5e5bd0d6498e7658075637f555e7d7a",
+              "final_sha256": "91042d753935dff76eb17a9247bc8a8ea5e5bd0d6498e7658075637f555e7d7a",
+              "matches_serial_reference": true,
+              "request_marker_preserved": true,
+              "accepted": false,
+              "tokens_saved": 0,
+              "original_prompt_retained": true,
+              "elapsed_ms": 390.40879999993194,
+              "error_type": null
+            },
+            {
+              "request_sha256": "ed4e253909908da8cedd22b72d1e158ed28c1f7ed5addb2eb98df07460413868",
+              "final_sha256": "ed4e253909908da8cedd22b72d1e158ed28c1f7ed5addb2eb98df07460413868",
+              "matches_serial_reference": true,
+              "request_marker_preserved": true,
+              "accepted": false,
+              "tokens_saved": 0,
+              "original_prompt_retained": true,
+              "elapsed_ms": 413.22260000015376,
+              "error_type": null
+            },
+            {
+              "request_sha256": "b80b9ffcda144d04db8c6f060fb1078836304c99d5ee801dcafe36e77682c84c",
+              "final_sha256": "b80b9ffcda144d04db8c6f060fb1078836304c99d5ee801dcafe36e77682c84c",
+              "matches_serial_reference": true,
+              "request_marker_preserved": true,
+              "accepted": false,
+              "tokens_saved": 0,
+              "original_prompt_retained": true,
+              "elapsed_ms": 1310.54530000074,
+              "error_type": null
+            },
+            {
+              "request_sha256": "0fc19cf453913cb6475d37f27cbc35edc6b4fb69f8bd4271e0316dfb7e708953",
+              "final_sha256": "0fc19cf453913cb6475d37f27cbc35edc6b4fb69f8bd4271e0316dfb7e708953",
+              "matches_serial_reference": true,
+              "request_marker_preserved": true,
+              "accepted": false,
+              "tokens_saved": 0,
+              "original_prompt_retained": true,
+              "elapsed_ms": 1202.4368000002141,
+              "error_type": null
+            }
+          ],
+          "success_count": 4,
+          "failure_count": 0,
+          "serial_consistency_count": 4,
+          "request_marker_preservation_count": 4,
+          "throughput_requests_per_second": 2.3475062851543904,
+          "per_request_latency_ms": [
+            390.40879999993194,
+            413.22260000015376,
+            1310.54530000074,
+            1202.4368000002141
+          ]
+        }
+      ],
+      "serial_reference_latency_ms": [
+        457.89829999921494,
+        402.0562000005157,
+        161.35929999836662,
+        581.616400000712
+      ],
+      "rss_before": {
+        "available": true,
+        "method": "Windows GetProcessMemoryInfo working set",
+        "rss_bytes": 175390720,
+        "peak_rss_bytes": 248537088
+      },
+      "rss_after": {
+        "available": true,
+        "method": "Windows GetProcessMemoryInfo working set",
+        "rss_bytes": 175419392,
+        "peak_rss_bytes": 248537088
+      },
+      "all_rounds_succeeded": true,
+      "all_outputs_match_serial": true,
+      "all_request_markers_preserved": true,
+      "mode": "threads"
+    },
+    {
+      "workload": "small_2k",
+      "workers": 4,
+      "tasks_per_round": 4,
+      "rounds": [
+        {
+          "round": 1,
+          "wall_ms": 934.1712000004918,
+          "requests": [
+            {
+              "request_sha256": "91042d753935dff76eb17a9247bc8a8ea5e5bd0d6498e7658075637f555e7d7a",
+              "final_sha256": "91042d753935dff76eb17a9247bc8a8ea5e5bd0d6498e7658075637f555e7d7a",
+              "matches_serial_reference": true,
+              "request_marker_preserved": true,
+              "accepted": false,
+              "tokens_saved": 0,
+              "original_prompt_retained": true,
+              "elapsed_ms": 926.2404999990395,
+              "error_type": null
+            },
+            {
+              "request_sha256": "ed4e253909908da8cedd22b72d1e158ed28c1f7ed5addb2eb98df07460413868",
+              "final_sha256": "ed4e253909908da8cedd22b72d1e158ed28c1f7ed5addb2eb98df07460413868",
+              "matches_serial_reference": true,
+              "request_marker_preserved": true,
+              "accepted": false,
+              "tokens_saved": 0,
+              "original_prompt_retained": true,
+              "elapsed_ms": 886.0820999998396,
+              "error_type": null
+            },
+            {
+              "request_sha256": "b80b9ffcda144d04db8c6f060fb1078836304c99d5ee801dcafe36e77682c84c",
+              "final_sha256": "b80b9ffcda144d04db8c6f060fb1078836304c99d5ee801dcafe36e77682c84c",
+              "matches_serial_reference": true,
+              "request_marker_preserved": true,
+              "accepted": false,
+              "tokens_saved": 0,
+              "original_prompt_retained": true,
+              "elapsed_ms": 910.724500001379,
+              "error_type": null
+            },
+            {
+              "request_sha256": "0fc19cf453913cb6475d37f27cbc35edc6b4fb69f8bd4271e0316dfb7e708953",
+              "final_sha256": "0fc19cf453913cb6475d37f27cbc35edc6b4fb69f8bd4271e0316dfb7e708953",
+              "matches_serial_reference": true,
+              "request_marker_preserved": true,
+              "accepted": false,
+              "tokens_saved": 0,
+              "original_prompt_retained": true,
+              "elapsed_ms": 788.1375999986631,
+              "error_type": null
+            }
+          ],
+          "success_count": 4,
+          "failure_count": 0,
+          "serial_consistency_count": 4,
+          "request_marker_preservation_count": 4,
+          "throughput_requests_per_second": 4.281870389493804,
+          "per_request_latency_ms": [
+            926.2404999990395,
+            886.0820999998396,
+            910.724500001379,
+            788.1375999986631
+          ]
+        },
+        {
+          "round": 2,
+          "wall_ms": 943.312600000354,
+          "requests": [
+            {
+              "request_sha256": "91042d753935dff76eb17a9247bc8a8ea5e5bd0d6498e7658075637f555e7d7a",
+              "final_sha256": "91042d753935dff76eb17a9247bc8a8ea5e5bd0d6498e7658075637f555e7d7a",
+              "matches_serial_reference": true,
+              "request_marker_preserved": true,
+              "accepted": false,
+              "tokens_saved": 0,
+              "original_prompt_retained": true,
+              "elapsed_ms": 618.3633000000555,
+              "error_type": null
+            },
+            {
+              "request_sha256": "ed4e253909908da8cedd22b72d1e158ed28c1f7ed5addb2eb98df07460413868",
+              "final_sha256": "ed4e253909908da8cedd22b72d1e158ed28c1f7ed5addb2eb98df07460413868",
+              "matches_serial_reference": true,
+              "request_marker_preserved": true,
+              "accepted": false,
+              "tokens_saved": 0,
+              "original_prompt_retained": true,
+              "elapsed_ms": 764.6672999999282,
+              "error_type": null
+            },
+            {
+              "request_sha256": "b80b9ffcda144d04db8c6f060fb1078836304c99d5ee801dcafe36e77682c84c",
+              "final_sha256": "b80b9ffcda144d04db8c6f060fb1078836304c99d5ee801dcafe36e77682c84c",
+              "matches_serial_reference": true,
+              "request_marker_preserved": true,
+              "accepted": false,
+              "tokens_saved": 0,
+              "original_prompt_retained": true,
+              "elapsed_ms": 908.6812999994436,
+              "error_type": null
+            },
+            {
+              "request_sha256": "0fc19cf453913cb6475d37f27cbc35edc6b4fb69f8bd4271e0316dfb7e708953",
+              "final_sha256": "0fc19cf453913cb6475d37f27cbc35edc6b4fb69f8bd4271e0316dfb7e708953",
+              "matches_serial_reference": true,
+              "request_marker_preserved": true,
+              "accepted": false,
+              "tokens_saved": 0,
+              "original_prompt_retained": true,
+              "elapsed_ms": 570.8653999990929,
+              "error_type": null
+            }
+          ],
+          "success_count": 4,
+          "failure_count": 0,
+          "serial_consistency_count": 4,
+          "request_marker_preservation_count": 4,
+          "throughput_requests_per_second": 4.24037588387826,
+          "per_request_latency_ms": [
+            618.3633000000555,
+            764.6672999999282,
+            908.6812999994436,
+            570.8653999990929
+          ]
+        }
+      ],
+      "serial_reference_latency_ms": [
+        602.2064000007958,
+        716.7021000004752,
+        932.4481000003289,
+        200.4360999999335
+      ],
+      "rss_before": {
+        "available": true,
+        "method": "Windows GetProcessMemoryInfo working set",
+        "rss_bytes": 175419392,
+        "peak_rss_bytes": 248537088
+      },
+      "rss_after": {
+        "available": true,
+        "method": "Windows GetProcessMemoryInfo working set",
+        "rss_bytes": 175480832,
+        "peak_rss_bytes": 248537088
+      },
+      "all_rounds_succeeded": true,
+      "all_outputs_match_serial": true,
+      "all_request_markers_preserved": true,
+      "mode": "threads"
+    },
+    {
+      "workload": "medium_64k",
+      "workers": 1,
+      "tasks_per_round": 4,
+      "rounds": [
+        {
+          "round": 1,
+          "wall_ms": 18951.23059999969,
+          "requests": [
+            {
+              "request_sha256": "577093eb4d9e35b05c23c32add481489e78f28cc2dfffecfbfcc032ab3bf1f62",
+              "final_sha256": "c689f7f2748b6c06a46b4948a05208bcbe5232ed286b46919b93c6df442f9938",
+              "matches_serial_reference": true,
+              "request_marker_preserved": true,
+              "accepted": true,
+              "tokens_saved": 4,
+              "original_prompt_retained": false,
+              "elapsed_ms": 6311.78109999928,
+              "error_type": null
+            },
+            {
+              "request_sha256": "49c39da3e7c0e8e7c2a5f1c4d0213ddaab2901944baa060284be2fc01ef9861b",
+              "final_sha256": "66d91a11632a0b1d2e23aa4673483be245ba6b4c9232fae380552273a5de1c8e",
+              "matches_serial_reference": true,
+              "request_marker_preserved": true,
+              "accepted": true,
+              "tokens_saved": 4,
+              "original_prompt_retained": false,
+              "elapsed_ms": 5330.67200000005,
+              "error_type": null
+            },
+            {
+              "request_sha256": "27ea1edc716460150a48e5659e8918b05a2beb8d336ddaa717b669330fa3eee6",
+              "final_sha256": "69af696416761a8e12e34a1fd20d47f75bbdc999ae5d6f4765c8c603ab8ad6e7",
+              "matches_serial_reference": true,
+              "request_marker_preserved": true,
+              "accepted": true,
+              "tokens_saved": 4,
+              "original_prompt_retained": false,
+              "elapsed_ms": 4018.3121000009123,
+              "error_type": null
+            },
+            {
+              "request_sha256": "9c8a20e13f638d299a4b7d1a1997c5758cf85d9537ac0db739db6059dde5493e",
+              "final_sha256": "533ec7260bc933ad09d77e7a8111b966bd272cfa52996583544738a688cc3c5b",
+              "matches_serial_reference": true,
+              "request_marker_preserved": true,
+              "accepted": true,
+              "tokens_saved": 4,
+              "original_prompt_retained": false,
+              "elapsed_ms": 3285.945300000094,
+              "error_type": null
+            }
+          ],
+          "success_count": 4,
+          "failure_count": 0,
+          "serial_consistency_count": 4,
+          "request_marker_preservation_count": 4,
+          "throughput_requests_per_second": 0.2110680875784428,
+          "per_request_latency_ms": [
+            6311.78109999928,
+            5330.67200000005,
+            4018.3121000009123,
+            3285.945300000094
+          ]
+        },
+        {
+          "round": 2,
+          "wall_ms": 9264.191399999618,
+          "requests": [
+            {
+              "request_sha256": "577093eb4d9e35b05c23c32add481489e78f28cc2dfffecfbfcc032ab3bf1f62",
+              "final_sha256": "c689f7f2748b6c06a46b4948a05208bcbe5232ed286b46919b93c6df442f9938",
+              "matches_serial_reference": true,
+              "request_marker_preserved": true,
+              "accepted": true,
+              "tokens_saved": 4,
+              "original_prompt_retained": false,
+              "elapsed_ms": 2196.6103999984625,
+              "error_type": null
+            },
+            {
+              "request_sha256": "49c39da3e7c0e8e7c2a5f1c4d0213ddaab2901944baa060284be2fc01ef9861b",
+              "final_sha256": "66d91a11632a0b1d2e23aa4673483be245ba6b4c9232fae380552273a5de1c8e",
+              "matches_serial_reference": true,
+              "request_marker_preserved": true,
+              "accepted": true,
+              "tokens_saved": 4,
+              "original_prompt_retained": false,
+              "elapsed_ms": 1783.3425999997417,
+              "error_type": null
+            },
+            {
+              "request_sha256": "27ea1edc716460150a48e5659e8918b05a2beb8d336ddaa717b669330fa3eee6",
+              "final_sha256": "69af696416761a8e12e34a1fd20d47f75bbdc999ae5d6f4765c8c603ab8ad6e7",
+              "matches_serial_reference": true,
+              "request_marker_preserved": true,
+              "accepted": true,
+              "tokens_saved": 4,
+              "original_prompt_retained": false,
+              "elapsed_ms": 2602.8425000004063,
+              "error_type": null
+            },
+            {
+              "request_sha256": "9c8a20e13f638d299a4b7d1a1997c5758cf85d9537ac0db739db6059dde5493e",
+              "final_sha256": "533ec7260bc933ad09d77e7a8111b966bd272cfa52996583544738a688cc3c5b",
+              "matches_serial_reference": true,
+              "request_marker_preserved": true,
+              "accepted": true,
+              "tokens_saved": 4,
+              "original_prompt_retained": false,
+              "elapsed_ms": 2678.8803999988886,
+              "error_type": null
+            }
+          ],
+          "success_count": 4,
+          "failure_count": 0,
+          "serial_consistency_count": 4,
+          "request_marker_preservation_count": 4,
+          "throughput_requests_per_second": 0.4317700085514387,
+          "per_request_latency_ms": [
+            2196.6103999984625,
+            1783.3425999997417,
+            2602.8425000004063,
+            2678.8803999988886
+          ]
+        }
+      ],
+      "serial_reference_latency_ms": [
+        3368.9292000017304,
+        2335.0527999991755,
+        2244.5635000003676,
+        5695.517800000744
+      ],
+      "rss_before": {
+        "available": true,
+        "method": "Windows GetProcessMemoryInfo working set",
+        "rss_bytes": 177922048,
+        "peak_rss_bytes": 248537088
+      },
+      "rss_after": {
+        "available": true,
+        "method": "Windows GetProcessMemoryInfo working set",
+        "rss_bytes": 178225152,
+        "peak_rss_bytes": 248537088
+      },
+      "all_rounds_succeeded": true,
+      "all_outputs_match_serial": true,
+      "all_request_markers_preserved": true,
+      "mode": "threads"
+    },
+    {
+      "workload": "medium_64k",
+      "workers": 2,
+      "tasks_per_round": 4,
+      "rounds": [
+        {
+          "round": 1,
+          "wall_ms": 13049.577699999645,
+          "requests": [
+            {
+              "request_sha256": "577093eb4d9e35b05c23c32add481489e78f28cc2dfffecfbfcc032ab3bf1f62",
+              "final_sha256": "c689f7f2748b6c06a46b4948a05208bcbe5232ed286b46919b93c6df442f9938",
+              "matches_serial_reference": true,
+              "request_marker_preserved": true,
+              "accepted": true,
+              "tokens_saved": 4,
+              "original_prompt_retained": false,
+              "elapsed_ms": 7920.67169999973,
+              "error_type": null
+            },
+            {
+              "request_sha256": "49c39da3e7c0e8e7c2a5f1c4d0213ddaab2901944baa060284be2fc01ef9861b",
+              "final_sha256": "66d91a11632a0b1d2e23aa4673483be245ba6b4c9232fae380552273a5de1c8e",
+              "matches_serial_reference": true,
+              "request_marker_preserved": true,
+              "accepted": true,
+              "tokens_saved": 4,
+              "original_prompt_retained": false,
+              "elapsed_ms": 7811.300800000026,
+              "error_type": null
+            },
+            {
+              "request_sha256": "27ea1edc716460150a48e5659e8918b05a2beb8d336ddaa717b669330fa3eee6",
+              "final_sha256": "69af696416761a8e12e34a1fd20d47f75bbdc999ae5d6f4765c8c603ab8ad6e7",
+              "matches_serial_reference": true,
+              "request_marker_preserved": true,
+              "accepted": true,
+              "tokens_saved": 4,
+              "original_prompt_retained": false,
+              "elapsed_ms": 5190.355400000044,
+              "error_type": null
+            },
+            {
+              "request_sha256": "9c8a20e13f638d299a4b7d1a1997c5758cf85d9537ac0db739db6059dde5493e",
+              "final_sha256": "533ec7260bc933ad09d77e7a8111b966bd272cfa52996583544738a688cc3c5b",
+              "matches_serial_reference": true,
+              "request_marker_preserved": true,
+              "accepted": true,
+              "tokens_saved": 4,
+              "original_prompt_retained": false,
+              "elapsed_ms": 5122.502199999872,
+              "error_type": null
+            }
+          ],
+          "success_count": 4,
+          "failure_count": 0,
+          "serial_consistency_count": 4,
+          "request_marker_preservation_count": 4,
+          "throughput_requests_per_second": 0.3065233291036007,
+          "per_request_latency_ms": [
+            7920.67169999973,
+            7811.300800000026,
+            5190.355400000044,
+            5122.502199999872
+          ]
+        },
+        {
+          "round": 2,
+          "wall_ms": 6323.668999999427,
+          "requests": [
+            {
+              "request_sha256": "577093eb4d9e35b05c23c32add481489e78f28cc2dfffecfbfcc032ab3bf1f62",
+              "final_sha256": "c689f7f2748b6c06a46b4948a05208bcbe5232ed286b46919b93c6df442f9938",
+              "matches_serial_reference": true,
+              "request_marker_preserved": true,
+              "accepted": true,
+              "tokens_saved": 4,
+              "original_prompt_retained": false,
+              "elapsed_ms": 3471.836300001087,
+              "error_type": null
+            },
+            {
+              "request_sha256": "49c39da3e7c0e8e7c2a5f1c4d0213ddaab2901944baa060284be2fc01ef9861b",
+              "final_sha256": "66d91a11632a0b1d2e23aa4673483be245ba6b4c9232fae380552273a5de1c8e",
+              "matches_serial_reference": true,
+              "request_marker_preserved": true,
+              "accepted": true,
+              "tokens_saved": 4,
+              "original_prompt_retained": false,
+              "elapsed_ms": 3404.7288999990997,
+              "error_type": null
+            },
+            {
+              "request_sha256": "27ea1edc716460150a48e5659e8918b05a2beb8d336ddaa717b669330fa3eee6",
+              "final_sha256": "69af696416761a8e12e34a1fd20d47f75bbdc999ae5d6f4765c8c603ab8ad6e7",
+              "matches_serial_reference": true,
+              "request_marker_preserved": true,
+              "accepted": true,
+              "tokens_saved": 4,
+              "original_prompt_retained": false,
+              "elapsed_ms": 2899.882900001103,
+              "error_type": null
+            },
+            {
+              "request_sha256": "9c8a20e13f638d299a4b7d1a1997c5758cf85d9537ac0db739db6059dde5493e",
+              "final_sha256": "533ec7260bc933ad09d77e7a8111b966bd272cfa52996583544738a688cc3c5b",
+              "matches_serial_reference": true,
+              "request_marker_preserved": true,
+              "accepted": true,
+              "tokens_saved": 4,
+              "original_prompt_retained": false,
+              "elapsed_ms": 2850.201200000811,
+              "error_type": null
+            }
+          ],
+          "success_count": 4,
+          "failure_count": 0,
+          "serial_consistency_count": 4,
+          "request_marker_preservation_count": 4,
+          "throughput_requests_per_second": 0.6325441764900033,
+          "per_request_latency_ms": [
+            3471.836300001087,
+            3404.7288999990997,
+            2899.882900001103,
+            2850.201200000811
+          ]
+        }
+      ],
+      "serial_reference_latency_ms": [
+        3119.1409999992175,
+        1825.5762999997387,
+        2802.131999998892,
+        4117.633800000476
+      ],
+      "rss_before": {
+        "available": true,
+        "method": "Windows GetProcessMemoryInfo working set",
+        "rss_bytes": 178225152,
+        "peak_rss_bytes": 248537088
+      },
+      "rss_after": {
+        "available": true,
+        "method": "Windows GetProcessMemoryInfo working set",
+        "rss_bytes": 179646464,
+        "peak_rss_bytes": 248537088
+      },
+      "all_rounds_succeeded": true,
+      "all_outputs_match_serial": true,
+      "all_request_markers_preserved": true,
+      "mode": "threads"
+    },
+    {
+      "workload": "medium_64k",
+      "workers": 4,
+      "tasks_per_round": 4,
+      "rounds": [
+        {
+          "round": 1,
+          "wall_ms": 6063.999899999544,
+          "requests": [
+            {
+              "request_sha256": "577093eb4d9e35b05c23c32add481489e78f28cc2dfffecfbfcc032ab3bf1f62",
+              "final_sha256": "c689f7f2748b6c06a46b4948a05208bcbe5232ed286b46919b93c6df442f9938",
+              "matches_serial_reference": true,
+              "request_marker_preserved": true,
+              "accepted": true,
+              "tokens_saved": 4,
+              "original_prompt_retained": false,
+              "elapsed_ms": 6056.310500000109,
+              "error_type": null
+            },
+            {
+              "request_sha256": "49c39da3e7c0e8e7c2a5f1c4d0213ddaab2901944baa060284be2fc01ef9861b",
+              "final_sha256": "66d91a11632a0b1d2e23aa4673483be245ba6b4c9232fae380552273a5de1c8e",
+              "matches_serial_reference": true,
+              "request_marker_preserved": true,
+              "accepted": true,
+              "tokens_saved": 4,
+              "original_prompt_retained": false,
+              "elapsed_ms": 6040.319199999431,
+              "error_type": null
+            },
+            {
+              "request_sha256": "27ea1edc716460150a48e5659e8918b05a2beb8d336ddaa717b669330fa3eee6",
+              "final_sha256": "69af696416761a8e12e34a1fd20d47f75bbdc999ae5d6f4765c8c603ab8ad6e7",
+              "matches_serial_reference": true,
+              "request_marker_preserved": true,
+              "accepted": true,
+              "tokens_saved": 4,
+              "original_prompt_retained": false,
+              "elapsed_ms": 6032.903299999816,
+              "error_type": null
+            },
+            {
+              "request_sha256": "9c8a20e13f638d299a4b7d1a1997c5758cf85d9537ac0db739db6059dde5493e",
+              "final_sha256": "533ec7260bc933ad09d77e7a8111b966bd272cfa52996583544738a688cc3c5b",
+              "matches_serial_reference": true,
+              "request_marker_preserved": true,
+              "accepted": true,
+              "tokens_saved": 4,
+              "original_prompt_retained": false,
+              "elapsed_ms": 5872.381699999096,
+              "error_type": null
+            }
+          ],
+          "success_count": 4,
+          "failure_count": 0,
+          "serial_consistency_count": 4,
+          "request_marker_preservation_count": 4,
+          "throughput_requests_per_second": 0.6596306177380216,
+          "per_request_latency_ms": [
+            6056.310500000109,
+            6040.319199999431,
+            6032.903299999816,
+            5872.381699999096
+          ]
+        },
+        {
+          "round": 2,
+          "wall_ms": 6323.747500000536,
+          "requests": [
+            {
+              "request_sha256": "577093eb4d9e35b05c23c32add481489e78f28cc2dfffecfbfcc032ab3bf1f62",
+              "final_sha256": "c689f7f2748b6c06a46b4948a05208bcbe5232ed286b46919b93c6df442f9938",
+              "matches_serial_reference": true,
+              "request_marker_preserved": true,
+              "accepted": true,
+              "tokens_saved": 4,
+              "original_prompt_retained": false,
+              "elapsed_ms": 6046.878499999366,
+              "error_type": null
+            },
+            {
+              "request_sha256": "49c39da3e7c0e8e7c2a5f1c4d0213ddaab2901944baa060284be2fc01ef9861b",
+              "final_sha256": "66d91a11632a0b1d2e23aa4673483be245ba6b4c9232fae380552273a5de1c8e",
+              "matches_serial_reference": true,
+              "request_marker_preserved": true,
+              "accepted": true,
+              "tokens_saved": 4,
+              "original_prompt_retained": false,
+              "elapsed_ms": 6077.464799998779,
+              "error_type": null
+            },
+            {
+              "request_sha256": "27ea1edc716460150a48e5659e8918b05a2beb8d336ddaa717b669330fa3eee6",
+              "final_sha256": "69af696416761a8e12e34a1fd20d47f75bbdc999ae5d6f4765c8c603ab8ad6e7",
+              "matches_serial_reference": true,
+              "request_marker_preserved": true,
+              "accepted": true,
+              "tokens_saved": 4,
+              "original_prompt_retained": false,
+              "elapsed_ms": 6275.426300000618,
+              "error_type": null
+            },
+            {
+              "request_sha256": "9c8a20e13f638d299a4b7d1a1997c5758cf85d9537ac0db739db6059dde5493e",
+              "final_sha256": "533ec7260bc933ad09d77e7a8111b966bd272cfa52996583544738a688cc3c5b",
+              "matches_serial_reference": true,
+              "request_marker_preserved": true,
+              "accepted": true,
+              "tokens_saved": 4,
+              "original_prompt_retained": false,
+              "elapsed_ms": 6259.91889999932,
+              "error_type": null
+            }
+          ],
+          "success_count": 4,
+          "failure_count": 0,
+          "serial_consistency_count": 4,
+          "request_marker_preservation_count": 4,
+          "throughput_requests_per_second": 0.6325363243867123,
+          "per_request_latency_ms": [
+            6046.878499999366,
+            6077.464799998779,
+            6275.426300000618,
+            6259.91889999932
+          ]
+        }
+      ],
+      "serial_reference_latency_ms": [
+        1447.862000000896,
+        1426.1566999994102,
+        1462.5089000001026,
+        1522.8877999998076
+      ],
+      "rss_before": {
+        "available": true,
+        "method": "Windows GetProcessMemoryInfo working set",
+        "rss_bytes": 176713728,
+        "peak_rss_bytes": 248537088
+      },
+      "rss_after": {
+        "available": true,
+        "method": "Windows GetProcessMemoryInfo working set",
+        "rss_bytes": 176807936,
+        "peak_rss_bytes": 248537088
+      },
+      "all_rounds_succeeded": true,
+      "all_outputs_match_serial": true,
+      "all_request_markers_preserved": true,
+      "mode": "threads"
+    },
+    {
+      "workload": "large_512k",
+      "workers": 1,
+      "tasks_per_round": 2,
+      "rounds": [
+        {
+          "round": 1,
+          "wall_ms": 30091.927399998895,
+          "requests": [
+            {
+              "request_sha256": "9290c162b79e40ddf049351e56034c2d43c7c488477b50a418374f1158957a49",
+              "final_sha256": "573f8033216b003395cce1000a639d2fa48023eaf66f02973067a853b42b5d87",
+              "matches_serial_reference": true,
+              "request_marker_preserved": true,
+              "accepted": true,
+              "tokens_saved": 4,
+              "original_prompt_retained": false,
+              "elapsed_ms": 14579.540000000634,
+              "error_type": null
+            },
+            {
+              "request_sha256": "3da5f73fdf3d3a35e9ccb5f1dfcb7b1329c7a0a0050ebc484f98e8c417502db3",
+              "final_sha256": "034b43e143a30b09d9efbb04539a1922ba3d6da5b3c80c148886917bb38c30cc",
+              "matches_serial_reference": true,
+              "request_marker_preserved": true,
+              "accepted": true,
+              "tokens_saved": 4,
+              "original_prompt_retained": false,
+              "elapsed_ms": 15496.450800001185,
+              "error_type": null
+            }
+          ],
+          "success_count": 2,
+          "failure_count": 0,
+          "serial_consistency_count": 2,
+          "request_marker_preservation_count": 2,
+          "throughput_requests_per_second": 0.0664630076171217,
+          "per_request_latency_ms": [
+            14579.540000000634,
+            15496.450800001185
+          ]
+        }
+      ],
+      "serial_reference_latency_ms": [
+        18338.007899999866,
+        13723.218299999644
+      ],
+      "rss_before": {
+        "available": true,
+        "method": "Windows GetProcessMemoryInfo working set",
+        "rss_bytes": 185159680,
+        "peak_rss_bytes": 248537088
+      },
+      "rss_after": {
+        "available": true,
+        "method": "Windows GetProcessMemoryInfo working set",
+        "rss_bytes": 178012160,
+        "peak_rss_bytes": 248537088
+      },
+      "all_rounds_succeeded": true,
+      "all_outputs_match_serial": true,
+      "all_request_markers_preserved": true,
+      "mode": "threads"
+    },
+    {
+      "workload": "large_512k",
+      "workers": 2,
+      "tasks_per_round": 2,
+      "rounds": [
+        {
+          "round": 1,
+          "wall_ms": 28626.32349999876,
+          "requests": [
+            {
+              "request_sha256": "9290c162b79e40ddf049351e56034c2d43c7c488477b50a418374f1158957a49",
+              "final_sha256": "573f8033216b003395cce1000a639d2fa48023eaf66f02973067a853b42b5d87",
+              "matches_serial_reference": true,
+              "request_marker_preserved": true,
+              "accepted": true,
+              "tokens_saved": 4,
+              "original_prompt_retained": false,
+              "elapsed_ms": 28607.199600000968,
+              "error_type": null
+            },
+            {
+              "request_sha256": "3da5f73fdf3d3a35e9ccb5f1dfcb7b1329c7a0a0050ebc484f98e8c417502db3",
+              "final_sha256": "034b43e143a30b09d9efbb04539a1922ba3d6da5b3c80c148886917bb38c30cc",
+              "matches_serial_reference": true,
+              "request_marker_preserved": true,
+              "accepted": true,
+              "tokens_saved": 4,
+              "original_prompt_retained": false,
+              "elapsed_ms": 28524.634700001116,
+              "error_type": null
+            }
+          ],
+          "success_count": 2,
+          "failure_count": 0,
+          "serial_consistency_count": 2,
+          "request_marker_preservation_count": 2,
+          "throughput_requests_per_second": 0.06986576533308884,
+          "per_request_latency_ms": [
+            28607.199600000968,
+            28524.634700001116
+          ]
+        }
+      ],
+      "serial_reference_latency_ms": [
+        13720.585800001572,
+        15103.717300000426
+      ],
+      "rss_before": {
+        "available": true,
+        "method": "Windows GetProcessMemoryInfo working set",
+        "rss_bytes": 185159680,
+        "peak_rss_bytes": 248537088
+      },
+      "rss_after": {
+        "available": true,
+        "method": "Windows GetProcessMemoryInfo working set",
+        "rss_bytes": 180625408,
+        "peak_rss_bytes": 248537088
+      },
+      "all_rounds_succeeded": true,
+      "all_outputs_match_serial": true,
+      "all_request_markers_preserved": true,
+      "mode": "threads"
+    },
+    {
+      "workload": "large_512k",
+      "workers": 4,
+      "tasks_per_round": 4,
+      "rounds": [
+        {
+          "round": 1,
+          "wall_ms": 54456.646999999066,
+          "requests": [
+            {
+              "request_sha256": "9290c162b79e40ddf049351e56034c2d43c7c488477b50a418374f1158957a49",
+              "final_sha256": "573f8033216b003395cce1000a639d2fa48023eaf66f02973067a853b42b5d87",
+              "matches_serial_reference": true,
+              "request_marker_preserved": true,
+              "accepted": true,
+              "tokens_saved": 4,
+              "original_prompt_retained": false,
+              "elapsed_ms": 54037.01700000056,
+              "error_type": null
+            },
+            {
+              "request_sha256": "3da5f73fdf3d3a35e9ccb5f1dfcb7b1329c7a0a0050ebc484f98e8c417502db3",
+              "final_sha256": "034b43e143a30b09d9efbb04539a1922ba3d6da5b3c80c148886917bb38c30cc",
+              "matches_serial_reference": true,
+              "request_marker_preserved": true,
+              "accepted": true,
+              "tokens_saved": 4,
+              "original_prompt_retained": false,
+              "elapsed_ms": 54308.842399999776,
+              "error_type": null
+            },
+            {
+              "request_sha256": "3c68e6b438d31684a3591990dfebd38cb813a0d7ded0bfdd47d0c24bb03cd0cc",
+              "final_sha256": "2a867e38e960fc0c1dbdd86294959a548f55e85fa621747e83aad4231629424d",
+              "matches_serial_reference": true,
+              "request_marker_preserved": true,
+              "accepted": true,
+              "tokens_saved": 4,
+              "original_prompt_retained": false,
+              "elapsed_ms": 54265.11559999926,
+              "error_type": null
+            },
+            {
+              "request_sha256": "be92cacab50878987c4653ee70fff7ea3178cbb6b46ffde03f10b6bd09655a95",
+              "final_sha256": "d56711f46d81a6fe22010319088ca908339e4890923a233e0b74ea56f4fc9d53",
+              "matches_serial_reference": true,
+              "request_marker_preserved": true,
+              "accepted": true,
+              "tokens_saved": 4,
+              "original_prompt_retained": false,
+              "elapsed_ms": 51972.05919999942,
+              "error_type": null
+            }
+          ],
+          "success_count": 4,
+          "failure_count": 0,
+          "serial_consistency_count": 4,
+          "request_marker_preservation_count": 4,
+          "throughput_requests_per_second": 0.07345292485598807,
+          "per_request_latency_ms": [
+            54037.01700000056,
+            54308.842399999776,
+            54265.11559999926,
+            51972.05919999942
+          ]
+        }
+      ],
+      "serial_reference_latency_ms": [
+        18501.18400000065,
+        14516.876700001376,
+        15480.20919999908,
+        13925.748100000419
+      ],
+      "rss_before": {
+        "available": true,
+        "method": "Windows GetProcessMemoryInfo working set",
+        "rss_bytes": 187318272,
+        "peak_rss_bytes": 248537088
+      },
+      "rss_after": {
+        "available": true,
+        "method": "Windows GetProcessMemoryInfo working set",
+        "rss_bytes": 183042048,
+        "peak_rss_bytes": 248537088
+      },
+      "all_rounds_succeeded": true,
+      "all_outputs_match_serial": true,
+      "all_request_markers_preserved": true,
+      "mode": "threads"
+    },
+    {
+      "workload": "mixed_2k_64k_512k",
+      "mode": "threads",
+      "workers": 4,
+      "tasks_per_round": 4,
+      "rounds": [
+        {
+          "round": 1,
+          "wall_ms": 18976.821399999608,
+          "requests": [
+            {
+              "request_sha256": "932815be358d756696fc96b608ff53e1b173d08df97b4fd4b7e92b5d0077805c",
+              "final_sha256": "932815be358d756696fc96b608ff53e1b173d08df97b4fd4b7e92b5d0077805c",
+              "elapsed_ms": 513.6180999998032,
+              "matches_serial_reference": true,
+              "request_marker_preserved": true,
+              "accepted": false,
+              "original_prompt_retained": true,
+              "error_type": null
+            },
+            {
+              "request_sha256": "a426ebfcb5ffb60b672887118a3a44e18524961cbec92de8c9afeac1149dc1c6",
+              "final_sha256": "4d296324de2ad58ba98c225bad5f122d794de08e94143e93e7f390df182b6729",
+              "elapsed_ms": 942.8914000000077,
+              "matches_serial_reference": true,
+              "request_marker_preserved": true,
+              "accepted": true,
+              "original_prompt_retained": false,
+              "error_type": null
+            },
+            {
+              "request_sha256": "3592a20093a58b616ff758c9f897900e7ddb674b959d9ffde0789989d155397c",
+              "final_sha256": "9b72381cc3e905188998be5484fb16cb80cc3dfd65d128c8b83b708b11d693bb",
+              "elapsed_ms": 18941.51090000014,
+              "matches_serial_reference": true,
+              "request_marker_preserved": true,
+              "accepted": true,
+              "original_prompt_retained": false,
+              "error_type": null
+            },
+            {
+              "request_sha256": "1facaa15b3c3aa33280b0ea6a6fe61db8491e4dcefaf04931928bd8caf3577e9",
+              "final_sha256": "6573941d7886f1cb6121d3876b7819ce4608b5a601bc73c16f94b87092b1184f",
+              "elapsed_ms": 128.42269999964628,
+              "matches_serial_reference": true,
+              "request_marker_preserved": true,
+              "accepted": true,
+              "original_prompt_retained": false,
+              "error_type": null
+            }
+          ],
+          "success_count": 4,
+          "failure_count": 0,
+          "serial_consistency_count": 4,
+          "request_marker_preservation_count": 4,
+          "throughput_requests_per_second": 0.21078345607447635,
+          "per_request_latency_ms": [
+            513.6180999998032,
+            942.8914000000077,
+            18941.51090000014,
+            128.42269999964628
+          ]
+        }
+      ],
+      "serial_reference_latency_ms": [
+        98.36279999944963,
+        429.3068000006315,
+        7985.9195000008185,
+        43.735400000514346
+      ],
+      "rss_before": {
+        "available": true,
+        "method": "Windows GetProcessMemoryInfo working set",
+        "rss_bytes": 176209920,
+        "peak_rss_bytes": 248537088
+      },
+      "rss_after": {
+        "available": true,
+        "method": "Windows GetProcessMemoryInfo working set",
+        "rss_bytes": 185507840,
+        "peak_rss_bytes": 248537088
+      },
+      "all_rounds_succeeded": true,
+      "all_outputs_match_serial": true,
+      "all_request_markers_preserved": true
+    }
+  ],
+  "failure_handling": {
+    "cases": [
+      {
+        "case": "non_string_input_none",
+        "outcome": "exception_propagated",
+        "exception_type": "ValueError",
+        "followup_call_ok": true
+      },
+      {
+        "case": "non_string_input_integer",
+        "outcome": "exception_propagated",
+        "exception_type": "ValueError",
+        "followup_call_ok": true
+      },
+      {
+        "case": "llm_callback_exception",
+        "outcome": "returned",
+        "accepted": false,
+        "exact_original": true,
+        "tokens_saved": 0,
+        "followup_call_ok": true
+      },
+      {
+        "case": "llm_invalid_bytes",
+        "outcome": "returned",
+        "accepted": false,
+        "exact_original": true,
+        "tokens_saved": 0,
+        "followup_call_ok": true
+      },
+      {
+        "case": "semantic_encode_failure",
+        "outcome": "returned",
+        "accepted": true,
+        "exact_original": false,
+        "tokens_saved": 11,
+        "followup_call_ok": true
+      },
+      {
+        "case": "tokenizer_count_failure",
+        "outcome": "exception_propagated",
+        "exception_type": "RuntimeError",
+        "followup_call_ok": true
+      },
+      {
+        "case": "validator_exception",
+        "outcome": "exception_propagated",
+        "exception_type": "RuntimeError",
+        "followup_call_ok": true
+      }
+    ],
+    "summary": {
+      "cases": 7,
+      "exceptions_propagated": 4,
+      "followup_failures": 0,
+      "unsafe_candidate_accepted": 0
+    },
+    "note": "Injected component exceptions are isolated in-process and followed by a healthy request."
+  },
+  "limitations": [
+    "No external model or provider calls were made.",
+    "All token values use the heuristic estimate counter.",
+    "Only thread concurrency was investigated; process concurrency was not tested.",
+    "RSS is process-level and sampled, while tracemalloc covers Python allocations only.",
+    "Results characterize this Windows machine and do not establish deployment limits.",
+    "4 MiB exploratory prompts were not run."
+  ]
+}

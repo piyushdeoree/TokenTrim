@@ -1,0 +1,880 @@
+[
+  {
+    "id": "software_01",
+    "category": "software_development",
+    "expected_behavior": "accept_safe_optimization",
+    "description": "Remove a truly repeated implementation requirement while retaining the delivery and testing requirements.",
+    "prompt": "Project: Inventory import service\n\nGoal: Add CSV import to the existing Python service.\n\nImplementation requirements:\n- Do not change the current public API or existing database schema.\n- Validate each row before writing it.\n- Return row-level errors without aborting valid rows.\n\nCompatibility requirements:\n- Do not change the current public API or existing database schema.\n- Inspect the existing import and persistence code before editing.\n- Add focused tests for mixed valid and invalid rows.\n- Report changed files and test results.",
+    "must_preserve": [
+      "CSV import",
+      "Python service",
+      "Do not change the current public API or existing database schema",
+      "Validate each row before writing it",
+      "row-level errors",
+      "without aborting valid rows",
+      "mixed valid and invalid rows"
+    ]
+  },
+  {
+    "id": "software_02",
+    "category": "software_development",
+    "expected_behavior": "accept_safe_optimization",
+    "description": "Consolidate a repeated exact development workflow instruction without dropping unrelated constraints.",
+    "prompt": "Task: Add pagination to the activity endpoint in the existing application.\n\nConstraints:\n- Do not rename the endpoint or its response fields.\n- Keep the existing default ordering by creation time.\n- Do not rename the endpoint or its response fields.\n\nWorking approach:\n- Read the current route and tests first.\n- Implement the smallest compatible change.\n- Add tests for the default page and an out-of-range page.\n\nDeliverable: Summarize the behavior change and list the tests that were run.",
+    "must_preserve": [
+      "activity endpoint",
+      "Do not rename the endpoint or its response fields",
+      "default ordering by creation time",
+      "out-of-range page"
+    ]
+  },
+  {
+    "id": "software_03",
+    "category": "software_development",
+    "expected_behavior": "leave_unchanged",
+    "description": "Keep similar but distinct security requirements and exact project identifiers.",
+    "prompt": "Project: Session renewal for the Acme Portal\n\nRequirements:\n- Verify the signed session token before reading its subject.\n- Authorize the subject for the requested organization after authentication.\n- Preserve the exact claim name `org_id`; do not replace it with `organization_id`.\n- Store refresh tokens in `auth.refresh_tokens`.\n\nFailure behavior:\n- Return 401 for a missing or invalid token.\n- Return 403 when an authenticated subject lacks organization access.\n\nExact code requirement: Preserve this guard unchanged:\n```python\nif user_id is None:\n    raise MissingUserIdError()\n```\n\nTesting: Cover both failure cases separately and verify that expired tokens are rejected.",
+    "must_preserve": [
+      "Verify the signed session token",
+      "Authorize the subject",
+      "`org_id`",
+      "`organization_id`",
+      "`auth.refresh_tokens`",
+      "401",
+      "403",
+      "if user_id is None:",
+      "raise MissingUserIdError()",
+      "expired tokens are rejected"
+    ]
+  },
+  {
+    "id": "software_04",
+    "category": "software_development",
+    "expected_behavior": "reject_unsafe_candidate",
+    "description": "Reject an LLM rewrite that loses a backward-compatibility requirement.",
+    "prompt": "Task: Add a `status` field to the job response.\n\nCompatibility requirements:\n- Keep existing response fields and their meanings unchanged.\n- Existing clients that omit the new field from requests must continue to work.\n- Return the new field as a string using one of `queued`, `running`, `complete`, or `failed`.\n\nVerification: Test an old client payload and all four status values.",
+    "must_preserve": [
+      "existing response fields",
+      "Existing clients that omit the new field from requests must continue to work",
+      "string",
+      "queued",
+      "running",
+      "complete",
+      "failed",
+      "old client payload"
+    ],
+    "llm_candidate": "Task: Add a status field to the job response. Return queued, running, complete, or failed. Test all four status values."
+  },
+  {
+    "id": "technical_01",
+    "category": "technical_specification",
+    "expected_behavior": "accept_safe_optimization",
+    "description": "Remove a repeated exact performance requirement while preserving thresholds and measurement method.",
+    "prompt": "Component: Search index\n\nObjective: Improve lookup latency without changing result ranking.\n\nPerformance requirements:\n- Keep result ranking unchanged.\n- Keep p95 lookup latency below 250 ms at 2,000 requests per second.\n- Measure latency after a 10-minute warm-up using 30-minute runs.\n\nConstraints:\n- Keep result ranking unchanged.\n- Keep the index format compatible with version 3 snapshots.\n- Do not reduce the retained history window of 90 days.\n\nReport: Include the test hardware, workload, p95 latency, and p99 latency.",
+    "must_preserve": [
+      "result ranking unchanged",
+      "p95",
+      "250 ms",
+      "2,000 requests per second",
+      "10-minute warm-up",
+      "30-minute runs",
+      "version 3 snapshots",
+      "90 days",
+      "p99 latency"
+    ]
+  },
+  {
+    "id": "technical_02",
+    "category": "technical_specification",
+    "expected_behavior": "accept_safe_optimization",
+    "description": "Consolidate repeated exact serialization guidance without changing literal requirements.",
+    "prompt": "Output contract: Emit one UTF-8 JSON object per line.\n\nSchema requirements:\n- Include `record_id`, `observed_at`, and `value`.\n- Keep timestamps in RFC 3339 UTC form.\n- Emit one UTF-8 JSON object per line.\n\nValidation:\n- Reject records with a missing `record_id`.\n- Preserve decimal precision to 4 places.\n- Do not emit a header row.\n\nAcceptance: Parse the output with the standard JSON parser and verify that each line is an independent object.",
+    "must_preserve": [
+      "Output contract:",
+      "UTF-8 JSON object per line",
+      "`record_id`",
+      "`observed_at`",
+      "RFC 3339 UTC",
+      "decimal precision to 4 places",
+      "Do not emit a header row",
+      "each line is an independent object"
+    ]
+  },
+  {
+    "id": "technical_03",
+    "category": "technical_specification",
+    "expected_behavior": "leave_unchanged",
+    "description": "Preserve distinct latency percentiles, thresholds, and memory limits despite similar wording.",
+    "prompt": "Service limits:\n- Keep p95 request latency below 250 ms.\n- Keep p99 request latency below 500 ms.\n- Keep peak memory below 1.5 GiB during a 60-minute soak test.\n\nMeasurement details:\n- Exclude the first 5 minutes from latency calculations.\n- Run the soak test with 800 concurrent clients.\n- Report p50, p95, and p99 separately.\n\nDo not infer that satisfying one percentile satisfies another.",
+    "must_preserve": [
+      "p95",
+      "250 ms",
+      "p99",
+      "500 ms",
+      "1.5 GiB",
+      "60-minute",
+      "first 5 minutes",
+      "800 concurrent clients",
+      "p50",
+      "Do not infer that satisfying one percentile satisfies another"
+    ]
+  },
+  {
+    "id": "technical_04",
+    "category": "technical_specification",
+    "expected_behavior": "reject_unsafe_candidate",
+    "description": "Reject a candidate that changes an inclusive threshold and removes the exception path.",
+    "prompt": "Capacity rule:\n- Accept batches containing at most 500 records.\n- For batches above 500 records, split them into chunks of 500 before processing.\n- If a record exceeds 2 MiB, reject that record and continue with the remaining records.\n\nOrdering: Validate record size first, then split accepted batches, then write chunks in input order.\n\nOutput: Return a JSON object with `accepted`, `rejected`, and `errors` arrays.",
+    "must_preserve": [
+      "at most 500 records",
+      "above 500 records",
+      "chunks of 500",
+      "exceeds 2 MiB",
+      "reject that record and continue",
+      "Validate record size first",
+      "input order",
+      "`accepted`",
+      "`rejected`",
+      "`errors`"
+    ],
+    "llm_candidate": "Accept batches under 500 records. Reject any batch containing a record over 2 MiB. Process the accepted records and return JSON."
+  },
+  {
+    "id": "api_01",
+    "category": "api_requirements",
+    "expected_behavior": "accept_safe_optimization",
+    "description": "Remove a repeated exact authentication requirement without losing route behavior.",
+    "prompt": "Endpoint: `POST /v2/reports`\n\nAuthentication and input:\n- Require a bearer token with the `reports:write` scope.\n- Accept `title` and `source_ids` in the JSON body.\n- Return 400 when `source_ids` is empty.\n\nCompatibility:\n- Do not change the path, method, or response field names.\n- Return 401 for a missing or invalid token and 403 for insufficient scope.\n\nBehavior:\n- Create the report asynchronously and return 202 with `report_id`.\n- Do not change the path, method, or response field names.",
+    "must_preserve": [
+      "`POST /v2/reports`",
+      "`reports:write`",
+      "`title`",
+      "`source_ids`",
+      "202",
+      "`report_id`",
+      "400",
+      "401",
+      "403",
+      "Do not change the path, method, or response field names"
+    ]
+  },
+  {
+    "id": "api_02",
+    "category": "api_requirements",
+    "expected_behavior": "accept_safe_optimization",
+    "description": "Consolidate a repeated exact retry rule while preserving retry limits and idempotency behavior.",
+    "prompt": "Client behavior for `PUT /v1/accounts/{account_id}`:\n\nRetry policy:\n- Retry a 503 response up to 2 times with exponential backoff.\n- Retry a 503 response up to 2 times with exponential backoff.\n- Do not retry 400, 401, or 403 responses.\n\nRequest safety:\n- Send the same `Idempotency-Key` on every retry.\n- Stop retrying after 4 seconds total.\n\nLogging: Record the request ID, attempt number, and final HTTP status; never log the bearer token.",
+    "must_preserve": [
+      "`PUT /v1/accounts/{account_id}`",
+      "503",
+      "up to 2 times",
+      "exponential backoff",
+      "400",
+      "401",
+      "403",
+      "same `Idempotency-Key`",
+      "4 seconds total",
+      "request ID",
+      "attempt number",
+      "never log the bearer token"
+    ]
+  },
+  {
+    "id": "api_03",
+    "category": "api_requirements",
+    "expected_behavior": "leave_unchanged",
+    "description": "Keep authentication, authorization, status codes, URL, and response formats distinct.",
+    "prompt": "Endpoint: `GET https://api.example.test/v3/projects/{project_id}`\n\nAccess rules:\n- Authenticate the caller using a valid OAuth access token.\n- Authorize access to the requested project using its tenant membership.\n- Return 401 when authentication fails.\n- Return 403 when authentication succeeds but tenant authorization fails.\n\nResponse rules:\n- Return `application/json` on success.\n- Return `application/problem+json` for errors.\n- Include the exact `project_id` and `tenant_id` fields in successful responses.",
+    "must_preserve": [
+      "https://api.example.test/v3/projects/{project_id}",
+      "OAuth access token",
+      "tenant membership",
+      "401",
+      "403",
+      "application/json",
+      "application/problem+json",
+      "`project_id`",
+      "`tenant_id`"
+    ]
+  },
+  {
+    "id": "api_04",
+    "category": "api_requirements",
+    "expected_behavior": "reject_unsafe_candidate",
+    "description": "Reject a rewrite that drops the conditional retry exception and changes the response format.",
+    "prompt": "Webhook delivery:\n- Send events to `https://hooks.example.test/events`.\n- Sign each request with HMAC-SHA256 using the configured secret.\n- Retry up to 5 times only when the receiver returns 429 or 503.\n- Do not retry 400 responses.\n\nOrdering: Preserve event order for a given `account_id`, but events for different accounts may be delivered concurrently.\n\nResponse: The receiver must return JSON containing `received_at` and `event_id`.",
+    "must_preserve": [
+      "https://hooks.example.test/events",
+      "HMAC-SHA256",
+      "up to 5 times",
+      "only when the receiver returns 429 or 503",
+      "Do not retry 400",
+      "Preserve event order",
+      "`account_id`",
+      "concurrently",
+      "JSON",
+      "`received_at`",
+      "`event_id`"
+    ],
+    "llm_candidate": "Send signed events to the webhook. Retry failed requests up to 5 times and process accounts concurrently. Return the event ID."
+  },
+  {
+    "id": "data_01",
+    "category": "data_processing",
+    "expected_behavior": "accept_safe_optimization",
+    "description": "Remove a repeated exact data exclusion rule while preserving processing order.",
+    "prompt": "Dataset: Monthly subscription events\n\nPreparation:\n- Parse `event_time` as UTC and retain the source value in `event_time_raw`.\n- Do not include test accounts when computing customer metrics.\n- Keep refunds as a separate negative amount; do not discard them.\n\nProcessing order:\n- Deduplicate by `event_id`, keeping the earliest received copy.\n- Aggregate monthly recurring revenue by calendar month.\n- Do not include test accounts when computing customer metrics.\n\nQuality checks: Report input rows, duplicate rows, excluded test accounts, and output rows.",
+    "must_preserve": [
+      "`event_time`",
+      "UTC",
+      "`event_time_raw`",
+      "Do not include test accounts when computing customer metrics",
+      "`event_id`",
+      "earliest received copy",
+      "calendar month",
+      "refunds as a separate negative amount",
+      "do not discard them",
+      "input rows",
+      "output rows"
+    ]
+  },
+  {
+    "id": "data_02",
+    "category": "data_processing",
+    "expected_behavior": "accept_safe_optimization",
+    "description": "Consolidate a repeated exact cleaning instruction without losing the missing-value exception.",
+    "prompt": "Task: Prepare the sensor dataset for daily summaries.\n\nCleaning:\n- Convert temperatures from Fahrenheit to Celsius using `(F - 32) * 5 / 9`.\n- Remove rows with an invalid sensor ID.\n- Remove rows with an invalid sensor ID.\n- Keep rows with a missing temperature and mark `temperature_status` as `missing`.\n\nAggregation:\n- Compute the median per sensor and UTC day.\n- Require at least 12 valid readings for a daily median.\n- Keep the original reading count in the output.\n\nOutput: Write Parquet partitioned by `reading_date`.",
+    "must_preserve": [
+      "(F - 32) * 5 / 9",
+      "invalid sensor ID",
+      "missing temperature",
+      "`temperature_status`",
+      "`missing`",
+      "median",
+      "UTC day",
+      "at least 12",
+      "original reading count",
+      "Parquet",
+      "`reading_date`"
+    ]
+  },
+  {
+    "id": "data_03",
+    "category": "data_processing",
+    "expected_behavior": "leave_unchanged",
+    "description": "Preserve distinct null-handling, filtering, threshold, and ordering requirements.",
+    "prompt": "Input columns: `net_amount`, `tax_amount`, `currency`, `created_at`, and `is_refunded`.\n\nRules:\n- Exclude refunded rows from net sales totals, but retain them in the audit output.\n- Convert currencies using the rate for each row's `created_at` date.\n- Treat a null `tax_amount` as unknown; do not replace it with zero.\n- Flag, but do not remove, rows where `net_amount` is below -100.\n\nOrder: Validate column types, apply refund handling, convert currency, then aggregate by ISO week. Return both weekly totals and an exception table.",
+    "must_preserve": [
+      "`net_amount`",
+      "`tax_amount`",
+      "`currency`",
+      "`created_at`",
+      "`is_refunded`",
+      "retain them in the audit output",
+      "date",
+      "null `tax_amount` as unknown",
+      "do not replace it with zero",
+      "below -100",
+      "Flag, but do not remove",
+      "Validate column types",
+      "apply refund handling",
+      "convert currency",
+      "ISO week",
+      "exception table"
+    ]
+  },
+  {
+    "id": "data_04",
+    "category": "data_processing",
+    "expected_behavior": "reject_unsafe_candidate",
+    "description": "Reject a rewrite that removes a threshold, an exception, and an operation-order requirement.",
+    "prompt": "Pipeline for `src/jobs/clean_orders.py`:\n\n1. Parse timestamps as UTC.\n2. Drop records with a missing `order_id`, except records whose `source` is `manual_adjustment`; retain those in the exception output.\n3. Remove duplicate `order_id` values only when their normalized payloads are identical.\n4. Quarantine records with `total` greater than 100000; do not delete them.\n\nAfter cleaning, calculate daily totals and write the exception output to `orders_rejected.csv`. Preserve the source row number in every output.",
+    "must_preserve": [
+      "`src/jobs/clean_orders.py`",
+      "UTC",
+      "missing `order_id`",
+      "except records whose `source` is `manual_adjustment`",
+      "exception output",
+      "only when their normalized payloads are identical",
+      "greater than 100000",
+      "Quarantine",
+      "do not delete them",
+      "After cleaning",
+      "`orders_rejected.csv`",
+      "source row number"
+    ],
+    "llm_candidate": "Clean orders by removing rows without an order ID and duplicate order IDs. Delete orders over 100000, then calculate daily totals."
+  },
+  {
+    "id": "general_01",
+    "category": "general_task",
+    "expected_behavior": "accept_safe_optimization",
+    "description": "Remove a repeated exact response instruction while retaining audience, scope, and output requirements.",
+    "prompt": "Task: Summarize the attached policy for new employees.\n\nContent requirements:\n- Cover eligibility, enrollment dates, and the appeal process.\n- Do not give legal advice or infer rules absent from the policy.\n- Use only the attached policy as a source.\n\nOutput requirements:\n- Use exactly 5 bullet points.\n- Keep each bullet under 30 words.\n- Quote section numbers when referring to a specific rule.\n- Use only the attached policy as a source.\n\nIf the policy does not answer a question, say that the information is not specified.",
+    "must_preserve": [
+      "new employees",
+      "eligibility",
+      "enrollment dates",
+      "appeal process",
+      "Do not give legal advice",
+      "infer rules absent from the policy",
+      "exactly 5 bullet points",
+      "under 30 words",
+      "section numbers",
+      "not specified",
+      "Use only the attached policy as a source"
+    ]
+  },
+  {
+    "id": "general_02",
+    "category": "general_task",
+    "expected_behavior": "accept_safe_optimization",
+    "description": "Consolidate an exact repeated research instruction without losing source and uncertainty constraints.",
+    "prompt": "Question: Compare the two supplied studies on remote work and employee retention.\n\nResearch tasks:\n- Identify each study's sample size, duration, and population.\n- Compare the reported retention outcomes.\n- Compare the reported retention outcomes.\n- Distinguish correlation from causal evidence.\n\nSource handling:\n- Use only the supplied studies.\n- Attribute each numerical claim to its study.\n- If a value is not reported, mark it as not reported rather than estimating it.\n\nDeliverable: Provide a short comparison table followed by a paragraph describing limitations.",
+    "must_preserve": [
+      "two supplied studies",
+      "sample size",
+      "duration",
+      "population",
+      "retention outcomes",
+      "correlation from causal evidence",
+      "only the supplied studies",
+      "Attribute each numerical claim",
+      "not reported rather than estimating",
+      "comparison table",
+      "limitations"
+    ]
+  },
+  {
+    "id": "general_03",
+    "category": "general_task",
+    "expected_behavior": "leave_unchanged",
+    "description": "Keep similar but distinct requests, mixed formats, quantities, and exceptions.",
+    "prompt": "Review the supplied incident timeline and produce two deliverables.\n\nAnalysis:\n- Identify the earliest confirmed cause, not the earliest suspected cause.\n- List every customer-visible impact, including impacts resolved within 10 minutes.\n- Separate confirmed facts from hypotheses.\n\nDeliverables:\n- First, return a table with UTC timestamps and source references.\n- Then, write a plain-language summary of no more than 180 words.\n- Include exactly 3 follow-up questions for the response team.\n\nDo not combine the table and summary into one format. If evidence is missing, mark the claim as unverified.",
+    "must_preserve": [
+      "earliest confirmed cause",
+      "not the earliest suspected cause",
+      "every customer-visible impact",
+      "including impacts resolved within 10 minutes",
+      "confirmed facts from hypotheses",
+      "UTC timestamps",
+      "source references",
+      "plain-language summary",
+      "no more than 180 words",
+      "exactly 3 follow-up questions",
+      "Do not combine the table and summary",
+      "unverified"
+    ]
+  },
+  {
+    "id": "general_04",
+    "category": "general_task",
+    "expected_behavior": "reject_unsafe_candidate",
+    "description": "Reject a candidate that changes the output format and loses a conditional exception.",
+    "prompt": "Using the supplied interview notes, identify themes in participants' comments.\n\nMethod:\n- Include a theme only when it appears in at least 4 interviews.\n- If a theme appears in fewer than 4 interviews, list it separately as a low-frequency observation.\n- Do not infer participants' demographic characteristics.\n\nOutput: Return valid JSON with `themes`, `low_frequency_observations`, and `evidence` arrays. Include one short verbatim excerpt and its interview ID for each theme. Do not include names in excerpts.\n\nIf no theme meets the threshold, return an empty `themes` array.",
+    "must_preserve": [
+      "at least 4 interviews",
+      "fewer than 4 interviews",
+      "low-frequency observation",
+      "Do not infer participants' demographic characteristics",
+      "valid JSON",
+      "`themes`",
+      "`low_frequency_observations`",
+      "`evidence`",
+      "verbatim excerpt",
+      "interview ID",
+      "Do not include names",
+      "empty `themes` array"
+    ],
+    "llm_candidate": "Summarize common interview themes in a short paragraph. Include representative quotes and participant names."
+  },
+  {
+    "id": "software_05",
+    "category": "software_development",
+    "expected_behavior": "accept_safe_optimization",
+    "description": "Remove a repeated credential-logging prohibition repeated in security and diagnostics sections.",
+    "scenarios": [
+      "genuine_redundancy",
+      "section_scoped",
+      "security_literals"
+    ],
+    "prompt": "Project: Background invoice worker\n\nSecurity requirements:\n- Never write access tokens to logs.\n- Store signing keys in the platform secret store.\n- Restrict invoice downloads to users with the `billing:read` permission.\n\nDiagnostics requirements:\n- Never write access tokens to logs.\n- Include the invoice ID and correlation ID in structured error events.\n- Retain diagnostic events for 14 days.\n\nTesting: Verify that a denied download returns 403 and that logs contain no token value.",
+    "must_preserve": [
+      "Never write access tokens to logs",
+      "platform secret store",
+      "`billing:read`",
+      "invoice ID",
+      "correlation ID",
+      "14 days",
+      "denied download returns 403"
+    ],
+    "added_in": "milestone_3"
+  },
+  {
+    "id": "software_06",
+    "category": "software_development",
+    "expected_behavior": "leave_unchanged",
+    "description": "Keep similar validation requirements scoped to separate application layers.",
+    "scenarios": [
+      "section_scoped",
+      "similar_but_distinct",
+      "frontend_backend"
+    ],
+    "prompt": "Change request: Add a saved-search workflow.\n\nFrontend: Validate the search name before enabling Save, and show the field-level message beside the input.\n\nAPI: Validate the request schema and return 422 with a machine-readable error code when the name is empty.\n\nPersistence: Before inserting, verify that the owner still exists and that the name is unique for that owner. Return 409 for a duplicate.\n\nDo not treat client-side validation as a substitute for API or persistence validation.",
+    "must_preserve": [
+      "saved-search workflow",
+      "before enabling Save",
+      "field-level message",
+      "return 422",
+      "machine-readable error code",
+      "Before inserting",
+      "owner still exists",
+      "unique for that owner",
+      "Return 409",
+      "Do not treat client-side validation as a substitute"
+    ],
+    "added_in": "milestone_3"
+  },
+  {
+    "id": "software_07",
+    "category": "software_development",
+    "expected_behavior": "leave_unchanged",
+    "description": "Preserve a realistic multi-section application brief with different deployment, security, and data constraints.",
+    "scenarios": [
+      "complex_multisection",
+      "section_scoped",
+      "ordering",
+      "security_literals"
+    ],
+    "prompt": "Project objective: Add scheduled exports to the existing service without changing current customer-facing endpoints.\n\nTechnology stack: Keep the Python 3.12 runtime and PostgreSQL 15 schema. Use the existing queue worker; do not add a second scheduler.\n\nFunctional requirements:\n- Let an administrator schedule a CSV export for one workspace.\n- Include only records visible to that workspace at execution time.\n- Store the result for 24 hours and expose its download URL through the existing export-status endpoint.\n\nSecurity requirements:\n- Recheck workspace membership when the export runs, not only when it is scheduled.\n- Do not include access tokens or signed URLs in application logs.\n\nReliability requirements:\n- Mark a job `failed` if generation fails and retain its diagnostic code.\n- Do not retry a job after its workspace has been deleted.\n\nTesting and delivery:\n- Add tests for revoked membership, expired downloads, and worker retry behavior.\n- Report the migration, changed files, and test commands.",
+    "must_preserve": [
+      "customer-facing endpoints",
+      "Python 3.12",
+      "PostgreSQL 15",
+      "existing queue worker",
+      "do not add a second scheduler",
+      "one workspace",
+      "at execution time",
+      "24 hours",
+      "existing export-status endpoint",
+      "when the export runs",
+      "Do not include access tokens or signed URLs in application logs",
+      "`failed`",
+      "diagnostic code",
+      "workspace has been deleted",
+      "revoked membership",
+      "expired downloads",
+      "worker retry behavior"
+    ],
+    "added_in": "milestone_3"
+  },
+  {
+    "id": "software_08",
+    "category": "software_development",
+    "expected_behavior": "reject_unsafe_candidate",
+    "description": "Reject a deterministic rewrite that drops a frontend-specific requirement while retaining backend work.",
+    "scenarios": [
+      "section_scoped",
+      "unsafe_llm_section_removal",
+      "frontend_backend",
+      "unsafe_llm_identifier_change"
+    ],
+    "prompt": "Implement the account recovery change.\n\nFrontend requirements:\n- Keep the recovery form usable with keyboard-only navigation.\n- Show the server-provided recovery status without exposing the account's email address.\n\nBackend requirements:\n- Expose the result using the exact response field `recovery_status`.\n- Expire recovery codes after 20 minutes.\n- Return the same response body for known and unknown email addresses.\n\nVerification: Test keyboard navigation, expired codes, and both email lookup outcomes.",
+    "must_preserve": [
+      "keyboard-only navigation",
+      "`recovery_status`",
+      "server-provided recovery status",
+      "without exposing the account's email address",
+      "20 minutes",
+      "same response body",
+      "known and unknown email addresses",
+      "expired codes"
+    ],
+    "llm_candidate": "Implement account recovery. Return the result in `status` and expire recovery codes after 20 minutes and return the same response for known and unknown addresses. Test expired codes and email lookup outcomes.",
+    "added_in": "milestone_3"
+  },
+  {
+    "id": "technical_05",
+    "category": "technical_specification",
+    "expected_behavior": "leave_unchanged",
+    "description": "Preserve two distinct ordered output contracts: JSON Lines records and a separate JSON summary.",
+    "scenarios": [
+      "multiple_output_contracts",
+      "ordering",
+      "section_labels"
+    ],
+    "prompt": "Export contract:\n1. Write one UTF-8 JSON object per line to `events.jsonl`; do not add a header.\n2. After the data file is complete, write a separate JSON object to `summary.json`.\n\nThe summary must contain `record_count`, `rejected_count`, and `generated_at`. Each data object must contain `event_id` and `occurred_at`.\n\nKeep the two files separate. The summary is not a JSON Lines record, and the data file is not a JSON array.",
+    "must_preserve": [
+      "one UTF-8 JSON object per line",
+      "`events.jsonl`",
+      "do not add a header",
+      "After the data file is complete",
+      "separate JSON object",
+      "`summary.json`",
+      "`record_count`",
+      "`rejected_count`",
+      "`generated_at`",
+      "`event_id`",
+      "`occurred_at`",
+      "Keep the two files separate",
+      "not a JSON array"
+    ],
+    "added_in": "milestone_3"
+  },
+  {
+    "id": "technical_06",
+    "category": "technical_specification",
+    "expected_behavior": "leave_unchanged",
+    "description": "Keep retry rules distinct by operation, status, idempotency, and maximum attempts.",
+    "scenarios": [
+      "retry_policies",
+      "conditions_exceptions",
+      "idempotency"
+    ],
+    "prompt": "Retry behavior for the ingestion client:\n\n- Retry `GET /v1/batches/{id}` on 429 or 503, at most 4 attempts total, using exponential backoff.\n- Retry `POST /v1/batches` only when the request includes an `Idempotency-Key`; use the same key for each attempt and stop after 2 retries.\n- Never retry 400 or 401.\n- Do not retry a POST whose response body indicates that validation failed.\n\nRecord the final status and attempt count. Do not count the initial request as a retry.",
+    "must_preserve": [
+      "`GET /v1/batches/{id}`",
+      "429 or 503",
+      "at most 4 attempts total",
+      "exponential backoff",
+      "`POST /v1/batches`",
+      "only when the request includes an `Idempotency-Key`",
+      "same key",
+      "2 retries",
+      "Never retry 400 or 401",
+      "validation failed",
+      "final status",
+      "attempt count",
+      "initial request as a retry"
+    ],
+    "added_in": "milestone_3"
+  },
+  {
+    "id": "technical_07",
+    "category": "technical_specification",
+    "expected_behavior": "leave_unchanged",
+    "description": "Preserve literal forms and technical values in a multi-section deployment specification.",
+    "scenarios": [
+      "quoted_literals",
+      "technical_identifiers",
+      "complex_multisection",
+      "urls_paths_env"
+    ],
+    "prompt": "Project objective: Add an archive preview mode for the existing document service.\n\nTechnology and configuration:\n- Keep the worker in `src/workers/archive.py` and continue using the existing PostgreSQL 15 database.\n- Read `ARCHIVE_BUCKET` and `ARCHIVE_REGION` from the deployment environment.\n- Keep the legacy setting 'archive_mode' unchanged and do not rename it to 'storage_mode'.\n\nAPI requirements:\n- Send `X-Request-ID` to `https://archive.example.test/v1/objects`.\n- Preserve the response header `ETag` and the exact display label \"Archive preview\".\n- Return the object key using `tenant/{tenant_id}/{object_id}`.\n\nSecurity and data:\n- A preview must not write or delete an object.\n- Retain the operator note “No object is deleted during a dry run.”\n- Do not expose signed URLs in application logs.\n\nCode constraint: Keep this comparison exact: `if status_code == 304:`.\n\nTesting and deliverables:\n- Test the 304 response, missing bucket configuration, and an expired signed URL separately.\n- List changed files and provide the test command.",
+    "must_preserve": [
+      "Project objective",
+      "`src/workers/archive.py`",
+      "PostgreSQL 15",
+      "`ARCHIVE_BUCKET`",
+      "`ARCHIVE_REGION`",
+      "'archive_mode'",
+      "'storage_mode'",
+      "`X-Request-ID`",
+      "https://archive.example.test/v1/objects",
+      "`ETag`",
+      "\"Archive preview\"",
+      "tenant/{tenant_id}/{object_id}",
+      "must not write or delete an object",
+      "No object is deleted during a dry run.",
+      "Do not expose signed URLs in application logs",
+      "`if status_code == 304:`",
+      "304 response",
+      "missing bucket configuration",
+      "expired signed URL",
+      "List changed files",
+      "test command"
+    ],
+    "added_in": "milestone_3"
+  },
+  {
+    "id": "technical_08",
+    "category": "technical_specification",
+    "expected_behavior": "reject_unsafe_candidate",
+    "description": "Reject a rewrite that changes a numeric threshold and removes an oversized-record exception.",
+    "scenarios": [
+      "unsafe_llm_numeric_change",
+      "conditions_exceptions",
+      "nested_data_conditions"
+    ],
+    "prompt": "Batch acceptance rules:\n- Accept a batch with no more than 240 records.\n- If it contains 241 to 900 records, divide it into chunks of 240 and preserve input order.\n- Reject individual records larger than 6 MiB; continue processing the other records in the chunk.\n- Do not reject the whole batch because one record exceeds the size limit.\n\nReturn a JSON report with accepted, rejected, and deferred counts.",
+    "must_preserve": [
+      "no more than 240 records",
+      "241 to 900 records",
+      "chunks of 240",
+      "preserve input order",
+      "larger than 6 MiB",
+      "continue processing the other records",
+      "Do not reject the whole batch",
+      "JSON report",
+      "accepted, rejected, and deferred counts"
+    ],
+    "llm_candidate": "Accept batches of up to 200 records. Split larger batches into chunks and reject records larger than 6 MiB. Return a JSON report with accepted and rejected counts.",
+    "added_in": "milestone_3"
+  },
+  {
+    "id": "api_05",
+    "category": "api_requirements",
+    "expected_behavior": "leave_unchanged",
+    "description": "Preserve authentication versus authorization and distinct responses for two endpoints.",
+    "scenarios": [
+      "section_scoped",
+      "authn_authz",
+      "similar_but_distinct"
+    ],
+    "prompt": "Access contract:\n\n`GET /v2/profile`\n- Authenticate with a valid session cookie.\n- Return 401 if the cookie is missing or expired.\n- Return only the caller's profile.\n\n`GET /v2/teams/{team_id}`\n- Authenticate with a valid session cookie.\n- Authorize the caller against the requested team's membership list.\n- Return 403 when the caller is authenticated but not a member.\n\nDo not treat authentication as proof of team membership.",
+    "must_preserve": [
+      "`GET /v2/profile`",
+      "valid session cookie",
+      "401",
+      "only the caller's profile",
+      "`GET /v2/teams/{team_id}`",
+      "Authorize the caller",
+      "membership list",
+      "403",
+      "authenticated but not a member",
+      "Do not treat authentication as proof of team membership"
+    ],
+    "added_in": "milestone_3"
+  },
+  {
+    "id": "api_06",
+    "category": "api_requirements",
+    "expected_behavior": "leave_unchanged",
+    "description": "Keep endpoint-specific retry conditions and different response formats separate.",
+    "scenarios": [
+      "retry_policies",
+      "conditions_exceptions",
+      "multiple_output_contracts"
+    ],
+    "prompt": "Client contract:\n\nFor `GET /v1/catalog`, retry 503 responses at most 3 times. Do not retry 404.\n\nFor `POST /v1/orders`, retry 429 only when the server supplies `Retry-After` and the request has an `Idempotency-Key`. Never retry a 409 conflict.\n\nSuccessful catalog responses use JSON. Order errors use `application/problem+json`; successful order creation returns 201 with `order_id`.",
+    "must_preserve": [
+      "`GET /v1/catalog`",
+      "503 responses at most 3 times",
+      "Do not retry 404",
+      "`POST /v1/orders`",
+      "429 only when the server supplies `Retry-After`",
+      "`Idempotency-Key`",
+      "Never retry a 409 conflict",
+      "Successful catalog responses use JSON",
+      "`application/problem+json`",
+      "201",
+      "`order_id`"
+    ],
+    "added_in": "milestone_3"
+  },
+  {
+    "id": "api_07",
+    "category": "api_requirements",
+    "expected_behavior": "reject_unsafe_candidate",
+    "description": "Reject a candidate that changes a strict JSON response contract into CSV and drops required fields.",
+    "scenarios": [
+      "unsafe_llm_format_change",
+      "multiple_output_contracts",
+      "technical_identifiers"
+    ],
+    "prompt": "`GET /v3/ledger/export` response contract:\n- Return `application/json` with a top-level `items` array and a `next_cursor` field.\n- Include `entry_id`, `posted_at`, and `amount_minor` in every item.\n- Return an empty `items` array and a null `next_cursor` when there are no entries.\n- Do not return CSV or omit `amount_minor` for zero-value entries.",
+    "must_preserve": [
+      "`GET /v3/ledger/export`",
+      "`application/json`",
+      "top-level `items` array",
+      "`next_cursor`",
+      "`entry_id`",
+      "`posted_at`",
+      "`amount_minor`",
+      "empty `items` array",
+      "null `next_cursor`",
+      "Do not return CSV",
+      "zero-value entries"
+    ],
+    "llm_candidate": "Export the ledger as CSV with entry IDs and dates. If there are no entries, return an empty file.",
+    "added_in": "milestone_3"
+  },
+  {
+    "id": "data_05",
+    "category": "data_processing",
+    "expected_behavior": "accept_safe_optimization",
+    "description": "Remove an exact repeated null-imputation prohibition across cleaning and aggregation sections.",
+    "scenarios": [
+      "genuine_redundancy",
+      "nested_data_conditions",
+      "null_handling"
+    ],
+    "prompt": "Dataset: Daily water-quality readings\n\nCleaning rules:\n- Parse `sampled_at` as UTC.\n- Keep records with a missing `nitrate_mg_l` and mark them as incomplete.\n- Do not replace missing `nitrate_mg_l` values with zero.\n\nAggregation rules:\n- Group by station and UTC calendar date.\n- Do not replace missing `nitrate_mg_l` values with zero.\n- Calculate the median from present values only, and report the count of missing readings.\n\nWrite the output to `daily_quality.parquet`.",
+    "must_preserve": [
+      "`sampled_at`",
+      "UTC",
+      "missing `nitrate_mg_l`",
+      "mark them as incomplete",
+      "Do not replace missing `nitrate_mg_l` values with zero",
+      "station and UTC calendar date",
+      "present values only",
+      "count of missing readings",
+      "`daily_quality.parquet`"
+    ],
+    "added_in": "milestone_3"
+  },
+  {
+    "id": "data_06",
+    "category": "data_processing",
+    "expected_behavior": "leave_unchanged",
+    "description": "Preserve nested null, threshold, exception, and write-order rules for records.",
+    "scenarios": [
+      "nested_data_conditions",
+      "conditions_exceptions",
+      "ordering"
+    ],
+    "prompt": "Process the delivery feed as follows:\n1. If `delivered_at` is null and `status` is `in_transit`, leave the record pending.\n2. If `delivered_at` is null and `status` is `delivered`, place the record in the exception file; do not infer a delivery time.\n3. Reject `weight_kg` below 0 or above 80, but retain the rejected row and its source line number.\n4. Validate these rules before writing accepted rows to `deliveries.csv`.\n\nReturn separate accepted and exception counts.",
+    "must_preserve": [
+      "`delivered_at` is null",
+      "`in_transit`",
+      "leave the record pending",
+      "`delivered`",
+      "exception file",
+      "do not infer a delivery time",
+      "`weight_kg` below 0 or above 80",
+      "retain the rejected row",
+      "source line number",
+      "before writing accepted rows",
+      "`deliveries.csv`",
+      "separate accepted and exception counts"
+    ],
+    "added_in": "milestone_3"
+  },
+  {
+    "id": "data_07",
+    "category": "data_processing",
+    "expected_behavior": "reject_unsafe_candidate",
+    "description": "Reject a rewrite that removes the manual-adjustment exception and changes a strict comparison.",
+    "scenarios": [
+      "unsafe_llm_exception_removal",
+      "nested_data_conditions",
+      "technical_identifiers"
+    ],
+    "prompt": "Reconcile rows from `ledger_import.csv`.\n\n- Ignore rows with a null `account_id`, except rows whose `entry_kind` is `manual_adjustment`; send those to the review table.\n- Flag, but do not discard, entries where `delta_minor` is less than -5000.\n- Write only validated entries to `ledger_clean.csv` after the review table has been generated.\n- Preserve the original `source_row` in both outputs.",
+    "must_preserve": [
+      "`ledger_import.csv`",
+      "null `account_id`",
+      "except rows whose `entry_kind` is `manual_adjustment`",
+      "review table",
+      "less than -5000",
+      "Flag, but do not discard",
+      "only validated entries",
+      "after the review table has been generated",
+      "`ledger_clean.csv`",
+      "`source_row`"
+    ],
+    "llm_candidate": "Remove rows with a null account ID or a delta below -5000. Write the remaining validated entries to ledger_clean.csv.",
+    "added_in": "milestone_3"
+  },
+  {
+    "id": "general_05",
+    "category": "general_task",
+    "expected_behavior": "leave_unchanged",
+    "description": "Confirm that a concise, complete request is returned unchanged rather than rewritten without savings.",
+    "scenarios": [
+      "concise_noop",
+      "no_token_savings"
+    ],
+    "prompt": "List three causes of coastal erosion and one practical mitigation for each.",
+    "must_preserve": [
+      "three causes",
+      "coastal erosion",
+      "one practical mitigation for each"
+    ],
+    "added_in": "milestone_3"
+  },
+  {
+    "id": "general_06",
+    "category": "general_task",
+    "expected_behavior": "leave_unchanged",
+    "description": "Keep English instructions and a Sinhala phrase intact without assuming cross-language equivalence.",
+    "scenarios": [
+      "mixed_language",
+      "non_english",
+      "quoted_literals"
+    ],
+    "prompt": "Summarize the feedback in English using two bullets. Do not translate the Sinhala phrase “හෙට උදේ”; reproduce it exactly in the first bullet. If its meaning is uncertain, say so rather than guessing.",
+    "must_preserve": [
+      "in English",
+      "two bullets",
+      "Do not translate",
+      "හෙට උදේ",
+      "reproduce it exactly",
+      "If its meaning is uncertain",
+      "rather than guessing"
+    ],
+    "added_in": "milestone_3"
+  },
+  {
+    "id": "general_07",
+    "category": "general_task",
+    "expected_behavior": "reject_unsafe_candidate",
+    "description": "Reject a candidate that removes a prohibition and changes the required treatment of named people.",
+    "scenarios": [
+      "unsafe_llm_negation_removal",
+      "negation",
+      "conditions_exceptions"
+    ],
+    "prompt": "Summarize the supplied meeting notes in plain language. Do not include participants' personal names. Replace each name with `[PERSON]`, but preserve the person's role when the notes state it. If a role is not stated, do not infer one.",
+    "must_preserve": [
+      "plain language",
+      "Do not include participants' personal names",
+      "Replace each name with `[PERSON]`",
+      "preserve the person's role",
+      "If a role is not stated",
+      "do not infer one"
+    ],
+    "llm_candidate": "Summarize the meeting notes in plain language and identify each participant by name and role.",
+    "added_in": "milestone_3"
+  },
+  {
+    "id": "general_08",
+    "category": "general_task",
+    "expected_behavior": "leave_unchanged",
+    "description": "Preserve separate ordered output formats and their section labels in a concise incident review request.",
+    "scenarios": [
+      "multiple_output_contracts",
+      "ordering",
+      "section_labels"
+    ],
+    "prompt": "Review the incident notes and return these sections in order:\n1. `Timeline`: a table with UTC time and source.\n2. `Findings`: a Markdown explanation of confirmed causes only.\n3. `Actions`: a numbered list with owner and due date.\n\nKeep hypotheses out of `Findings`; label them `Unconfirmed` in a separate note after the table.",
+    "must_preserve": [
+      "sections in order",
+      "`Timeline`",
+      "table",
+      "UTC time and source",
+      "`Findings`",
+      "Markdown explanation",
+      "confirmed causes only",
+      "`Actions`",
+      "numbered list",
+      "owner and due date",
+      "Keep hypotheses out",
+      "`Unconfirmed`",
+      "after the table"
+    ],
+    "added_in": "milestone_3"
+  },
+  {
+    "id": "general_09",
+    "category": "general_task",
+    "expected_behavior": "leave_unchanged",
+    "description": "Keep an English request and a Spanish source sentence distinct, preserving the original Spanish text without translation.",
+    "scenarios": [
+      "mixed_language",
+      "non_english",
+      "quoted_literals",
+      "concise_noop"
+    ],
+    "prompt": "Explain the return policy in English in two bullets. Preserve the Spanish sentence “No se aceptan devoluciones después de 30 días” exactly and do not translate it. If its meaning is uncertain, state that rather than guessing.",
+    "must_preserve": [
+      "in English",
+      "two bullets",
+      "No se aceptan devoluciones después de 30 días",
+      "do not translate it",
+      "If its meaning is uncertain",
+      "rather than guessing"
+    ],
+    "added_in": "milestone_3"
+  }
+]

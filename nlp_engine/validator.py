@@ -40,9 +40,14 @@ from .textutils import (
 
 def _entities(text: str) -> Set[str]:
     """Find names, acronyms, camelCase and snake_case identifiers."""
+    return _entities_from_segments(prepare_prompt(text).segments)
+
+
+def _entities_from_segments(segments) -> Set[str]:
+    """Find entities in segments already prepared by the caller."""
     found: Set[str] = set()
 
-    for seg in prepare_prompt(text).segments:
+    for seg in segments:
         toks = re.findall(r"[A-Za-z][A-Za-z0-9_]*", seg.text)
 
         for k, tok in enumerate(toks):
@@ -413,6 +418,46 @@ def _best_constraint_coverage(
     return best_coverage
 
 
+def _constraint_coverage_scores(
+    constraints: List[tuple[Set[str], bool]],
+    optimized_segments: List[str],
+) -> List[float]:
+    """Score each constraint while processing each candidate segment once.
+
+    The matching conditions and coverage calculation are the same as
+    ``_best_constraint_coverage``. This only reorders the loops so that
+    polarity and content stems are derived once per candidate segment.
+    """
+    best_coverages = [0.0] * len(constraints)
+
+    for candidate in optimized_segments:
+        candidate_negated = is_negated(candidate)
+        matching_constraints = [
+            index
+            for index, (_stems, original_negated) in enumerate(constraints)
+            if original_negated == candidate_negated
+        ]
+
+        if not matching_constraints:
+            continue
+
+        candidate_stems = {
+            stem
+            for stem in content_stems(candidate)
+            if not stem.startswith("qzph")
+        }
+
+        if not candidate_stems:
+            continue
+
+        for index in matching_constraints:
+            original_stems = constraints[index][0]
+            coverage = len(original_stems & candidate_stems) / len(original_stems)
+            best_coverages[index] = max(best_coverages[index], coverage)
+
+    return best_coverages
+
+
 def validate_optimization(
     original: str,
     optimized: str,
@@ -518,7 +563,7 @@ def validate_optimization(
 
     orig_ent = _entities(core_original)
 
-    opt_ent = _entities(optimized) | {
+    opt_ent = _entities_from_segments(optimized_prepared.segments) | {
         tok
         for tok in re.findall(
             r"[A-Za-z][A-Za-z0-9_]*",
@@ -543,7 +588,8 @@ def validate_optimization(
 
     checked = 0
     bad: List[str] = []
-    constraint_coverages: List[float] = []
+    constraint_texts: List[str] = []
+    constraint_data: List[tuple[Set[str], bool]] = []
 
     for i, seg in enumerate(prep.segments):
 
@@ -582,14 +628,18 @@ def validate_optimization(
             continue
 
         checked += 1
+        constraint_texts.append(original_constraint)
+        constraint_data.append((stems, is_negated(original_constraint)))
 
-        coverage = _best_constraint_coverage(
-            original_constraint,
-            optimized_segments,
-        )
+    constraint_coverages = _constraint_coverage_scores(
+        constraint_data,
+        optimized_segments,
+    )
 
-        constraint_coverages.append(coverage)
-
+    for original_constraint, coverage in zip(
+        constraint_texts,
+        constraint_coverages,
+    ):
         if coverage < config.CONSTRAINT_COVERAGE_MIN:
             bad.append(original_constraint[:50])
 

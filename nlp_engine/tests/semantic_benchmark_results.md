@@ -2,65 +2,65 @@
 
 - Dataset: `evaluation_dataset.json`
 - Total cases: 50
-- Passed: 40
-- Failed: 10
-- Pass rate: 80.0%
+- Passed: 50
+- Failed: 0
+- Pass rate: 100.0%
 - Pretrained semantic model enabled: `False`
 
 ## Case results
 
 | ID | Category | Expected | Actual | Result | Clauses | Pairs | Removals | Time (ms) |
 |---|---|---|---|:---:|---:|---:|---:|---:|
-| exact_duplicate_01 | exact_duplicates | duplicate_detected | duplicate_detected | PASS | 2 | 1 | 1 | 11.16 |
-| exact_duplicate_02 | exact_duplicates | duplicate_detected | duplicate_detected | PASS | 3 | 1 | 1 | 5.06 |
-| paraphrase_01 | paraphrased_instructions | similarity_detected | not_detected | FAIL | 2 | 0 | 0 | 6.21 |
-| paraphrase_02 | paraphrased_instructions | similarity_detected | not_detected | FAIL | 2 | 0 | 0 | 4.83 |
-| different_meaning_01 | different_meanings | preserve_both | preserved | PASS | 2 | 1 | 0 | 15.34 |
-| different_meaning_02 | different_meanings | preserve_both | preserved | PASS | 2 | 0 | 0 | 14.86 |
-| negation_01 | negation | preserve_both | preserved | PASS | 2 | 0 | 0 | 9.08 |
-| negation_02 | negation | preserve_both | preserved | PASS | 2 | 0 | 0 | 3.54 |
-| numeric_01 | numeric_constraints | preserve_both | preserved | PASS | 2 | 0 | 0 | 4.19 |
-| numeric_02 | numeric_constraints | preserve_both | preserved | PASS | 2 | 0 | 0 | 8.97 |
-| technical_01 | technical_instructions | preserve_both | preserved | PASS | 2 | 0 | 0 | 4.00 |
-| technical_02 | technical_instructions | preserve_both | preserved | PASS | 2 | 0 | 0 | 4.47 |
-| conditional_01 | conditional_instructions | preserve_both | preserved | PASS | 2 | 0 | 0 | 9.16 |
-| conditional_02 | conditional_instructions | preserve_both | preserved | PASS | 2 | 0 | 0 | 4.22 |
-| sequence_01 | instruction_sequence | preserve_both | preserved | PASS | 3 | 0 | 0 | 5.65 |
-| sequence_02 | instruction_sequence | preserve_both | preserved | PASS | 2 | 0 | 0 | 6.67 |
-| repeated_context_01 | repeated_with_context | duplicate_detected | duplicate_detected | PASS | 3 | 1 | 1 | 15.38 |
-| repeated_context_02 | repeated_with_context | duplicate_detected | duplicate_detected | PASS | 3 | 1 | 1 | 8.09 |
-| scope_01 | scope_and_completeness | preserve_both | preserved | PASS | 2 | 0 | 0 | 7.30 |
-| scope_02 | scope_and_completeness | preserve_both | preserved | PASS | 2 | 0 | 0 | 4.26 |
-| exact_duplicate_03 | exact_duplicates | duplicate_detected | duplicate_detected | PASS | 2 | 1 | 1 | 6.60 |
-| exact_duplicate_04 | repeated_with_context | duplicate_detected | duplicate_detected | PASS | 3 | 1 | 1 | 6.23 |
-| exact_duplicate_05 | exact_duplicates | duplicate_detected | duplicate_detected | PASS | 2 | 1 | 1 | 2.82 |
-| exact_duplicate_06 | repeated_with_context | duplicate_detected | duplicate_detected | PASS | 3 | 1 | 1 | 6.58 |
-| exact_duplicate_07 | exact_duplicates | duplicate_detected | duplicate_detected | PASS | 2 | 1 | 1 | 24.10 |
-| exact_duplicate_08 | repeated_with_context | duplicate_detected | duplicate_detected | PASS | 3 | 1 | 1 | 3.41 |
-| paraphrase_03 | paraphrased_instructions | similarity_detected | not_detected | FAIL | 2 | 0 | 0 | 5.61 |
-| paraphrase_04 | paraphrased_instructions | similarity_detected | not_detected | FAIL | 2 | 0 | 0 | 4.81 |
-| paraphrase_05 | paraphrased_instructions | similarity_detected | not_detected | FAIL | 2 | 0 | 0 | 4.39 |
-| paraphrase_06 | paraphrased_instructions | similarity_detected | not_detected | FAIL | 2 | 0 | 0 | 9.58 |
-| paraphrase_07 | paraphrased_instructions | similarity_detected | not_detected | FAIL | 2 | 0 | 0 | 3.55 |
-| paraphrase_08 | paraphrased_instructions | similarity_detected | not_detected | FAIL | 2 | 0 | 0 | 4.30 |
-| paraphrase_09 | paraphrased_instructions | similarity_detected | not_detected | FAIL | 2 | 0 | 0 | 11.04 |
-| paraphrase_10 | paraphrased_instructions | similarity_detected | not_detected | FAIL | 2 | 0 | 0 | 15.35 |
-| different_meaning_03 | different_meanings | preserve_both | preserved | PASS | 2 | 0 | 0 | 3.44 |
-| different_meaning_04 | different_meanings | preserve_both | preserved | PASS | 2 | 0 | 0 | 6.56 |
-| different_meaning_05 | different_meanings | preserve_both | preserved | PASS | 2 | 1 | 0 | 6.06 |
-| negation_03 | negation | preserve_both | preserved | PASS | 2 | 0 | 0 | 4.16 |
-| negation_04 | negation | preserve_both | preserved | PASS | 2 | 0 | 0 | 6.62 |
-| numeric_03 | numeric_constraints | preserve_both | preserved | PASS | 2 | 0 | 0 | 4.19 |
-| numeric_04 | numeric_constraints | preserve_both | preserved | PASS | 2 | 0 | 0 | 3.40 |
-| technical_03 | technical_instructions | preserve_both | preserved | PASS | 2 | 0 | 0 | 3.78 |
-| technical_04 | technical_instructions | preserve_both | preserved | PASS | 2 | 0 | 0 | 60.78 |
-| technical_05 | technical_instructions | preserve_both | preserved | PASS | 2 | 0 | 0 | 6.71 |
-| conditional_03 | conditional_instructions | preserve_both | preserved | PASS | 3 | 0 | 0 | 9.87 |
-| conditional_04 | conditional_instructions | preserve_both | preserved | PASS | 3 | 0 | 0 | 12.91 |
-| sequence_03 | instruction_sequence | preserve_both | preserved | PASS | 3 | 0 | 0 | 8.21 |
-| sequence_04 | instruction_sequence | preserve_both | preserved | PASS | 2 | 0 | 0 | 8.22 |
-| scope_03 | scope_and_completeness | preserve_both | preserved | PASS | 2 | 0 | 0 | 22.97 |
-| scope_04 | scope_and_completeness | preserve_both | preserved | PASS | 2 | 0 | 0 | 5.14 |
+| exact_duplicate_01 | exact_duplicates | duplicate_detected | duplicate_detected | PASS | 2 | 1 | 1 | 58.48 |
+| exact_duplicate_02 | exact_duplicates | duplicate_detected | duplicate_detected | PASS | 3 | 1 | 1 | 6.93 |
+| paraphrase_01 | paraphrased_instructions | similarity_detected | similarity_detected | PASS | 2 | 1 | 0 | 5.09 |
+| paraphrase_02 | paraphrased_instructions | similarity_detected | similarity_detected | PASS | 2 | 1 | 0 | 20.67 |
+| different_meaning_01 | different_meanings | preserve_both | preserved | PASS | 2 | 1 | 0 | 15.66 |
+| different_meaning_02 | different_meanings | preserve_both | preserved | PASS | 2 | 0 | 0 | 6.97 |
+| negation_01 | negation | preserve_both | preserved | PASS | 2 | 0 | 0 | 5.79 |
+| negation_02 | negation | preserve_both | preserved | PASS | 2 | 0 | 0 | 5.43 |
+| numeric_01 | numeric_constraints | preserve_both | preserved | PASS | 2 | 0 | 0 | 6.31 |
+| numeric_02 | numeric_constraints | preserve_both | preserved | PASS | 2 | 0 | 0 | 6.07 |
+| technical_01 | technical_instructions | preserve_both | preserved | PASS | 2 | 0 | 0 | 17.57 |
+| technical_02 | technical_instructions | preserve_both | preserved | PASS | 2 | 0 | 0 | 11.16 |
+| conditional_01 | conditional_instructions | preserve_both | preserved | PASS | 2 | 0 | 0 | 5.98 |
+| conditional_02 | conditional_instructions | preserve_both | preserved | PASS | 2 | 0 | 0 | 5.97 |
+| sequence_01 | instruction_sequence | preserve_both | preserved | PASS | 3 | 0 | 0 | 5.20 |
+| sequence_02 | instruction_sequence | preserve_both | preserved | PASS | 2 | 0 | 0 | 4.89 |
+| repeated_context_01 | repeated_with_context | duplicate_detected | duplicate_detected | PASS | 3 | 1 | 1 | 8.10 |
+| repeated_context_02 | repeated_with_context | duplicate_detected | duplicate_detected | PASS | 3 | 1 | 1 | 5.23 |
+| scope_01 | scope_and_completeness | preserve_both | preserved | PASS | 2 | 0 | 0 | 5.15 |
+| scope_02 | scope_and_completeness | preserve_both | preserved | PASS | 2 | 0 | 0 | 10.06 |
+| exact_duplicate_03 | exact_duplicates | duplicate_detected | duplicate_detected | PASS | 2 | 1 | 1 | 7.00 |
+| exact_duplicate_04 | repeated_with_context | duplicate_detected | duplicate_detected | PASS | 3 | 1 | 1 | 11.43 |
+| exact_duplicate_05 | exact_duplicates | duplicate_detected | duplicate_detected | PASS | 2 | 1 | 1 | 5.24 |
+| exact_duplicate_06 | repeated_with_context | duplicate_detected | duplicate_detected | PASS | 3 | 1 | 1 | 8.24 |
+| exact_duplicate_07 | exact_duplicates | duplicate_detected | duplicate_detected | PASS | 2 | 1 | 1 | 6.33 |
+| exact_duplicate_08 | repeated_with_context | duplicate_detected | duplicate_detected | PASS | 3 | 1 | 1 | 8.61 |
+| paraphrase_03 | paraphrased_instructions | similarity_detected | similarity_detected | PASS | 2 | 1 | 0 | 6.35 |
+| paraphrase_04 | paraphrased_instructions | similarity_detected | similarity_detected | PASS | 2 | 1 | 0 | 8.79 |
+| paraphrase_05 | paraphrased_instructions | similarity_detected | similarity_detected | PASS | 2 | 1 | 0 | 6.90 |
+| paraphrase_06 | paraphrased_instructions | similarity_detected | similarity_detected | PASS | 2 | 1 | 0 | 9.33 |
+| paraphrase_07 | paraphrased_instructions | similarity_detected | similarity_detected | PASS | 2 | 1 | 0 | 9.61 |
+| paraphrase_08 | paraphrased_instructions | similarity_detected | similarity_detected | PASS | 2 | 1 | 0 | 4.17 |
+| paraphrase_09 | paraphrased_instructions | similarity_detected | similarity_detected | PASS | 2 | 1 | 0 | 7.71 |
+| paraphrase_10 | paraphrased_instructions | similarity_detected | similarity_detected | PASS | 2 | 1 | 0 | 4.21 |
+| different_meaning_03 | different_meanings | preserve_both | preserved | PASS | 2 | 0 | 0 | 3.92 |
+| different_meaning_04 | different_meanings | preserve_both | preserved | PASS | 2 | 0 | 0 | 4.47 |
+| different_meaning_05 | different_meanings | preserve_both | preserved | PASS | 2 | 1 | 0 | 5.51 |
+| negation_03 | negation | preserve_both | preserved | PASS | 2 | 0 | 0 | 5.42 |
+| negation_04 | negation | preserve_both | preserved | PASS | 2 | 0 | 0 | 6.83 |
+| numeric_03 | numeric_constraints | preserve_both | preserved | PASS | 2 | 0 | 0 | 3.69 |
+| numeric_04 | numeric_constraints | preserve_both | preserved | PASS | 2 | 0 | 0 | 12.06 |
+| technical_03 | technical_instructions | preserve_both | preserved | PASS | 2 | 0 | 0 | 6.64 |
+| technical_04 | technical_instructions | preserve_both | preserved | PASS | 2 | 0 | 0 | 4.60 |
+| technical_05 | technical_instructions | preserve_both | preserved | PASS | 2 | 0 | 0 | 4.53 |
+| conditional_03 | conditional_instructions | preserve_both | preserved | PASS | 3 | 0 | 0 | 3.69 |
+| conditional_04 | conditional_instructions | preserve_both | preserved | PASS | 3 | 0 | 0 | 3.13 |
+| sequence_03 | instruction_sequence | preserve_both | preserved | PASS | 3 | 0 | 0 | 4.11 |
+| sequence_04 | instruction_sequence | preserve_both | preserved | PASS | 2 | 0 | 0 | 7.60 |
+| scope_03 | scope_and_completeness | preserve_both | preserved | PASS | 2 | 0 | 0 | 5.25 |
+| scope_04 | scope_and_completeness | preserve_both | preserved | PASS | 2 | 0 | 0 | 4.22 |
 
 ## Detected relationships
 
@@ -73,12 +73,12 @@
 - Expected: `duplicate_detected`; actual: `duplicate_detected`.
 
 ### paraphrase_01
-- No pairs detected.
-- Expected: `similarity_detected`; actual: `not_detected`.
+- 0-1: similar (score=1.000)
+- Expected: `similarity_detected`; actual: `similarity_detected`.
 
 ### paraphrase_02
-- No pairs detected.
-- Expected: `similarity_detected`; actual: `not_detected`.
+- 0-1: similar (score=0.750)
+- Expected: `similarity_detected`; actual: `similarity_detected`.
 
 ### different_meaning_01
 - 0-1: similar (score=0.750)
@@ -169,36 +169,36 @@
 - Expected: `duplicate_detected`; actual: `duplicate_detected`.
 
 ### paraphrase_03
-- No pairs detected.
-- Expected: `similarity_detected`; actual: `not_detected`.
+- 0-1: similar (score=1.000)
+- Expected: `similarity_detected`; actual: `similarity_detected`.
 
 ### paraphrase_04
-- No pairs detected.
-- Expected: `similarity_detected`; actual: `not_detected`.
+- 0-1: similar (score=1.000)
+- Expected: `similarity_detected`; actual: `similarity_detected`.
 
 ### paraphrase_05
-- No pairs detected.
-- Expected: `similarity_detected`; actual: `not_detected`.
+- 0-1: similar (score=0.667)
+- Expected: `similarity_detected`; actual: `similarity_detected`.
 
 ### paraphrase_06
-- No pairs detected.
-- Expected: `similarity_detected`; actual: `not_detected`.
+- 0-1: similar (score=0.866)
+- Expected: `similarity_detected`; actual: `similarity_detected`.
 
 ### paraphrase_07
-- No pairs detected.
-- Expected: `similarity_detected`; actual: `not_detected`.
+- 0-1: similar (score=0.667)
+- Expected: `similarity_detected`; actual: `similarity_detected`.
 
 ### paraphrase_08
-- No pairs detected.
-- Expected: `similarity_detected`; actual: `not_detected`.
+- 0-1: similar (score=1.000)
+- Expected: `similarity_detected`; actual: `similarity_detected`.
 
 ### paraphrase_09
-- No pairs detected.
-- Expected: `similarity_detected`; actual: `not_detected`.
+- 0-1: similar (score=1.000)
+- Expected: `similarity_detected`; actual: `similarity_detected`.
 
 ### paraphrase_10
-- No pairs detected.
-- Expected: `similarity_detected`; actual: `not_detected`.
+- 0-1: similar (score=1.000)
+- Expected: `similarity_detected`; actual: `similarity_detected`.
 
 ### different_meaning_03
 - No pairs detected.
@@ -274,7 +274,7 @@
 | instruction_sequence | 4 | 4 | 100.0% |
 | negation | 4 | 4 | 100.0% |
 | numeric_constraints | 4 | 4 | 100.0% |
-| paraphrased_instructions | 0 | 10 | 0.0% |
+| paraphrased_instructions | 10 | 10 | 100.0% |
 | repeated_with_context | 5 | 5 | 100.0% |
 | scope_and_completeness | 4 | 4 | 100.0% |
 | technical_instructions | 5 | 5 | 100.0% |

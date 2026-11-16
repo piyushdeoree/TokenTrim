@@ -123,12 +123,14 @@ check paraphrase rank sort predict assess critique edit proofread simplify expan
 define discuss illustrate demonstrate propose plan solve reason justify categorize
 categorise tag label parse generate select choose complete continue fill refactor
 optimize optimise test document annotate transcribe
+arrange remove drop normalize normalise detect count visualize visualise save export emit
 """.split())
 
 SPLIT_VERBS = frozenset("""
 analyze summarize explain write generate create provide describe translate extract
 classify compare identify rewrite convert calculate determine evaluate suggest
 recommend return give tell paraphrase categorize categorise include
+arrange remove drop normalize normalise detect count visualize visualise save export emit
 """.split())
 
 CONSTRAINT_HEADS = frozenset(

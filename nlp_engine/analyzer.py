@@ -518,7 +518,7 @@ def build_analysis(
     prepared = prepare_prompt(prompt)
 
     info = tokenizer_info(model)
-    stats = count_tokens(prepared.original, model)
+    stats = count_tokens(prompt, model)
 
     token_stats = TokenStats(
         **stats,
@@ -582,7 +582,7 @@ def build_analysis(
         )
 
     return PromptAnalysis(
-        prompt=prepared.original,
+        prompt=prompt,
         model=model,
         prepared=prepared,
         token_stats=token_stats,
@@ -616,7 +616,7 @@ def analyze_prompt_detailed(
 
     analysis = build_analysis(prompt, model)
 
-    original = analysis.prompt
+    original = prompt
     orig_tokens = analysis.token_stats.input_tokens
 
     candidates: List[OptimizationResult] = [

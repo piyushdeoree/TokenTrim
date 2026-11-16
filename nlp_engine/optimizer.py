@@ -168,7 +168,7 @@ def optimize_prompt(prompt: str, analysis: Optional[PromptAnalysis] = None,
         seg.text = capitalize_first(body) + (terminal.group(0) if terminal else "")
 
     optimized = prepared.unmask(render_segments(segments))
-    original_tokens = count_tokens_only(prepared.original, model)
+    original_tokens = count_tokens_only(prompt, model)
     optimized_tokens = count_tokens_only(optimized, model)
     saved, pct = _reduction(original_tokens, optimized_tokens)
 
@@ -193,15 +193,22 @@ def optimize_with_llm(prompt: str, rewriter: Callable[[str], str],
 
     try:
         request = build_llm_rewrite_request(prompt)
-        text = (rewriter(request) or "").strip()
+        callback_result = rewriter(request)
     except Exception:
         return None
 
+    if not isinstance(callback_result, str):
+        return None
+
+    text = callback_result.strip()
     if not text:
         return None
 
-    original_tokens = count_tokens_only(prompt, model)
-    optimized_tokens = count_tokens_only(text, model)
+    try:
+        original_tokens = count_tokens_only(prompt, model)
+        optimized_tokens = count_tokens_only(text, model)
+    except Exception:
+        return None
     saved, pct = _reduction(original_tokens, optimized_tokens)
 
     return OptimizationResult(

@@ -4,9 +4,9 @@ Written for the final-year project report. It separates four things that must no
 
 | layer | nature | claim we make |
 |---|---|---|
-| 1. Token counting | deterministic | exact for OpenAI models (via `tiktoken`); **estimate** otherwise |
+| 1. Token counting | deterministic | exact only when a matching `tiktoken` encoding loads; **estimate** otherwise |
 | 2. Prompt analysis | rule-based NLP | measurable features and detectors; no learned model |
-| 3. Optimization | heuristic, rule-based | meaning-*preserving by construction* for the rules used; not proven |
+| 3. Optimization | heuristic, rule-based | conservative transformations followed by heuristic validation; semantic equivalence is not proven |
 | 4. LLM rewriting | optional, off by default | validated by the same checks; no guarantee |
 
 ---
@@ -32,7 +32,7 @@ labelled; no fake accuracy numbers).
 
 ```
 prompt
-  |  textutils.protect_spans      mask code, URLs, e-mails, "quotes", JSON/brackets -> placeholders
+  |  textutils.protect_spans      mask selected code, URLs, e-mails, quoted forms, JSON/brackets -> placeholders
   |  textutils.segment            sentences / list items with their layout (indent, markers, newlines)
   |  textutils.classify           instruction | constraint | question | role | persona | context
   v
@@ -47,10 +47,14 @@ analyzer.analyze_prompt  -->  the agreed JSON contract
 
 ### Why masking and classification come first
 
-The safest way to "never edit code, URLs, quoted strings, JSON schemas, numbers" is to make them
-*unreachable* by the optimizer: they are replaced by opaque placeholders (`QZPH3QZ`) before any
-analysis and restored verbatim afterwards. Identical fragments share a placeholder, so duplicates remain
-comparable.
+Recognized protected spans are replaced by opaque placeholders (`QZPH3QZ`) before
+analysis and restored verbatim afterwards. Recognition is pattern-based, not a
+general parser. It covers fenced and inline backticks, triple-double-quoted
+blocks, URLs, e-mail addresses, simple same-line double-quoted and curly-quoted
+strings (up to 500 characters), and balanced braces/brackets. There is no
+dedicated protection pattern for general straight single-quoted strings.
+Numbers are separately checked by validation; do not interpret this list as a
+guarantee that every code, quote, or literal syntax is protected.
 
 Sentences are then classified so that only **instruction-like** text is ever rewritten:
 
@@ -74,17 +78,78 @@ count_tokens(prompt, model) -> {"input_tokens", "word_count", "character_count",
 
 * A **registry** maps model names to *counter* objects (`BaseTokenCounter`). New tokenizers are added
   with `register_tokenizer(...)` without touching other modules.
-* **OpenAI models:** `tiktoken.encoding_for_model(model)` (falls back to a prefix table for
-  `gpt-4o`, `gpt-4.1`, `o1/o3/o4` -> `o200k_base`; `gpt-4`, `gpt-3.5` -> `cl100k_base`). Exact.
-* **Claude, Gemini, unknown models:** no offline tokenizer exists (exact counts need the vendors' web
-  APIs). We use `heuristic_token_estimate`: pre-tokenise into alphabetic runs, digit runs and symbols;
+* **Recognized OpenAI models:** `tiktoken.encoding_for_model(model)` (falls back to a prefix table for
+  `gpt-4o`, `gpt-4.1`, `o1/o3/o4` -> `o200k_base`; `gpt-4`, `gpt-3.5` -> `cl100k_base`). Exact for the input string's encoding when it loads; this is not provider request framing or billing overhead.
+* **Claude, Gemini, unknown models:** this package uses `heuristic_token_estimate`; it does not call
+  vendor token-count APIs or provide an offline tokenizer for those families. The estimator
+  pre-tokenises into alphabetic runs, digit runs and symbols;
   `ceil(len/4)` tokens per alphabetic run, `ceil(len/3)` per digit run, 1 per symbol, 1 per non-ASCII
   character. It is an approximation with **no stated error bound** and is always labelled
   (`method="heuristic_estimate"`, `exact=False`).
-* `tokenizer_info(model)` tells callers which method was used. Original and optimized prompts are
-  always counted with the same counter, so *differences* are consistent.
-* `word_count` counts `\w+` words (with internal hyphens/apostrophes); `sentence_count` is the number of
-  sentence/list-item segments produced by the rule-based segmenter (abbreviation-aware).
+* `tokenizer_info(model)` tells callers which method was used. `count_tokens()` itself returns counts only; `DetailedAnalysis.token_stats` also includes method, exactness, and a note. Original and optimized prompts use the same counter, so their count difference is consistent.
+* `word_count` uses a regular expression that groups internal hyphens/apostrophes; `character_count` is Python string length. `sentence_count` is the number of layout-aware segments from the rule-based segmenter (including list-item segments), not a linguistic sentence count.
+
+### Public data models and imports
+
+The package root exports the existing functions and request/response types, as
+well as the approved result types: `DetailedAnalysis`, `OptimizationResult`,
+`ValidationResult`, `TokenizerInfo`, and `BaseTokenCounter`. `PromptAnalysis`,
+`PreparedPrompt`, and other per-call implementation state are not root exports.
+
+| Type | Fields and meaning |
+|---|---|
+| `PromptRequest` | `prompt` is a required string with minimum length 1; `model` defaults to `gpt-4o`. Whitespace-only input is rejected by analysis even though the model's length constraint alone may accept it. |
+| `Issue` | `type: str`, `severity: low/medium/high`, and `description`. `type` is a general string, not a restricted enum. |
+| `AnalysisResponse` | Stable response dictionary model: original/optimized token counts, savings and percentage, word count, complexity score, issues, suggestions, and final optimized prompt. It has no token-method/exactness field. |
+| `TokenStats` | `input_tokens`, `word_count`, `character_count`, `sentence_count`, plus `method`, `exact`, and `note`. See the count semantics above. |
+| `ComplexityFeatures` | Counts and ratios used for the heuristic complexity score: tokens, instructions, constraints, sentence lengths, structure, code blocks, repeated phrases, context/instruction ratio, and format directives. |
+| `DetailedIssue` | The `Issue` fields plus detector `evidence`. |
+| `OptimizationResult` | `optimized_prompt`, original and optimized counts, nonnegative `tokens_saved`, `reduction_percentage`, explanatory `changes`, and `method` (`heuristic`, `llm`, or `none`). It represents a candidate when returned directly by `optimize_prompt()`, and a final result when in `DetailedAnalysis.final`. |
+| `ValidationResult` | `is_valid`, rejection `reasons`, and numeric `metrics` from one validation call. |
+| `DetailedAnalysis` | `token_stats`, `features`, complexity score/label, issues, suggestions, `candidate`, `validation`, `final`, and `optimization_accepted`. |
+| `TokenizerInfo` | `model`, `family`, `method`, `exact`, and explanatory `note`; this is how callers identify an exact tokenizer versus an estimate. |
+
+`DetailedAnalysis.candidate` and `.validation` do not contain a history for all
+candidates. If an optimization is accepted, both describe the selected winning
+candidate. If no candidate is accepted, they describe the first heuristic
+candidate and its validation. `.final` is the accepted result or the exact
+original prompt with zero savings. The original string, including surrounding
+whitespace and line breaks, is supplied to validation; all no-acceptance paths
+return that exact string.
+
+`build_analysis()` remains in the package root for compatibility but is a
+lower-level function returning internal `PromptAnalysis` state; it runs
+analysis only. `optimize_prompt()` returns an unvalidated candidate. Callers
+using it directly must separately call `validate_optimization()` and apply
+the positive-savings rule. The `analyze_prompt*` functions orchestrate those
+steps.
+
+`register_tokenizer()` prepends a matcher/factory to a process-global registry
+and clears the tokenizer cache. Registrations persist for the process lifetime;
+there is no unregister API. Registering custom counters while other threads
+are analyzing is not documented as thread-safe. Ordinary per-call analysis
+state is local, but the registry and semantic model cache are process-global;
+the engine makes no blanket thread-safety guarantee for concurrent registry
+changes or first-time model loading.
+
+### Optional semantic similarity model
+
+Semantic similarity is disabled by default and advisory only; it cannot
+authorize automatic deletion. It uses NumPy and optionally
+Sentence-Transformers. `sentence-transformers` is not listed in
+`nlp_engine/requirements.txt`; without it or a loadable model, the engine
+continues through the non-model similarity path.
+
+| Environment variable | Default | Behavior |
+|---|---|---|
+| `TOKENTRIM_ENABLE_SEMANTIC_MODEL` | `false` | Must be explicitly set to a true-like value to enable model loading. |
+| `TOKENTRIM_SEMANTIC_MODEL` | `sentence-transformers/all-MiniLM-L6-v2` | Selects a model identifier or local path. |
+| `TOKENTRIM_SEMANTIC_DEVICE` | `cpu` | Selects the Sentence-Transformers device; `cuda` may be used on a compatible machine. |
+
+Model loading is lazy. If enabled and the files are not cached, Sentence-
+Transformers may attempt a network download. Load and encode errors are caught
+and degrade to the non-model path. The cache and failed-load attempt flag are
+process-global and have no explicit synchronization or retry/reset API.
 
 ## 4. Analysis (`redundancy.py`, `analyzer.py`, `complexity.py`)
 
@@ -189,9 +254,13 @@ indicator (bands: <33 low, <66 medium, else high), not a calibrated measurement.
 3. split sentences into clauses and drop clauses **fully covered** by another clause (section 4.2);
 4. rebuild the prompt with the original layout (paragraphs, list markers, indentation), restore the masked spans.
 
-It never edits: code, URLs, e-mails, quoted strings, JSON/bracket blocks, labelled context, specific
-personas, conflicting instructions, formatting requirements, or non-Latin text.
-It does **not** hard-code outputs: results depend on the matched rules and the clause structure.
+It is designed to leave recognized code, URLs, e-mails, protected quote forms,
+JSON/bracket blocks, labelled context, specific personas, conflicting
+instructions, formatting requirements, and non-Latin text unchanged. Span
+recognition is pattern-based; in particular, general straight single-quoted
+strings are not protected by a dedicated rule. The optimizer is not a general
+code or quote parser, and its behavior depends on matched rules and clause
+structure.
 
 Example (spec scenario, tokens are model-dependent):
 
@@ -207,14 +276,22 @@ Deliberate difference from the example in the project brief ("...provide a clear
 the brief's version silently drops "detailed", which contradicts "concise". Choosing between them
 changes the user's intent, so the engine keeps both and reports a `conflict` warning instead.
 
-The optimizer returns a **candidate** (`OptimizationResult` with the list of `changes` for explainability).
-It is only accepted after validation *and* only if it actually saves tokens.
+The optimizer returns a **candidate** (`OptimizationResult` with the list of
+`changes` for explainability). `optimize_prompt()` does not validate or accept
+the candidate. The orchestrated analysis pipeline accepts a candidate only
+after validation and only if it actually saves tokens.
 
 ### Optional LLM-assisted rewriting (layer 4)
 
-`analyze_prompt(..., llm_rewriter=fn)` lets the backend supply any `str -> str` function. Its output
-becomes a second candidate, subject to the same validator. Default is off, so the system is fully
-deterministic and reproducible; the analysis features never depend on an LLM.
+`analyze_prompt(..., llm_rewriter=fn)` accepts a synchronous callback typed as
+`str -> str`. The callback receives a complete rewrite request containing the
+JSON-encoded original prompt and preservation rules, not the raw prompt. A
+non-empty string response is only another candidate and must pass the same
+validator and save tokens. Exceptions, empty/non-string results, and candidate
+token-counting errors are ignored; the heuristic candidate remains available.
+If no candidate qualifies, the exact original input is returned. The default is
+off, so the engine makes no provider call and its analysis features do not
+depend on an LLM.
 
 ## 6. Validation methodology (`validator.py`)
 
@@ -239,11 +316,17 @@ equivalence - two prompts can share all numbers/keywords and still differ in mea
 
 ## 7. Testing and measurement
 
-`tests/` contains 46 pytest tests: the 10 required scenarios (simple question, long verbose prompt,
-repeated instructions, duplicate constraints, large context, code generation, summarization, JSON output,
-important numbers, already-tight prompt), tokenizer tests (including that non-exact counts are labelled),
-validator rejection tests, detector tests, regression tests (list layout, non-English text, 68k-token prompt),
-and a test that a second optimization pass changes nothing.
+Run the current suite from the directory containing `nlp_engine/`:
+
+```bash
+python -m pytest nlp_engine/tests -q
+python -m nlp_engine.tests.run_realistic_evaluation
+```
+
+The full suite includes public API, fallback, tokenizer, validation,
+preservation, semantic-advisory, and regression coverage. Test totals change
+as cases are added; use the freshly generated milestone report and test output
+as the source of current counts rather than relying on a hard-coded count here.
 
 `python -m nlp_engine.tests.run_evaluation` prints and saves, per scenario: original tokens, optimized tokens,
 tokens saved, reduction %, whether the optimization was accepted, and an independent check that required
@@ -263,8 +346,9 @@ strings (numbers, names, code, JSON schema, constraints, context) are still pres
   classified as a constraint and, if exactly repeated, de-duplicated. Labelled/introduced context blocks are locked.
 * **Conflict detection is shallow.** It finds lexical/numeric contradictions only; paraphrased contradictions are missed,
   and `Use Python` / `Don't use Python 2` is intentionally not flagged.
-* **Token counts for Claude/Gemini are estimates**; the heuristic has no verified error bound.
+* **Token counts for non-OpenAI/unknown models and tokenizer fallbacks are estimates**; the heuristic has no verified error bound.
 * **Pairwise de-duplication is skipped above 300 comparable clauses** (O(n²); such inputs are almost certainly data).
+* There is no documented maximum prompt size. Large inputs can incur high latency and memory use; use the standalone benchmark to inform deployment-specific limits.
 * **Savings are modest on well-written prompts** (see scenarios 8-10) - the engine removes waste, it does not compress ideas.
 * **No semantic-equivalence guarantee** (section 6).
 * Thresholds and weights are untuned design choices.
@@ -273,7 +357,7 @@ strings (numbers, names, code, JSON schema, constraints, context) are still pres
 
 * Exact tokenizers for Claude and Gemini via their counting APIs (plug-in point already exists).
 * spaCy dependency parsing / POS tags for clause detection instead of verb lists; multilingual support.
-* Embedding-based semantic similarity (Hugging Face sentence encoders) as an *additional* validator signal.
+* Measure the optional semantic model on target environments if that model path will be enabled; similarity remains advisory and does not authorize deletion.
 * Calibrate thresholds/weights on a labelled prompt set; user study to measure whether optimized prompts keep answer quality
   (e.g. compare LLM outputs for original vs optimized prompts).
 * Smarter handling of conflicts (ask the user which requirement wins), structured-prompt (XML/markdown section) awareness,
