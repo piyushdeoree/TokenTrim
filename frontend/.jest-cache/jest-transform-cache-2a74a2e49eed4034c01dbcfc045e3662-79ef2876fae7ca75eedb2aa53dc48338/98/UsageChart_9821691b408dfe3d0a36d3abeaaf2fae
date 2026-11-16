@@ -1,0 +1,22 @@
+bc1f889dc3a563406f443004a5023181
+"use strict";
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+Object.defineProperty(exports, "UsageChart", {
+    enumerable: true,
+    get: function() {
+        return UsageChart;
+    }
+});
+const _jsxruntime = require("react/jsx-runtime");
+const _ChartCard = require("./ChartCard");
+const UsageChart = ({ data })=>/*#__PURE__*/ (0, _jsxruntime.jsx)(_ChartCard.ChartCard, {
+        title: "Token usage over time",
+        data: data,
+        x: "day",
+        y: "tokens",
+        kind: "line"
+    });
+
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIkQ6XFxQcm9qZWN0c1xcTWFqb3JcXFRva2VuVHJpbVxcZnJvbnRlbmRcXHNyY1xcY29tcG9uZW50c1xcY2hhcnRzXFxVc2FnZUNoYXJ0LnRzeCJdLCJzb3VyY2VzQ29udGVudCI6WyJpbXBvcnQgeyBDaGFydENhcmQgfSBmcm9tICcuL0NoYXJ0Q2FyZCc7XHJcbmV4cG9ydCBjb25zdCBVc2FnZUNoYXJ0ID0gKHsgZGF0YSB9OiB7IGRhdGE6IG9iamVjdFtdIH0pID0+IDxDaGFydENhcmQgdGl0bGU9XCJUb2tlbiB1c2FnZSBvdmVyIHRpbWVcIiBkYXRhPXtkYXRhfSB4PVwiZGF5XCIgeT1cInRva2Vuc1wiIGtpbmQ9XCJsaW5lXCIgLz47XHJcbiJdLCJuYW1lcyI6WyJVc2FnZUNoYXJ0IiwiZGF0YSIsIkNoYXJ0Q2FyZCIsInRpdGxlIiwieCIsInkiLCJraW5kIl0sIm1hcHBpbmdzIjoiOzs7OytCQUNhQTs7O2VBQUFBOzs7OzJCQURhO0FBQ25CLE1BQU1BLGFBQWEsQ0FBQyxFQUFFQyxJQUFJLEVBQXNCLGlCQUFLLHFCQUFDQyxvQkFBUztRQUFDQyxPQUFNO1FBQXdCRixNQUFNQTtRQUFNRyxHQUFFO1FBQU1DLEdBQUU7UUFBU0MsTUFBSyJ9

@@ -1,0 +1,22 @@
+cc7598b91fa9e6b45c952f3c642c3808
+"use strict";
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+Object.defineProperty(exports, "TokenUsageByModelChart", {
+    enumerable: true,
+    get: function() {
+        return TokenUsageByModelChart;
+    }
+});
+const _jsxruntime = require("react/jsx-runtime");
+const _ChartCard = require("./ChartCard");
+const TokenUsageByModelChart = ({ data })=>/*#__PURE__*/ (0, _jsxruntime.jsx)(_ChartCard.ChartCard, {
+        title: "Token usage by model API",
+        data: data,
+        x: "name",
+        y: "tokens",
+        kind: "bar"
+    });
+
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIkQ6XFxQcm9qZWN0c1xcTWFqb3JcXFRva2VuVHJpbVxcZnJvbnRlbmRcXHNyY1xcY29tcG9uZW50c1xcY2hhcnRzXFxUb2tlblVzYWdlQnlNb2RlbENoYXJ0LnRzeCJdLCJzb3VyY2VzQ29udGVudCI6WyJpbXBvcnQgeyBDaGFydENhcmQgfSBmcm9tICcuL0NoYXJ0Q2FyZCc7XHJcbmV4cG9ydCBjb25zdCBUb2tlblVzYWdlQnlNb2RlbENoYXJ0ID0gKHsgZGF0YSB9OiB7IGRhdGE6IG9iamVjdFtdIH0pID0+IDxDaGFydENhcmQgdGl0bGU9XCJUb2tlbiB1c2FnZSBieSBtb2RlbCBBUElcIiBkYXRhPXtkYXRhfSB4PVwibmFtZVwiIHk9XCJ0b2tlbnNcIiBraW5kPVwiYmFyXCIgLz47XHJcbiJdLCJuYW1lcyI6WyJUb2tlblVzYWdlQnlNb2RlbENoYXJ0IiwiZGF0YSIsIkNoYXJ0Q2FyZCIsInRpdGxlIiwieCIsInkiLCJraW5kIl0sIm1hcHBpbmdzIjoiOzs7OytCQUNhQTs7O2VBQUFBOzs7OzJCQURhO0FBQ25CLE1BQU1BLHlCQUF5QixDQUFDLEVBQUVDLElBQUksRUFBc0IsaUJBQUsscUJBQUNDLG9CQUFTO1FBQUNDLE9BQU07UUFBMkJGLE1BQU1BO1FBQU1HLEdBQUU7UUFBT0MsR0FBRTtRQUFTQyxNQUFLIn0=

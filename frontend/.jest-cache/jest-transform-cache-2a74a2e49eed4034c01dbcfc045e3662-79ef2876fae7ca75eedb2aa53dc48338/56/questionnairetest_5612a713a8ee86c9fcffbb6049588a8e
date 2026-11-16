@@ -1,0 +1,164 @@
+a9b9f5138850d74cf67ae9e5022efd15
+"use strict";
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+const _questionnaire = require("../../src/components/projects/questionnaire");
+const ids = (answers)=>new Set((0, _questionnaire.visibleQuestions)(answers).map((question)=>question.id));
+describe("questionnaire branches and answer preparation", ()=>{
+    it.each([
+        [
+            "Web Application",
+            [
+                "webKind",
+                "frontend",
+                "backend"
+            ],
+            [
+                "platform",
+                "problem",
+                "language"
+            ]
+        ],
+        [
+            "Mobile Application",
+            [
+                "platform",
+                "mobileApproach",
+                "frontend",
+                "backend"
+            ],
+            [
+                "webKind",
+                "problem"
+            ]
+        ],
+        [
+            "AI / Machine Learning",
+            [
+                "problem",
+                "model",
+                "dataset",
+                "language"
+            ],
+            [
+                "webKind",
+                "platform",
+                "frontend"
+            ]
+        ],
+        [
+            "Desktop Application",
+            [
+                "language",
+                "backend"
+            ],
+            [
+                "webKind",
+                "platform",
+                "frontend"
+            ]
+        ],
+        [
+            "API / Backend Service",
+            [
+                "language"
+            ],
+            [
+                "webKind",
+                "platform",
+                "frontend",
+                "backend"
+            ]
+        ],
+        [
+            "Data Analytics",
+            [
+                "problem",
+                "dataset",
+                "language"
+            ],
+            [
+                "webKind",
+                "platform",
+                "frontend"
+            ]
+        ],
+        [
+            "Other",
+            [
+                "categoryOther"
+            ],
+            [
+                "webKind",
+                "platform",
+                "frontend"
+            ]
+        ]
+    ])("uses the existing %s project path", (category, present, absent)=>{
+        const visible = ids({
+            category
+        });
+        present.forEach((id)=>expect(visible.has(id)).toBe(true));
+        absent.forEach((id)=>expect(visible.has(id)).toBe(false));
+    });
+    it("prunes nested and sibling answers until no hidden parent can keep them alive", ()=>{
+        const oldPath = {
+            category: "Web Application",
+            backend: "Yes",
+            auth: "Yes",
+            authMethods: [
+                "Other"
+            ],
+            authOther: "Passkey",
+            database: "Yes",
+            databaseDetails: "PostgreSQL configured"
+        };
+        const next = (0, _questionnaire.pruneAnswers)({
+            ...oldPath,
+            category: "AI / Machine Learning"
+        });
+        expect(next).toEqual({
+            category: "AI / Machine Learning"
+        });
+        expect((0, _questionnaire.requirementsFrom)(next, "AI project").answers).toEqual({
+            category: "AI / Machine Learning"
+        });
+    });
+    it("preserves configured custom follow-up text and multi-select choices in review data", ()=>{
+        const answers = {
+            category: "Mobile Application",
+            platform: [
+                "Android",
+                "iOS"
+            ],
+            mobileApproach: "Other",
+            mobileApproachOther: "Kotlin Multiplatform"
+        };
+        const prepared = (0, _questionnaire.requirementsFrom)(answers, "Mobile client");
+        expect(prepared.answers).toMatchObject(answers);
+        expect(prepared.sections.flatMap((section)=>section.items)).toEqual(expect.arrayContaining([
+            expect.objectContaining({
+                id: "platform",
+                answer: [
+                    "Android",
+                    "iOS"
+                ]
+            }),
+            expect.objectContaining({
+                id: "mobileApproachOther",
+                answer: "Kotlin Multiplatform"
+            })
+        ]));
+    });
+    it("treats blank and whitespace-only strings as unanswered", ()=>{
+        expect((0, _questionnaire.requirementsFrom)({
+            category: "AI / Machine Learning",
+            problem: "   "
+        }, "AI").answers).toEqual({
+            category: "AI / Machine Learning"
+        });
+    });
+});
+
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIkQ6XFxQcm9qZWN0c1xcTWFqb3JcXFRva2VuVHJpbVxcZnJvbnRlbmRcXHRlc3RzXFx1bml0XFxxdWVzdGlvbm5haXJlLnRlc3QudHMiXSwic291cmNlc0NvbnRlbnQiOlsiaW1wb3J0IHsgcHJ1bmVBbnN3ZXJzLCByZXF1aXJlbWVudHNGcm9tLCB2aXNpYmxlUXVlc3Rpb25zLCB0eXBlIEFuc3dlcnMgfSBmcm9tICdAL2NvbXBvbmVudHMvcHJvamVjdHMvcXVlc3Rpb25uYWlyZSc7XG5cbmNvbnN0IGlkcyA9IChhbnN3ZXJzOiBBbnN3ZXJzKSA9PiBuZXcgU2V0KHZpc2libGVRdWVzdGlvbnMoYW5zd2VycykubWFwKHF1ZXN0aW9uID0+IHF1ZXN0aW9uLmlkKSk7XG5cbmRlc2NyaWJlKCdxdWVzdGlvbm5haXJlIGJyYW5jaGVzIGFuZCBhbnN3ZXIgcHJlcGFyYXRpb24nLCAoKSA9PiB7XG4gIGl0LmVhY2goW1xuICAgIFsnV2ViIEFwcGxpY2F0aW9uJywgWyd3ZWJLaW5kJywgJ2Zyb250ZW5kJywgJ2JhY2tlbmQnXSwgWydwbGF0Zm9ybScsICdwcm9ibGVtJywgJ2xhbmd1YWdlJ11dLFxuICAgIFsnTW9iaWxlIEFwcGxpY2F0aW9uJywgWydwbGF0Zm9ybScsICdtb2JpbGVBcHByb2FjaCcsICdmcm9udGVuZCcsICdiYWNrZW5kJ10sIFsnd2ViS2luZCcsICdwcm9ibGVtJ11dLFxuICAgIFsnQUkgLyBNYWNoaW5lIExlYXJuaW5nJywgWydwcm9ibGVtJywgJ21vZGVsJywgJ2RhdGFzZXQnLCAnbGFuZ3VhZ2UnXSwgWyd3ZWJLaW5kJywgJ3BsYXRmb3JtJywgJ2Zyb250ZW5kJ11dLFxuICAgIFsnRGVza3RvcCBBcHBsaWNhdGlvbicsIFsnbGFuZ3VhZ2UnLCAnYmFja2VuZCddLCBbJ3dlYktpbmQnLCAncGxhdGZvcm0nLCAnZnJvbnRlbmQnXV0sXG4gICAgWydBUEkgLyBCYWNrZW5kIFNlcnZpY2UnLCBbJ2xhbmd1YWdlJ10sIFsnd2ViS2luZCcsICdwbGF0Zm9ybScsICdmcm9udGVuZCcsICdiYWNrZW5kJ11dLFxuICAgIFsnRGF0YSBBbmFseXRpY3MnLCBbJ3Byb2JsZW0nLCAnZGF0YXNldCcsICdsYW5ndWFnZSddLCBbJ3dlYktpbmQnLCAncGxhdGZvcm0nLCAnZnJvbnRlbmQnXV0sXG4gICAgWydPdGhlcicsIFsnY2F0ZWdvcnlPdGhlciddLCBbJ3dlYktpbmQnLCAncGxhdGZvcm0nLCAnZnJvbnRlbmQnXV0sXG4gIF0pKCd1c2VzIHRoZSBleGlzdGluZyAlcyBwcm9qZWN0IHBhdGgnLCAoY2F0ZWdvcnksIHByZXNlbnQsIGFic2VudCkgPT4ge1xuICAgIGNvbnN0IHZpc2libGUgPSBpZHMoeyBjYXRlZ29yeSB9KTtcbiAgICBwcmVzZW50LmZvckVhY2goaWQgPT4gZXhwZWN0KHZpc2libGUuaGFzKGlkKSkudG9CZSh0cnVlKSk7XG4gICAgYWJzZW50LmZvckVhY2goaWQgPT4gZXhwZWN0KHZpc2libGUuaGFzKGlkKSkudG9CZShmYWxzZSkpO1xuICB9KTtcblxuICBpdCgncHJ1bmVzIG5lc3RlZCBhbmQgc2libGluZyBhbnN3ZXJzIHVudGlsIG5vIGhpZGRlbiBwYXJlbnQgY2FuIGtlZXAgdGhlbSBhbGl2ZScsICgpID0+IHtcbiAgICBjb25zdCBvbGRQYXRoOiBBbnN3ZXJzID0ge1xuICAgICAgY2F0ZWdvcnk6ICdXZWIgQXBwbGljYXRpb24nLCBiYWNrZW5kOiAnWWVzJywgYXV0aDogJ1llcycsXG4gICAgICBhdXRoTWV0aG9kczogWydPdGhlciddLCBhdXRoT3RoZXI6ICdQYXNza2V5JyxcbiAgICAgIGRhdGFiYXNlOiAnWWVzJywgZGF0YWJhc2VEZXRhaWxzOiAnUG9zdGdyZVNRTCBjb25maWd1cmVkJyxcbiAgICB9O1xuICAgIGNvbnN0IG5leHQgPSBwcnVuZUFuc3dlcnMoeyAuLi5vbGRQYXRoLCBjYXRlZ29yeTogJ0FJIC8gTWFjaGluZSBMZWFybmluZycgfSk7XG4gICAgZXhwZWN0KG5leHQpLnRvRXF1YWwoeyBjYXRlZ29yeTogJ0FJIC8gTWFjaGluZSBMZWFybmluZycgfSk7XG4gICAgZXhwZWN0KHJlcXVpcmVtZW50c0Zyb20obmV4dCwgJ0FJIHByb2plY3QnKS5hbnN3ZXJzKS50b0VxdWFsKHsgY2F0ZWdvcnk6ICdBSSAvIE1hY2hpbmUgTGVhcm5pbmcnIH0pO1xuICB9KTtcblxuICBpdCgncHJlc2VydmVzIGNvbmZpZ3VyZWQgY3VzdG9tIGZvbGxvdy11cCB0ZXh0IGFuZCBtdWx0aS1zZWxlY3QgY2hvaWNlcyBpbiByZXZpZXcgZGF0YScsICgpID0+IHtcbiAgICBjb25zdCBhbnN3ZXJzOiBBbnN3ZXJzID0ge1xuICAgICAgY2F0ZWdvcnk6ICdNb2JpbGUgQXBwbGljYXRpb24nLCBwbGF0Zm9ybTogWydBbmRyb2lkJywgJ2lPUyddLFxuICAgICAgbW9iaWxlQXBwcm9hY2g6ICdPdGhlcicsIG1vYmlsZUFwcHJvYWNoT3RoZXI6ICdLb3RsaW4gTXVsdGlwbGF0Zm9ybScsXG4gICAgfTtcbiAgICBjb25zdCBwcmVwYXJlZCA9IHJlcXVpcmVtZW50c0Zyb20oYW5zd2VycywgJ01vYmlsZSBjbGllbnQnKTtcbiAgICBleHBlY3QocHJlcGFyZWQuYW5zd2VycykudG9NYXRjaE9iamVjdChhbnN3ZXJzKTtcbiAgICBleHBlY3QocHJlcGFyZWQuc2VjdGlvbnMuZmxhdE1hcChzZWN0aW9uID0+IHNlY3Rpb24uaXRlbXMpKS50b0VxdWFsKGV4cGVjdC5hcnJheUNvbnRhaW5pbmcoW1xuICAgICAgZXhwZWN0Lm9iamVjdENvbnRhaW5pbmcoeyBpZDogJ3BsYXRmb3JtJywgYW5zd2VyOiBbJ0FuZHJvaWQnLCAnaU9TJ10gfSksXG4gICAgICBleHBlY3Qub2JqZWN0Q29udGFpbmluZyh7IGlkOiAnbW9iaWxlQXBwcm9hY2hPdGhlcicsIGFuc3dlcjogJ0tvdGxpbiBNdWx0aXBsYXRmb3JtJyB9KSxcbiAgICBdKSk7XG4gIH0pO1xuXG4gIGl0KCd0cmVhdHMgYmxhbmsgYW5kIHdoaXRlc3BhY2Utb25seSBzdHJpbmdzIGFzIHVuYW5zd2VyZWQnLCAoKSA9PiB7XG4gICAgZXhwZWN0KHJlcXVpcmVtZW50c0Zyb20oeyBjYXRlZ29yeTogJ0FJIC8gTWFjaGluZSBMZWFybmluZycsIHByb2JsZW06ICcgICAnIH0sICdBSScpLmFuc3dlcnMpLnRvRXF1YWwoeyBjYXRlZ29yeTogJ0FJIC8gTWFjaGluZSBMZWFybmluZycgfSk7XG4gIH0pO1xufSk7XG4iXSwibmFtZXMiOlsiaWRzIiwiYW5zd2VycyIsIlNldCIsInZpc2libGVRdWVzdGlvbnMiLCJtYXAiLCJxdWVzdGlvbiIsImlkIiwiZGVzY3JpYmUiLCJpdCIsImVhY2giLCJjYXRlZ29yeSIsInByZXNlbnQiLCJhYnNlbnQiLCJ2aXNpYmxlIiwiZm9yRWFjaCIsImV4cGVjdCIsImhhcyIsInRvQmUiLCJvbGRQYXRoIiwiYmFja2VuZCIsImF1dGgiLCJhdXRoTWV0aG9kcyIsImF1dGhPdGhlciIsImRhdGFiYXNlIiwiZGF0YWJhc2VEZXRhaWxzIiwibmV4dCIsInBydW5lQW5zd2VycyIsInRvRXF1YWwiLCJyZXF1aXJlbWVudHNGcm9tIiwicGxhdGZvcm0iLCJtb2JpbGVBcHByb2FjaCIsIm1vYmlsZUFwcHJvYWNoT3RoZXIiLCJwcmVwYXJlZCIsInRvTWF0Y2hPYmplY3QiLCJzZWN0aW9ucyIsImZsYXRNYXAiLCJzZWN0aW9uIiwiaXRlbXMiLCJhcnJheUNvbnRhaW5pbmciLCJvYmplY3RDb250YWluaW5nIiwiYW5zd2VyIiwicHJvYmxlbSJdLCJtYXBwaW5ncyI6Ijs7OzsrQkFBK0U7QUFFL0UsTUFBTUEsTUFBTSxDQUFDQyxVQUFxQixJQUFJQyxJQUFJQyxJQUFBQSwrQkFBZ0IsRUFBQ0YsU0FBU0csR0FBRyxDQUFDQyxDQUFBQSxXQUFZQSxTQUFTQyxFQUFFO0FBRS9GQyxTQUFTLGlEQUFpRDtJQUN4REMsR0FBR0MsSUFBSSxDQUFDO1FBQ047WUFBQztZQUFtQjtnQkFBQztnQkFBVztnQkFBWTthQUFVO1lBQUU7Z0JBQUM7Z0JBQVk7Z0JBQVc7YUFBVztTQUFDO1FBQzVGO1lBQUM7WUFBc0I7Z0JB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

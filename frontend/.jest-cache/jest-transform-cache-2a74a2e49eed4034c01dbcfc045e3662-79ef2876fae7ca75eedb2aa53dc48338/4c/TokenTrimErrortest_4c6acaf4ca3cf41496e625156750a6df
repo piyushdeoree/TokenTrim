@@ -1,0 +1,40 @@
+e0df66fdffd97b343b2cb6604c38a514
+"use strict";
+jest.mock("next/router", ()=>({
+        useRouter: ()=>({
+                query: {},
+                pathname: "/",
+                push: jest.fn(),
+                replace: jest.fn()
+            })
+    }));
+jest.mock("@/services/promptService", ()=>({
+        analyzePrompt: jest.fn().mockRejectedValue(new Error("boom"))
+    }));
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+const _jsxruntime = require("react/jsx-runtime");
+const _react = require("@testing-library/react");
+const _userevent = /*#__PURE__*/ _interop_require_default(require("@testing-library/user-event"));
+const _index = /*#__PURE__*/ _interop_require_default(require("../../src/pages/index"));
+function _interop_require_default(obj) {
+    return obj && obj.__esModule ? obj : {
+        default: obj
+    };
+}
+it("shows an error message when the API fails", async ()=>{
+    const user = _userevent.default.setup();
+    (0, _react.render)(/*#__PURE__*/ (0, _jsxruntime.jsx)(_index.default, {}));
+    await user.type(_react.screen.getByLabelText("Original prompt"), "Some prompt");
+    await _react.screen.findByRole("option", {
+        name: "gpt-4o"
+    });
+    await user.selectOptions(_react.screen.getByLabelText("Model"), "gpt-4o");
+    await user.click(_react.screen.getByRole("button", {
+        name: "Analyze prompt"
+    }));
+    expect(await _react.screen.findByRole("alert")).toHaveTextContent("Unable to analyze prompt. Please try again.");
+});
+
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIkQ6XFxQcm9qZWN0c1xcTWFqb3JcXFRva2VuVHJpbVxcZnJvbnRlbmRcXHRlc3RzXFxjb21wb25lbnRzXFxUb2tlblRyaW1FcnJvci50ZXN0LnRzeCJdLCJzb3VyY2VzQ29udGVudCI6WyJpbXBvcnQgeyByZW5kZXIsIHNjcmVlbiB9IGZyb20gJ0B0ZXN0aW5nLWxpYnJhcnkvcmVhY3QnO1xyXG5pbXBvcnQgdXNlckV2ZW50IGZyb20gJ0B0ZXN0aW5nLWxpYnJhcnkvdXNlci1ldmVudCc7XHJcbmltcG9ydCBUb2tlblRyaW1QYWdlIGZyb20gJ0AvcGFnZXMvaW5kZXgnO1xyXG5qZXN0Lm1vY2soJ25leHQvcm91dGVyJywgKCkgPT4gKHsgdXNlUm91dGVyOiAoKSA9PiAoeyBxdWVyeToge30sIHBhdGhuYW1lOiAnLycsIHB1c2g6IGplc3QuZm4oKSwgcmVwbGFjZTogamVzdC5mbigpIH0pIH0pKTtcclxuamVzdC5tb2NrKCdAL3NlcnZpY2VzL3Byb21wdFNlcnZpY2UnLCAoKSA9PiAoeyBhbmFseXplUHJvbXB0OiBqZXN0LmZuKCkubW9ja1JlamVjdGVkVmFsdWUobmV3IEVycm9yKCdib29tJykpIH0pKTtcclxuaXQoJ3Nob3dzIGFuIGVycm9yIG1lc3NhZ2Ugd2hlbiB0aGUgQVBJIGZhaWxzJywgYXN5bmMgKCkgPT4ge1xyXG4gIGNvbnN0IHVzZXIgPSB1c2VyRXZlbnQuc2V0dXAoKTsgcmVuZGVyKDxUb2tlblRyaW1QYWdlIC8+KTtcclxuICBhd2FpdCB1c2VyLnR5cGUoc2NyZWVuLmdldEJ5TGFiZWxUZXh0KCdPcmlnaW5hbCBwcm9tcHQnKSwgJ1NvbWUgcHJvbXB0Jyk7XHJcbiAgYXdhaXQgc2NyZWVuLmZpbmRCeVJvbGUoJ29wdGlvbicsIHsgbmFtZTogJ2dwdC00bycgfSk7XHJcbiAgYXdhaXQgdXNlci5zZWxlY3RPcHRpb25zKHNjcmVlbi5nZXRCeUxhYmVsVGV4dCgnTW9kZWwnKSwgJ2dwdC00bycpO1xyXG4gIGF3YWl0IHVzZXIuY2xpY2soc2NyZWVuLmdldEJ5Um9sZSgnYnV0dG9uJywgeyBuYW1lOiAnQW5hbHl6ZSBwcm9tcHQnIH0pKTtcclxuICBleHBlY3QoYXdhaXQgc2NyZWVuLmZpbmRCeVJvbGUoJ2FsZXJ0JykpLnRvSGF2ZVRleHRDb250ZW50KCdVbmFibGUgdG8gYW5hbHl6ZSBwcm9tcHQuIFBsZWFzZSB0cnkgYWdhaW4uJyk7XHJcbn0pO1xyXG4iXSwibmFtZXMiOlsiamVzdCIsIm1vY2siLCJ1c2VSb3V0ZXIiLCJxdWVyeSIsInBhdGhuYW1lIiwicHVzaCIsImZuIiwicmVwbGFjZSIsImFuYWx5emVQcm9tcHQiLCJtb2NrUmVqZWN0ZWRWYWx1ZSIsIkVycm9yIiwiaXQiLCJ1c2VyIiwidXNlckV2ZW50Iiwic2V0dXAiLCJyZW5kZXIiLCJUb2tlblRyaW1QYWdlIiwidHlwZSIsInNjcmVlbiIsImdldEJ5TGFiZWxUZXh0IiwiZmluZEJ5Um9sZSIsIm5hbWUiLCJzZWxlY3RPcHRpb25zIiwiY2xpY2siLCJnZXRCeVJvbGUiLCJleHBlY3QiLCJ0b0hhdmVUZXh0Q29udGVudCJdLCJtYXBwaW5ncyI6IjtBQUdBQSxLQUFLQyxJQUFJLENBQUMsZUFBZSxJQUFPLENBQUE7UUFBRUMsV0FBVyxJQUFPLENBQUE7Z0JBQUVDLE9BQU8sQ0FBQztnQkFBR0MsVUFBVTtnQkFBS0MsTUFBTUwsS0FBS00sRUFBRTtnQkFBSUMsU0FBU1AsS0FBS00sRUFBRTtZQUFHLENBQUE7SUFBRyxDQUFBO0FBQ3ZITixLQUFLQyxJQUFJLENBQUMsNEJBQTRCLElBQU8sQ0FBQTtRQUFFTyxlQUFlUixLQUFLTSxFQUFFLEdBQUdHLGlCQUFpQixDQUFDLElBQUlDLE1BQU07SUFBUyxDQUFBOzs7Ozt1QkFKOUU7a0VBQ1Q7OERBQ0k7Ozs7OztBQUcxQkMsR0FBRyw2Q0FBNkM7SUFDOUMsTUFBTUMsT0FBT0Msa0JBQVMsQ0FBQ0MsS0FBSztJQUFJQyxJQUFBQSxhQUFNLGdCQUFDLHFCQUFDQyxjQUFhO0lBQ3JELE1BQU1KLEtBQUtLLElBQUksQ0FBQ0MsYUFBTSxDQUFDQyxjQUFjLENBQUMsb0JBQW9CO0lBQzFELE1BQU1ELGFBQU0sQ0FBQ0UsVUFBVSxDQUFDLFVBQVU7UUFBRUMsTUFBTTtJQUFTO0lBQ25ELE1BQU1ULEtBQUtVLGFBQWEsQ0FBQ0osYUFBTSxDQUFDQyxjQUFjLENBQUMsVUFBVTtJQUN6RCxNQUFNUCxLQUFLVyxLQUFLLENBQUNMLGFBQU0sQ0FBQ00sU0FBUyxDQUFDLFVBQVU7UUFBRUgsTUFBTTtJQUFpQjtJQUNyRUksT0FBTyxNQUFNUCxhQUFNLENBQUNFLFVBQVUsQ0FBQyxVQUFVTSxpQkFBaUIsQ0FBQztBQUM3RCJ9

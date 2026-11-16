@@ -1,0 +1,39 @@
+d7120bee8b4079e88f87f5f98d524e3e
+"use strict";
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+Object.defineProperty(exports, "ModelSelector", {
+    enumerable: true,
+    get: function() {
+        return ModelSelector;
+    }
+});
+const _jsxruntime = require("react/jsx-runtime");
+const _Select = require("../ui/Select");
+const _useModelPricing = require("../../hooks/useModelPricing");
+const _AuthContext = require("../../context/AuthContext");
+function ModelSelector({ value, onChange, error }) {
+    const { user } = (0, _AuthContext.useAuth)();
+    const { state } = (0, _useModelPricing.useModelPricing)(!!user); // model list comes from GET /models/pricing
+    const models = state.status === "success" ? state.data : [];
+    return /*#__PURE__*/ (0, _jsxruntime.jsxs)(_Select.Select, {
+        label: "Model",
+        value: value,
+        onChange: (e)=>onChange(e.target.value),
+        error: error,
+        disabled: state.status === "loading",
+        children: [
+            /*#__PURE__*/ (0, _jsxruntime.jsx)("option", {
+                value: "",
+                children: state.status === "loading" ? "Loading models..." : state.status === "error" ? "Unable to load models" : "Select a model"
+            }),
+            models.map((m)=>/*#__PURE__*/ (0, _jsxruntime.jsx)("option", {
+                    value: m.model,
+                    children: m.model
+                }, m.model))
+        ]
+    });
+}
+
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIkQ6XFxQcm9qZWN0c1xcTWFqb3JcXFRva2VuVHJpbVxcZnJvbnRlbmRcXHNyY1xcY29tcG9uZW50c1xcdG9rZW4tdHJpbVxcTW9kZWxTZWxlY3Rvci50c3giXSwic291cmNlc0NvbnRlbnQiOlsiaW1wb3J0IHsgU2VsZWN0IH0gZnJvbSAnQC9jb21wb25lbnRzL3VpL1NlbGVjdCc7XHJcbmltcG9ydCB7IHVzZU1vZGVsUHJpY2luZyB9IGZyb20gJ0AvaG9va3MvdXNlTW9kZWxQcmljaW5nJztcclxuaW1wb3J0IHsgdXNlQXV0aCB9IGZyb20gJ0AvY29udGV4dC9BdXRoQ29udGV4dCc7XHJcbmV4cG9ydCBmdW5jdGlvbiBNb2RlbFNlbGVjdG9yKHsgdmFsdWUsIG9uQ2hhbmdlLCBlcnJvciB9OiB7IHZhbHVlOiBzdHJpbmc7IG9uQ2hhbmdlOiAodjogc3RyaW5nKSA9PiB2b2lkOyBlcnJvcj86IHN0cmluZyB9KSB7XHJcbiAgY29uc3QgeyB1c2VyIH0gPSB1c2VBdXRoKCk7XHJcbiAgY29uc3QgeyBzdGF0ZSB9ID0gdXNlTW9kZWxQcmljaW5nKCEhdXNlcik7IC8vIG1vZGVsIGxpc3QgY29tZXMgZnJvbSBHRVQgL21vZGVscy9wcmljaW5nXHJcbiAgY29uc3QgbW9kZWxzID0gc3RhdGUuc3RhdHVzID09PSAnc3VjY2VzcycgPyBzdGF0ZS5kYXRhIDogW107XHJcbiAgcmV0dXJuIChcclxuICAgIDxTZWxlY3QgbGFiZWw9XCJNb2RlbFwiIHZhbHVlPXt2YWx1ZX0gb25DaGFuZ2U9eyhlKSA9PiBvbkNoYW5nZShlLnRhcmdldC52YWx1ZSl9IGVycm9yPXtlcnJvcn0gZGlzYWJsZWQ9e3N0YXRlLnN0YXR1cyA9PT0gJ2xvYWRpbmcnfT5cclxuICAgICAgPG9wdGlvbiB2YWx1ZT1cIlwiPntzdGF0ZS5zdGF0dXMgPT09ICdsb2FkaW5nJyA/ICdMb2FkaW5nIG1vZGVscy4uLicgOiBzdGF0ZS5zdGF0dXMgPT09ICdlcnJvcicgPyAnVW5hYmxlIHRvIGxvYWQgbW9kZWxzJyA6ICdTZWxlY3QgYSBtb2RlbCd9PC9vcHRpb24+XHJcbiAgICAgIHttb2RlbHMubWFwKChtKSA9PiA8b3B0aW9uIGtleT17bS5tb2RlbH0gdmFsdWU9e20ubW9kZWx9PnttLm1vZGVsfTwvb3B0aW9uPil9XHJcbiAgICA8L1NlbGVjdD5cclxuICApO1xyXG59XHJcbiJdLCJuYW1lcyI6WyJNb2RlbFNlbGVjdG9yIiwidmFsdWUiLCJvbkNoYW5nZSIsImVycm9yIiwidXNlciIsInVzZUF1dGgiLCJzdGF0ZSIsInVzZU1vZGVsUHJpY2luZyIsIm1vZGVscyIsInN0YXR1cyIsImRhdGEiLCJTZWxlY3QiLCJsYWJlbCIsImUiLCJ0YXJnZXQiLCJkaXNhYmxlZCIsIm9wdGlvbiIsIm1hcCIsIm0iLCJtb2RlbCJdLCJtYXBwaW5ncyI6Ijs7OzsrQkFHZ0JBOzs7ZUFBQUE7Ozs7d0JBSE87aUNBQ1M7NkJBQ1I7QUFDakIsU0FBU0EsY0FBYyxFQUFFQyxLQUFLLEVBQUVDLFFBQVEsRUFBRUMsS0FBSyxFQUFvRTtJQUN4SCxNQUFNLEVBQUVDLElBQUksRUFBRSxHQUFHQyxJQUFBQSxvQkFBTztJQUN4QixNQUFNLEVBQUVDLEtBQUssRUFBRSxHQUFHQyxJQUFBQSxnQ0FBZSxFQUFDLENBQUMsQ0FBQ0gsT0FBTyw0Q0FBNEM7SUFDdkYsTUFBTUksU0FBU0YsTUFBTUcsTUFBTSxLQUFLLFlBQVlILE1BQU1JLElBQUksR0FBRyxFQUFFO0lBQzNELHFCQUNFLHNCQUFDQyxjQUFNO1FBQUNDLE9BQU07UUFBUVgsT0FBT0E7UUFBT0MsVUFBVSxDQUFDVyxJQUFNWCxTQUFTVyxFQUFFQyxNQUFNLENBQUNiLEtBQUs7UUFBR0UsT0FBT0E7UUFBT1ksVUFBVVQsTUFBTUcsTUFBTSxLQUFLOzswQkFDdEgscUJBQUNPO2dCQUFPZixPQUFNOzBCQUFJSyxNQUFNRyxNQUFNLEtBQUssWUFBWSxzQkFBc0JILE1BQU1HLE1BQU0sS0FBSyxVQUFVLDBCQUEwQjs7WUFDekhELE9BQU9TLEdBQUcsQ0FBQyxDQUFDQyxrQkFBTSxxQkFBQ0Y7b0JBQXFCZixPQUFPaUIsRUFBRUMsS0FBSzs4QkFBR0QsRUFBRUMsS0FBSzttQkFBakNELEVBQUVDLEtBQUs7OztBQUc3QyJ9

@@ -1,0 +1,14 @@
+55952e9f941906536e549766798433a8
+"use strict";
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+require("@testing-library/jest-dom");
+class RO {
+    observe() {}
+    unobserve() {}
+    disconnect() {}
+}
+globalThis.ResizeObserver = RO;
+
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIkQ6XFxQcm9qZWN0c1xcTWFqb3JcXFRva2VuVHJpbVxcZnJvbnRlbmRcXHRlc3RzXFxzZXR1cC50cyJdLCJzb3VyY2VzQ29udGVudCI6WyJpbXBvcnQgJ0B0ZXN0aW5nLWxpYnJhcnkvamVzdC1kb20nO1xyXG5jbGFzcyBSTyB7IG9ic2VydmUoKSB7fSB1bm9ic2VydmUoKSB7fSBkaXNjb25uZWN0KCkge30gfVxyXG4oZ2xvYmFsVGhpcyBhcyB1bmtub3duIGFzIHsgUmVzaXplT2JzZXJ2ZXI6IHVua25vd24gfSkuUmVzaXplT2JzZXJ2ZXIgPSBSTztcclxuIl0sIm5hbWVzIjpbIlJPIiwib2JzZXJ2ZSIsInVub2JzZXJ2ZSIsImRpc2Nvbm5lY3QiLCJnbG9iYWxUaGlzIiwiUmVzaXplT2JzZXJ2ZXIiXSwibWFwcGluZ3MiOiI7Ozs7UUFBTztBQUNQLE1BQU1BO0lBQUtDLFVBQVUsQ0FBQztJQUFFQyxZQUFZLENBQUM7SUFBRUMsYUFBYSxDQUFDO0FBQUU7QUFDdERDLFdBQXNEQyxjQUFjLEdBQUdMIn0=

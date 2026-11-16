@@ -1,0 +1,22 @@
+cf4bb853245416fcb70fe36fd2cddc1b
+"use strict";
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+Object.defineProperty(exports, "CostChart", {
+    enumerable: true,
+    get: function() {
+        return CostChart;
+    }
+});
+const _jsxruntime = require("react/jsx-runtime");
+const _ChartCard = require("./ChartCard");
+const CostChart = ({ data })=>/*#__PURE__*/ (0, _jsxruntime.jsx)(_ChartCard.ChartCard, {
+        title: "Cost over time",
+        data: data,
+        x: "day",
+        y: "cost",
+        kind: "line"
+    });
+
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIkQ6XFxQcm9qZWN0c1xcTWFqb3JcXFRva2VuVHJpbVxcZnJvbnRlbmRcXHNyY1xcY29tcG9uZW50c1xcY2hhcnRzXFxDb3N0Q2hhcnQudHN4Il0sInNvdXJjZXNDb250ZW50IjpbImltcG9ydCB7IENoYXJ0Q2FyZCB9IGZyb20gJy4vQ2hhcnRDYXJkJztcclxuZXhwb3J0IGNvbnN0IENvc3RDaGFydCA9ICh7IGRhdGEgfTogeyBkYXRhOiBvYmplY3RbXSB9KSA9PiA8Q2hhcnRDYXJkIHRpdGxlPVwiQ29zdCBvdmVyIHRpbWVcIiBkYXRhPXtkYXRhfSB4PVwiZGF5XCIgeT1cImNvc3RcIiBraW5kPVwibGluZVwiIC8+O1xyXG4iXSwibmFtZXMiOlsiQ29zdENoYXJ0IiwiZGF0YSIsIkNoYXJ0Q2FyZCIsInRpdGxlIiwieCIsInkiLCJraW5kIl0sIm1hcHBpbmdzIjoiOzs7OytCQUNhQTs7O2VBQUFBOzs7OzJCQURhO0FBQ25CLE1BQU1BLFlBQVksQ0FBQyxFQUFFQyxJQUFJLEVBQXNCLGlCQUFLLHFCQUFDQyxvQkFBUztRQUFDQyxPQUFNO1FBQWlCRixNQUFNQTtRQUFNRyxHQUFFO1FBQU1DLEdBQUU7UUFBT0MsTUFBSyJ9

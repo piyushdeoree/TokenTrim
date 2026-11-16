@@ -1,0 +1,20 @@
+3df2a2b60a7fd63d2ee4a8f60e277e44
+"use strict";
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+Object.defineProperty(exports, "TokenCard", {
+    enumerable: true,
+    get: function() {
+        return TokenCard;
+    }
+});
+const _jsxruntime = require("react/jsx-runtime");
+const _MetricCard = require("./MetricCard");
+const _format = require("../../utils/format");
+const TokenCard = (p)=>/*#__PURE__*/ (0, _jsxruntime.jsx)(_MetricCard.MetricCard, {
+        ...p,
+        value: (0, _format.fmtTokens)(p.value)
+    });
+
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIkQ6XFxQcm9qZWN0c1xcTWFqb3JcXFRva2VuVHJpbVxcZnJvbnRlbmRcXHNyY1xcY29tcG9uZW50c1xcbWV0cmljc1xcVG9rZW5DYXJkLnRzeCJdLCJzb3VyY2VzQ29udGVudCI6WyJpbXBvcnQgeyBNZXRyaWNDYXJkIH0gZnJvbSAnLi9NZXRyaWNDYXJkJztcclxuaW1wb3J0IHsgZm10VG9rZW5zIH0gZnJvbSAnQC91dGlscy9mb3JtYXQnO1xyXG5leHBvcnQgY29uc3QgVG9rZW5DYXJkID0gKHA6IHsgbGFiZWw6IHN0cmluZzsgdmFsdWU6IG51bWJlcjsgaGludD86IHN0cmluZzsgdG9uZT86ICdkZWZhdWx0JyB8ICdnb29kJyB9KSA9PiA8TWV0cmljQ2FyZCB7Li4ucH0gdmFsdWU9e2ZtdFRva2VucyhwLnZhbHVlKX0gLz47XHJcbiJdLCJuYW1lcyI6WyJUb2tlbkNhcmQiLCJwIiwiTWV0cmljQ2FyZCIsInZhbHVlIiwiZm10VG9rZW5zIl0sIm1hcHBpbmdzIjoiOzs7OytCQUVhQTs7O2VBQUFBOzs7OzRCQUZjO3dCQUNEO0FBQ25CLE1BQU1BLFlBQVksQ0FBQ0Msa0JBQWtGLHFCQUFDQyxzQkFBVTtRQUFFLEdBQUdELENBQUM7UUFBRUUsT0FBT0MsSUFBQUEsaUJBQVMsRUFBQ0gsRUFBRUUsS0FBSyJ9

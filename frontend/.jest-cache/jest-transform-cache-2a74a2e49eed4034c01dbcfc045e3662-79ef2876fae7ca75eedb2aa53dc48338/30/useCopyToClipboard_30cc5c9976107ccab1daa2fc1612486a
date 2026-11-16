@@ -1,0 +1,26 @@
+1daca205d86042d92adaf1f409a23b6a
+"use strict";
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+Object.defineProperty(exports, "useCopyToClipboard", {
+    enumerable: true,
+    get: function() {
+        return useCopyToClipboard;
+    }
+});
+const _react = require("react");
+function useCopyToClipboard() {
+    const [copied, setCopied] = (0, _react.useState)(false);
+    const copy = async (text)=>{
+        await navigator.clipboard.writeText(text);
+        setCopied(true);
+        setTimeout(()=>setCopied(false), 1800);
+    };
+    return {
+        copied,
+        copy
+    };
+}
+
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIkQ6XFxQcm9qZWN0c1xcTWFqb3JcXFRva2VuVHJpbVxcZnJvbnRlbmRcXHNyY1xcaG9va3NcXHVzZUNvcHlUb0NsaXBib2FyZC50cyJdLCJzb3VyY2VzQ29udGVudCI6WyJpbXBvcnQgeyB1c2VTdGF0ZSB9IGZyb20gJ3JlYWN0JztcclxuZXhwb3J0IGZ1bmN0aW9uIHVzZUNvcHlUb0NsaXBib2FyZCgpIHtcclxuICBjb25zdCBbY29waWVkLCBzZXRDb3BpZWRdID0gdXNlU3RhdGUoZmFsc2UpO1xyXG4gIGNvbnN0IGNvcHkgPSBhc3luYyAodGV4dDogc3RyaW5nKSA9PiB7XHJcbiAgICBhd2FpdCBuYXZpZ2F0b3IuY2xpcGJvYXJkLndyaXRlVGV4dCh0ZXh0KTtcclxuICAgIHNldENvcGllZCh0cnVlKTsgc2V0VGltZW91dCgoKSA9PiBzZXRDb3BpZWQoZmFsc2UpLCAxODAwKTtcclxuICB9O1xyXG4gIHJldHVybiB7IGNvcGllZCwgY29weSB9O1xyXG59XHJcbiJdLCJuYW1lcyI6WyJ1c2VDb3B5VG9DbGlwYm9hcmQiLCJjb3BpZWQiLCJzZXRDb3BpZWQiLCJ1c2VTdGF0ZSIsImNvcHkiLCJ0ZXh0IiwibmF2aWdhdG9yIiwiY2xpcGJvYXJkIiwid3JpdGVUZXh0Iiwic2V0VGltZW91dCJdLCJtYXBwaW5ncyI6Ijs7OzsrQkFDZ0JBOzs7ZUFBQUE7Ozt1QkFEUztBQUNsQixTQUFTQTtJQUNkLE1BQU0sQ0FBQ0MsUUFBUUMsVUFBVSxHQUFHQyxJQUFBQSxlQUFRLEVBQUM7SUFDckMsTUFBTUMsT0FBTyxPQUFPQztRQUNsQixNQUFNQyxVQUFVQyxTQUFTLENBQUNDLFNBQVMsQ0FBQ0g7UUFDcENILFVBQVU7UUFBT08sV0FBVyxJQUFNUCxVQUFVLFFBQVE7SUFDdEQ7SUFDQSxPQUFPO1FBQUVEO1FBQVFHO0lBQUs7QUFDeEIifQ==

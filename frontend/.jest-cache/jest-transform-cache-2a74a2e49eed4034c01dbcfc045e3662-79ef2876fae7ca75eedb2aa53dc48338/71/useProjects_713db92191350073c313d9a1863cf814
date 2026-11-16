@@ -1,0 +1,16 @@
+200b8590d5c1638506d76266dd739db9
+"use strict";
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+Object.defineProperty(exports, "useProjects", {
+    enumerable: true,
+    get: function() {
+        return useProjects;
+    }
+});
+const _useAsync = require("./useAsync");
+const _data = require("../services/data");
+const useProjects = ()=>(0, _useAsync.useAsync)(()=>(0, _data.load)("/projects"));
+
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIkQ6XFxQcm9qZWN0c1xcTWFqb3JcXFRva2VuVHJpbVxcZnJvbnRlbmRcXHNyY1xcaG9va3NcXHVzZVByb2plY3RzLnRzIl0sInNvdXJjZXNDb250ZW50IjpbImltcG9ydCB7IHVzZUFzeW5jIH0gZnJvbSAnLi91c2VBc3luYyc7XHJcbmltcG9ydCB7IGxvYWQgfSBmcm9tICdAL3NlcnZpY2VzL2RhdGEnO1xyXG5pbXBvcnQgdHlwZSB7IFByb2plY3QgfSBmcm9tICdAL3R5cGVzL3Byb2plY3QnO1xyXG5leHBvcnQgY29uc3QgdXNlUHJvamVjdHMgPSAoKSA9PiB1c2VBc3luYygoKSA9PiBsb2FkPFByb2plY3RbXT4oJy9wcm9qZWN0cycpKTtcclxuIl0sIm5hbWVzIjpbInVzZVByb2plY3RzIiwidXNlQXN5bmMiLCJsb2FkIl0sIm1hcHBpbmdzIjoiOzs7OytCQUdhQTs7O2VBQUFBOzs7MEJBSFk7c0JBQ0o7QUFFZCxNQUFNQSxjQUFjLElBQU1DLElBQUFBLGtCQUFRLEVBQUMsSUFBTUMsSUFBQUEsVUFBSSxFQUFZIn0=

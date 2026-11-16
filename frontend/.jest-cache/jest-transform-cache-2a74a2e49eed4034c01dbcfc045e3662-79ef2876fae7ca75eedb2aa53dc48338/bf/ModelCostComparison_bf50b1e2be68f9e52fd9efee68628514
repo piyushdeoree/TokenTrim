@@ -1,0 +1,49 @@
+d7fe1ad3d7baf521fe63d09c6b1e1829
+"use strict";
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+Object.defineProperty(exports, "ModelCostComparison", {
+    enumerable: true,
+    get: function() {
+        return ModelCostComparison;
+    }
+});
+const _jsxruntime = require("react/jsx-runtime");
+const _react = require("react");
+const _Card = require("../ui/Card");
+const _Button = require("../ui/Button");
+function ModelCostComparison() {
+    const [expanded, setExpanded] = (0, _react.useState)(false);
+    return /*#__PURE__*/ (0, _jsxruntime.jsxs)(_Card.Card, {
+        title: "Compare Across LLMs",
+        children: [
+            /*#__PURE__*/ (0, _jsxruntime.jsx)("p", {
+                className: "mb-4 text-sm text-slate-600 dark:text-slate-300",
+                children: "See how your original and optimized prompts compare in cost across different AI models."
+            }),
+            /*#__PURE__*/ (0, _jsxruntime.jsx)(_Button.Button, {
+                "aria-expanded": expanded,
+                "aria-controls": "model-cost-comparison-details",
+                onClick: ()=>setExpanded((value)=>!value),
+                children: expanded ? "Hide comparison" : "Compare All Supported LLMs"
+            }),
+            expanded && /*#__PURE__*/ (0, _jsxruntime.jsxs)("div", {
+                id: "model-cost-comparison-details",
+                className: "mt-4 rounded-md border border-black/10 bg-surface/30 p-4 text-sm dark:border-white/10",
+                children: [
+                    /*#__PURE__*/ (0, _jsxruntime.jsx)("p", {
+                        className: "font-medium",
+                        children: "Model comparison is not available yet."
+                    }),
+                    /*#__PURE__*/ (0, _jsxruntime.jsx)("p", {
+                        className: "mt-1 text-slate-600 dark:text-slate-300",
+                        children: "TokenTrim needs the confirmed comparison API contract from the backend before it can request or display model estimates."
+                    })
+                ]
+            })
+        ]
+    });
+}
+
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIkQ6XFxQcm9qZWN0c1xcTWFqb3JcXFRva2VuVHJpbVxcZnJvbnRlbmRcXHNyY1xcY29tcG9uZW50c1xcdG9rZW4tdHJpbVxcTW9kZWxDb3N0Q29tcGFyaXNvbi50c3giXSwic291cmNlc0NvbnRlbnQiOlsiaW1wb3J0IHsgdXNlU3RhdGUgfSBmcm9tICdyZWFjdCc7XG5pbXBvcnQgeyBDYXJkIH0gZnJvbSAnQC9jb21wb25lbnRzL3VpL0NhcmQnO1xuaW1wb3J0IHsgQnV0dG9uIH0gZnJvbSAnQC9jb21wb25lbnRzL3VpL0J1dHRvbic7XG5cbi8qKlxuICogVGhlIGNvbXBhcmlzb24gQVBJIGNvbnRyYWN0IGhhcyBub3QgeWV0IGJlZW4gY29uZmlybWVkIGJ5IHRoZSBiYWNrZW5kIHRlYW0uXG4gKiBLZWVwIHRoZSBlbnRyeSBwb2ludCBpbiB0aGUgcmVzdWx0cyB3b3JrZmxvdyB3aXRob3V0IGZhYnJpY2F0aW5nIEFQSSBkYXRhLlxuICovXG5leHBvcnQgZnVuY3Rpb24gTW9kZWxDb3N0Q29tcGFyaXNvbigpIHtcbiAgY29uc3QgW2V4cGFuZGVkLCBzZXRFeHBhbmRlZF0gPSB1c2VTdGF0ZShmYWxzZSk7XG5cbiAgcmV0dXJuIChcbiAgICA8Q2FyZCB0aXRsZT1cIkNvbXBhcmUgQWNyb3NzIExMTXNcIj5cbiAgICAgIDxwIGNsYXNzTmFtZT1cIm1iLTQgdGV4dC1zbSB0ZXh0LXNsYXRlLTYwMCBkYXJrOnRleHQtc2xhdGUtMzAwXCI+XG4gICAgICAgIFNlZSBob3cgeW91ciBvcmlnaW5hbCBhbmQgb3B0aW1pemVkIHByb21wdHMgY29tcGFyZSBpbiBjb3N0IGFjcm9zcyBkaWZmZXJlbnQgQUkgbW9kZWxzLlxuICAgICAgPC9wPlxuICAgICAgPEJ1dHRvblxuICAgICAgICBhcmlhLWV4cGFuZGVkPXtleHBhbmRlZH1cbiAgICAgICAgYXJpYS1jb250cm9scz1cIm1vZGVsLWNvc3QtY29tcGFyaXNvbi1kZXRhaWxzXCJcbiAgICAgICAgb25DbGljaz17KCkgPT4gc2V0RXhwYW5kZWQoKHZhbHVlKSA9PiAhdmFsdWUpfVxuICAgICAgPlxuICAgICAgICB7ZXhwYW5kZWQgPyAnSGlkZSBjb21wYXJpc29uJyA6ICdDb21wYXJlIEFsbCBTdXBwb3J0ZWQgTExNcyd9XG4gICAgICA8L0J1dHRvbj5cbiAgICAgIHtleHBhbmRlZCAmJiAoXG4gICAgICAgIDxkaXYgaWQ9XCJtb2RlbC1jb3N0LWNvbXBhcmlzb24tZGV0YWlsc1wiIGNsYXNzTmFtZT1cIm10LTQgcm91bmRlZC1tZCBib3JkZXIgYm9yZGVyLWJsYWNrLzEwIGJnLXN1cmZhY2UvMzAgcC00IHRleHQtc20gZGFyazpib3JkZXItd2hpdGUvMTBcIj5cbiAgICAgICAgICA8cCBjbGFzc05hbWU9XCJmb250LW1lZGl1bVwiPk1vZGVsIGNvbXBhcmlzb24gaXMgbm90IGF2YWlsYWJsZSB5ZXQuPC9wPlxuICAgICAgICAgIDxwIGNsYXNzTmFtZT1cIm10LTEgdGV4dC1zbGF0ZS02MDAgZGFyazp0ZXh0LXNsYXRlLTMwMFwiPlxuICAgICAgICAgICAgVG9rZW5UcmltIG5lZWRzIHRoZSBjb25maXJtZWQgY29tcGFyaXNvbiBBUEkgY29udHJhY3QgZnJvbSB0aGUgYmFja2VuZCBiZWZvcmUgaXQgY2FuIHJlcXVlc3Qgb3IgZGlzcGxheSBtb2RlbCBlc3RpbWF0ZXMuXG4gICAgICAgICAgPC9wPlxuICAgICAgICA8L2Rpdj5cbiAgICAgICl9XG4gICAgPC9DYXJkPlxuICApO1xufVxuIl0sIm5hbWVzIjpbIk1vZGVsQ29zdENvbXBhcmlzb24iLCJleHBhbmRlZCIsInNldEV4cGFuZGVkIiwidXNlU3RhdGUiLCJDYXJkIiwidGl0bGUiLCJwIiwiY2xhc3NOYW1lIiwiQnV0dG9uIiwiYXJpYS1leHBhbmRlZCIsImFyaWEtY29udHJvbHMiLCJvbkNsaWNrIiwidmFsdWUiLCJkaXYiLCJpZCJdLCJtYXBwaW5ncyI6Ijs7OzsrQkFRZ0JBOzs7ZUFBQUE7Ozs7dUJBUlM7c0JBQ0o7d0JBQ0U7QUFNaEIsU0FBU0E7SUFDZCxNQUFNLENBQUNDLFVBQVVDLFlBQVksR0FBR0MsSUFBQUEsZUFBUSxFQUFDO0lBRXpDLHFCQUNFLHNCQUFDQyxVQUFJO1FBQUNDLE9BQU07OzBCQUNWLHFCQUFDQztnQkFBRUMsV0FBVTswQkFBa0Q7OzBCQUcvRCxxQkFBQ0MsY0FBTTtnQkFDTEMsaUJBQWVSO2dCQUNmUyxpQkFBYztnQkFDZEMsU0FBUyxJQUFNVCxZQUFZLENBQUNVLFFBQVUsQ0FBQ0E7MEJBRXRDWCxXQUFXLG9CQUFvQjs7WUFFakNBLDBCQUNDLHNCQUFDWTtnQkFBSUMsSUFBRztnQkFBZ0NQLFdBQVU7O2tDQUNoRCxxQkFBQ0Q7d0JBQUVDLFdBQVU7a0NBQWM7O2tDQUMzQixxQkFBQ0Q7d0JBQUVDLFdBQVU7a0NBQTBDOzs7Ozs7QUFPakUifQ==

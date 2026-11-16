@@ -1,0 +1,375 @@
+7604d149dd00caa12d9eb4370a7b1691
+"use strict";
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+function _export(target, all) {
+    for(var name in all)Object.defineProperty(target, name, {
+        enumerable: true,
+        get: all[name]
+    });
+}
+_export(exports, {
+    projectTypes: function() {
+        return projectTypes;
+    },
+    questions: function() {
+        return questions;
+    },
+    requirementsFrom: function() {
+        return requirementsFrom;
+    },
+    visibleQuestions: function() {
+        return visibleQuestions;
+    }
+});
+const projectTypes = [
+    "Web Application",
+    "Mobile Application",
+    "AI / Machine Learning",
+    "Desktop Application",
+    "API / Backend Service",
+    "Data Analytics",
+    "Other"
+];
+const questions = [
+    {
+        id: "category",
+        prompt: "What are you planning to build?",
+        help: "This helps tailor the next few questions to your project.",
+        kind: "choice",
+        options: projectTypes,
+        required: true
+    },
+    {
+        id: "categoryOther",
+        prompt: "What kind of project do you have in mind?",
+        kind: "text",
+        required: true,
+        visible: (a)=>a.category === "Other"
+    },
+    {
+        id: "webKind",
+        prompt: "What kind of web application is it?",
+        kind: "choice",
+        options: [
+            "E-commerce",
+            "Portfolio",
+            "SaaS platform",
+            "Dashboard",
+            "Social platform",
+            "Other"
+        ],
+        visible: (a)=>a.category === "Web Application"
+    },
+    {
+        id: "webKindOther",
+        prompt: "What type of web application?",
+        kind: "text",
+        required: true,
+        visible: (a)=>a.category === "Web Application" && a.webKind === "Other"
+    },
+    {
+        id: "platform",
+        prompt: "Which platforms should your app support?",
+        kind: "multi",
+        options: [
+            "Android",
+            "iOS",
+            "Both Android and iOS"
+        ],
+        visible: (a)=>a.category === "Mobile Application"
+    },
+    {
+        id: "mobileApproach",
+        prompt: "How would you like to build the mobile app?",
+        kind: "choice",
+        options: [
+            "Native",
+            "Cross-platform",
+            "Not sure yet",
+            "Other"
+        ],
+        visible: (a)=>a.category === "Mobile Application"
+    },
+    {
+        id: "mobileApproachOther",
+        prompt: "Which mobile development approach?",
+        kind: "text",
+        required: true,
+        visible: (a)=>a.category === "Mobile Application" && a.mobileApproach === "Other"
+    },
+    {
+        id: "problem",
+        prompt: "What problem should your AI or data project solve?",
+        help: "A short description is enough to get started.",
+        kind: "long",
+        required: true,
+        visible: (a)=>[
+                "AI / Machine Learning",
+                "Data Analytics"
+            ].includes(String(a.category))
+    },
+    {
+        id: "model",
+        prompt: "Do you have a model or algorithm in mind?",
+        kind: "choice",
+        options: [
+            "Yes",
+            "No",
+            "Not sure yet"
+        ],
+        visible: (a)=>a.category === "AI / Machine Learning"
+    },
+    {
+        id: "modelDetails",
+        prompt: "Which model or algorithm are you considering?",
+        kind: "text",
+        required: true,
+        visible: (a)=>a.model === "Yes" && a.category === "AI / Machine Learning"
+    },
+    {
+        id: "dataset",
+        prompt: "Do you already have a dataset?",
+        kind: "choice",
+        options: [
+            "Yes",
+            "No",
+            "Not sure yet"
+        ],
+        visible: (a)=>a.category === "AI / Machine Learning" || a.category === "Data Analytics"
+    },
+    {
+        id: "datasetDetails",
+        prompt: "Where is your dataset, and is it ready to use?",
+        kind: "text",
+        required: true,
+        visible: (a)=>a.dataset === "Yes" && (a.category === "AI / Machine Learning" || a.category === "Data Analytics")
+    },
+    {
+        id: "frontend",
+        prompt: "Which frontend technology would you prefer?",
+        kind: "choice",
+        options: [
+            "React",
+            "Next.js",
+            "Angular",
+            "Vue",
+            "HTML / CSS / JavaScript",
+            "Not decided yet",
+            "Other"
+        ],
+        visible: (a)=>a.category === "Web Application" || a.category === "Mobile Application"
+    },
+    {
+        id: "frontendOther",
+        prompt: "Which frontend technology?",
+        kind: "text",
+        required: true,
+        visible: (a)=>[
+                "Web Application",
+                "Mobile Application"
+            ].includes(String(a.category)) && a.frontend === "Other"
+    },
+    {
+        id: "language",
+        prompt: "Which programming language do you prefer?",
+        kind: "choice",
+        options: [
+            "Python",
+            "JavaScript / TypeScript",
+            "Java",
+            "C#",
+            "Not decided yet",
+            "Other"
+        ],
+        visible: (a)=>[
+                "AI / Machine Learning",
+                "Desktop Application",
+                "API / Backend Service",
+                "Data Analytics"
+            ].includes(String(a.category))
+    },
+    {
+        id: "languageOther",
+        prompt: "Which programming language?",
+        kind: "text",
+        required: true,
+        visible: (a)=>[
+                "AI / Machine Learning",
+                "Desktop Application",
+                "API / Backend Service",
+                "Data Analytics"
+            ].includes(String(a.category)) && a.language === "Other"
+    },
+    {
+        id: "backend",
+        prompt: "Will your project need a backend?",
+        kind: "choice",
+        options: [
+            "Yes",
+            "No",
+            "Not sure yet"
+        ],
+        visible: (a)=>[
+                "Web Application",
+                "Mobile Application",
+                "Desktop Application"
+            ].includes(String(a.category))
+    },
+    {
+        id: "auth",
+        prompt: "Will users need to sign in?",
+        kind: "choice",
+        options: [
+            "Yes",
+            "No",
+            "Not sure yet"
+        ],
+        visible: (a)=>a.backend === "Yes"
+    },
+    {
+        id: "authMethods",
+        prompt: "Which sign-in methods do you need?",
+        kind: "multi",
+        options: [
+            "Email and password",
+            "Google login",
+            "One-time code (OTP)",
+            "Role-based access",
+            "Other"
+        ],
+        visible: (a)=>a.backend === "Yes" && a.auth === "Yes"
+    },
+    {
+        id: "authOther",
+        prompt: "What other authentication method?",
+        kind: "text",
+        required: true,
+        visible: (a)=>a.backend === "Yes" && a.auth === "Yes" && Array.isArray(a.authMethods) && a.authMethods.includes("Other")
+    },
+    {
+        id: "database",
+        prompt: "Do you already have a database?",
+        kind: "choice",
+        options: [
+            "Yes",
+            "No",
+            "Not sure yet"
+        ],
+        visible: (a)=>a.backend === "Yes"
+    },
+    {
+        id: "databaseDetails",
+        prompt: "Which database are you using, and is it configured?",
+        kind: "text",
+        required: true,
+        visible: (a)=>a.backend === "Yes" && a.database === "Yes"
+    },
+    {
+        id: "databaseHelp",
+        prompt: "Would you like help choosing a database?",
+        kind: "choice",
+        options: [
+            "Yes",
+            "No"
+        ],
+        visible: (a)=>a.backend === "Yes" && a.database === "No"
+    },
+    {
+        id: "deployment",
+        prompt: "Where should the project run?",
+        kind: "choice",
+        options: [
+            "Web / cloud",
+            "Mobile devices",
+            "Desktop computers",
+            "Not decided yet",
+            "Other"
+        ],
+        visible: (a)=>a.category !== undefined
+    },
+    {
+        id: "deploymentOther",
+        prompt: "Where would you like to deploy it?",
+        kind: "text",
+        required: true,
+        visible: (a)=>a.deployment === "Other"
+    },
+    {
+        id: "description",
+        prompt: "Anything else we should know?",
+        help: "Share goals, must-have features, or constraints. This is optional.",
+        kind: "long"
+    }
+];
+function visibleQuestions(answers) {
+    return questions.filter((q)=>!q.visible || q.visible(answers));
+}
+function requirementsFrom(answers, name) {
+    const applicable = visibleQuestions(answers);
+    return {
+        name: name.trim(),
+        answers: Object.fromEntries(applicable.filter((q)=>answers[q.id] !== undefined && answers[q.id] !== "").map((q)=>[
+                q.id,
+                answers[q.id]
+            ])),
+        sections: [
+            {
+                title: "Project overview",
+                fields: [
+                    "category",
+                    "categoryOther",
+                    "webKind",
+                    "webKindOther",
+                    "platform",
+                    "mobileApproach"
+                ]
+            },
+            {
+                title: "Technology and data",
+                fields: [
+                    "frontend",
+                    "frontendOther",
+                    "mobileApproach",
+                    "mobileApproachOther",
+                    "language",
+                    "languageOther",
+                    "problem",
+                    "model",
+                    "modelDetails",
+                    "dataset",
+                    "datasetDetails"
+                ]
+            },
+            {
+                title: "Backend and access",
+                fields: [
+                    "backend",
+                    "auth",
+                    "authMethods",
+                    "authOther",
+                    "database",
+                    "databaseDetails",
+                    "databaseHelp"
+                ]
+            },
+            {
+                title: "Deployment and notes",
+                fields: [
+                    "deployment",
+                    "deploymentOther",
+                    "description"
+                ]
+            }
+        ].map((section)=>({
+                ...section,
+                items: section.fields.filter((id)=>applicable.some((q)=>q.id === id) && answers[id] !== undefined && answers[id] !== "").map((id)=>({
+                        question: questions.find((q)=>q.id === id).prompt,
+                        answer: answers[id]
+                    }))
+            }))
+    };
+}
+
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIkQ6XFxQcm9qZWN0c1xcTWFqb3JcXFRva2VuVHJpbVxcZnJvbnRlbmRcXHNyY1xcY29tcG9uZW50c1xccHJvamVjdHNcXHF1ZXN0aW9ubmFpcmUudHMiXSwic291cmNlc0NvbnRlbnQiOlsiZXhwb3J0IHR5cGUgQW5zd2VyID0gc3RyaW5nIHwgc3RyaW5nW107XG5leHBvcnQgdHlwZSBBbnN3ZXJzID0gUmVjb3JkPHN0cmluZywgQW5zd2VyPjtcbmV4cG9ydCB0eXBlIFF1ZXN0aW9uID0ge1xuICBpZDogc3RyaW5nO1xuICBwcm9tcHQ6IHN0cmluZztcbiAgaGVscD86IHN0cmluZztcbiAga2luZDogJ2Nob2ljZScgfCAnbXVsdGknIHwgJ3RleHQnIHwgJ2xvbmcnO1xuICBvcHRpb25zPzogc3RyaW5nW107XG4gIHJlcXVpcmVkPzogYm9vbGVhbjtcbiAgdmlzaWJsZT86IChhbnN3ZXJzOiBBbnN3ZXJzKSA9PiBib29sZWFuO1xufTtcbmV4cG9ydCB0eXBlIENvbGxlY3RlZFJlcXVpcmVtZW50cyA9IHtcbiAgbmFtZTogc3RyaW5nO1xuICBhbnN3ZXJzOiBBbnN3ZXJzO1xuICBzZWN0aW9uczogeyB0aXRsZTogc3RyaW5nOyBpdGVtczogeyBxdWVzdGlvbjogc3RyaW5nOyBhbnN3ZXI6IEFuc3dlciB9W10gfVtdO1xufTtcblxuZXhwb3J0IGNvbnN0IHByb2plY3RUeXBlcyA9IFtcbiAgJ1dlYiBBcHBsaWNhdGlvbicsICdNb2JpbGUgQXBwbGljYXRpb24nLCAnQUkgLyBNYWNoaW5lIExlYXJuaW5nJyxcbiAgJ0Rlc2t0b3AgQXBwbGljYXRpb24nLCAnQVBJIC8gQmFja2VuZCBTZXJ2aWNlJywgJ0RhdGEgQW5hbHl0aWNzJywgJ090aGVyJyxcbl07XG5cbmV4cG9ydCBjb25zdCBxdWVzdGlvbnM6IFF1ZXN0aW9uW10gPSBbXG4gIHsgaWQ6ICdjYXRlZ29yeScsIHByb21wdDogJ1doYXQgYXJlIHlvdSBwbGFubmluZyB0byBidWlsZD8nLCBoZWxwOiAnVGhpcyBoZWxwcyB0YWlsb3IgdGhlIG5leHQgZmV3IHF1ZXN0aW9ucyB0byB5b3VyIHByb2plY3QuJywga2luZDogJ2Nob2ljZScsIG9wdGlvbnM6IHByb2plY3RUeXBlcywgcmVxdWlyZWQ6IHRydWUgfSxcbiAgeyBpZDogJ2NhdGVnb3J5T3RoZXInLCBwcm9tcHQ6ICdXaGF0IGtpbmQgb2YgcHJvamVjdCBkbyB5b3UgaGF2ZSBpbiBtaW5kPycsIGtpbmQ6ICd0ZXh0JywgcmVxdWlyZWQ6IHRydWUsIHZpc2libGU6IGEgPT4gYS5jYXRlZ29yeSA9PT0gJ090aGVyJyB9LFxuICB7IGlkOiAnd2ViS2luZCcsIHByb21wdDogJ1doYXQga2luZCBvZiB3ZWIgYXBwbGljYXRpb24gaXMgaXQ/Jywga2luZDogJ2Nob2ljZScsIG9wdGlvbnM6IFsnRS1jb21tZXJjZScsICdQb3J0Zm9saW8nLCAnU2FhUyBwbGF0Zm9ybScsICdEYXNoYm9hcmQnLCAnU29jaWFsIHBsYXRmb3JtJywgJ090aGVyJ10sIHZpc2libGU6IGEgPT4gYS5jYXRlZ29yeSA9PT0gJ1dlYiBBcHBsaWNhdGlvbicgfSxcbiAgeyBpZDogJ3dlYktpbmRPdGhlcicsIHByb21wdDogJ1doYXQgdHlwZSBvZiB3ZWIgYXBwbGljYXRpb24/Jywga2luZDogJ3RleHQnLCByZXF1aXJlZDogdHJ1ZSwgdmlzaWJsZTogYSA9PiBhLmNhdGVnb3J5ID09PSAnV2ViIEFwcGxpY2F0aW9uJyAmJiBhLndlYktpbmQgPT09ICdPdGhlcicgfSxcbiAgeyBpZDogJ3BsYXRmb3JtJywgcHJvbXB0OiAnV2hpY2ggcGxhdGZvcm1zIHNob3VsZCB5b3VyIGFwcCBzdXBwb3J0PycsIGtpbmQ6ICdtdWx0aScsIG9wdGlvbnM6IFsnQW5kcm9pZCcsICdpT1MnLCAnQm90aCBBbmRyb2lkIGFuZCBpT1MnXSwgdmlzaWJsZTogYSA9PiBhLmNhdGVnb3J5ID09PSAnTW9iaWxlIEFwcGxpY2F0aW9uJyB9LFxuICB7IGlkOiAnbW9iaWxlQXBwcm9hY2gnLCBwcm9tcHQ6ICdIb3cgd291bGQgeW91IGxpa2UgdG8gYnVpbGQgdGhlIG1vYmlsZSBhcHA/Jywga2luZDogJ2Nob2ljZScsIG9wdGlvbnM6IFsnTmF0aXZlJywgJ0Nyb3NzLXBsYXRmb3JtJywgJ05vdCBzdXJlIHlldCcsICdPdGhlciddLCB2aXNpYmxlOiBhID0+IGEuY2F0ZWdvcnkgPT09ICdNb2JpbGUgQXBwbGljYXRpb24nIH0sXG4gIHsgaWQ6ICdtb2JpbGVBcHByb2FjaE90aGVyJywgcHJvbXB0OiAnV2hpY2ggbW9iaWxlIGRldmVsb3BtZW50IGFwcHJvYWNoPycsIGtpbmQ6ICd0ZXh0JywgcmVxdWlyZWQ6IHRydWUsIHZpc2libGU6IGEgPT4gYS5jYXRlZ29yeSA9PT0gJ01vYmlsZSBBcHBsaWNhdGlvbicgJiYgYS5tb2JpbGVBcHByb2FjaCA9PT0gJ090aGVyJyB9LFxuICB7IGlkOiAncHJvYmxlbScsIHByb21wdDogJ1doYXQgcHJvYmxlbSBzaG91bGQgeW91ciBBSSBvciBkYXRhIHByb2plY3Qgc29sdmU/JywgaGVscDogJ0Egc2hvcnQgZGVzY3JpcHRpb24gaXMgZW5vdWdoIHRvIGdldCBzdGFydGVkLicsIGtpbmQ6ICdsb25nJywgcmVxdWlyZWQ6IHRydWUsIHZpc2libGU6IGEgPT4gWydBSSAvIE1hY2hpbmUgTGVhcm5pbmcnLCAnRGF0YSBBbmFseXRpY3MnXS5pbmNsdWRlcyhTdHJpbmcoYS5jYXRlZ29yeSkpIH0sXG4gIHsgaWQ6ICdtb2RlbCcsIHByb21wdDogJ0RvIHlvdSBoYXZlIGEgbW9kZWwgb3IgYWxnb3JpdGhtIGluIG1pbmQ/Jywga2luZDogJ2Nob2ljZScsIG9wdGlvbnM6IFsnWWVzJywgJ05vJywgJ05vdCBzdXJlIHlldCddLCB2aXNpYmxlOiBhID0+IGEuY2F0ZWdvcnkgPT09ICdBSSAvIE1hY2hpbmUgTGVhcm5pbmcnIH0sXG4gIHsgaWQ6ICdtb2RlbERldGFpbHMnLCBwcm9tcHQ6ICdXaGljaCBtb2RlbCBvciBhbGdvcml0aG0gYXJlIHlvdSBjb25zaWRlcmluZz8nLCBraW5kOiAndGV4dCcsIHJlcXVpcmVkOiB0cnVlLCB2aXNpYmxlOiBhID0+IGEubW9kZWwgPT09ICdZZXMnICYmIGEuY2F0ZWdvcnkgPT09ICdBSSAvIE1hY2hpbmUgTGVhcm5pbmcnIH0sXG4gIHsgaWQ6ICdkYXRhc2V0JywgcHJvbXB0OiAnRG8geW91IGFscmVhZHkgaGF2ZSBhIGRhdGFzZXQ/Jywga2luZDogJ2Nob2ljZScsIG9wdGlvbnM6IFsnWWVzJywgJ05vJywgJ05vdCBzdXJlIHlldCddLCB2aXNpYmxlOiBhID0+IGEuY2F0ZWdvcnkgPT09ICdBSSAvIE1hY2hpbmUgTGVhcm5pbmcnIHx8IGEuY2F0ZWdvcnkgPT09ICdEYXRhIEFuYWx5dGljcycgfSxcbiAgeyBpZDogJ2RhdGFzZXREZXRhaWxzJywgcHJvbXB0OiAnV2hlcmUgaXMgeW91ciBkYXRhc2V0LCBhbmQgaXMgaXQgcmVhZHkgdG8gdXNlPycsIGtpbmQ6ICd0ZXh0JywgcmVxdWlyZWQ6IHRydWUsIHZpc2libGU6IGEgPT4gYS5kYXRhc2V0ID09PSAnWWVzJyAmJiAoYS5jYXRlZ29yeSA9PT0gJ0FJIC8gTWFjaGluZSBMZWFybmluZycgfHwgYS5jYXRlZ29yeSA9PT0gJ0RhdGEgQW5hbHl0aWNzJykgfSxcbiAgeyBpZDogJ2Zyb250ZW5kJywgcHJvbXB0OiAnV2hpY2ggZnJvbnRlbmQgdGVjaG5vbG9neSB3b3VsZCB5b3UgcHJlZmVyPycsIGtpbmQ6ICdjaG9pY2UnLCBvcHRpb25zOiBbJ1JlYWN0JywgJ05leHQuanMnLCAnQW5ndWxhcicsICdWdWUnLCAnSFRNTCAvIENTUyAvIEphdmFTY3JpcHQnLCAnTm90IGRlY2lkZWQgeWV0JywgJ090aGVyJ10sIHZpc2libGU6IGEgPT4gYS5jYXRlZ29yeSA9PT0gJ1dlYiBBcHBsaWNhdGlvbicgfHwgYS5jYXRlZ29yeSA9PT0gJ01vYmlsZSBBcHBsaWNhdGlvbicgfSxcbiAgeyBpZDogJ2Zyb250ZW5kT3RoZXInLCBwcm9tcHQ6ICdXaGljaCBmcm9udGVuZCB0ZWNobm9sb2d5PycsIGtpbmQ6ICd0ZXh0JywgcmVxdWlyZWQ6IHRydWUsIHZpc2libGU6IGEgPT4gWydXZWIgQXBwbGljYXRpb24nLCAnTW9iaWxlIEFwcGxpY2F0aW9uJ10uaW5jbHVkZXMoU3RyaW5nKGEuY2F0ZWdvcnkpKSAmJiBhLmZyb250ZW5kID09PSAnT3RoZXInIH0sXG4gIHsgaWQ6ICdsYW5ndWFnZScsIHByb21wdDogJ1doaWNoIHByb2dyYW1taW5nIGxhbmd1YWdlIGRvIHlvdSBwcmVmZXI/Jywga2luZDogJ2Nob2ljZScsIG9wdGlvbnM6IFsnUHl0aG9uJywgJ0phdmFTY3JpcHQgLyBUeXBlU2NyaXB0JywgJ0phdmEnLCAnQyMnLCAnTm90IGRlY2lkZWQgeWV0JywgJ090aGVyJ10sIHZpc2libGU6IGEgPT4gWydBSSAvIE1hY2hpbmUgTGVhcm5pbmcnLCAnRGVza3RvcCBBcHBsaWNhdGlvbicsICdBUEkgLyBCYWNrZW5kIFNlcnZpY2UnLCAnRGF0YSBBbmFseXRpY3MnXS5pbmNsdWRlcyhTdHJpbmcoYS5jYXRlZ29yeSkpIH0sXG4gIHsgaWQ6ICdsYW5ndWFnZU90aGVyJywgcHJvbXB0OiAnV2hpY2ggcHJvZ3JhbW1pbmcgbGFuZ3VhZ2U/Jywga2luZDogJ3RleHQnLCByZXF1aXJlZDogdHJ1ZSwgdmlzaWJsZTogYSA9PiBbJ0FJIC8gTWFjaGluZSBMZWFybmluZycsICdEZXNrdG9wIEFwcGxpY2F0aW9uJywgJ0FQSSAvIEJhY2tlbmQgU2VydmljZScsICdEYXRhIEFuYWx5dGljcyddLmluY2x1ZGVzKFN0cmluZyhhLmNhdGVnb3J5KSkgJiYgYS5sYW5ndWFnZSA9PT0gJ090aGVyJyB9LFxuICB7IGlkOiAnYmFja2VuZCcsIHByb21wdDogJ1dpbGwgeW91ciBwcm9qZWN0IG5lZWQgYSBiYWNrZW5kPycsIGtpbmQ6ICdjaG9pY2UnLCBvcHRpb25zOiBbJ1llcycsICdObycsICdOb3Qgc3VyZSB5ZXQnXSwgdmlzaWJsZTogYSA9PiBbJ1dlYiBBcHBsaWNhdGlvbicsICdNb2JpbGUgQXBwbGljYXRpb24nLCAnRGVza3RvcCBBcHBsaWNhdGlvbiddLmluY2x1ZGVzKFN0cmluZyhhLmNhdGVnb3J5KSkgfSxcbiAgeyBpZDogJ2F1dGgnLCBwcm9tcHQ6ICdXaWxsIHVzZXJzIG5lZWQgdG8gc2lnbiBpbj8nLCBraW5kOiAnY2hvaWNlJywgb3B0aW9uczogWydZZXMnLCAnTm8nLCAnTm90IHN1cmUgeWV0J10sIHZpc2libGU6IGEgPT4gYS5iYWNrZW5kID09PSAnWWVzJyB9LFxuICB7IGlkOiAnYXV0aE1ldGhvZHMnLCBwcm9tcHQ6ICdXaGljaCBzaWduLWluIG1ldGhvZHMgZG8geW91IG5lZWQ/Jywga2luZDogJ211bHRpJywgb3B0aW9uczogWydFbWFpbCBhbmQgcGFzc3dvcmQnLCAnR29vZ2xlIGxvZ2luJywgJ09uZS10aW1lIGNvZGUgKE9UUCknLCAnUm9sZS1iYXNlZCBhY2Nlc3MnLCAnT3RoZXInXSwgdmlzaWJsZTogYSA9PiBhLmJhY2tlbmQgPT09ICdZZXMnICYmIGEuYXV0aCA9PT0gJ1llcycgfSxcbiAgeyBpZDogJ2F1dGhPdGhlcicsIHByb21wdDogJ1doYXQgb3RoZXIgYXV0aGVudGljYXRpb24gbWV0aG9kPycsIGtpbmQ6ICd0ZXh0JywgcmVxdWlyZWQ6IHRydWUsIHZpc2libGU6IGEgPT4gYS5iYWNrZW5kID09PSAnWWVzJyAmJiBhLmF1dGggPT09ICdZZXMnICYmIEFycmF5LmlzQXJyYXkoYS5hdXRoTWV0aG9kcykgJiYgYS5hdXRoTWV0aG9kcy5pbmNsdWRlcygnT3RoZXInKSB9LFxuICB7IGlkOiAnZGF0YWJhc2UnLCBwcm9tcHQ6ICdEbyB5b3UgYWxyZWFkeSBoYXZlIGEgZGF0YWJhc2U/Jywga2luZDogJ2Nob2ljZScsIG9wdGlvbnM6IFsnWWVzJywgJ05vJywgJ05vdCBzdXJlIHlldCddLCB2aXNpYmxlOiBhID0+IGEuYmFja2VuZCA9PT0gJ1llcycgfSxcbiAgeyBpZDogJ2RhdGFiYXNlRGV0YWlscycsIHByb21wdDogJ1doaWNoIGRhdGFiYXNlIGFyZSB5b3UgdXNpbmcsIGFuZCBpcyBpdCBjb25maWd1cmVkPycsIGtpbmQ6ICd0ZXh0JywgcmVxdWlyZWQ6IHRydWUsIHZpc2libGU6IGEgPT4gYS5iYWNrZW5kID09PSAnWWVzJyAmJiBhLmRhdGFiYXNlID09PSAnWWVzJyB9LFxuICB7IGlkOiAnZGF0YWJhc2VIZWxwJywgcHJvbXB0OiAnV291bGQgeW91IGxpa2UgaGVscCBjaG9vc2luZyBhIGRhdGFiYXNlPycsIGtpbmQ6ICdjaG9pY2UnLCBvcHRpb25zOiBbJ1llcycsICdObyddLCB2aXNpYmxlOiBhID0+IGEuYmFja2VuZCA9PT0gJ1llcycgJiYgYS5kYXRhYmFzZSA9PT0gJ05vJyB9LFxuICB7IGlkOiAnZGVwbG95bWVudCcsIHByb21wdDogJ1doZXJlIHNob3VsZCB0aGUgcHJvamVjdCBydW4/Jywga2luZDogJ2Nob2ljZScsIG9wdGlvbnM6IFsnV2ViIC8gY2xvdWQnLCAnTW9iaWxlIGRldmljZXMnLCAnRGVza3RvcCBjb21wdXRlcnMnLCAnTm90IGRlY2lkZWQgeWV0JywgJ090aGVyJ10sIHZpc2libGU6IGEgPT4gYS5jYXRlZ29yeSAhPT0gdW5kZWZpbmVkIH0sXG4gIHsgaWQ6ICdkZXBsb3ltZW50T3RoZXInLCBwcm9tcHQ6ICdXaGVyZSB3b3VsZCB5b3UgbGlrZSB0byBkZXBsb3kgaXQ/Jywga2luZDogJ3RleHQnLCByZXF1aXJlZDogdHJ1ZSwgdmlzaWJsZTogYSA9PiBhLmRlcGxveW1lbnQgPT09ICdPdGhlcicgfSxcbiAgeyBpZDogJ2Rlc2NyaXB0aW9uJywgcHJvbXB0OiAnQW55dGhpbmcgZWxzZSB3ZSBzaG91bGQga25vdz8nLCBoZWxwOiAnU2hhcmUgZ29hbHMsIG11c3QtaGF2ZSBmZWF0dXJlcywgb3IgY29uc3RyYWludHMuIFRoaXMgaXMgb3B0aW9uYWwuJywga2luZDogJ2xvbmcnIH0sXG5dO1xuXG5leHBvcnQgZnVuY3Rpb24gdmlzaWJsZVF1ZXN0aW9ucyhhbnN3ZXJzOiBBbnN3ZXJzKSB7XG4gIHJldHVybiBxdWVzdGlvbnMuZmlsdGVyKHEgPT4gIXEudmlzaWJsZSB8fCBxLnZpc2libGUoYW5zd2VycykpO1xufVxuXG5leHBvcnQgZnVuY3Rpb24gcmVxdWlyZW1lbnRzRnJvbShhbnN3ZXJzOiBBbnN3ZXJzLCBuYW1lOiBzdHJpbmcpOiBDb2xsZWN0ZWRSZXF1aXJlbWVudHMge1xuICBjb25zdCBhcHBsaWNhYmxlID0gdmlzaWJsZVF1ZXN0aW9ucyhhbnN3ZXJzKTtcbiAgcmV0dXJuIHtcbiAgICBuYW1lOiBuYW1lLnRyaW0oKSxcbiAgICBhbnN3ZXJzOiBPYmplY3QuZnJvbUVudHJpZXMoYXBwbGljYWJsZS5maWx0ZXIocSA9PiBhbnN3ZXJzW3EuaWRdICE9PSB1bmRlZmluZWQgJiYgYW5zd2Vyc1txLmlkXSAhPT0gJycpLm1hcChxID0+IFtxLmlkLCBhbnN3ZXJzW3EuaWRdXSkpLFxuICAgIHNlY3Rpb25zOiBbXG4gICAgICB7IHRpdGxlOiAnUHJvamVjdCBvdmVydmlldycsIGZpZWxkczogWydjYXRlZ29yeScsICdjYXRlZ29yeU90aGVyJywgJ3dlYktpbmQnLCAnd2ViS2luZE90aGVyJywgJ3BsYXRmb3JtJywgJ21vYmlsZUFwcHJvYWNoJ10gfSxcbiAgICAgIHsgdGl0bGU6ICdUZWNobm9sb2d5IGFuZCBkYXRhJywgZmllbGRzOiBbJ2Zyb250ZW5kJywgJ2Zyb250ZW5kT3RoZXInLCAnbW9iaWxlQXBwcm9hY2gnLCAnbW9iaWxlQXBwcm9hY2hPdGhlcicsICdsYW5ndWFnZScsICdsYW5ndWFnZU90aGVyJywgJ3Byb2JsZW0nLCAnbW9kZWwnLCAnbW9kZWxEZXRhaWxzJywgJ2RhdGFzZXQnLCAnZGF0YXNldERldGFpbHMnXSB9LFxuICAgICAgeyB0aXRsZTogJ0JhY2tlbmQgYW5kIGFjY2VzcycsIGZpZWxkczogWydiYWNrZW5kJywgJ2F1dGgnLCAnYXV0aE1ldGhvZHMnLCAnYXV0aE90aGVyJywgJ2RhdGFiYXNlJywgJ2RhdGFiYXNlRGV0YWlscycsICdkYXRhYmFzZUhlbHAnXSB9LFxuICAgICAgeyB0aXRsZTogJ0RlcGxveW1lbnQgYW5kIG5vdGVzJywgZmllbGRzOiBbJ2RlcGxveW1lbnQnLCAnZGVwbG95bWVudE90aGVyJywgJ2Rlc2NyaXB0aW9uJ10gfSxcbiAgICBdLm1hcChzZWN0aW9uID0+ICh7IC4uLnNlY3Rpb24sIGl0ZW1zOiBzZWN0aW9uLmZpZWxkcy5maWx0ZXIoaWQgPT4gYXBwbGljYWJsZS5zb21lKHEgPT4gcS5pZCA9PT0gaWQpICYmIGFuc3dlcnNbaWRdICE9PSB1bmRlZmluZWQgJiYgYW5zd2Vyc1tpZF0gIT09ICcnKS5tYXAoaWQgPT4gKHsgcXVlc3Rpb246IHF1ZXN0aW9ucy5maW5kKHEgPT4gcS5pZCA9PT0gaWQpIS5wcm9tcHQsIGFuc3dlcjogYW5zd2Vyc1tpZF0gfSkpIH0pKSxcbiAgfTtcbn1cbiJdLCJuYW1lcyI6WyJwcm9qZWN0VHlwZXMiLCJxdWVzdGlvbnMiLCJyZXF1aXJlbWVudHNGcm9tIiwidmlzaWJsZVF1ZXN0aW9ucyIsImlkIiwicHJvbXB0IiwiaGVscCIsImtpbmQiLCJvcHRpb25zIiwicmVxdWlyZWQiLCJ2aXNpYmxlIiwiYSIsImNhdGVnb3J5Iiwid2ViS2luZCIsIm1vYmlsZUFwcHJvYWNoIiwiaW5jbHVkZXMiLCJTdHJpbmciLCJtb2RlbCIsImRhdGFzZXQiLCJmcm9udGVuZCIsImxhbmd1YWdlIiwiYmFja2VuZCIsImF1dGgiLCJBcnJheSIsImlzQXJyYXkiLCJhdXRoTWV0aG9kcyIsImRhdGFiYXNlIiwidW5kZWZpbmVkIiwiZGVwbG95bWVudCIsImFuc3dlcnMiLCJmaWx0ZXIiLCJxIiwibmFtZSIsImFwcGxpY2FibGUiLCJ0cmltIiwiT2JqZWN0IiwiZnJvbUVudHJpZXMiLCJtYXAiLCJzZWN0aW9ucyIsInRpdGxlIiwiZmllbGRzIiwic2VjdGlvbiIsIml0ZW1zIiwic29tZSIsInF1ZXN0aW9uIiwiZmluZCIsImFuc3dlciJdLCJtYXBwaW5ncyI6Ijs7Ozs7Ozs7Ozs7SUFpQmFBLFlBQVk7ZUFBWkE7O0lBS0FDLFNBQVM7ZUFBVEE7O0lBaUNHQyxnQkFBZ0I7ZUFBaEJBOztJQUpBQyxnQkFBZ0I7ZUFBaEJBOzs7QUFsQ1Qs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
