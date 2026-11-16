@@ -4,9 +4,14 @@ import { AppLayout } from '@/layouts/AppLayout';
 import { AuthProvider } from '@/context/AuthContext';
 import { ThemeProvider } from '@/context/ThemeContext';
 jest.mock('next/router', () => ({ useRouter: () => ({ pathname: '/dashboard', push: jest.fn(), replace: jest.fn() }) }));
+const mockUseActivity = jest.fn();
+jest.mock('@/hooks/useActivity', () => ({ useActivity: () => mockUseActivity() }));
 const setup = () => render(<ThemeProvider><AuthProvider><AppLayout><p>content</p></AppLayout></AuthProvider></ThemeProvider>);
-beforeEach(() => { localStorage.setItem('token', 't'); localStorage.setItem('user', JSON.stringify({ name: 'Tester', email: 't@x.com' })); });
-afterEach(() => { localStorage.clear(); document.documentElement.classList.remove('dark'); });
+beforeEach(() => {
+  localStorage.setItem('token', 't'); localStorage.setItem('user', JSON.stringify({ name: 'Tester', email: 't@x.com' }));
+  mockUseActivity.mockReturnValue({ state: { status: 'success', data: [{ id: 1, title: 'Summarize quarterly report', project: 'Project history', saved: 12, date: '2026-11-16T10:00:00Z' }] }, reload: jest.fn(), setState: jest.fn() });
+});
+afterEach(() => { localStorage.clear(); document.documentElement.classList.remove('dark'); jest.clearAllMocks(); });
 describe('navigation', () => {
   it('renders all nav items and marks the active page', async () => {
     setup();
@@ -14,14 +19,16 @@ describe('navigation', () => {
       expect(await screen.findByRole('link', { name: n })).toBeInTheDocument();
     const nav = screen.getByRole('navigation', { name: 'Main' });
     expect(within(nav).queryByRole('link', { name: 'Prompt History' })).not.toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /View Recent History/ })).toHaveAttribute('aria-expanded', 'true');
     expect(screen.getByRole('link', { name: 'View full prompt history' })).toHaveAttribute('href', '/history');
     expect(screen.getByRole('link', { name: 'Dashboard' })).toHaveAttribute('aria-current', 'page');
   });
-  it('shows recent activity and project history in the sidebar', async () => {
+  it('shows recent history from the existing history data', async () => {
     setup();
-    expect(await screen.findByText('Recent activity')).toBeInTheDocument();
-    expect(screen.getByText('Project history')).toBeInTheDocument();
-    expect(await screen.findByText('Summarize quarterly report', {}, { timeout: 3000 })).toBeInTheDocument();
+    expect(screen.getByText('View Recent History')).toBeInTheDocument();
+    expect(screen.getByText(/Project history/)).toBeInTheDocument();
+    expect(screen.getByText('Summarize quarterly report')).toBeInTheDocument();
+    expect(screen.queryByRole('link', { name: 'Prompt History' })).not.toBeInTheDocument();
   });
   it('collapses and expands the sidebar', async () => {
     const user = userEvent.setup(); setup();

@@ -1,0 +1,105 @@
+b9c1b292c2e369d27d15ddb144bc8e25
+"use strict";
+jest.mock("@/hooks/useDashboardData", ()=>({
+        useDashboardData: ()=>({
+                state: {
+                    status: "success",
+                    data: {
+                        totals: {
+                            tokens: 100,
+                            cost: 1.25,
+                            prompts: 2,
+                            saved: 10,
+                            potential: 0.25,
+                            avg_reduction: 25
+                        },
+                        usage: [
+                            {
+                                day: "2026-11-16",
+                                tokens: 100,
+                                cost: 1.25,
+                                saved: 10
+                            }
+                        ],
+                        byModel: [
+                            {
+                                name: "gpt-4o",
+                                cost: 1.25
+                            }
+                        ],
+                        byModelTokens: [
+                            {
+                                name: "gpt-4o",
+                                tokens: 100
+                            }
+                        ],
+                        byProject: [
+                            {
+                                name: "Sample project",
+                                tokens: 100
+                            }
+                        ]
+                    }
+                },
+                reload: jest.fn()
+            })
+    }));
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+const _jsxruntime = require("react/jsx-runtime");
+const _react = require("@testing-library/react");
+const _userevent = /*#__PURE__*/ _interop_require_default(require("@testing-library/user-event"));
+const _dashboard = /*#__PURE__*/ _interop_require_default(require("../../src/pages/dashboard"));
+const _CurrencyContext = require("../../src/context/CurrencyContext");
+function _interop_require_default(obj) {
+    return obj && obj.__esModule ? obj : {
+        default: obj
+    };
+}
+const TITLES = [
+    "Token usage over time",
+    "Cost over time",
+    "Cost by model",
+    "Token usage by model API",
+    "Usage by project",
+    "Savings over time"
+];
+const renderDashboard = ()=>(0, _react.render)(/*#__PURE__*/ (0, _jsxruntime.jsx)(_CurrencyContext.CurrencyProvider, {
+        children: /*#__PURE__*/ (0, _jsxruntime.jsx)(_dashboard.default, {})
+    }));
+describe("dashboard", ()=>{
+    it("renders metrics and all charts", async ()=>{
+        renderDashboard();
+        expect(await _react.screen.findByText("Total tokens")).toBeInTheDocument();
+        TITLES.forEach((t)=>expect(_react.screen.getByRole("img", {
+                name: `${t} chart`
+            })).toBeInTheDocument());
+        expect(_react.screen.getByRole("combobox", {
+            name: "Display currency"
+        })).toHaveValue("INR");
+        expect(_react.screen.getByText("₹1.25 INR")).toBeInTheDocument();
+    });
+    it("changes range with the filter and shows date pickers for Custom", async ()=>{
+        const user = _userevent.default.setup();
+        renderDashboard();
+        await _react.screen.findByText("Total tokens");
+        expect(_react.screen.getByRole("button", {
+            name: "Weekly"
+        })).toHaveAttribute("aria-pressed", "true");
+        await user.click(_react.screen.getByRole("button", {
+            name: "Monthly"
+        }));
+        expect(_react.screen.getByRole("button", {
+            name: "Monthly"
+        })).toHaveAttribute("aria-pressed", "true");
+        await user.click(_react.screen.getByRole("button", {
+            name: "Custom"
+        }));
+        expect(_react.screen.getByLabelText("From")).toBeInTheDocument();
+        expect(_react.screen.getByLabelText("To")).toBeInTheDocument();
+        expect(await _react.screen.findByText("Total tokens")).toBeInTheDocument();
+    });
+});
+
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIkQ6XFxQcm9qZWN0c1xcTWFqb3JcXFRva2VuVHJpbVxcZnJvbnRlbmRcXHRlc3RzXFxjb21wb25lbnRzXFxEYXNoYm9hcmQudGVzdC50c3giXSwic291cmNlc0NvbnRlbnQiOlsiaW1wb3J0IHsgcmVuZGVyLCBzY3JlZW4gfSBmcm9tICdAdGVzdGluZy1saWJyYXJ5L3JlYWN0JztcclxuaW1wb3J0IHVzZXJFdmVudCBmcm9tICdAdGVzdGluZy1saWJyYXJ5L3VzZXItZXZlbnQnO1xyXG5pbXBvcnQgRGFzaGJvYXJkIGZyb20gJ0AvcGFnZXMvZGFzaGJvYXJkJztcclxuaW1wb3J0IHsgQ3VycmVuY3lQcm92aWRlciB9IGZyb20gJ0AvY29udGV4dC9DdXJyZW5jeUNvbnRleHQnO1xyXG5qZXN0Lm1vY2soJ0AvaG9va3MvdXNlRGFzaGJvYXJkRGF0YScsICgpID0+ICh7IHVzZURhc2hib2FyZERhdGE6ICgpID0+ICh7XHJcbiAgc3RhdGU6IHsgc3RhdHVzOiAnc3VjY2VzcycsIGRhdGE6IHtcclxuICAgIHRvdGFsczogeyB0b2tlbnM6IDEwMCwgY29zdDogMS4yNSwgcHJvbXB0czogMiwgc2F2ZWQ6IDEwLCBwb3RlbnRpYWw6IDAuMjUsIGF2Z19yZWR1Y3Rpb246IDI1IH0sXHJcbiAgICB1c2FnZTogW3sgZGF5OiAnMjAyNi0xMS0xNicsIHRva2VuczogMTAwLCBjb3N0OiAxLjI1LCBzYXZlZDogMTAgfV0sXHJcbiAgICBieU1vZGVsOiBbeyBuYW1lOiAnZ3B0LTRvJywgY29zdDogMS4yNSB9XSwgYnlNb2RlbFRva2VuczogW3sgbmFtZTogJ2dwdC00bycsIHRva2VuczogMTAwIH1dLCBieVByb2plY3Q6IFt7IG5hbWU6ICdTYW1wbGUgcHJvamVjdCcsIHRva2VuczogMTAwIH1dLFxyXG4gIH0gfSwgcmVsb2FkOiBqZXN0LmZuKCksXHJcbn0pIH0pKTtcclxuY29uc3QgVElUTEVTID0gWydUb2tlbiB1c2FnZSBvdmVyIHRpbWUnLCAnQ29zdCBvdmVyIHRpbWUnLCAnQ29zdCBieSBtb2RlbCcsICdUb2tlbiB1c2FnZSBieSBtb2RlbCBBUEknLCAnVXNhZ2UgYnkgcHJvamVjdCcsICdTYXZpbmdzIG92ZXIgdGltZSddO1xyXG5jb25zdCByZW5kZXJEYXNoYm9hcmQgPSAoKSA9PiByZW5kZXIoPEN1cnJlbmN5UHJvdmlkZXI+PERhc2hib2FyZCAvPjwvQ3VycmVuY3lQcm92aWRlcj4pO1xyXG5kZXNjcmliZSgnZGFzaGJvYXJkJywgKCkgPT4ge1xyXG4gIGl0KCdyZW5kZXJzIG1ldHJpY3MgYW5kIGFsbCBjaGFydHMnLCBhc3luYyAoKSA9PiB7XHJcbiAgICByZW5kZXJEYXNoYm9hcmQoKTtcclxuICAgIGV4cGVjdChhd2FpdCBzY3JlZW4uZmluZEJ5VGV4dCgnVG90YWwgdG9rZW5zJykpLnRvQmVJblRoZURvY3VtZW50KCk7XHJcbiAgICBUSVRMRVMuZm9yRWFjaCgodCkgPT4gZXhwZWN0KHNjcmVlbi5nZXRCeVJvbGUoJ2ltZycsIHsgbmFtZTogYCR7dH0gY2hhcnRgIH0pKS50b0JlSW5UaGVEb2N1bWVudCgpKTtcclxuICAgIGV4cGVjdChzY3JlZW4uZ2V0QnlSb2xlKCdjb21ib2JveCcsIHsgbmFtZTogJ0Rpc3BsYXkgY3VycmVuY3knIH0pKS50b0hhdmVWYWx1ZSgnSU5SJyk7XHJcbiAgICBleHBlY3Qoc2NyZWVuLmdldEJ5VGV4dCgn4oK5MS4yNSBJTlInKSkudG9CZUluVGhlRG9jdW1lbnQoKTtcclxuICB9KTtcclxuICBpdCgnY2hhbmdlcyByYW5nZSB3aXRoIHRoZSBmaWx0ZXIgYW5kIHNob3dzIGRhdGUgcGlja2VycyBmb3IgQ3VzdG9tJywgYXN5bmMgKCkgPT4ge1xyXG4gICAgY29uc3QgdXNlciA9IHVzZXJFdmVudC5zZXR1cCgpOyByZW5kZXJEYXNoYm9hcmQoKTtcclxuICAgIGF3YWl0IHNjcmVlbi5maW5kQnlUZXh0KCdUb3RhbCB0b2tlbnMnKTtcclxuICAgIGV4cGVjdChzY3JlZW4uZ2V0QnlSb2xlKCdidXR0b24nLCB7IG5hbWU6ICdXZWVrbHknIH0pKS50b0hhdmVBdHRyaWJ1dGUoJ2FyaWEtcHJlc3NlZCcsICd0cnVlJyk7XHJcbiAgICBhd2FpdCB1c2VyLmNsaWNrKHNjcmVlbi5nZXRCeVJvbGUoJ2J1dHRvbicsIHsgbmFtZTogJ01vbnRobHknIH0pKTtcclxuICAgIGV4cGVjdChzY3JlZW4uZ2V0QnlSb2xlKCdidXR0b24nLCB7IG5hbWU6ICdNb250aGx5JyB9KSkudG9IYXZlQXR0cmlidXRlKCdhcmlhLXByZXNzZWQnLCAndHJ1ZScpO1xyXG4gICAgYXdhaXQgdXNlci5jbGljayhzY3JlZW4uZ2V0QnlSb2xlKCdidXR0b24nLCB7IG5hbWU6ICdDdXN0b20nIH0pKTtcclxuICAgIGV4cGVjdChzY3JlZW4uZ2V0QnlMYWJlbFRleHQoJ0Zyb20nKSkudG9CZUluVGhlRG9jdW1lbnQoKTtcclxuICAgIGV4cGVjdChzY3JlZW4uZ2V0QnlMYWJlbFRleHQoJ1RvJykpLnRvQmVJblRoZURvY3VtZW50KCk7XHJcbiAgICBleHBlY3QoYXdhaXQgc2NyZWVuLmZpbmRCeVRleHQoJ1RvdGFsIHRva2VucycpKS50b0JlSW5UaGVEb2N1bWVudCgpO1xyXG4gIH0pO1xyXG59KTtcclxuIl0sIm5hbWVzIjpbImplc3QiLCJtb2NrIiwidXNlRGFzaGJvYXJkRGF0YSIsInN0YXRlIiwic3RhdHVzIiwiZGF0YSIsInRvdGFscyIsInRva2VucyIsImNvc3QiLCJwcm9tcHRzIiwic2F2ZWQiLCJwb3RlbnRpYWwiLCJhdmdfcmVkdWN0aW9uIiwidXNhZ2UiLCJkYXkiLCJieU1vZGVsIiwibmFtZSIsImJ5TW9kZWxUb2tlbnMiLCJieVByb2plY3QiLCJyZWxvYWQiLCJmbiIsIlRJVExFUyIsInJlbmRlckRhc2hib2FyZCIsInJlbmRlciIsIkN1cnJlbmN5UHJvdmlkZXIiLCJEYXNoYm9hcmQiLCJkZXNjcmliZSIsIml0IiwiZXhwZWN0Iiwic2NyZWVuIiwiZmluZEJ5VGV4dCIsInRvQmVJblRoZURvY3VtZW50IiwiZm9yRWFjaCIsInQiLCJnZXRCeVJvbGUiLCJ0b0hhdmVWYWx1ZSIsImdldEJ5VGV4dCIsInVzZXIiLCJ1c2VyRXZlbnQiLCJzZXR1cCIsInRvSGF2ZUF0dHJpYnV0ZSIsImNsaWNrIiwiZ2V0QnlMYWJlbFRleHQiXSwibWFwcGluZ3MiOiI7QUFJQUEsS0FBS0MsSUFBSSxDQUFDLDRCQUE0QixJQUFPLENBQUE7UUFBRUMsa0JBQWtCLElBQU8sQ0FBQTtnQkFDdEVDLE9BQU87b0JBQUVDLFFBQVE7b0JBQVdDLE1BQU07d0JBQ2hDQyxRQUFROzRCQUFFQyxRQUFROzRCQUFLQyxNQUFNOzRCQUFNQyxTQUFTOzRCQUFHQyxPQUFPOzRCQUFJQyxXQUFXOzRCQUFNQyxlQUFlO3dCQUFHO3dCQUM3RkMsT0FBTzs0QkFBQztnQ0FBRUMsS0FBSztnQ0FBY1AsUUFBUTtnQ0FBS0MsTUFBTTtnQ0FBTUUsT0FBTzs0QkFBRzt5QkFBRTt3QkFDbEVLLFNBQVM7NEJBQUM7Z0NBQUVDLE1BQU07Z0NBQVVSLE1BQU07NEJBQUs7eUJBQUU7d0JBQUVTLGVBQWU7NEJBQUM7Z0NBQUVELE1BQU07Z0NBQVVULFFBQVE7NEJBQUk7eUJBQUU7d0JBQUVXLFdBQVc7NEJBQUM7Z0NBQUVGLE1BQU07Z0NBQWtCVCxRQUFROzRCQUFJO3lCQUFFO29CQUNuSjtnQkFBRTtnQkFBR1ksUUFBUW5CLEtBQUtvQixFQUFFO1lBQ3RCLENBQUE7SUFBRyxDQUFBOzs7Ozt1QkFWNEI7a0VBQ1Q7a0VBQ0E7aUNBQ1c7Ozs7OztBQVFqQyxNQUFNQyxTQUFTO0lBQUM7SUFBeUI7SUFBa0I7SUFBaUI7SUFBNEI7SUFBb0I7Q0FBb0I7QUFDaEosTUFBTUMsa0JBQWtCLElBQU1DLElBQUFBLGFBQU0sZ0JBQUMscUJBQUNDLGlDQUFnQjtrQkFBQyxjQUFBLHFCQUFDQyxrQkFBUzs7QUFDakVDLFNBQVMsYUFBYTtJQUNwQkMsR0FBRyxrQ0FBa0M7UUFDbkNMO1FBQ0FNLE9BQU8sTUFBTUMsYUFBTSxDQUFDQyxVQUFVLENBQUMsaUJBQWlCQyxpQkFBaUI7UUFDakVWLE9BQU9XLE9BQU8sQ0FBQyxDQUFDQyxJQUFNTCxPQUFPQyxhQUFNLENBQUNLLFNBQVMsQ0FBQyxPQUFPO2dCQUFFbEIsTUFBTSxDQUFDLEVBQUVpQixFQUFFLE1BQU0sQ0FBQztZQUFDLElBQUlGLGlCQUFpQjtRQUMvRkgsT0FBT0MsYUFBTSxDQUFDSyxTQUFTLENBQUMsWUFBWTtZQUFFbEIsTUFBTTtRQUFtQixJQUFJbUIsV0FBVyxDQUFDO1FBQy9FUCxPQUFPQyxhQUFNLENBQUNPLFNBQVMsQ0FBQyxjQUFjTCxpQkFBaUI7SUFDekQ7SUFDQUosR0FBRyxtRUFBbUU7UUFDcEUsTUFBTVUsT0FBT0Msa0JBQVMsQ0FBQ0MsS0FBSztRQUFJakI7UUFDaEMsTUFBTU8sYUFBTSxDQUFDQyxVQUFVLENBQUM7UUFDeEJGLE9BQU9DLGFBQU0sQ0FBQ0ssU0FBUyxDQUFDLFVBQVU7WUFBRWxCLE1BQU07UUFBUyxJQUFJd0IsZUFBZSxDQUFDLGdCQUFnQjtRQUN2RixNQUFNSCxLQUFLSSxLQUFLLENBQUNaLGFBQU0sQ0FBQ0ssU0FBUyxDQUFDLFVBQVU7WUFBRWxCLE1BQU07UUFBVTtRQUM5RFksT0FBT0MsYUFBTSxDQUFDSyxTQUFTLENBQUMsVUFBVTtZQUFFbEIsTUFBTTtRQUFVLElBQUl3QixlQUFlLENBQUMsZ0JBQWdCO1FBQ3hGLE1BQU1ILEtBQUtJLEtBQUssQ0FBQ1osYUFBTSxDQUFDSyxTQUFTLENBQUMsVUFBVTtZQUFFbEIsTUFBTTtRQUFTO1FBQzdEWSxPQUFPQyxhQUFNLENBQUNhLGNBQWMsQ0FBQyxTQUFTWCxpQkFBaUI7UUFDdkRILE9BQU9DLGFBQU0sQ0FBQ2EsY0FBYyxDQUFDLE9BQU9YLGlCQUFpQjtRQUNyREgsT0FBTyxNQUFNQyxhQUFNLENBQUNDLFVBQVUsQ0FBQyxpQkFBaUJDLGlCQUFpQjtJQUNuRTtBQUNGIn0=

@@ -1,5 +1,5 @@
 export interface UsagePoint { day: string; tokens: number; cost: number; saved: number }
-export interface RecentItem { id: number; title: string; project: string; saved: number; date: string }
+export interface RecentItem { id: number; title: string; project: string; saved: number; date: string; provider?: string | null; model?: string | null; execution_status?: string | null }
 export type RangePreset = 'weekly' | 'monthly' | 'yearly' | 'custom';
 export interface DashboardRange { preset: RangePreset; from?: string; to?: string }
 export interface DashboardData {

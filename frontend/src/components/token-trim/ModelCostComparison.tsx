@@ -4,10 +4,12 @@ import { Button } from '@/components/ui/Button';
 import { Card } from '@/components/ui/Card';
 import { fmtCurrency, fmtPercent } from '@/utils/format';
 import { illustrativeModelComparison } from './modelComparisonData';
+import { useCurrency } from '@/context/CurrencyContext';
 
 type SortBy = 'optimizedCost' | 'savingsPercent';
 
 export function ModelCostComparison() {
+  const { currency } = useCurrency();
   const [expanded, setExpanded] = useState(false);
   const [provider, setProvider] = useState('all');
   const [sortBy, setSortBy] = useState<SortBy>('optimizedCost');
@@ -41,8 +43,8 @@ export function ModelCostComparison() {
           </p>
 
           <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
-            <Summary label="Lowest optimized cost" value={rows.length ? fmtCurrency(lowestCost!) : '—'} detail={rows.find((row) => row.optimizedCost === lowestCost)?.model} />
-            <Summary label="Highest potential savings" value={rows.length ? fmtCurrency(highestSavings!) : '—'} detail={rows.find((row) => row.savings === highestSavings)?.model} />
+            <Summary label="Lowest optimized cost" value={rows.length ? fmtCurrency(lowestCost!, currency) : '—'} detail={rows.find((row) => row.optimizedCost === lowestCost)?.model} />
+            <Summary label="Highest potential savings" value={rows.length ? fmtCurrency(highestSavings!, currency) : '—'} detail={rows.find((row) => row.savings === highestSavings)?.model} />
             <Summary label="Models compared" value={String(rows.length)} detail="Illustrative estimates" />
           </div>
 
@@ -97,9 +99,9 @@ export function ModelCostComparison() {
                         <span>{row.model}</span>
                         {isLowest && <Badge tone="good">Lowest cost</Badge>}
                       </td>
-                      <td className="px-3 py-3 tabular-nums">{fmtCurrency(row.originalCost)}</td>
-                      <td className="px-3 py-3 font-semibold tabular-nums">{fmtCurrency(row.optimizedCost)}</td>
-                      <td className="px-3 py-3 tabular-nums">{fmtCurrency(row.savings)}</td>
+                      <td className="px-3 py-3 tabular-nums">{fmtCurrency(row.originalCost, currency)}</td>
+                      <td className="px-3 py-3 font-semibold tabular-nums">{fmtCurrency(row.optimizedCost, currency)}</td>
+                      <td className="px-3 py-3 tabular-nums">{fmtCurrency(row.savings, currency)}</td>
                       <td className="px-3 py-3 tabular-nums">{fmtPercent(row.savingsPercent)}</td>
                     </tr>
                   );
@@ -107,7 +109,7 @@ export function ModelCostComparison() {
               </tbody>
             </table>
           </div>
-          <p className="text-xs text-slate-600 dark:text-slate-400">All amounts are illustrative USD estimates, not actual API charges.</p>
+          <p className="text-xs text-slate-600 dark:text-slate-400">Illustrative estimates. Changing the currency changes the symbol and code only; amounts are not converted.</p>
         </div>
       )}
     </Card>

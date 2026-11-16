@@ -1,0 +1,23 @@
+0a6a71b2d58d38d27c34c212936c5398
+"use strict";
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+Object.defineProperty(exports, "CostByModelChart", {
+    enumerable: true,
+    get: function() {
+        return CostByModelChart;
+    }
+});
+const _jsxruntime = require("react/jsx-runtime");
+const _ChartCard = require("./ChartCard");
+const CostByModelChart = ({ data, currency })=>/*#__PURE__*/ (0, _jsxruntime.jsx)(_ChartCard.ChartCard, {
+        title: "Cost by model",
+        data: data,
+        x: "name",
+        y: "cost",
+        kind: "bar",
+        currency: currency
+    });
+
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIkQ6XFxQcm9qZWN0c1xcTWFqb3JcXFRva2VuVHJpbVxcZnJvbnRlbmRcXHNyY1xcY29tcG9uZW50c1xcY2hhcnRzXFxDb3N0QnlNb2RlbENoYXJ0LnRzeCJdLCJzb3VyY2VzQ29udGVudCI6WyJpbXBvcnQgeyBDaGFydENhcmQgfSBmcm9tICcuL0NoYXJ0Q2FyZCc7XHJcbmltcG9ydCB0eXBlIHsgQ3VycmVuY3lDb2RlIH0gZnJvbSAnQC9jb250ZXh0L0N1cnJlbmN5Q29udGV4dCc7XHJcbmV4cG9ydCBjb25zdCBDb3N0QnlNb2RlbENoYXJ0ID0gKHsgZGF0YSwgY3VycmVuY3kgfTogeyBkYXRhOiBvYmplY3RbXTsgY3VycmVuY3k6IEN1cnJlbmN5Q29kZSB9KSA9PiA8Q2hhcnRDYXJkIHRpdGxlPVwiQ29zdCBieSBtb2RlbFwiIGRhdGE9e2RhdGF9IHg9XCJuYW1lXCIgeT1cImNvc3RcIiBraW5kPVwiYmFyXCIgY3VycmVuY3k9e2N1cnJlbmN5fSAvPjtcclxuIl0sIm5hbWVzIjpbIkNvc3RCeU1vZGVsQ2hhcnQiLCJkYXRhIiwiY3VycmVuY3kiLCJDaGFydENhcmQiLCJ0aXRsZSIsIngiLCJ5Iiwia2luZCJdLCJtYXBwaW5ncyI6Ijs7OzsrQkFFYUE7OztlQUFBQTs7OzsyQkFGYTtBQUVuQixNQUFNQSxtQkFBbUIsQ0FBQyxFQUFFQyxJQUFJLEVBQUVDLFFBQVEsRUFBOEMsaUJBQUsscUJBQUNDLG9CQUFTO1FBQUNDLE9BQU07UUFBZ0JILE1BQU1BO1FBQU1JLEdBQUU7UUFBT0MsR0FBRTtRQUFPQyxNQUFLO1FBQU1MLFVBQVVBIn0=

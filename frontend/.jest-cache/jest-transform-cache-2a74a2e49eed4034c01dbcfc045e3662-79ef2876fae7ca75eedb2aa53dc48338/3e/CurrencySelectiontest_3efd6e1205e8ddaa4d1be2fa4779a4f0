@@ -1,0 +1,92 @@
+4a1781eecef7dd06ea3a1e719b0ee198
+"use strict";
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+const _jsxruntime = require("react/jsx-runtime");
+const _react = require("@testing-library/react");
+const _userevent = /*#__PURE__*/ _interop_require_default(require("@testing-library/user-event"));
+const _CurrencyContext = require("../../src/context/CurrencyContext");
+const _CurrencySelector = require("../../src/components/ui/CurrencySelector");
+const _CostCard = require("../../src/components/metrics/CostCard");
+const _SavingsCard = require("../../src/components/metrics/SavingsCard");
+const _ModelCostComparison = require("../../src/components/token-trim/ModelCostComparison");
+function _interop_require_default(obj) {
+    return obj && obj.__esModule ? obj : {
+        default: obj
+    };
+}
+const setup = ()=>(0, _react.render)(/*#__PURE__*/ (0, _jsxruntime.jsx)(_CurrencyContext.CurrencyProvider, {
+        children: /*#__PURE__*/ (0, _jsxruntime.jsxs)("div", {
+            children: [
+                /*#__PURE__*/ (0, _jsxruntime.jsx)(_CurrencySelector.CurrencySelector, {}),
+                /*#__PURE__*/ (0, _jsxruntime.jsx)(_CostCard.CostCard, {
+                    label: "Dashboard cost",
+                    value: 1.25
+                }),
+                /*#__PURE__*/ (0, _jsxruntime.jsx)(_SavingsCard.SavingsCard, {
+                    label: "Savings amount",
+                    value: 1.25
+                }),
+                /*#__PURE__*/ (0, _jsxruntime.jsx)(_ModelCostComparison.ModelCostComparison, {})
+            ]
+        })
+    }));
+beforeEach(()=>localStorage.clear());
+afterEach(()=>localStorage.clear());
+it("defaults to INR and updates currency labels without changing displayed amounts or percentages", async ()=>{
+    const user = _userevent.default.setup();
+    setup();
+    const selector = _react.screen.getByRole("combobox", {
+        name: "Display currency"
+    });
+    expect(selector).toHaveValue("INR");
+    expect(_react.screen.getAllByText("₹1.25 INR")).toHaveLength(2);
+    const currencies = [
+        [
+            "USD",
+            "$1.25 USD"
+        ],
+        [
+            "EUR",
+            "€1.25 EUR"
+        ],
+        [
+            "GBP",
+            "\xa31.25 GBP"
+        ],
+        [
+            "JPY",
+            "\xa51.25 JPY"
+        ],
+        [
+            "CAD",
+            "C$1.25 CAD"
+        ],
+        [
+            "AUD",
+            "A$1.25 AUD"
+        ],
+        [
+            "INR",
+            "₹1.25 INR"
+        ]
+    ];
+    for (const [code, formattedAmount] of currencies){
+        await user.selectOptions(selector, code);
+        expect(selector).toHaveValue(code);
+        expect(_react.screen.getAllByText(formattedAmount)).toHaveLength(2);
+        expect(localStorage.getItem("tokentrim:display-currency")).toBe(code);
+    }
+    await user.click(_react.screen.getByRole("button", {
+        name: "Compare All Supported LLMs"
+    }));
+    const comparison = _react.screen.getByRole("table");
+    expect(comparison).toHaveTextContent("40.0%");
+    await user.selectOptions(selector, "USD");
+    expect(comparison).toHaveTextContent("40.0%");
+    expect(comparison).toHaveTextContent("$0.0030 USD");
+    expect(comparison).toHaveTextContent("$0.0018 USD");
+});
+
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIkQ6XFxQcm9qZWN0c1xcTWFqb3JcXFRva2VuVHJpbVxcZnJvbnRlbmRcXHRlc3RzXFxjb21wb25lbnRzXFxDdXJyZW5jeVNlbGVjdGlvbi50ZXN0LnRzeCJdLCJzb3VyY2VzQ29udGVudCI6WyJpbXBvcnQgeyByZW5kZXIsIHNjcmVlbiB9IGZyb20gJ0B0ZXN0aW5nLWxpYnJhcnkvcmVhY3QnO1xuaW1wb3J0IHVzZXJFdmVudCBmcm9tICdAdGVzdGluZy1saWJyYXJ5L3VzZXItZXZlbnQnO1xuaW1wb3J0IHsgQ3VycmVuY3lQcm92aWRlciB9IGZyb20gJ0AvY29udGV4dC9DdXJyZW5jeUNvbnRleHQnO1xuaW1wb3J0IHsgQ3VycmVuY3lTZWxlY3RvciB9IGZyb20gJ0AvY29tcG9uZW50cy91aS9DdXJyZW5jeVNlbGVjdG9yJztcbmltcG9ydCB7IENvc3RDYXJkIH0gZnJvbSAnQC9jb21wb25lbnRzL21ldHJpY3MvQ29zdENhcmQnO1xuaW1wb3J0IHsgU2F2aW5nc0NhcmQgfSBmcm9tICdAL2NvbXBvbmVudHMvbWV0cmljcy9TYXZpbmdzQ2FyZCc7XG5pbXBvcnQgeyBNb2RlbENvc3RDb21wYXJpc29uIH0gZnJvbSAnQC9jb21wb25lbnRzL3Rva2VuLXRyaW0vTW9kZWxDb3N0Q29tcGFyaXNvbic7XG5cbmNvbnN0IHNldHVwID0gKCkgPT4gcmVuZGVyKDxDdXJyZW5jeVByb3ZpZGVyPjxkaXY+PEN1cnJlbmN5U2VsZWN0b3IgLz48Q29zdENhcmQgbGFiZWw9XCJEYXNoYm9hcmQgY29zdFwiIHZhbHVlPXsxLjI1fSAvPjxTYXZpbmdzQ2FyZCBsYWJlbD1cIlNhdmluZ3MgYW1vdW50XCIgdmFsdWU9ezEuMjV9IC8+PE1vZGVsQ29zdENvbXBhcmlzb24gLz48L2Rpdj48L0N1cnJlbmN5UHJvdmlkZXI+KTtcblxuYmVmb3JlRWFjaCgoKSA9PiBsb2NhbFN0b3JhZ2UuY2xlYXIoKSk7XG5hZnRlckVhY2goKCkgPT4gbG9jYWxTdG9yYWdlLmNsZWFyKCkpO1xuXG5pdCgnZGVmYXVsdHMgdG8gSU5SIGFuZCB1cGRhdGVzIGN1cnJlbmN5IGxhYmVscyB3aXRob3V0IGNoYW5naW5nIGRpc3BsYXllZCBhbW91bnRzIG9yIHBlcmNlbnRhZ2VzJywgYXN5bmMgKCkgPT4ge1xuICBjb25zdCB1c2VyID0gdXNlckV2ZW50LnNldHVwKCk7XG4gIHNldHVwKCk7XG4gIGNvbnN0IHNlbGVjdG9yID0gc2NyZWVuLmdldEJ5Um9sZSgnY29tYm9ib3gnLCB7IG5hbWU6ICdEaXNwbGF5IGN1cnJlbmN5JyB9KTtcbiAgZXhwZWN0KHNlbGVjdG9yKS50b0hhdmVWYWx1ZSgnSU5SJyk7XG4gIGV4cGVjdChzY3JlZW4uZ2V0QWxsQnlUZXh0KCfigrkxLjI1IElOUicpKS50b0hhdmVMZW5ndGgoMik7XG5cbiAgY29uc3QgY3VycmVuY2llcyA9IFtcbiAgICBbJ1VTRCcsICckMS4yNSBVU0QnXSwgWydFVVInLCAn4oKsMS4yNSBFVVInXSwgWydHQlAnLCAnwqMxLjI1IEdCUCddLFxuICAgIFsnSlBZJywgJ8KlMS4yNSBKUFknXSwgWydDQUQnLCAnQyQxLjI1IENBRCddLCBbJ0FVRCcsICdBJDEuMjUgQVVEJ10sIFsnSU5SJywgJ+KCuTEuMjUgSU5SJ10sXG4gIF0gYXMgY29uc3Q7XG4gIGZvciAoY29uc3QgW2NvZGUsIGZvcm1hdHRlZEFtb3VudF0gb2YgY3VycmVuY2llcykge1xuICAgIGF3YWl0IHVzZXIuc2VsZWN0T3B0aW9ucyhzZWxlY3RvciwgY29kZSk7XG4gICAgZXhwZWN0KHNlbGVjdG9yKS50b0hhdmVWYWx1ZShjb2RlKTtcbiAgICBleHBlY3Qoc2NyZWVuLmdldEFsbEJ5VGV4dChmb3JtYXR0ZWRBbW91bnQpKS50b0hhdmVMZW5ndGgoMik7XG4gICAgZXhwZWN0KGxvY2FsU3RvcmFnZS5nZXRJdGVtKCd0b2tlbnRyaW06ZGlzcGxheS1jdXJyZW5jeScpKS50b0JlKGNvZGUpO1xuICB9XG5cbiAgYXdhaXQgdXNlci5jbGljayhzY3JlZW4uZ2V0QnlSb2xlKCdidXR0b24nLCB7IG5hbWU6ICdDb21wYXJlIEFsbCBTdXBwb3J0ZWQgTExNcycgfSkpO1xuICBjb25zdCBjb21wYXJpc29uID0gc2NyZWVuLmdldEJ5Um9sZSgndGFibGUnKTtcbiAgZXhwZWN0KGNvbXBhcmlzb24pLnRvSGF2ZVRleHRDb250ZW50KCc0MC4wJScpO1xuICBhd2FpdCB1c2VyLnNlbGVjdE9wdGlvbnMoc2VsZWN0b3IsICdVU0QnKTtcbiAgZXhwZWN0KGNvbXBhcmlzb24pLnRvSGF2ZVRleHRDb250ZW50KCc0MC4wJScpO1xuICBleHBlY3QoY29tcGFyaXNvbikudG9IYXZlVGV4dENvbnRlbnQoJyQwLjAwMzAgVVNEJyk7XG4gIGV4cGVjdChjb21wYXJpc29uKS50b0hhdmVUZXh0Q29udGVudCgnJDAuMDAxOCBVU0QnKTtcbn0pO1xuIl0sIm5hbWVzIjpbInNldHVwIiwicmVuZGVyIiwiQ3VycmVuY3lQcm92aWRlciIsImRpdiIsIkN1cnJlbmN5U2VsZWN0b3IiLCJDb3N0Q2FyZCIsImxhYmVsIiwidmFsdWUiLCJTYXZpbmdzQ2FyZCIsIk1vZGVsQ29zdENvbXBhcmlzb24iLCJiZWZvcmVFYWNoIiwibG9jYWxTdG9yYWdlIiwiY2xlYXIiLCJhZnRlckVhY2giLCJpdCIsInVzZXIiLCJ1c2VyRXZlbnQiLCJzZWxlY3RvciIsInNjcmVlbiIsImdldEJ5Um9sZSIsIm5hbWUiLCJleHBlY3QiLCJ0b0hhdmVWYWx1ZSIsImdldEFsbEJ5VGV4dCIsInRvSGF2ZUxlbmd0aCIsImN1cnJlbmNpZXMiLCJjb2RlIiwiZm9ybWF0dGVkQW1vdW50Iiwic2VsZWN0T3B0aW9ucyIsImdldEl0ZW0iLCJ0b0JlIiwiY2xpY2siLCJjb21wYXJpc29uIiwidG9IYXZlVGV4dENvbnRlbnQiXSwibWFwcGluZ3MiOiI7Ozs7O3VCQUErQjtrRUFDVDtpQ0FDVztrQ0FDQTswQkFDUjs2QkFDRztxQ0FDUTs7Ozs7O0FBRXBDLE1BQU1BLFFBQVEsSUFBTUMsSUFBQUEsYUFBTSxnQkFBQyxxQkFBQ0MsaUNBQWdCO2tCQUFDLGNBQUEsc0JBQUNDOzs4QkFBSSxxQkFBQ0Msa0NBQWdCOzhCQUFHLHFCQUFDQyxrQkFBUTtvQkFBQ0MsT0FBTTtvQkFBaUJDLE9BQU87OzhCQUFRLHFCQUFDQyx3QkFBVztvQkFBQ0YsT0FBTTtvQkFBaUJDLE9BQU87OzhCQUFRLHFCQUFDRSx3Q0FBbUI7Ozs7QUFFN0xDLFdBQVcsSUFBTUMsYUFBYUMsS0FBSztBQUNuQ0MsVUFBVSxJQUFNRixhQUFhQyxLQUFLO0FBRWxDRSxHQUFHLGlHQUFpRztJQUNsRyxNQUFNQyxPQUFPQyxrQkFBUyxDQUFDaEIsS0FBSztJQUM1QkE7SUFDQSxNQUFNaUIsV0FBV0MsYUFBTSxDQUFDQyxTQUFTLENBQUMsWUFBWTtRQUFFQyxNQUFNO0lBQW1CO0lBQ3pFQyxPQUFPSixVQUFVSyxXQUFXLENBQUM7SUFDN0JELE9BQU9ILGFBQU0sQ0FBQ0ssWUFBWSxDQUFDLGNBQWNDLFlBQVksQ0FBQztJQUV0RCxNQUFNQyxhQUFhO1FBQ2pCO1lBQUM7WUFBTztTQUFZO1FBQUU7WUFBQztZQUFPO1NBQVk7UUFBRTtZQUFDO1lBQU87U0FBWTtRQUNoRTtZQUFDO1lBQU87U0FBWTtRQUFFO1lBQUM7WUFBTztTQUFhO1FBQUU7WUFBQztZQUFPO1NBQWE7UUFBRTtZQUFDO1lBQU87U0FBWTtLQUN6RjtJQUNELEtBQUssTUFBTSxDQUFDQyxNQUFNQyxnQkFBZ0IsSUFBSUYsV0FBWTtRQUNoRCxNQUFNVixLQUFLYSxhQUFhLENBQUNYLFVBQVVTO1FBQ25DTCxPQUFPSixVQUFVSyxXQUFXLENBQUNJO1FBQzdCTCxPQUFPSCxhQUFNLENBQUNLLFlBQVksQ0FBQ0ksa0JBQWtCSCxZQUFZLENBQUM7UUFDMURILE9BQU9WLGFBQWFrQixPQUFPLENBQUMsK0JBQStCQyxJQUFJLENBQUNKO0lBQ2xFO0lBRUEsTUFBTVgsS0FBS2dCLEtBQUssQ0FBQ2IsYUFBTSxDQUFDQyxTQUFTLENBQUMsVUFBVTtRQUFFQyxNQUFNO0lBQTZCO0lBQ2pGLE1BQU1ZLGFBQWFkLGFBQU0sQ0FBQ0MsU0FBUyxDQUFDO0lBQ3BDRSxPQUFPVyxZQUFZQyxpQkFBaUIsQ0FBQztJQUNyQyxNQUFNbEIsS0FBS2EsYUFBYSxDQUFDWCxVQUFVO0lBQ25DSSxPQUFPVyxZQUFZQyxpQkFBaUIsQ0FBQztJQUNyQ1osT0FBT1csWUFBWUMsaUJBQWlCLENBQUM7SUFDckNaLE9BQU9XLFlBQVlDLGlCQUFpQixDQUFDO0FBQ3ZDIn0=

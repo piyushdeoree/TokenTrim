@@ -1,0 +1,25 @@
+a81b5165260a29546fb681fdee2a0d36
+"use strict";
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+Object.defineProperty(exports, "SavingsCard", {
+    enumerable: true,
+    get: function() {
+        return SavingsCard;
+    }
+});
+const _jsxruntime = require("react/jsx-runtime");
+const _MetricCard = require("./MetricCard");
+const _format = require("../../utils/format");
+const _CurrencyContext = require("../../context/CurrencyContext");
+const SavingsCard = (p)=>{
+    const { currency } = (0, _CurrencyContext.useCurrency)();
+    return /*#__PURE__*/ (0, _jsxruntime.jsx)(_MetricCard.MetricCard, {
+        ...p,
+        value: (0, _format.fmtCurrency)(p.value, currency),
+        tone: "good"
+    });
+};
+
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIkQ6XFxQcm9qZWN0c1xcTWFqb3JcXFRva2VuVHJpbVxcZnJvbnRlbmRcXHNyY1xcY29tcG9uZW50c1xcbWV0cmljc1xcU2F2aW5nc0NhcmQudHN4Il0sInNvdXJjZXNDb250ZW50IjpbImltcG9ydCB7IE1ldHJpY0NhcmQgfSBmcm9tICcuL01ldHJpY0NhcmQnO1xyXG5pbXBvcnQgeyBmbXRDdXJyZW5jeSB9IGZyb20gJ0AvdXRpbHMvZm9ybWF0JztcclxuaW1wb3J0IHsgdXNlQ3VycmVuY3kgfSBmcm9tICdAL2NvbnRleHQvQ3VycmVuY3lDb250ZXh0JztcclxuZXhwb3J0IGNvbnN0IFNhdmluZ3NDYXJkID0gKHA6IHsgbGFiZWw6IHN0cmluZzsgdmFsdWU6IG51bWJlcjsgaGludD86IHN0cmluZyB9KSA9PiB7XHJcbiAgY29uc3QgeyBjdXJyZW5jeSB9ID0gdXNlQ3VycmVuY3koKTtcclxuICByZXR1cm4gPE1ldHJpY0NhcmQgey4uLnB9IHZhbHVlPXtmbXRDdXJyZW5jeShwLnZhbHVlLCBjdXJyZW5jeSl9IHRvbmU9XCJnb29kXCIgLz47XHJcbn07XHJcbiJdLCJuYW1lcyI6WyJTYXZpbmdzQ2FyZCIsInAiLCJjdXJyZW5jeSIsInVzZUN1cnJlbmN5IiwiTWV0cmljQ2FyZCIsInZhbHVlIiwiZm10Q3VycmVuY3kiLCJ0b25lIl0sIm1hcHBpbmdzIjoiOzs7OytCQUdhQTs7O2VBQUFBOzs7OzRCQUhjO3dCQUNDO2lDQUNBO0FBQ3JCLE1BQU1BLGNBQWMsQ0FBQ0M7SUFDMUIsTUFBTSxFQUFFQyxRQUFRLEVBQUUsR0FBR0MsSUFBQUEsNEJBQVc7SUFDaEMscUJBQU8scUJBQUNDLHNCQUFVO1FBQUUsR0FBR0gsQ0FBQztRQUFFSSxPQUFPQyxJQUFBQSxtQkFBVyxFQUFDTCxFQUFFSSxLQUFLLEVBQUVIO1FBQVdLLE1BQUs7O0FBQ3hFIn0=

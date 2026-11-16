@@ -1,0 +1,24 @@
+2e0ee2d8fe6c018c0d57a8573b8a4276
+"use strict";
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+Object.defineProperty(exports, "CostCard", {
+    enumerable: true,
+    get: function() {
+        return CostCard;
+    }
+});
+const _jsxruntime = require("react/jsx-runtime");
+const _MetricCard = require("./MetricCard");
+const _format = require("../../utils/format");
+const _CurrencyContext = require("../../context/CurrencyContext");
+const CostCard = (p)=>{
+    const { currency } = (0, _CurrencyContext.useCurrency)();
+    return /*#__PURE__*/ (0, _jsxruntime.jsx)(_MetricCard.MetricCard, {
+        ...p,
+        value: (0, _format.fmtCurrency)(p.value, currency)
+    });
+};
+
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIkQ6XFxQcm9qZWN0c1xcTWFqb3JcXFRva2VuVHJpbVxcZnJvbnRlbmRcXHNyY1xcY29tcG9uZW50c1xcbWV0cmljc1xcQ29zdENhcmQudHN4Il0sInNvdXJjZXNDb250ZW50IjpbImltcG9ydCB7IE1ldHJpY0NhcmQgfSBmcm9tICcuL01ldHJpY0NhcmQnO1xyXG5pbXBvcnQgeyBmbXRDdXJyZW5jeSB9IGZyb20gJ0AvdXRpbHMvZm9ybWF0JztcclxuaW1wb3J0IHsgdXNlQ3VycmVuY3kgfSBmcm9tICdAL2NvbnRleHQvQ3VycmVuY3lDb250ZXh0JztcclxuZXhwb3J0IGNvbnN0IENvc3RDYXJkID0gKHA6IHsgbGFiZWw6IHN0cmluZzsgdmFsdWU6IG51bWJlcjsgaGludD86IHN0cmluZyB9KSA9PiB7XHJcbiAgY29uc3QgeyBjdXJyZW5jeSB9ID0gdXNlQ3VycmVuY3koKTtcclxuICByZXR1cm4gPE1ldHJpY0NhcmQgey4uLnB9IHZhbHVlPXtmbXRDdXJyZW5jeShwLnZhbHVlLCBjdXJyZW5jeSl9IC8+O1xyXG59O1xyXG4iXSwibmFtZXMiOlsiQ29zdENhcmQiLCJwIiwiY3VycmVuY3kiLCJ1c2VDdXJyZW5jeSIsIk1ldHJpY0NhcmQiLCJ2YWx1ZSIsImZtdEN1cnJlbmN5Il0sIm1hcHBpbmdzIjoiOzs7OytCQUdhQTs7O2VBQUFBOzs7OzRCQUhjO3dCQUNDO2lDQUNBO0FBQ3JCLE1BQU1BLFdBQVcsQ0FBQ0M7SUFDdkIsTUFBTSxFQUFFQyxRQUFRLEVBQUUsR0FBR0MsSUFBQUEsNEJBQVc7SUFDaEMscUJBQU8scUJBQUNDLHNCQUFVO1FBQUUsR0FBR0gsQ0FBQztRQUFFSSxPQUFPQyxJQUFBQSxtQkFBVyxFQUFDTCxFQUFFSSxLQUFLLEVBQUVIOztBQUN4RCJ9
