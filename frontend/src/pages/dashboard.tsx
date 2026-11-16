@@ -14,12 +14,15 @@ import { SavingsChart } from '@/components/charts/SavingsChart';
 import { useDashboardData } from '@/hooks/useDashboardData';
 import { fmtPercent } from '@/utils/format';
 import type { DashboardRange } from '@/types/dashboard';
+import { CurrencySelector } from '@/components/ui/CurrencySelector';
+import { useCurrency } from '@/context/CurrencyContext';
 export default function Dashboard() {
   const [range, setRange] = useState<DashboardRange>({ preset: 'weekly' });
   const { state, reload } = useDashboardData(range);
+  const { currency } = useCurrency();
   return (
     <main className="mx-auto max-w-7xl space-y-6 p-4 lg:p-8">
-      <div className="flex flex-wrap items-end justify-between gap-4"><h1 className="text-xl font-semibold">Dashboard</h1><ChartFilter value={range} onChange={setRange} /></div>
+      <div className="flex flex-wrap items-end justify-between gap-4"><h1 className="text-xl font-semibold">Dashboard</h1><div className="flex w-full flex-wrap items-end gap-3 sm:w-auto"><CurrencySelector /><ChartFilter value={range} onChange={setRange} /></div></div>
       <AsyncView state={state} reload={reload} isEmpty={(d) => d.totals.prompts === 0} empty={{ title: 'No analyses yet', body: 'Analyze a prompt in Token Trim to see usage here.' }}>
         {(d) => (<>
           <div className="grid grid-cols-2 gap-3 lg:grid-cols-3 xl:grid-cols-6">
@@ -31,7 +34,7 @@ export default function Dashboard() {
             <MetricCard label="Avg. reduction" value={fmtPercent(d.totals.avg_reduction)} tone="good" />
           </div>
           <div className="grid gap-4 md:grid-cols-2">
-            <UsageChart data={d.usage} /><CostChart data={d.usage} /><CostByModelChart data={d.byModel} />
+            <UsageChart data={d.usage} /><CostChart data={d.usage} currency={currency} /><CostByModelChart data={d.byModel} currency={currency} />
             <TokenUsageByModelChart data={d.byModelTokens} /><ProjectUsageChart data={d.byProject} /><SavingsChart data={d.usage} />
           </div>
         </>)}

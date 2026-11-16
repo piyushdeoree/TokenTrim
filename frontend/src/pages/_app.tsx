@@ -4,6 +4,7 @@ import { useEffect } from 'react';
 import '@/styles/globals.css';
 import { AuthProvider, useAuth } from '@/context/AuthContext';
 import { ThemeProvider } from '@/context/ThemeContext';
+import { CurrencyProvider } from '@/context/CurrencyContext';
 import { ToastProvider } from '@/components/ui/Toast';
 import { AppLayout } from '@/layouts/AppLayout';
 import { LoadingState } from '@/components/states/States';
@@ -17,5 +18,5 @@ function Shell({ Component, pageProps }: AppProps) {
   return <AppLayout><Component {...pageProps} /></AppLayout>;
 }
 export default function App(props: AppProps) {
-  return <ThemeProvider><ToastProvider><AuthProvider><Shell {...props} /></AuthProvider></ToastProvider></ThemeProvider>;
+  return <CurrencyProvider><ThemeProvider><ToastProvider><AuthProvider><Shell {...props} /></AuthProvider></ToastProvider></ThemeProvider></CurrencyProvider>;
 }

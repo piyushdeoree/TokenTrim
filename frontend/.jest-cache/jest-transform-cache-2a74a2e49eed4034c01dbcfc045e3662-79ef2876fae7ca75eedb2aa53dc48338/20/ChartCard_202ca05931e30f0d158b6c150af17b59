@@ -1,0 +1,93 @@
+508c792b835a97e16a30c54adeea9b3d
+"use strict";
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+Object.defineProperty(exports, "ChartCard", {
+    enumerable: true,
+    get: function() {
+        return ChartCard;
+    }
+});
+const _jsxruntime = require("react/jsx-runtime");
+const _recharts = require("recharts");
+const _format = require("../../utils/format");
+// Chart panels use the theme "chart" colour (#467770 light / #26344A dark) as the surface; series use the button yellow for contrast.
+const SERIES = "#FBCB48", TICK = {
+    fill: "#ffffff",
+    fontSize: 12
+};
+function ChartCard({ title, data, x, y, kind = "line", currency }) {
+    const common = /*#__PURE__*/ (0, _jsxruntime.jsxs)(_jsxruntime.Fragment, {
+        children: [
+            /*#__PURE__*/ (0, _jsxruntime.jsx)(_recharts.CartesianGrid, {
+                strokeDasharray: "3 3",
+                stroke: "#ffffff",
+                opacity: 0.2
+            }),
+            /*#__PURE__*/ (0, _jsxruntime.jsx)(_recharts.XAxis, {
+                dataKey: x,
+                tick: TICK,
+                stroke: "#ffffff"
+            }),
+            /*#__PURE__*/ (0, _jsxruntime.jsx)(_recharts.YAxis, {
+                tick: TICK,
+                stroke: "#ffffff",
+                tickFormatter: currency ? (value)=>(0, _format.fmtCurrency)(value, currency) : undefined
+            }),
+            /*#__PURE__*/ (0, _jsxruntime.jsx)(_recharts.Tooltip, {
+                contentStyle: {
+                    background: "#171919",
+                    border: "none",
+                    color: "#fff"
+                },
+                labelStyle: {
+                    color: "#fff"
+                },
+                formatter: currency ? (value)=>(0, _format.fmtCurrency)(Number(value), currency) : undefined
+            })
+        ]
+    });
+    return /*#__PURE__*/ (0, _jsxruntime.jsxs)("section", {
+        className: "rounded-lg bg-chart p-5 text-white",
+        children: [
+            /*#__PURE__*/ (0, _jsxruntime.jsx)("h2", {
+                className: "mb-3 text-base font-semibold",
+                children: title
+            }),
+            /*#__PURE__*/ (0, _jsxruntime.jsx)("div", {
+                className: "h-56",
+                role: "img",
+                "aria-label": `${title} chart`,
+                children: /*#__PURE__*/ (0, _jsxruntime.jsx)(_recharts.ResponsiveContainer, {
+                    width: "100%",
+                    height: "100%",
+                    children: kind === "line" ? /*#__PURE__*/ (0, _jsxruntime.jsxs)(_recharts.LineChart, {
+                        data: data,
+                        children: [
+                            common,
+                            /*#__PURE__*/ (0, _jsxruntime.jsx)(_recharts.Line, {
+                                type: "monotone",
+                                dataKey: y,
+                                stroke: SERIES,
+                                strokeWidth: 2,
+                                dot: false
+                            })
+                        ]
+                    }) : /*#__PURE__*/ (0, _jsxruntime.jsxs)(_recharts.BarChart, {
+                        data: data,
+                        children: [
+                            common,
+                            /*#__PURE__*/ (0, _jsxruntime.jsx)(_recharts.Bar, {
+                                dataKey: y,
+                                fill: SERIES
+                            })
+                        ]
+                    })
+                })
+            })
+        ]
+    });
+}
+
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIkQ6XFxQcm9qZWN0c1xcTWFqb3JcXFRva2VuVHJpbVxcZnJvbnRlbmRcXHNyY1xcY29tcG9uZW50c1xcY2hhcnRzXFxDaGFydENhcmQudHN4Il0sInNvdXJjZXNDb250ZW50IjpbImltcG9ydCB7IFJlc3BvbnNpdmVDb250YWluZXIsIExpbmVDaGFydCwgTGluZSwgQmFyQ2hhcnQsIEJhciwgWEF4aXMsIFlBeGlzLCBUb29sdGlwLCBDYXJ0ZXNpYW5HcmlkIH0gZnJvbSAncmVjaGFydHMnO1xyXG5pbXBvcnQgeyBmbXRDdXJyZW5jeSB9IGZyb20gJ0AvdXRpbHMvZm9ybWF0JztcclxuaW1wb3J0IHR5cGUgeyBDdXJyZW5jeUNvZGUgfSBmcm9tICdAL2NvbnRleHQvQ3VycmVuY3lDb250ZXh0JztcclxuLy8gQ2hhcnQgcGFuZWxzIHVzZSB0aGUgdGhlbWUgXCJjaGFydFwiIGNvbG91ciAoIzQ2Nzc3MCBsaWdodCAvICMyNjM0NEEgZGFyaykgYXMgdGhlIHN1cmZhY2U7IHNlcmllcyB1c2UgdGhlIGJ1dHRvbiB5ZWxsb3cgZm9yIGNvbnRyYXN0LlxyXG5jb25zdCBTRVJJRVMgPSAnI0ZCQ0I0OCcsIFRJQ0sgPSB7IGZpbGw6ICcjZmZmZmZmJywgZm9udFNpemU6IDEyIH07XHJcbmV4cG9ydCBmdW5jdGlvbiBDaGFydENhcmQoeyB0aXRsZSwgZGF0YSwgeCwgeSwga2luZCA9ICdsaW5lJywgY3VycmVuY3kgfTogeyB0aXRsZTogc3RyaW5nOyBkYXRhOiBvYmplY3RbXTsgeDogc3RyaW5nOyB5OiBzdHJpbmc7IGtpbmQ/OiAnbGluZScgfCAnYmFyJzsgY3VycmVuY3k/OiBDdXJyZW5jeUNvZGUgfSkge1xyXG4gIGNvbnN0IGNvbW1vbiA9ICg8PjxDYXJ0ZXNpYW5HcmlkIHN0cm9rZURhc2hhcnJheT1cIjMgM1wiIHN0cm9rZT1cIiNmZmZmZmZcIiBvcGFjaXR5PXswLjJ9IC8+PFhBeGlzIGRhdGFLZXk9e3h9IHRpY2s9e1RJQ0t9IHN0cm9rZT1cIiNmZmZmZmZcIiAvPjxZQXhpcyB0aWNrPXtUSUNLfSBzdHJva2U9XCIjZmZmZmZmXCIgdGlja0Zvcm1hdHRlcj17Y3VycmVuY3kgPyAodmFsdWU6IG51bWJlcikgPT4gZm10Q3VycmVuY3kodmFsdWUsIGN1cnJlbmN5KSA6IHVuZGVmaW5lZH0gLz5cclxuICAgIDxUb29sdGlwIGNvbnRlbnRTdHlsZT17eyBiYWNrZ3JvdW5kOiAnIzE3MTkxOScsIGJvcmRlcjogJ25vbmUnLCBjb2xvcjogJyNmZmYnIH19IGxhYmVsU3R5bGU9e3sgY29sb3I6ICcjZmZmJyB9fVxyXG4gICAgICBmb3JtYXR0ZXI9e2N1cnJlbmN5ID8gKHZhbHVlKSA9PiBmbXRDdXJyZW5jeShOdW1iZXIodmFsdWUpLCBjdXJyZW5jeSkgOiB1bmRlZmluZWR9IC8+PC8+KTtcclxuICByZXR1cm4gKFxyXG4gICAgPHNlY3Rpb24gY2xhc3NOYW1lPVwicm91bmRlZC1sZyBiZy1jaGFydCBwLTUgdGV4dC13aGl0ZVwiPlxyXG4gICAgICA8aDIgY2xhc3NOYW1lPVwibWItMyB0ZXh0LWJhc2UgZm9udC1zZW1pYm9sZFwiPnt0aXRsZX08L2gyPlxyXG4gICAgICA8ZGl2IGNsYXNzTmFtZT1cImgtNTZcIiByb2xlPVwiaW1nXCIgYXJpYS1sYWJlbD17YCR7dGl0bGV9IGNoYXJ0YH0+XHJcbiAgICAgICAgPFJlc3BvbnNpdmVDb250YWluZXIgd2lkdGg9XCIxMDAlXCIgaGVpZ2h0PVwiMTAwJVwiPlxyXG4gICAgICAgICAge2tpbmQgPT09ICdsaW5lJ1xyXG4gICAgICAgICAgICA/IDxMaW5lQ2hhcnQgZGF0YT17ZGF0YX0+e2NvbW1vbn08TGluZSB0eXBlPVwibW9ub3RvbmVcIiBkYXRhS2V5PXt5fSBzdHJva2U9e1NFUklFU30gc3Ryb2tlV2lkdGg9ezJ9IGRvdD17ZmFsc2V9IC8+PC9MaW5lQ2hhcnQ+XHJcbiAgICAgICAgICAgIDogPEJhckNoYXJ0IGRhdGE9e2RhdGF9Pntjb21tb259PEJhciBkYXRhS2V5PXt5fSBmaWxsPXtTRVJJRVN9IC8+PC9CYXJDaGFydD59XHJcbiAgICAgICAgPC9SZXNwb25zaXZlQ29udGFpbmVyPlxyXG4gICAgICA8L2Rpdj5cclxuICAgIDwvc2VjdGlvbj5cclxuICApO1xyXG59XHJcbiJdLCJuYW1lcyI6WyJDaGFydENhcmQiLCJTRVJJRVMiLCJUSUNLIiwiZmlsbCIsImZvbnRTaXplIiwidGl0bGUiLCJkYXRhIiwieCIsInkiLCJraW5kIiwiY3VycmVuY3kiLCJjb21tb24iLCJDYXJ0ZXNpYW5HcmlkIiwic3Ryb2tlRGFzaGFycmF5Iiwic3Ryb2tlIiwib3BhY2l0eSIsIlhBeGlzIiwiZGF0YUtleSIsInRpY2siLCJZQXhpcyIsInRpY2tGb3JtYXR0ZXIiLCJ2YWx1ZSIsImZtdEN1cnJlbmN5IiwidW5kZWZpbmVkIiwiVG9vbHRpcCIsImNvbnRlbnRTdHlsZSIsImJhY2tncm91bmQiLCJib3JkZXIiLCJjb2xvciIsImxhYmVsU3R5bGUiLCJmb3JtYXR0ZXIiLCJOdW1iZXIiLCJzZWN0aW9uIiwiY2xhc3NOYW1lIiwiaDIiLCJkaXYiLCJyb2xlIiwiYXJpYS1sYWJlbCIsIlJlc3BvbnNpdmVDb250YWluZXIiLCJ3aWR0aCIsImhlaWdodCIsIkxpbmVDaGFydCIsIkxpbmUiLCJ0eXBlIiwic3Ryb2tlV2lkdGgiLCJkb3QiLCJCYXJDaGFydCIsIkJhciJdLCJtYXBwaW5ncyI6Ijs7OzsrQkFLZ0JBOzs7ZUFBQUE7Ozs7MEJBTDBGO3dCQUM5RTtBQUU1QixzSUFBc0k7QUFDdEksTUFBTUMsU0FBUyxXQUFXQyxPQUFPO0lBQUVDLE1BQU07SUFBV0MsVUFBVTtBQUFHO0FBQzFELFNBQVNKLFVBQVUsRUFBRUssS0FBSyxFQUFFQyxJQUFJLEVBQUVDLENBQUMsRUFBRUMsQ0FBQyxFQUFFQyxPQUFPLE1BQU0sRUFBRUMsUUFBUSxFQUEyRztJQUMvSyxNQUFNQyx1QkFBVTs7MEJBQUUscUJBQUNDLHVCQUFhO2dCQUFDQyxpQkFBZ0I7Z0JBQU1DLFFBQU87Z0JBQVVDLFNBQVM7OzBCQUFPLHFCQUFDQyxlQUFLO2dCQUFDQyxTQUFTVjtnQkFBR1csTUFBTWhCO2dCQUFNWSxRQUFPOzswQkFBWSxxQkFBQ0ssZUFBSztnQkFBQ0QsTUFBTWhCO2dCQUFNWSxRQUFPO2dCQUFVTSxlQUFlVixXQUFXLENBQUNXLFFBQWtCQyxJQUFBQSxtQkFBVyxFQUFDRCxPQUFPWCxZQUFZYTs7MEJBQ3hQLHFCQUFDQyxpQkFBTztnQkFBQ0MsY0FBYztvQkFBRUMsWUFBWTtvQkFBV0MsUUFBUTtvQkFBUUMsT0FBTztnQkFBTztnQkFBR0MsWUFBWTtvQkFBRUQsT0FBTztnQkFBTztnQkFDM0dFLFdBQVdwQixXQUFXLENBQUNXLFFBQVVDLElBQUFBLG1CQUFXLEVBQUNTLE9BQU9WLFFBQVFYLFlBQVlhOzs7O0lBQzVFLHFCQUNFLHNCQUFDUztRQUFRQyxXQUFVOzswQkFDakIscUJBQUNDO2dCQUFHRCxXQUFVOzBCQUFnQzVCOzswQkFDOUMscUJBQUM4QjtnQkFBSUYsV0FBVTtnQkFBT0csTUFBSztnQkFBTUMsY0FBWSxDQUFDLEVBQUVoQyxNQUFNLE1BQU0sQ0FBQzswQkFDM0QsY0FBQSxxQkFBQ2lDLDZCQUFtQjtvQkFBQ0MsT0FBTTtvQkFBT0MsUUFBTzs4QkFDdEMvQixTQUFTLHVCQUNOLHNCQUFDZ0MsbUJBQVM7d0JBQUNuQyxNQUFNQTs7NEJBQU9LOzBDQUFPLHFCQUFDK0IsY0FBSTtnQ0FBQ0MsTUFBSztnQ0FBVzFCLFNBQVNUO2dDQUFHTSxRQUFRYjtnQ0FBUTJDLGFBQWE7Z0NBQUdDLEtBQUs7Ozt1Q0FDdEcsc0JBQUNDLGtCQUFRO3dCQUFDeEMsTUFBTUE7OzRCQUFPSzswQ0FBTyxxQkFBQ29DLGFBQUc7Z0NBQUM5QixTQUFTVDtnQ0FBR0wsTUFBTUY7Ozs7Ozs7O0FBS25FIn0=

@@ -1,0 +1,131 @@
+3d70e69d00109d0ea5589b09e03b15fb
+"use strict";
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+Object.defineProperty(exports, "default", {
+    enumerable: true,
+    get: function() {
+        return Dashboard;
+    }
+});
+const _jsxruntime = require("react/jsx-runtime");
+const _react = require("react");
+const _AsyncView = require("../components/states/AsyncView");
+const _TokenCard = require("../components/metrics/TokenCard");
+const _CostCard = require("../components/metrics/CostCard");
+const _SavingsCard = require("../components/metrics/SavingsCard");
+const _MetricCard = require("../components/metrics/MetricCard");
+const _ChartFilter = require("../components/charts/ChartFilter");
+const _UsageChart = require("../components/charts/UsageChart");
+const _CostChart = require("../components/charts/CostChart");
+const _CostByModelChart = require("../components/charts/CostByModelChart");
+const _TokenUsageByModelChart = require("../components/charts/TokenUsageByModelChart");
+const _ProjectUsageChart = require("../components/charts/ProjectUsageChart");
+const _SavingsChart = require("../components/charts/SavingsChart");
+const _useDashboardData = require("../hooks/useDashboardData");
+const _format = require("../utils/format");
+const _CurrencySelector = require("../components/ui/CurrencySelector");
+const _CurrencyContext = require("../context/CurrencyContext");
+function Dashboard() {
+    const [range, setRange] = (0, _react.useState)({
+        preset: "weekly"
+    });
+    const { state, reload } = (0, _useDashboardData.useDashboardData)(range);
+    const { currency } = (0, _CurrencyContext.useCurrency)();
+    return /*#__PURE__*/ (0, _jsxruntime.jsxs)("main", {
+        className: "mx-auto max-w-7xl space-y-6 p-4 lg:p-8",
+        children: [
+            /*#__PURE__*/ (0, _jsxruntime.jsxs)("div", {
+                className: "flex flex-wrap items-end justify-between gap-4",
+                children: [
+                    /*#__PURE__*/ (0, _jsxruntime.jsx)("h1", {
+                        className: "text-xl font-semibold",
+                        children: "Dashboard"
+                    }),
+                    /*#__PURE__*/ (0, _jsxruntime.jsxs)("div", {
+                        className: "flex w-full flex-wrap items-end gap-3 sm:w-auto",
+                        children: [
+                            /*#__PURE__*/ (0, _jsxruntime.jsx)(_CurrencySelector.CurrencySelector, {}),
+                            /*#__PURE__*/ (0, _jsxruntime.jsx)(_ChartFilter.ChartFilter, {
+                                value: range,
+                                onChange: setRange
+                            })
+                        ]
+                    })
+                ]
+            }),
+            /*#__PURE__*/ (0, _jsxruntime.jsx)(_AsyncView.AsyncView, {
+                state: state,
+                reload: reload,
+                isEmpty: (d)=>d.totals.prompts === 0,
+                empty: {
+                    title: "No analyses yet",
+                    body: "Analyze a prompt in Token Trim to see usage here."
+                },
+                children: (d)=>/*#__PURE__*/ (0, _jsxruntime.jsxs)(_jsxruntime.Fragment, {
+                        children: [
+                            /*#__PURE__*/ (0, _jsxruntime.jsxs)("div", {
+                                className: "grid grid-cols-2 gap-3 lg:grid-cols-3 xl:grid-cols-6",
+                                children: [
+                                    /*#__PURE__*/ (0, _jsxruntime.jsx)(_TokenCard.TokenCard, {
+                                        label: "Total tokens",
+                                        value: d.totals.tokens
+                                    }),
+                                    /*#__PURE__*/ (0, _jsxruntime.jsx)(_CostCard.CostCard, {
+                                        label: "Estimated cost",
+                                        value: d.totals.cost
+                                    }),
+                                    /*#__PURE__*/ (0, _jsxruntime.jsx)(_TokenCard.TokenCard, {
+                                        label: "Prompts analyzed",
+                                        value: d.totals.prompts
+                                    }),
+                                    /*#__PURE__*/ (0, _jsxruntime.jsx)(_TokenCard.TokenCard, {
+                                        label: "Tokens saved",
+                                        value: d.totals.saved,
+                                        tone: "good"
+                                    }),
+                                    /*#__PURE__*/ (0, _jsxruntime.jsx)(_SavingsCard.SavingsCard, {
+                                        label: "Potential savings",
+                                        value: d.totals.potential
+                                    }),
+                                    /*#__PURE__*/ (0, _jsxruntime.jsx)(_MetricCard.MetricCard, {
+                                        label: "Avg. reduction",
+                                        value: (0, _format.fmtPercent)(d.totals.avg_reduction),
+                                        tone: "good"
+                                    })
+                                ]
+                            }),
+                            /*#__PURE__*/ (0, _jsxruntime.jsxs)("div", {
+                                className: "grid gap-4 md:grid-cols-2",
+                                children: [
+                                    /*#__PURE__*/ (0, _jsxruntime.jsx)(_UsageChart.UsageChart, {
+                                        data: d.usage
+                                    }),
+                                    /*#__PURE__*/ (0, _jsxruntime.jsx)(_CostChart.CostChart, {
+                                        data: d.usage,
+                                        currency: currency
+                                    }),
+                                    /*#__PURE__*/ (0, _jsxruntime.jsx)(_CostByModelChart.CostByModelChart, {
+                                        data: d.byModel,
+                                        currency: currency
+                                    }),
+                                    /*#__PURE__*/ (0, _jsxruntime.jsx)(_TokenUsageByModelChart.TokenUsageByModelChart, {
+                                        data: d.byModelTokens
+                                    }),
+                                    /*#__PURE__*/ (0, _jsxruntime.jsx)(_ProjectUsageChart.ProjectUsageChart, {
+                                        data: d.byProject
+                                    }),
+                                    /*#__PURE__*/ (0, _jsxruntime.jsx)(_SavingsChart.SavingsChart, {
+                                        data: d.usage
+                                    })
+                                ]
+                            })
+                        ]
+                    })
+            })
+        ]
+    });
+}
+
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIkQ6XFxQcm9qZWN0c1xcTWFqb3JcXFRva2VuVHJpbVxcZnJvbnRlbmRcXHNyY1xccGFnZXNcXGRhc2hib2FyZC50c3giXSwic291cmNlc0NvbnRlbnQiOlsiaW1wb3J0IHsgdXNlU3RhdGUgfSBmcm9tICdyZWFjdCc7XHJcbmltcG9ydCB7IEFzeW5jVmlldyB9IGZyb20gJ0AvY29tcG9uZW50cy9zdGF0ZXMvQXN5bmNWaWV3JztcclxuaW1wb3J0IHsgVG9rZW5DYXJkIH0gZnJvbSAnQC9jb21wb25lbnRzL21ldHJpY3MvVG9rZW5DYXJkJztcclxuaW1wb3J0IHsgQ29zdENhcmQgfSBmcm9tICdAL2NvbXBvbmVudHMvbWV0cmljcy9Db3N0Q2FyZCc7XHJcbmltcG9ydCB7IFNhdmluZ3NDYXJkIH0gZnJvbSAnQC9jb21wb25lbnRzL21ldHJpY3MvU2F2aW5nc0NhcmQnO1xyXG5pbXBvcnQgeyBNZXRyaWNDYXJkIH0gZnJvbSAnQC9jb21wb25lbnRzL21ldHJpY3MvTWV0cmljQ2FyZCc7XHJcbmltcG9ydCB7IENoYXJ0RmlsdGVyIH0gZnJvbSAnQC9jb21wb25lbnRzL2NoYXJ0cy9DaGFydEZpbHRlcic7XHJcbmltcG9ydCB7IFVzYWdlQ2hhcnQgfSBmcm9tICdAL2NvbXBvbmVudHMvY2hhcnRzL1VzYWdlQ2hhcnQnO1xyXG5pbXBvcnQgeyBDb3N0Q2hhcnQgfSBmcm9tICdAL2NvbXBvbmVudHMvY2hhcnRzL0Nvc3RDaGFydCc7XHJcbmltcG9ydCB7IENvc3RCeU1vZGVsQ2hhcnQgfSBmcm9tICdAL2NvbXBvbmVudHMvY2hhcnRzL0Nvc3RCeU1vZGVsQ2hhcnQnO1xyXG5pbXBvcnQgeyBUb2tlblVzYWdlQnlNb2RlbENoYXJ0IH0gZnJvbSAnQC9jb21wb25lbnRzL2NoYXJ0cy9Ub2tlblVzYWdlQnlNb2RlbENoYXJ0JztcclxuaW1wb3J0IHsgUHJvamVjdFVzYWdlQ2hhcnQgfSBmcm9tICdAL2NvbXBvbmVudHMvY2hhcnRzL1Byb2plY3RVc2FnZUNoYXJ0JztcclxuaW1wb3J0IHsgU2F2aW5nc0NoYXJ0IH0gZnJvbSAnQC9jb21wb25lbnRzL2NoYXJ0cy9TYXZpbmdzQ2hhcnQnO1xyXG5pbXBvcnQgeyB1c2VEYXNoYm9hcmREYXRhIH0gZnJvbSAnQC9ob29rcy91c2VEYXNoYm9hcmREYXRhJztcclxuaW1wb3J0IHsgZm10UGVyY2VudCB9IGZyb20gJ0AvdXRpbHMvZm9ybWF0JztcclxuaW1wb3J0IHR5cGUgeyBEYXNoYm9hcmRSYW5nZSB9IGZyb20gJ0AvdHlwZXMvZGFzaGJvYXJkJztcclxuaW1wb3J0IHsgQ3VycmVuY3lTZWxlY3RvciB9IGZyb20gJ0AvY29tcG9uZW50cy91aS9DdXJyZW5jeVNlbGVjdG9yJztcclxuaW1wb3J0IHsgdXNlQ3VycmVuY3kgfSBmcm9tICdAL2NvbnRleHQvQ3VycmVuY3lDb250ZXh0JztcclxuZXhwb3J0IGRlZmF1bHQgZnVuY3Rpb24gRGFzaGJvYXJkKCkge1xyXG4gIGNvbnN0IFtyYW5nZSwgc2V0UmFuZ2VdID0gdXNlU3RhdGU8RGFzaGJvYXJkUmFuZ2U+KHsgcHJlc2V0OiAnd2Vla2x5JyB9KTtcclxuICBjb25zdCB7IHN0YXRlLCByZWxvYWQgfSA9IHVzZURhc2hib2FyZERhdGEocmFuZ2UpO1xyXG4gIGNvbnN0IHsgY3VycmVuY3kgfSA9IHVzZUN1cnJlbmN5KCk7XHJcbiAgcmV0dXJuIChcclxuICAgIDxtYWluIGNsYXNzTmFtZT1cIm14LWF1dG8gbWF4LXctN3hsIHNwYWNlLXktNiBwLTQgbGc6cC04XCI+XHJcbiAgICAgIDxkaXYgY2xhc3NOYW1lPVwiZmxleCBmbGV4LXdyYXAgaXRlbXMtZW5kIGp1c3RpZnktYmV0d2VlbiBnYXAtNFwiPjxoMSBjbGFzc05hbWU9XCJ0ZXh0LXhsIGZvbnQtc2VtaWJvbGRcIj5EYXNoYm9hcmQ8L2gxPjxkaXYgY2xhc3NOYW1lPVwiZmxleCB3LWZ1bGwgZmxleC13cmFwIGl0ZW1zLWVuZCBnYXAtMyBzbTp3LWF1dG9cIj48Q3VycmVuY3lTZWxlY3RvciAvPjxDaGFydEZpbHRlciB2YWx1ZT17cmFuZ2V9IG9uQ2hhbmdlPXtzZXRSYW5nZX0gLz48L2Rpdj48L2Rpdj5cclxuICAgICAgPEFzeW5jVmlldyBzdGF0ZT17c3RhdGV9IHJlbG9hZD17cmVsb2FkfSBpc0VtcHR5PXsoZCkgPT4gZC50b3RhbHMucHJvbXB0cyA9PT0gMH0gZW1wdHk9e3sgdGl0bGU6ICdObyBhbmFseXNlcyB5ZXQnLCBib2R5OiAnQW5hbHl6ZSBhIHByb21wdCBpbiBUb2tlbiBUcmltIHRvIHNlZSB1c2FnZSBoZXJlLicgfX0+XHJcbiAgICAgICAgeyhkKSA9PiAoPD5cclxuICAgICAgICAgIDxkaXYgY2xhc3NOYW1lPVwiZ3JpZCBncmlkLWNvbHMtMiBnYXAtMyBsZzpncmlkLWNvbHMtMyB4bDpncmlkLWNvbHMtNlwiPlxyXG4gICAgICAgICAgICA8VG9rZW5DYXJkIGxhYmVsPVwiVG90YWwgdG9rZW5zXCIgdmFsdWU9e2QudG90YWxzLnRva2Vuc30gLz5cclxuICAgICAgICAgICAgPENvc3RDYXJkIGxhYmVsPVwiRXN0aW1hdGVkIGNvc3RcIiB2YWx1ZT17ZC50b3RhbHMuY29zdH0gLz5cclxuICAgICAgICAgICAgPFRva2VuQ2FyZCBsYWJlbD1cIlByb21wdHMgYW5hbHl6ZWRcIiB2YWx1ZT17ZC50b3RhbHMucHJvbXB0c30gLz5cclxuICAgICAgICAgICAgPFRva2VuQ2FyZCBsYWJlbD1cIlRva2VucyBzYXZlZFwiIHZhbHVlPXtkLnRvdGFscy5zYXZlZH0gdG9uZT1cImdvb2RcIiAvPlxyXG4gICAgICAgICAgICA8U2F2aW5nc0NhcmQgbGFiZWw9XCJQb3RlbnRpYWwgc2F2aW5nc1wiIHZhbHVlPXtkLnRvdGFscy5wb3RlbnRpYWx9IC8+XHJcbiAgICAgICAgICAgIDxNZXRyaWNDYXJkIGxhYmVsPVwiQXZnLiByZWR1Y3Rpb25cIiB2YWx1ZT17Zm10UGVyY2VudChkLnRvdGFscy5hdmdfcmVkdWN0aW9uKX0gdG9uZT1cImdvb2RcIiAvPlxyXG4gICAgICAgICAgPC9kaXY+XHJcbiAgICAgICAgICA8ZGl2IGNsYXNzTmFtZT1cImdyaWQgZ2FwLTQgbWQ6Z3JpZC1jb2xzLTJcIj5cclxuICAgICAgICAgICAgPFVzYWdlQ2hhcnQgZGF0YT17ZC51c2FnZX0gLz48Q29zdENoYXJ0IGRhdGE9e2QudXNhZ2V9IGN1cnJlbmN5PXtjdXJyZW5jeX0gLz48Q29zdEJ5TW9kZWxDaGFydCBkYXRhPXtkLmJ5TW9kZWx9IGN1cnJlbmN5PXtjdXJyZW5jeX0gLz5cclxuICAgICAgICAgICAgPFRva2VuVXNhZ2VCeU1vZGVsQ2hhcnQgZGF0YT17ZC5ieU1vZGVsVG9rZW5zfSAvPjxQcm9qZWN0VXNhZ2VDaGFydCBkYXRhPXtkLmJ5UHJvamVjdH0gLz48U2F2aW5nc0NoYXJ0IGRhdGE9e2QudXNhZ2V9IC8+XHJcbiAgICAgICAgICA8L2Rpdj5cclxuICAgICAgICA8Lz4pfVxyXG4gICAgICA8L0FzeW5jVmlldz5cclxuICAgIDwvbWFpbj5cclxuICApO1xyXG59XHJcbiJdLCJuYW1lcyI6WyJEYXNoYm9hcmQiLCJyYW5nZSIsInNldFJhbmdlIiwidXNlU3RhdGUiLCJwcmVzZXQiLCJzdGF0ZSIsInJlbG9hZCIsInVzZURhc2hib2FyZERhdGEiLCJjdXJyZW5jeSIsInVzZUN1cnJlbmN5IiwibWFpbiIsImNsYXNzTmFtZSIsImRpdiIsImgxIiwiQ3VycmVuY3lTZWxlY3RvciIsIkNoYXJ0RmlsdGVyIiwidmFsdWUiLCJvbkNoYW5nZSIsIkFzeW5jVmlldyIsImlzRW1wdHkiLCJkIiwidG90YWxzIiwicHJvbXB0cyIsImVtcHR5IiwidGl0bGUiLCJib2R5IiwiVG9rZW5DYXJkIiwibGFiZWwiLCJ0b2tlbnMiLCJDb3N0Q2FyZCIsImNvc3QiLCJzYXZlZCIsInRvbmUiLCJTYXZpbmdzQ2FyZCIsInBvdGVudGlhbCIsIk1ldHJpY0NhcmQiLCJmbXRQZXJjZW50IiwiYXZnX3JlZHVjdGlvbiIsIlVzYWdlQ2hhcnQiLCJkYXRhIiwidXNhZ2UiLCJDb3N0Q2hhcnQiLCJDb3N0QnlNb2RlbENoYXJ0IiwiYnlNb2RlbCIsIlRva2VuVXNhZ2VCeU1vZGVsQ2hhcnQiLCJieU1vZGVsVG9rZW5zIiwiUHJvamVjdFVzYWdlQ2hhcnQiLCJieVByb2plY3QiLCJTYXZpbmdzQ2hhcnQiXSwibWFwcGluZ3MiOiI7Ozs7K0JBa0JBOzs7ZUFBd0JBOzs7O3VCQWxCQzsyQkFDQzsyQkFDQTswQkFDRDs2QkFDRzs0QkFDRDs2QkFDQzs0QkFDRDsyQkFDRDtrQ0FDTzt3Q0FDTTttQ0FDTDs4QkFDTDtrQ0FDSTt3QkFDTjtrQ0FFTTtpQ0FDTDtBQUNiLFNBQVNBO0lBQ3RCLE1BQU0sQ0FBQ0MsT0FBT0MsU0FBUyxHQUFHQyxJQUFBQSxlQUFRLEVBQWlCO1FBQUVDLFFBQVE7SUFBUztJQUN0RSxNQUFNLEVBQUVDLEtBQUssRUFBRUMsTUFBTSxFQUFFLEdBQUdDLElBQUFBLGtDQUFnQixFQUFDTjtJQUMzQyxNQUFNLEVBQUVPLFFBQVEsRUFBRSxHQUFHQyxJQUFBQSw0QkFBVztJQUNoQyxxQkFDRSxzQkFBQ0M7UUFBS0MsV0FBVTs7MEJBQ2Qsc0JBQUNDO2dCQUFJRCxXQUFVOztrQ0FBaUQscUJBQUNFO3dCQUFHRixXQUFVO2tDQUF3Qjs7a0NBQWMsc0JBQUNDO3dCQUFJRCxXQUFVOzswQ0FBa0QscUJBQUNHLGtDQUFnQjswQ0FBRyxxQkFBQ0Msd0JBQVc7Z0NBQUNDLE9BQU9mO2dDQUFPZ0IsVUFBVWY7Ozs7OzswQkFDOU8scUJBQUNnQixvQkFBUztnQkFBQ2IsT0FBT0E7Z0JBQU9DLFFBQVFBO2dCQUFRYSxTQUFTLENBQUNDLElBQU1BLEVBQUVDLE1BQU0sQ0FBQ0MsT0FBTyxLQUFLO2dCQUFHQyxPQUFPO29CQUFFQyxPQUFPO29CQUFtQkMsTUFBTTtnQkFBb0Q7MEJBQzNLLENBQUNMLGtCQUFPOzswQ0FDUCxzQkFBQ1I7Z0NBQUlELFdBQVU7O2tEQUNiLHFCQUFDZSxvQkFBUzt3Q0FBQ0MsT0FBTTt3Q0FBZVgsT0FBT0ksRUFBRUMsTUFBTSxDQUFDTyxNQUFNOztrREFDdEQscUJBQUNDLGtCQUFRO3dDQUFDRixPQUFNO3dDQUFpQlgsT0FBT0ksRUFBRUMsTUFBTSxDQUFDUyxJQUFJOztrREFDckQscUJBQUNKLG9CQUFTO3dDQUFDQyxPQUFNO3dDQUFtQlgsT0FBT0ksRUFBRUMsTUFBTSxDQUFDQyxPQUFPOztrREFDM0QscUJBQUNJLG9CQUFTO3dDQUFDQyxPQUFNO3dDQUFlWCxPQUFPSSxFQUFFQyxNQUFNLENBQUNVLEtBQUs7d0NBQUVDLE1BQUs7O2tEQUM1RCxxQkFBQ0Msd0JBQVc7d0NBQUNOLE9BQU07d0NBQW9CWCxPQUFPSSxFQUFFQyxNQUFNLENBQUNhLFNBQVM7O2tEQUNoRSxxQkFBQ0Msc0JBQVU7d0NBQUNSLE9BQU07d0NBQWlCWCxPQUFPb0IsSUFBQUEsa0JBQVUsRUFBQ2hCLEVBQUVDLE1BQU0sQ0FBQ2dCLGFBQWE7d0NBQUdMLE1BQUs7Ozs7MENBRXJGLHNCQUFDcEI7Z0NBQUlELFdBQVU7O2tEQUNiLHFCQUFDMkIsc0JBQVU7d0NBQUNDLE1BQU1uQixFQUFFb0IsS0FBSzs7a0RBQUkscUJBQUNDLG9CQUFTO3dDQUFDRixNQUFNbkIsRUFBRW9CLEtBQUs7d0NBQUVoQyxVQUFVQTs7a0RBQVkscUJBQUNrQyxrQ0FBZ0I7d0NBQUNILE1BQU1uQixFQUFFdUIsT0FBTzt3Q0FBRW5DLFVBQVVBOztrREFDMUgscUJBQUNvQyw4Q0FBc0I7d0NBQUNMLE1BQU1uQixFQUFFeUIsYUFBYTs7a0RBQUkscUJBQUNDLG9DQUFpQjt3Q0FBQ1AsTUFBTW5CLEVBQUUyQixTQUFTOztrREFBSSxxQkFBQ0MsMEJBQVk7d0NBQUNULE1BQU1uQixFQUFFb0IsS0FBSzs7Ozs7Ozs7O0FBTWhJIn0=
