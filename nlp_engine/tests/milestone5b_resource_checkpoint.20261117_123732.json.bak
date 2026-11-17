@@ -1,0 +1,68 @@
+{
+  "format_version": 2,
+  "benchmark_id": "tokentrim_milestone5b_v2",
+  "created_at": "2026-11-17T12:29:10Z",
+  "updated_at": "2026-11-17T12:29:18Z",
+  "workload_signature": "a8190b14626cc54a5ecb53c5e7013fa524da275c079cf1dfb9c3d456fe5b221a",
+  "execution_mode": "subprocess",
+  "environment": {
+    "os": "Windows 11 (10.0.26300)",
+    "python_version": "3.13.5",
+    "processor": "Intel64 Family 6 Model 126 Stepping 5, GenuineIntel",
+    "cpu_count": 4,
+    "pytest_version": "9.2.0",
+    "numpy_version": "2.5.4",
+    "pydantic_version": "2.14.3",
+    "tiktoken_version": "0.14.0"
+  },
+  "scenarios": {
+    "smoke_2k_clause": {
+      "target_bytes": 2048,
+      "profile": "clause_heavy",
+      "requested_samples": 1,
+      "warmup": {
+        "status": "OK",
+        "latency_ms": 174.39,
+        "peak_traced_mib": 0.31,
+        "traced_delta_mib": 0.2,
+        "rss_start_mib": 140.02,
+        "rss_end_mib": 141.36,
+        "rss_peak_mib": 141.36,
+        "original_tokens": 619,
+        "optimized_tokens": 619,
+        "tokens_saved": 0,
+        "reduction_percentage": 0.0,
+        "optimization_accepted": false,
+        "exact_fallback": true,
+        "output_sha256": "546f08f12665085688541eb42b2be63fbe5c58c0c0a2676a03ed242857d423ca",
+        "wall_elapsed_ms": 3905.66
+      },
+      "completed_samples": [
+        {
+          "status": "OK",
+          "latency_ms": 164.83,
+          "peak_traced_mib": 0.32,
+          "traced_delta_mib": 0.19,
+          "rss_start_mib": 139.54,
+          "rss_end_mib": 140.75,
+          "rss_peak_mib": 140.75,
+          "original_tokens": 619,
+          "optimized_tokens": 619,
+          "tokens_saved": 0,
+          "reduction_percentage": 0.0,
+          "optimization_accepted": false,
+          "exact_fallback": true,
+          "output_sha256": "546f08f12665085688541eb42b2be63fbe5c58c0c0a2676a03ed242857d423ca",
+          "sample_index": 1
+        }
+      ],
+      "status": "completed",
+      "actual_bytes": 2048,
+      "char_count": 2048,
+      "input_sha256": "546f08f12665085688541eb42b2be63fbe5c58c0c0a2676a03ed242857d423ca"
+    }
+  },
+  "memory_experiments": {},
+  "concurrency_experiments": {},
+  "all_completed": false
+}

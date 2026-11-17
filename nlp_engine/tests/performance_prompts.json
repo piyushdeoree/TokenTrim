@@ -1,0 +1,37 @@
+{
+  "format_version": 1,
+  "evaluation_model": "tokentrim-performance-estimate",
+  "fixed_prompt_sections": [
+    "Task: Extend the existing record-ingestion service and preserve its current API behavior.",
+    "Requirements:",
+    "- Preserve the exact identifier `record_id` in every output row.",
+    "- Do not change the meaning of `source_timestamp` or `normalized_value`.",
+    "- Keep the original record identifier unchanged.",
+    "- Keep the original record identifier unchanged.",
+    "- Return one UTF-8 JSON object per line.",
+    "- If a record has an invalid checksum, quarantine it and continue processing valid records.",
+    "- Return validation errors before writing accepted records."
+  ],
+  "instruction_template": "Summarize processing segment {index} for the ingestion report, preserving its source identifier and sequence.",
+  "context_template": "Background note {index}: subsystem-{index} receives a distinct source batch, retains its audit metadata, and reports its processing state to the ingestion coordinator.",
+  "size_scenarios": [
+    {"id": "small_2k", "target_characters": 2048, "instruction_clauses": 16, "warm_iterations": 10},
+    {"id": "medium_16k", "target_characters": 16384, "instruction_clauses": 32, "warm_iterations": 10},
+    {"id": "large_64k", "target_characters": 65536, "instruction_clauses": 32, "warm_iterations": 5},
+    {"id": "very_large_256k", "target_characters": 262144, "instruction_clauses": 32, "warm_iterations": 3},
+    {"id": "very_large_512k", "target_characters": 524288, "instruction_clauses": 32, "warm_iterations": 2}
+  ],
+  "clause_scenarios": [
+    {"id": "clauses_50", "instruction_clauses": 42, "target_characters": 16384, "warm_iterations": 5},
+    {"id": "clauses_299", "instruction_clauses": 300, "target_characters": 65536, "warm_iterations": 3},
+    {"id": "clauses_300", "instruction_clauses": 301, "target_characters": 65536, "warm_iterations": 3},
+    {"id": "clauses_301", "instruction_clauses": 302, "target_characters": 65536, "warm_iterations": 3},
+    {"id": "clauses_600", "instruction_clauses": 592, "target_characters": 131072, "warm_iterations": 2}
+  ],
+  "warmup_iterations": 2,
+  "cold_iterations": 3,
+  "cold_representative_scenarios": ["small_2k", "medium_16k", "large_64k"],
+  "semantic_stub_representative_scenarios": ["small_2k", "medium_16k", "large_64k"],
+  "cached_model_representative_scenarios": ["small_2k", "medium_16k", "large_64k"],
+  "worker_timeout_seconds": 900
+}
