@@ -27,12 +27,13 @@ from __future__ import annotations
 
 import math
 import re
+import threading
 from dataclasses import dataclass
 from functools import lru_cache
 from typing import Callable, Dict, List, Optional, Tuple
 
 from . import config
-from .textutils import prepare_prompt
+from .textutils import PreparedPrompt, prepare_prompt
 
 
 @dataclass(frozen=True)
@@ -148,6 +149,8 @@ def _fallback_factory(model: str) -> BaseTokenCounter:
     return HeuristicCounter(model, fam, notes.get(fam, ""))
 
 
+_REGISTRY_LOCK = threading.RLock()
+
 # (name, matcher, factory) - first matching entry wins; later registrations take priority.
 _REGISTRY: List[Tuple[str, Callable[[str], bool], Callable[[str], BaseTokenCounter]]] = [
     ("openai", lambda m: _family(m) == "openai", _openai_factory),
@@ -157,16 +160,30 @@ _REGISTRY: List[Tuple[str, Callable[[str], bool], Callable[[str], BaseTokenCount
 def register_tokenizer(name: str, matcher: Callable[[str], bool],
                        factory: Callable[[str], BaseTokenCounter]) -> None:
     """Register an additional tokenizer (takes priority over built-ins)."""
-    _REGISTRY.insert(0, (name, matcher, factory))
-    get_counter.cache_clear()
+    with _REGISTRY_LOCK:
+        _REGISTRY.insert(0, (name, matcher, factory))
+        _cached_counter.cache_clear()
 
 
 @lru_cache(maxsize=64)
-def get_counter(model: str) -> BaseTokenCounter:
+def _cached_counter(model: str) -> BaseTokenCounter:
     for _, matcher, factory in _REGISTRY:
         if matcher(model):
             return factory(model)
     return _fallback_factory(model)
+
+
+def _clear_counter_cache() -> None:
+    with _REGISTRY_LOCK:
+        _cached_counter.cache_clear()
+
+
+def get_counter(model: str) -> BaseTokenCounter:
+    with _REGISTRY_LOCK:
+        return _cached_counter(model)
+
+
+get_counter.cache_clear = _clear_counter_cache  # type: ignore[attr-defined]
 
 
 def tokenizer_info(model: str) -> TokenizerInfo:
@@ -184,15 +201,27 @@ def count_tokens_only(text: str, model: str = config.DEFAULT_MODEL) -> int:
     return get_counter(model).count(text)
 
 
-def count_tokens(prompt: str, model: str = config.DEFAULT_MODEL) -> Dict[str, int]:
+def count_tokens(
+    prompt: str,
+    model: str = config.DEFAULT_MODEL,
+    prepared: Optional[PreparedPrompt] = None,
+) -> Dict[str, int]:
     """Return the four basic text statistics for ``prompt``.
 
     {"input_tokens", "word_count", "character_count", "sentence_count"}
     ``input_tokens`` is exact only if ``tokenizer_info(model).exact`` is True.
     """
+    stripped = prompt.strip()
+    if not stripped:
+        sentence_count = 0
+    elif prepared is not None and prepared.original == stripped:
+        sentence_count = len(prepared.segments)
+    else:
+        sentence_count = len(prepare_prompt(prompt).segments)
+
     return {
         "input_tokens": count_tokens_only(prompt, model),
         "word_count": len(_WORD_COUNT_RE.findall(prompt)),
         "character_count": len(prompt),
-        "sentence_count": len(prepare_prompt(prompt).segments) if prompt.strip() else 0,
+        "sentence_count": sentence_count,
     }

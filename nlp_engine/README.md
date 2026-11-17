@@ -21,8 +21,8 @@ Put the `nlp_engine/` folder in the consuming project (it must be importable as
 `nlp_engine`). The current local verification environment is Python 3.13.5;
 this project does not declare a supported Python-version range. The core
 analysis does not download NLTK corpora. `tiktoken` may fetch an encoding file
-on first use, and enabling the optional semantic model may download model files
-if they are not already cached and network access is available.
+on first use, and enabling the optional semantic model uses cached local model
+files (`local_files_only=True`) without initiating runtime network downloads.
 
 ## 2. Use it from FastAPI (Person 3)
 
@@ -44,9 +44,9 @@ def analyze(req: PromptRequest):
   substantially with input size; see the standalone performance report for local
   measurements. In an `async def` endpoint run it in a thread pool
   (`await run_in_threadpool(analyze_prompt, ...)`) or just declare the endpoint with plain `def`.
-* Per-call analysis state is local, but tokenizer registrations and the optional
-  semantic-model cache are process-global. Concurrent calls are not documented
-  as safe while registering tokenizers or during first-time semantic-model loading.
+* Per-call analysis state is local, and process-global caches (tokenizer
+  registry lookups/registrations and lazy semantic-model initialization) are
+  synchronized with locks so concurrent calls do not race on initialization.
   Ordinary analysis does not persist prompts to a database or file.
 * Requires `pydantic>=2` (uses `model_dump`).
 
@@ -204,9 +204,9 @@ sentence count.
 
 Custom counters can be registered with `register_tokenizer()`. Registrations
 are process-global, take precedence over built-in matching, clear the counter
-cache, and remain active for the process lifetime; there is no unregister API.
-The interface and metadata type are available from the package root or from
-`nlp_engine.tokenizer`.
+cache under a re-entrant lock, and remain active for the process lifetime;
+there is no unregister API. The interface and metadata type are available from
+the package root or from `nlp_engine.tokenizer`.
 
 The optional semantic similarity model is separate from token counting. It is
 disabled by default and requires the optional `sentence-transformers` package,
@@ -218,10 +218,10 @@ which is not installed by `nlp_engine/requirements.txt`. Configuration:
 | `TOKENTRIM_SEMANTIC_MODEL` | `sentence-transformers/all-MiniLM-L6-v2` | Model name or local model path |
 | `TOKENTRIM_SEMANTIC_DEVICE` | `cpu` | Sentence-Transformers device, such as `cpu` or `cuda` |
 
-Loading is lazy. If enabled and the model is not cached, the library may try to
-download it. A missing dependency or load/encoding failure falls back to the
-non-model analysis path. Semantic similarity is advisory and cannot authorize
-deletion by itself.
+Loading is lazy, thread-safe, and offline-safe (`local_files_only=True`,
+never downloading models at runtime). A missing dependency, uncached model, or
+load/encoding failure falls back to the non-model analysis path. Semantic
+similarity is advisory and cannot authorize deletion by itself.
 
 Example custom counter:
 
@@ -246,7 +246,7 @@ From the folder that contains `nlp_engine/`:
 python -m pytest nlp_engine/tests -v
 python -m nlp_engine.tests.run_evaluation       # 10 baseline scenarios
 python -m nlp_engine.tests.benchmark_runner     # 50-case redundancy benchmark
-python -m nlp_engine.tests.run_realistic_evaluation  # 20 realistic public-pipeline cases
+python -m nlp_engine.tests.run_realistic_evaluation  # 39 realistic public-pipeline cases
 python -m nlp_engine.tests.run_performance_benchmark # standalone performance run (not pytest)
 ```
 
@@ -275,9 +275,9 @@ accuracy claim.
 * Heuristic thresholds/weights are design choices, not trained values; no accuracy figures are claimed.
 * Protected-span recognition is pattern-based, not general quote parsing. It
   includes fenced and inline backticks, triple-double-quoted blocks, URLs,
-  e-mail addresses, simple same-line double-quoted strings and curly-quoted
-  strings (up to 500 characters), and balanced braces/brackets. General
-  straight single-quoted strings are not protected by a dedicated pattern;
-  do not treat every quoted form as guaranteed untouched.
+  e-mail addresses, simple same-line double-quoted, single-quoted, and
+  curly-quoted strings (up to 500 characters, ignoring contractions and
+  possessives), and balanced braces/brackets. Do not treat every quoted form as
+  guaranteed untouched.
 
 See `docs/DOCUMENTATION.md` for the full methodology and limitations.

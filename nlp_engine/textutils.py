@@ -1,4 +1,3 @@
-
 """
 textutils.py - shared, deterministic text helpers.
 
@@ -34,14 +33,15 @@ PLACEHOLDER_FMT = "QZPH{}QZ"
 PLACEHOLDER_RE = re.compile(r"QZPH(\d+)QZ", re.IGNORECASE)
 
 _REGEX_SPANS = [
-    re.compile(r"```.*?```", re.S),                         # fenced code
-    re.compile(r'"""(?:.|\n)*?"""'),                        # triple-quoted blocks
-    re.compile(r"<(\w+)[^>]*>.*?</\1>", re.S),              # <context>...</context>
-    re.compile(r"`[^`\n]+`"),                               # inline code
-    re.compile(r"https?://[^\s)>\]]*[^\s)>\].,;:!?]"),      # URLs
-    re.compile(r"[\w.+-]+@[\w-]+\.[\w.-]+"),                # e-mail addresses
-    re.compile(r'"[^"\n]{1,500}"'),                         # "quoted strings"
-    re.compile(r"\u201c[^\u201d\n]{1,500}\u201d"),          # curly quotes
+    re.compile(r"```.*?```", re.S),                                            # fenced code
+    re.compile(r'"""(?:.|\n)*?"""'),                                           # triple-quoted blocks
+    re.compile(r"<(\w+)[^>]*>.*?</\1>", re.S),                                 # <context>...</context>
+    re.compile(r"`[^`\n]+`"),                                                  # inline code
+    re.compile(r"https?://[^\s)>\]]*[^\s)>\].,;:!?]"),                         # URLs
+    re.compile(r"[\w.+-]+@[\w-]+\.[\w.-]+"),                                   # e-mail addresses
+    re.compile(r'"[^"\n]{1,500}"'),                                            # "quoted strings"
+    re.compile(r"\u201c[^\u201d\n]{1,500}\u201d"),                             # curly quotes
+    re.compile(r"(?<![A-Za-z0-9_])'[^'\n]{1,120}'(?![A-Za-z0-9_])"),           # 'single-quoted literals'
 ]
 
 
@@ -181,6 +181,23 @@ def extract_numbers(text: str) -> FrozenSet[str]:
 
 def is_negated(text: str) -> bool:
     return bool(config.NEGATION_RE.search(text.lower()))
+
+
+# ---------------------------------------------------------------------------
+# Clause splitting (shared across redundancy and validation)
+# ---------------------------------------------------------------------------
+_CLAUSE_SPLIT_RE = re.compile(
+    r"\s*(?:,\s*(?:and\s+)?(?:then\s+)?|;\s*|:\s*|"
+    r"\s+and\s+(?:also\s+)?(?:then\s+)?)"
+    r"(?=(?:please\s+)?(?:" + "|".join(sorted(config.SPLIT_VERBS)) + r")\b)",
+    re.IGNORECASE,
+)
+
+
+def split_clauses(sentence: str) -> List[str]:
+    """Split an instruction/constraint sentence into sub-clauses before split verbs."""
+    parts = [p.strip() for p in _CLAUSE_SPLIT_RE.split(sentence) if p and p.strip()]
+    return parts or [sentence]
 
 
 # ---------------------------------------------------------------------------

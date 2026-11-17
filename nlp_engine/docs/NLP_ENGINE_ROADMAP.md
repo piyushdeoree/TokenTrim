@@ -1,6 +1,6 @@
 # NLP Engine Completion Roadmap
 
-**Status date:** 2026-11-16  
+**Status date:** 2026-11-17  
 **Scope:** The independent `nlp_engine` package only. Frontend, backend, cost-engine, and project prompt-generation work are out of scope.
 
 ## Completion objective
@@ -31,11 +31,11 @@ These tests and implementations are in the current working tree. They are not a 
 | Public analysis APIs and detailed result | Documented and contract-tested; remaining caveats recorded | Existing root exports are preserved. Approved additive exports include the detailed result and validation/tokenizer types. The response shape is unchanged; `Issue.type` remains a general string, and lower-level return types and fallback candidate semantics are documented. |
 | Prompt feature extraction and issue detection | Implemented, heuristic | Token/complexity features, verbosity, formatting, context, conflict, repeated phrase, and redundancy findings exist. Detector quality still needs measurement on varied realistic prompts. |
 | Conservative heuristic optimization | Implemented | Rewrites are rule-based; protected spans/context are guarded; removal relies on strict lexical subsumption. Realistic corpus testing remains. |
-| Semantic similarity | Implemented, optional | Lazy model loading, environment configuration, and graceful fallback are present. Similarity is advisory only. Coverage currently uses a small hand-authored corpus; thresholds need broader evaluation. |
+| Semantic similarity | Implemented, optional | Lazy, thread-safe, offline-safe model loading (`local_files_only=True`), environment configuration, and graceful fallback are present. Similarity is advisory only. Coverage currently uses a small hand-authored corpus; thresholds need broader evaluation. |
 | LLM rewrite candidates | Implemented and contract-tested as a callback extension | Callback input is the complete JSON-encoded rewrite request; callback failures and malformed outputs fall back safely. Real provider calls and provider credentials belong to integration owners. |
-| Validation and preservation | Implemented, heuristic | Checks cover numbers, polarity, identifiers, protected spans, formats, constraints, ordering, conditions, exceptions, and scope. They detect known loss patterns but cannot prove semantic equivalence. More adversarial and realistic cases are needed. |
+| Validation and preservation | Implemented, heuristic | Checks cover numbers, sub-clause polarity, identifiers, protected spans (including single-quoted literals), formats, constraints, ordering, conditions, exceptions, and scope. They detect known loss patterns but cannot prove semantic equivalence. More adversarial and realistic cases are needed. |
 | Token counting and savings | Implemented | Exact `tiktoken` counts where available and labelled heuristic estimates otherwise. Candidate comparisons use the same counter. More edge coverage is needed for tokenizer errors and unusual Unicode/token inputs. |
-| Fallback and optional-component errors | Implemented and tested | Invalid, empty, non-saving, or failing LLM candidates fall back; semantic model failures degrade to lexical behavior. Verify exact public fallback fields and state behavior across repeated calls. |
+| Fallback and optional-component errors | Implemented and tested | Invalid, empty, non-saving, or failing LLM candidates fall back; semantic model failures degrade to lexical behavior. Global caches are lock-protected. |
 | Performance | Baseline measured; environment coverage remains | A standalone CPU-only benchmark records prompt-size and clause-count scaling, stage p50/p95/max, cold starts, memory observations, callback quality, and optional semantic modes. The actual cached model was unavailable in the recorded environment, so its performance remains unmeasured. |
 | Realistic quality evaluation | Expanded; evidence remains curated | A 39-case multi-section corpus covers five domains and runs through the public detailed API. The latest run has zero false removals and zero missed opportunities. The corpus is not proof of general safety; broader independently reviewed prompts remain useful. |
 | Language support | Deliberately limited | The engine is English-focused and leaves non-Latin text untouched. Broader language support is not required for completion unless scope changes. |
@@ -163,8 +163,6 @@ milestone. No production engine logic changed.
 `nlp_engine/tests/run_realistic_evaluation.py`, and the regenerated
 `nlp_engine/tests/realistic_evaluation_results.md`.
 
-**Current artifacts:** `nlp_engine/tests/realistic_evaluation_dataset.json`, `nlp_engine/tests/run_realistic_evaluation.py`, and the generated `nlp_engine/tests/realistic_evaluation_results.md`.
-
 ### 2. Close gaps from corpus results
 
 Fix only reproducible detector, preservation, or fallback failures. For each issue, add a focused regression test, run its tests, then the complete NLP suite and quality evaluation.
@@ -212,12 +210,40 @@ latency guarantee or configured input limit. The existing Milestone 4A A/B
 benchmark was not rerun because production code was unchanged; its results and
 profile artifacts remain the historical performance reference.
 
-**Remaining evidence gaps:** the 300-clause pairwise guard intentionally
-disables duplicate comparison above its threshold, so repeated text beyond the
-guard may remain unoptimized. This is a conservative missed-compression case,
-not data loss. The engine still has no documented maximum prompt length;
-behavior beyond 1 MiB and memory use under concurrent large requests are not
-characterized. Language handling remains English-focused, and the surface
-validator cannot prove general semantic equivalence or resolve contradictions.
-Milestone 5 remains **partially complete** until broader independently reviewed
-edge-case coverage and deployment-specific operating evidence are available.
+**Remaining evidence gaps:** the engine still has no documented maximum prompt
+length; behavior beyond 1 MiB and memory use under concurrent large requests
+are not characterized. Language handling remains English-focused, and the
+surface validator cannot prove general semantic equivalence or resolve
+contradictions. Milestone 5 remains **partially complete** until broader
+independently reviewed edge-case coverage and deployment-specific operating
+evidence are available.
+
+### Milestone 6 remediation: pipeline reuse, linear >300-clause deduplication, and safety hardening — 2026-11-17
+
+Addressed structural bottlenecks, missed exact-duplicate compression beyond 300
+clauses, and targeted safety gaps without altering public APIs or weakening
+preservation rules:
+
+1. **Single-pass `PreparedPrompt` reuse (`textutils.py`, `tokenizer.py`, `analyzer.py`, `validator.py`):**
+   `count_tokens()` and `validate_optimization()` accept optional pre-computed
+   `PreparedPrompt` instances (verified via exact string match before reuse),
+   eliminating redundant regex masking, segmentation, and classification across
+   `analyze_prompt()` and `analyze_prompt_detailed()`.
+2. **$O(N)$ exact-duplicate candidate detection above 300 clauses (`redundancy.py`):**
+   When `len(clauses) > config.MAX_PAIRWISE_CLAUSES` (300), `find_pairs()` skips
+   the $O(N^2)$ similarity matrix as before but runs a single linear pass keyed
+   by canonical normalized clause key (`kind`, `negated`, `numbers`,
+   `sorted(stems)`), emitting bounded `(first_idx, j, sim=1.0, relation="equal")`
+   pairs that flow through the standard `select_removals()` identifier,
+   order, and single-clause guards.
+3. **Safety and concurrency hardening (`textutils.py`, `validator.py`, `semantic_similarity.py`, `tokenizer.py`):**
+   - `protect_spans()` protects same-line single-quoted literals (`'...'`) while
+     avoiding contractions (`don't`) and possessives (`user's`, `users'`) and
+     deduplicating nested/overlapping spans before placeholder assignment.
+   - `validate_optimization()` splits compound constraints into sub-clauses
+     (including negated sub-clauses such as `and do not ...` / `and never ...`)
+     and requires each original sub-clause to be independently satisfied by a
+     single candidate sub-clause with matching polarity, preventing stem
+     aggregation across unrelated clauses or masking of deleted negations.
+   - Added `threading.Lock` / `threading.RLock` around lazy semantic-model
+     loading (`local_files_only=True`) and tokenizer registry updates/lookups, and declared `numpy>=1.24` explicitly in `nlp_engine/requirements.txt`.

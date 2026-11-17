@@ -72,16 +72,12 @@ def test_clause_guard_is_predictable_at_and_beyond_boundary(clause_count):
     prompt = " ".join([clause] * clause_count)
     result = analyze_prompt_detailed(prompt, MODEL)
 
-    if clause_count <= 300:
-        assert result.optimization_accepted
-        assert result.final.optimized_prompt.count("Explain database indexing") == 1
-        assert result.final.tokens_saved > 0
-    else:
-        # The existing guard intentionally declines pairwise duplicate work.
-        # The public API must then use the exact original as its no-op result.
-        assert not result.optimization_accepted
-        assert result.final.optimized_prompt == prompt
-        assert result.final.tokens_saved == 0
+    # Both <= 300 (O(N^2) pairwise) and > 300 (O(N) exact-duplicate fast path)
+    # safely deduplicate exact repeated instructions while skipping O(N^2)
+    # similarity above 300 clauses.
+    assert result.optimization_accepted
+    assert result.final.optimized_prompt.count("Explain database indexing") == 1
+    assert result.final.tokens_saved > 0
 
 
 @pytest.mark.parametrize(

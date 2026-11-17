@@ -1,83 +1,130 @@
 """
-semantic_similarity.py - optional pretrained semantic similarity.
+semantic_similarity.py - optional pretrained sentence-embedding support.
 
-Uses Sentence-Transformers to generate sentence embeddings.
+Purpose:
+  Provide cosine similarity scores between clauses using a local pretrained
+  sentence-transformer model when explicitly enabled.
 
-Design:
+Safety rules:
   * Disabled by default.
-  * Loads the pretrained model only when explicitly enabled.
-  * Supports CPU and CUDA.
-  * Uses normalized embeddings and cosine similarity.
-  * Returns None when the optional model is unavailable.
-  * Supports model injection for tests without downloading a model.
+  * Never downloads models at runtime (local_files_only=True when supported).
+  * Never blocks or breaks the rule-based/TF-IDF pipeline if unavailable.
+  * Scores are advisory only; they never authorize automatic deletion.
 """
 
 from __future__ import annotations
 
+import inspect
 import os
+import threading
 from typing import Optional, Sequence
 
 import numpy as np
 
-
-DEFAULT_MODEL_NAME = "sentence-transformers/all-MiniLM-L6-v2"
+from . import config
 
 ENABLE_ENV = "TOKENTRIM_ENABLE_SEMANTIC_MODEL"
 MODEL_ENV = "TOKENTRIM_SEMANTIC_MODEL"
 DEVICE_ENV = "TOKENTRIM_SEMANTIC_DEVICE"
+DEFAULT_MODEL_NAME = getattr(config, "SEMANTIC_MODEL_NAME", "all-MiniLM-L6-v2")
+DEFAULT_DEVICE = getattr(config, "SEMANTIC_DEVICE", "cpu")
 
+_MODEL_LOCK = threading.Lock()
 _cached_model = None
 _model_load_attempted = False
 
 
 def semantic_model_enabled() -> bool:
-    """Return True only when the optional model is explicitly enabled."""
-    return os.getenv(ENABLE_ENV, "false").strip().lower() in {
-        "1", "true", "yes", "on"
-    }
+    """Return True when the optional semantic similarity model is explicitly enabled."""
+    raw = os.getenv(ENABLE_ENV, "").strip().lower()
+    return raw in {"1", "true", "yes", "on"}
+
+
+def semantic_model_name() -> str:
+    """Return the configured Sentence-Transformers model identifier or local path."""
+    env_name = os.getenv(MODEL_ENV, "").strip()
+    return env_name or DEFAULT_MODEL_NAME
+
+
+def semantic_device() -> str:
+    """Return the configured inference device (defaults to 'cpu')."""
+    env_device = os.getenv(DEVICE_ENV, "").strip()
+    return env_device or DEFAULT_DEVICE
+
+
+def _instantiate_sentence_transformer(cls, model_name: str, device: str):
+    """Instantiate ``SentenceTransformer`` with ``local_files_only=True`` if supported."""
+    try:
+        sig = inspect.signature(cls)
+        params = sig.parameters
+        accepts_kwargs = any(
+            p.kind == inspect.Parameter.VAR_KEYWORD for p in params.values()
+        )
+        if "local_files_only" in params or accepts_kwargs:
+            return cls(model_name, device=device, local_files_only=True)
+    except (TypeError, ValueError):
+        pass
+    return cls(model_name, device=device)
 
 
 def get_semantic_model():
     """
-    Lazily load the configured Sentence-Transformer model.
+    Lazily load the local pretrained sentence-embedding model if enabled.
 
-    The default device is CPU. Set TOKENTRIM_SEMANTIC_DEVICE=cuda
-    on a compatible GPU machine.
+    Returns None when disabled, uninstalled, or not cached locally.
+    Thread-safe: concurrent cold-start callers serialize initialization
+    without duplicating model loads.
     """
     global _cached_model, _model_load_attempted
 
-    if _cached_model is not None:
-        return _cached_model
-
-    # Do not permanently mark the model as attempted while disabled.
     if not semantic_model_enabled():
         return None
 
-    if _model_load_attempted:
-        return None
-
-    model_name = os.getenv(MODEL_ENV, DEFAULT_MODEL_NAME).strip()
-    device = os.getenv(DEVICE_ENV, "cpu").strip().lower()
-
-    if not model_name:
-        return None
-
-    # Mark attempted only when an actual loading attempt is about to occur.
-    _model_load_attempted = True
-
-    try:
-        from sentence_transformers import SentenceTransformer
-
-        _cached_model = SentenceTransformer(
-            model_name,
-            device=device,
-        )
+    if _cached_model is not None or _model_load_attempted:
         return _cached_model
 
-    except Exception:
-        # Optional component: existing TF-IDF must keep working.
-        _cached_model = None
-        return None
+    with _MODEL_LOCK:
+        if _cached_model is not None or _model_load_attempted:
+            return _cached_model
+
+        try:
+            from sentence_transformers import SentenceTransformer
+
+            os.environ.setdefault("HF_HUB_OFFLINE", "1")
+            os.environ.setdefault("TRANSFORMERS_OFFLINE", "1")
+
+            _cached_model = _instantiate_sentence_transformer(
+                SentenceTransformer,
+                semantic_model_name(),
+                semantic_device(),
+            )
+        except Exception:
+            _cached_model = None
+        finally:
+            _model_load_attempted = True
+
+    return _cached_model
+
+
+def _encode_texts(active_model, texts: Sequence[str]):
+    """Invoke ``active_model.encode`` across real models and lightweight test stubs."""
+    text_list = list(texts)
+    try:
+        sig = inspect.signature(active_model.encode)
+        params = sig.parameters
+        accepts_kwargs = any(
+            p.kind == inspect.Parameter.VAR_KEYWORD for p in params.values()
+        )
+        kwargs = {}
+        if "convert_to_numpy" in params or accepts_kwargs:
+            kwargs["convert_to_numpy"] = True
+        if "normalize_embeddings" in params or accepts_kwargs:
+            kwargs["normalize_embeddings"] = True
+        if "show_progress_bar" in params or accepts_kwargs:
+            kwargs["show_progress_bar"] = False
+        return active_model.encode(text_list, **kwargs)
+    except (TypeError, ValueError):
+        return active_model.encode(text_list)
 
 
 def semantic_similarity_matrix(
@@ -85,70 +132,34 @@ def semantic_similarity_matrix(
     model=None,
 ) -> Optional[np.ndarray]:
     """
-    Calculate pairwise cosine similarity using sentence embeddings.
+    Compute a pairwise cosine similarity matrix for ``texts``.
 
-    Args:
-        texts: Text clauses to compare.
-        model: Optional injected model, primarily for testing.
-
-    Returns:
-        A square NumPy similarity matrix, or None if unavailable.
-
-    Supplying a model bypasses the environment feature flag.
+    Returns None when fewer than 2 texts are provided, any item is blank/non-str,
+    the semantic model is unavailable, embeddings are malformed/zero-norm, or
+    encoding fails. Inference runs outside ``_MODEL_LOCK``.
     """
-    if isinstance(texts, (str, bytes)):
+    if not texts or len(texts) < 2:
         return None
-
-    try:
-        clean_texts = [
-            str(text).strip()
-            for text in texts
-            if text is not None and str(text).strip()
-        ]
-
-        if len(clean_texts) != len(texts) or len(clean_texts) < 2:
-            return None
-
-    except (TypeError, ValueError):
+    if any(not isinstance(text, str) or not text.strip() for text in texts):
         return None
 
     active_model = model if model is not None else get_semantic_model()
-
     if active_model is None:
         return None
 
     try:
-        embeddings = active_model.encode(
-            clean_texts,
-            convert_to_numpy=True,
-            normalize_embeddings=True,
-            show_progress_bar=False,
-        )
-
-        embeddings = np.asarray(embeddings, dtype=float)
-
-        if embeddings.ndim != 2:
+        raw_embeddings = _encode_texts(active_model, texts)
+        if raw_embeddings is None:
             return None
-
-        if embeddings.shape[0] != len(clean_texts):
+        embeddings = np.asarray(raw_embeddings, dtype=float)
+        if embeddings.ndim != 2 or embeddings.shape[0] != len(texts) or embeddings.shape[1] == 0:
             return None
-
-        if embeddings.shape[1] == 0:
-            return None
-
         if not np.all(np.isfinite(embeddings)):
             return None
-
         norms = np.linalg.norm(embeddings, axis=1, keepdims=True)
-
-        if np.any(norms == 0):
+        if np.any(norms <= 0):
             return None
-
         normalized = embeddings / norms
-        similarities = normalized @ normalized.T
-
-        return np.clip(similarities, -1.0, 1.0)
-
+        return np.matmul(normalized, normalized.T)
     except Exception:
-        # A semantic-model failure must never break prompt optimization.
         return None

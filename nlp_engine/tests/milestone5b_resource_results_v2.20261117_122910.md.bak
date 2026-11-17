@@ -1,0 +1,45 @@
+# TokenTrim Milestone 5B — Large-Input & Resource Characterization Report (v2)
+
+## 1. Executive Summary
+
+This independent benchmark characterization evaluates the TokenTrim NLP Engine across large inputs,
+memory allocation scaling, repeated stability, thread concurrency, and state isolation.
+Production code remained untouched throughout this milestone.
+
+## 2. Environment Specifications
+
+- **Operating System:** Windows 11 (10.0.26300)
+- **Python Version:** 3.13.5
+- **Processor / Architecture:** Intel64 Family 6 Model 126 Stepping 5, GenuineIntel (4 logical cores)
+- **Pytest Version:** 9.2.0
+- **NumPy Version:** 2.5.4
+- **Pydantic Version:** 2.14.3
+- **tiktoken Version:** 0.14.0
+- **Execution Isolation Mode:** `subprocess`
+- **Checkpoint Mode:** Atomic per-sample JSON persistence (`os.replace`)
+
+## 3. Large-Input Scaling & Latency Results
+
+| Scenario ID | Profile | Target Bytes | Chars | Samples | Min ms | Median ms | Mean ms | Max ms | SD ms | Peak Traced MiB | Fallback | Integrity |
+|---|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|:---:|:---:|
+| `smoke_2k_clause` | `clause_heavy` | 2048 | 2048 | 1 | 212.9 | 212.9 | 212.9 | 212.9 | 0.0 | 0.3 | yes | **PASS** |
+| `smoke_16k_tech` | `technical_protected` | 16384 | 15871 | 1 | 365.0 | 365.0 | 365.0 | 365.0 | 0.0 | 0.6 | yes | **PASS** |
+
+## 4. Concurrency & Thread-Safety Scaling
+
+| Worker Level | Total Reqs | Success | Failures | Match Sequential | Wall Time ms | Throughput (req/s) | Median Latency ms | State Isolation |
+|---|---:|---:|---:|---:|---:|---:|---:|:---:|
+| `1 workers` | 4 | 4 | 0 | 4 | 113.8 | 35.14 | 7.5 | **VERIFIED** |
+| `2 workers` | 4 | 4 | 0 | 4 | 124.2 | 32.22 | 9.0 | **VERIFIED** |
+
+## 5. Memory Allocation Scaling & Stability Results
+
+- **Isolation Mode:** Subprocess-isolated
+- **Note on Isolation:** When run under subprocess isolation, peak tracemalloc and RSS reflect per-request footprint under hard kernel timeout enforcement. Cumulative RSS retention across iterations is characterized during in-process runs.
+
+| Series | Iteration | Latency ms | Peak Traced MiB | Net Traced Delta MiB | RSS Start MiB | RSS Peak MiB | Status |
+|---|---:|---:|---:|---:|---:|---:|:---:|
+| Identical | 1 | 155.8 | 0.26 | 0.13 | 137.75 | 138.49 | `OK` |
+| Identical | 2 | 141.4 | 0.26 | 0.13 | 137.39 | 138.45 | `OK` |
+
+## 6. Status: Complete

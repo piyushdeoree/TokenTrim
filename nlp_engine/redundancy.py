@@ -1,4 +1,3 @@
-
 """
 redundancy.py - detection of repeated / duplicated content.
 
@@ -9,6 +8,7 @@ Hybrid techniques:
   * TF-IDF-style binary-vector cosine similarity (scikit-learn)
   * optional pretrained sentence-embedding similarity
   * strict subsumption test for removal
+  * O(N) exact-duplicate hash grouping when clause count exceeds MAX_CLAUSES_FOR_PAIRWISE
   * word n-gram counting for repeated phrases
 
 Important safety rule:
@@ -32,7 +32,7 @@ import math
 import re
 from collections import Counter
 from dataclasses import dataclass, replace
-from typing import FrozenSet, List, Optional, Sequence, Tuple
+from typing import Dict, FrozenSet, List, Optional, Sequence, Tuple
 
 from . import config
 from .models import Finding
@@ -44,6 +44,7 @@ from .textutils import (
     extract_numbers,
     head_word,
     is_negated,
+    split_clauses,
     words,
 )
 
@@ -54,14 +55,6 @@ COMPARABLE_KINDS = {"instruction", "constraint", "question"}
 # These are separate from the existing TF-IDF thresholds in config.py.
 SEMANTIC_SIMILARITY_THRESHOLD_INSTRUCTION = 0.82
 SEMANTIC_SIMILARITY_THRESHOLD_CONSTRAINT = 0.86
-
-
-_SPLIT_RE = re.compile(
-    r"\s*(?:,\s*(?:and\s+)?(?:then\s+)?|;\s*|:\s*|"
-    r"\s+and\s+(?:also\s+)?(?:then\s+)?)"
-    r"(?=(?:please\s+)?(?:" + "|".join(sorted(config.SPLIT_VERBS)) + r")\b)",
-    re.IGNORECASE,
-)
 
 
 @dataclass
@@ -75,11 +68,6 @@ class Clause:
     numbers: FrozenSet[str]
     removed: bool = False
     covered_by: Optional[int] = None
-
-
-def split_clauses(sentence: str) -> List[str]:
-    parts = [p.strip() for p in _SPLIT_RE.split(sentence) if p and p.strip()]
-    return parts or [sentence]
 
 
 def build_clauses(segments: Sequence[Segment]) -> List[Clause]:
@@ -187,7 +175,7 @@ def _subsumed(small: Clause, big: Clause) -> bool:
 
 
 # ---------------------------------------------------------------------------
-# Hybrid similarity
+# Hybrid similarity & O(N) large-clause exact duplicate detection
 # ---------------------------------------------------------------------------
 
 def _valid_similarity_matrix(matrix, size: int) -> bool:
@@ -228,6 +216,53 @@ class Pair:
     relation: str       # "equal" | "i_in_j" | "j_in_i" | "similar"
 
 
+def _find_exact_duplicate_pairs_linear(clauses: Sequence[Clause]) -> List[Pair]:
+    """
+    O(N) exact-duplicate candidate detection when clause count exceeds
+    ``config.MAX_CLAUSES_FOR_PAIRWISE``.
+
+    - Groups clauses by conservative original stems, kind, polarity, numbers,
+      and head verb (for non-constraints).
+    - Emits at most K - 1 pairs per duplicate group (anchored to the first
+      occurrence), bounding total pairs to O(N) rather than O(N^2).
+    - Verifies ``_subsumed`` so strict lexical subsumption remains the sole
+      authority for deletion.
+    - Leaves non-identical clauses uncompared.
+    """
+    groups: Dict[
+        Tuple[str, bool, FrozenSet[str], Optional[str], FrozenSet[str]],
+        List[int],
+    ] = {}
+
+    for idx, clause in enumerate(clauses):
+        if not clause.stems:
+            continue
+        if clause.kind != "constraint" and clause.head is None:
+            continue
+        key = (
+            clause.kind,
+            clause.negated,
+            clause.numbers,
+            clause.head if clause.kind != "constraint" else None,
+            clause.stems,
+        )
+        groups.setdefault(key, []).append(idx)
+
+    pairs: List[Pair] = []
+    for indices in groups.values():
+        if len(indices) < 2:
+            continue
+        anchor = indices[0]
+        anchor_clause = clauses[anchor]
+        for dup_idx in indices[1:]:
+            dup_clause = clauses[dup_idx]
+            if anchor_clause.stems == dup_clause.stems and _subsumed(anchor_clause, dup_clause):
+                pairs.append(Pair(anchor, dup_idx, 1.0, "equal"))
+
+    pairs.sort(key=lambda p: (p.i, p.j))
+    return pairs
+
+
 def find_pairs(
     clauses: Sequence[Clause],
     semantic_sims=None,
@@ -250,8 +285,11 @@ def find_pairs(
     """
     size = len(clauses)
 
-    if size < 2 or size > config.MAX_CLAUSES_FOR_PAIRWISE:
+    if size < 2:
         return []
+
+    if size > config.MAX_CLAUSES_FOR_PAIRWISE:
+        return _find_exact_duplicate_pairs_linear(clauses)
 
     lexical_sims = similarity_matrix(clauses)
 

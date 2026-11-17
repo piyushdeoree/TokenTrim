@@ -52,6 +52,8 @@ from .textutils import (
 from .tokenizer import count_tokens, count_tokens_only, tokenizer_info
 from .validator import validate_optimization
 
+_DEFAULT_VALIDATE_OPTIMIZATION = validate_optimization
+
 
 _SUGGESTIONS = {
     "redundancy": "Remove repeated instructions",
@@ -518,7 +520,7 @@ def build_analysis(
     prepared = prepare_prompt(prompt)
 
     info = tokenizer_info(model)
-    stats = count_tokens(prompt, model)
+    stats = count_tokens(prompt, model, prepared=prepared)
 
     token_stats = TokenStats(
         **stats,
@@ -633,10 +635,17 @@ def analyze_prompt_detailed(
     best, best_validation, first_validation = None, None, None
 
     for cand in candidates:
-        v = validate_optimization(
-            original,
-            cand.optimized_prompt,
-        )
+        if validate_optimization is _DEFAULT_VALIDATE_OPTIMIZATION:
+            v = validate_optimization(
+                original,
+                cand.optimized_prompt,
+                original_prepared=analysis.prepared,
+            )
+        else:
+            v = validate_optimization(
+                original,
+                cand.optimized_prompt,
+            )
 
         if first_validation is None:
             first_validation = v

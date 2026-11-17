@@ -1,4 +1,3 @@
-
 """
 validator.py - safety check for an optimized prompt.
 
@@ -10,7 +9,7 @@ Hard checks:
   - Protected spans
   - Output format
   - Named items
-  - Constraint coverage and negation preservation
+  - Constraint coverage and negation preservation (per sub-clause)
   - Explicit sequence and ordinal workflow preservation
 
 Soft checks:
@@ -24,11 +23,12 @@ NOT proven semantic equivalence.
 from __future__ import annotations
 
 import re
-from typing import Dict, List, Set
+from typing import Dict, List, Optional, Set, Tuple
 
 from . import config
 from .models import ValidationResult
 from .textutils import (
+    PreparedPrompt,
     apply_rewrites,
     content_stems,
     extract_numbers,
@@ -36,6 +36,20 @@ from .textutils import (
     prepare_prompt,
     render_segments,
 )
+
+_VALIDATION_CLAUSE_SPLIT_RE = re.compile(
+    r"\s*(?:,\s*(?:and\s+)?(?:then\s+)?|;\s*|:\s*|"
+    r"\s+and\s+(?:also\s+)?(?:then\s+)?)"
+    r"(?=(?:please\s+)?(?:(?:do\s+not|don't|never|not|avoid|must\s+not|should\s+not)\b|"
+    r"(?:" + "|".join(sorted(config.SPLIT_VERBS)) + r")\b))",
+    re.IGNORECASE,
+)
+
+
+def _split_validation_clauses(sentence: str) -> List[str]:
+    """Split a constraint/instruction sentence into sub-clauses for validation."""
+    parts = [p.strip() for p in _VALIDATION_CLAUSE_SPLIT_RE.split(sentence) if p and p.strip()]
+    return parts or [sentence]
 
 
 def _entities(text: str) -> Set[str]:
@@ -177,7 +191,7 @@ def _phrase_match_score(first: Set[str], second: Set[str]) -> float:
     Dividing by the smaller set allows a phrase to gain harmless extra
     descriptive words without losing its identity.
     """
-    if not first or not second:
+    if not first or second is None or not second:
         return 0.0
 
     denominator = min(len(first), len(second))
@@ -458,9 +472,72 @@ def _constraint_coverage_scores(
     return best_coverages
 
 
+def _prepare_candidate_clauses(
+    optimized_segments: List[str],
+) -> List[Tuple[Set[str], bool]]:
+    """Extract (stems, is_negated) for every sub-clause in optimized segments."""
+    candidate_clauses: List[Tuple[Set[str], bool]] = []
+    for seg_text in optimized_segments:
+        for clause_text in _split_validation_clauses(seg_text):
+            stems = {
+                stem
+                for stem in content_stems(clause_text)
+                if not stem.startswith("qzph")
+            }
+            if not stems:
+                continue
+            candidate_clauses.append((stems, is_negated(clause_text)))
+    return candidate_clauses
+
+
+def _subclause_constraint_passed(
+    original_constraint: str,
+    candidate_clauses: List[Tuple[Set[str], bool]],
+) -> bool:
+    """
+    Verify that every sub-clause of ``original_constraint`` is independently
+    covered by at least one candidate sub-clause with matching polarity and
+    coverage >= ``config.CONSTRAINT_COVERAGE_MIN``.
+
+    Stems are never aggregated across unrelated candidate clauses, and an
+    unrelated negation in another clause cannot compensate for a deleted
+    negative requirement.
+    """
+    sub_clauses = _split_validation_clauses(original_constraint)
+    effective_subs: List[Tuple[Set[str], bool]] = []
+
+    for sub in sub_clauses:
+        stems = {
+            stem
+            for stem in content_stems(sub)
+            if not stem.startswith("qzph")
+        }
+        if stems:
+            effective_subs.append((stems, is_negated(sub)))
+
+    if not effective_subs:
+        return True
+
+    for sub_stems, sub_negated in effective_subs:
+        best_cov = 0.0
+        for cand_stems, cand_negated in candidate_clauses:
+            if sub_negated != cand_negated:
+                continue
+            cov = len(sub_stems & cand_stems) / len(sub_stems)
+            if cov > best_cov:
+                best_cov = cov
+                if best_cov >= config.CONSTRAINT_COVERAGE_MIN:
+                    break
+        if best_cov < config.CONSTRAINT_COVERAGE_MIN:
+            return False
+
+    return True
+
+
 def validate_optimization(
     original: str,
     optimized: str,
+    original_prepared: Optional[PreparedPrompt] = None,
 ) -> ValidationResult:
     """Validate an optimized prompt against its original version."""
 
@@ -477,7 +554,11 @@ def validate_optimization(
             metrics={},
         )
 
-    prep = prepare_prompt(original)
+    prep = (
+        original_prepared
+        if original_prepared is not None and original_prepared.original == original
+        else prepare_prompt(original)
+    )
 
     persona_idx = {
         i
@@ -584,12 +665,11 @@ def validate_optimization(
             f"Named items lost: {', '.join(lost_ent[:5])}"
         )
 
-    # 5. Constraints -----------------------------------------------------------
+    # 5. Constraints (independent sub-clause matching) -------------------------
 
     checked = 0
     bad: List[str] = []
-    constraint_texts: List[str] = []
-    constraint_data: List[tuple[Set[str], bool]] = []
+    candidate_clauses = _prepare_candidate_clauses(optimized_segments)
 
     for i, seg in enumerate(prep.segments):
 
@@ -628,19 +708,7 @@ def validate_optimization(
             continue
 
         checked += 1
-        constraint_texts.append(original_constraint)
-        constraint_data.append((stems, is_negated(original_constraint)))
-
-    constraint_coverages = _constraint_coverage_scores(
-        constraint_data,
-        optimized_segments,
-    )
-
-    for original_constraint, coverage in zip(
-        constraint_texts,
-        constraint_coverages,
-    ):
-        if coverage < config.CONSTRAINT_COVERAGE_MIN:
+        if not _subclause_constraint_passed(original_constraint, candidate_clauses):
             bad.append(original_constraint[:50])
 
     metrics["constraints_checked"] = float(checked)

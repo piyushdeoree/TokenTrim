@@ -50,11 +50,11 @@ analyzer.analyze_prompt  -->  the agreed JSON contract
 Recognized protected spans are replaced by opaque placeholders (`QZPH3QZ`) before
 analysis and restored verbatim afterwards. Recognition is pattern-based, not a
 general parser. It covers fenced and inline backticks, triple-double-quoted
-blocks, URLs, e-mail addresses, simple same-line double-quoted and curly-quoted
-strings (up to 500 characters), and balanced braces/brackets. There is no
-dedicated protection pattern for general straight single-quoted strings.
-Numbers are separately checked by validation; do not interpret this list as a
-guarantee that every code, quote, or literal syntax is protected.
+blocks, URLs, e-mail addresses, simple same-line double-quoted, single-quoted,
+and curly-quoted strings (up to 500 characters, excluding contractions and
+possessives), and balanced braces/brackets. Numbers are separately checked by
+validation; do not interpret this list as a guarantee that every code, quote,
+or literal syntax is protected.
 
 Sentences are then classified so that only **instruction-like** text is ever rewritten:
 
@@ -125,12 +125,11 @@ the positive-savings rule. The `analyze_prompt*` functions orchestrate those
 steps.
 
 `register_tokenizer()` prepends a matcher/factory to a process-global registry
-and clears the tokenizer cache. Registrations persist for the process lifetime;
-there is no unregister API. Registering custom counters while other threads
-are analyzing is not documented as thread-safe. Ordinary per-call analysis
-state is local, but the registry and semantic model cache are process-global;
-the engine makes no blanket thread-safety guarantee for concurrent registry
-changes or first-time model loading.
+and clears the tokenizer cache under a re-entrant lock (`_REGISTRY_LOCK`).
+Registrations persist for the process lifetime; there is no unregister API.
+Ordinary per-call analysis state is local, and process-global caches
+(tokenizer registry and lazy semantic model initialization) synchronize
+initialization/updates safely across threads.
 
 ### Optional semantic similarity model
 
@@ -146,10 +145,9 @@ continues through the non-model similarity path.
 | `TOKENTRIM_SEMANTIC_MODEL` | `sentence-transformers/all-MiniLM-L6-v2` | Selects a model identifier or local path. |
 | `TOKENTRIM_SEMANTIC_DEVICE` | `cpu` | Selects the Sentence-Transformers device; `cuda` may be used on a compatible machine. |
 
-Model loading is lazy. If enabled and the files are not cached, Sentence-
-Transformers may attempt a network download. Load and encode errors are caught
-and degrade to the non-model path. The cache and failed-load attempt flag are
-process-global and have no explicit synchronization or retry/reset API.
+Model loading is lazy, thread-safe (`_MODEL_LOCK`), and offline-safe
+(`local_files_only=True`; it never initiates network downloads at runtime).
+Load and encode errors are caught and degrade to the non-model path.
 
 ## 4. Analysis (`redundancy.py`, `analyzer.py`, `complexity.py`)
 
@@ -257,10 +255,10 @@ indicator (bands: <33 low, <66 medium, else high), not a calibrated measurement.
 It is designed to leave recognized code, URLs, e-mails, protected quote forms,
 JSON/bracket blocks, labelled context, specific personas, conflicting
 instructions, formatting requirements, and non-Latin text unchanged. Span
-recognition is pattern-based; in particular, general straight single-quoted
-strings are not protected by a dedicated rule. The optimizer is not a general
-code or quote parser, and its behavior depends on matched rules and clause
-structure.
+recognition is pattern-based, covering fenced/inline code, URLs, e-mails,
+double/single/curly-quoted literals, and balanced JSON/brackets. The optimizer
+is not a general code or quote parser, and its behavior depends on matched
+rules and clause structure.
 
 Example (spec scenario, tokens are model-dependent):
 
@@ -303,7 +301,7 @@ depend on an LLM.
 | protected spans | hard | every code/URL/e-mail/quoted/JSON fragment appears verbatim |
 | output format | hard | every format keyword (json, xml, yaml, csv, markdown, html, table, bullet, numbered, step-by-step...) still present |
 | named items | hard | capitalised names, acronyms, camelCase/snake_case identifiers still present |
-| constraints | hard | each constraint sentence >= 85 % covered by the optimized stems; negations (`do not`) still present |
+| constraints | hard | each sub-clause of a constraint sentence >= 85 % covered by an individual optimized sub-clause with matching polarity |
 | keyword coverage | soft | >= 90 % of original content stems remain (stems of words deliberately removed by the rewrite rules are excluded) |
 | lexical similarity | soft | TF-IDF cosine(original, optimized) >= 0.35 |
 
@@ -347,7 +345,7 @@ strings (numbers, names, code, JSON schema, constraints, context) are still pres
 * **Conflict detection is shallow.** It finds lexical/numeric contradictions only; paraphrased contradictions are missed,
   and `Use Python` / `Don't use Python 2` is intentionally not flagged.
 * **Token counts for non-OpenAI/unknown models and tokenizer fallbacks are estimates**; the heuristic has no verified error bound.
-* **Pairwise de-duplication is skipped above 300 comparable clauses** (O(n²); such inputs are almost certainly data).
+* **Pairwise similarity is skipped above 300 comparable clauses** ($O(N^2)$ guard), while an $O(N)$ linear pass still removes exact duplicate clauses safely.
 * There is no documented maximum prompt size. Large inputs can incur high latency and memory use; use the standalone benchmark to inform deployment-specific limits.
 * **Savings are modest on well-written prompts** (see scenarios 8-10) - the engine removes waste, it does not compress ideas.
 * **No semantic-equivalence guarantee** (section 6).
@@ -360,5 +358,4 @@ strings (numbers, names, code, JSON schema, constraints, context) are still pres
 * Measure the optional semantic model on target environments if that model path will be enabled; similarity remains advisory and does not authorize deletion.
 * Calibrate thresholds/weights on a labelled prompt set; user study to measure whether optimized prompts keep answer quality
   (e.g. compare LLM outputs for original vs optimized prompts).
-* Smarter handling of conflicts (ask the user which requirement wins), structured-prompt (XML/markdown section) awareness,
-  few-shot example de-duplication.
+* Smarter handling of conflicts (ask the user which requirement wins), structured-prompt (XML/markdown section) awareness, few-shot example de-duplication.
