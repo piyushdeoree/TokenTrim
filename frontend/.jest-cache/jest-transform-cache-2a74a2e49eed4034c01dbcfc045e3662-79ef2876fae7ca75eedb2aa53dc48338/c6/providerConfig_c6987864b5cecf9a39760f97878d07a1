@@ -1,0 +1,88 @@
+14f2da91a9db6f36cccc9577f685dea3
+"use strict";
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+function _export(target, all) {
+    for(var name in all)Object.defineProperty(target, name, {
+        enumerable: true,
+        get: all[name]
+    });
+}
+_export(exports, {
+    DEVELOPMENT_MODELS: function() {
+        return DEVELOPMENT_MODELS;
+    },
+    PROVIDERS: function() {
+        return PROVIDERS;
+    }
+});
+const PROVIDERS = [
+    {
+        id: "openai",
+        name: "OpenAI",
+        shortName: "OpenAI",
+        description: "Connect an OpenAI API key to run optimized prompts.",
+        icon: "O"
+    },
+    {
+        id: "gemini",
+        name: "Google Gemini",
+        shortName: "Gemini",
+        description: "Connect a Google AI API key to run optimized prompts.",
+        icon: "G"
+    },
+    {
+        id: "anthropic",
+        name: "Anthropic Claude",
+        shortName: "Claude",
+        description: "Connect an Anthropic API key to run optimized prompts.",
+        icon: "A"
+    }
+];
+const DEVELOPMENT_MODELS = {
+    openai: [
+        {
+            id: "gpt-4o",
+            name: "GPT-4o",
+            provider: "openai",
+            availability: "demo"
+        },
+        {
+            id: "gpt-4o-mini",
+            name: "GPT-4o mini",
+            provider: "openai",
+            availability: "demo"
+        }
+    ],
+    gemini: [
+        {
+            id: "gemini-2.0-flash",
+            name: "Gemini 2.0 Flash",
+            provider: "gemini",
+            availability: "demo"
+        },
+        {
+            id: "gemini-1.5-pro",
+            name: "Gemini 1.5 Pro",
+            provider: "gemini",
+            availability: "demo"
+        }
+    ],
+    anthropic: [
+        {
+            id: "claude-3-5-sonnet-latest",
+            name: "Claude 3.5 Sonnet",
+            provider: "anthropic",
+            availability: "demo"
+        },
+        {
+            id: "claude-3-5-haiku-latest",
+            name: "Claude 3.5 Haiku",
+            provider: "anthropic",
+            availability: "demo"
+        }
+    ]
+};
+
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIkQ6XFxQcm9qZWN0c1xcTWFqb3JcXFRva2VuVHJpbVxcZnJvbnRlbmRcXHNyY1xcc2VydmljZXNcXGJ5b2tcXHByb3ZpZGVyQ29uZmlnLnRzIl0sInNvdXJjZXNDb250ZW50IjpbImltcG9ydCB0eXBlIHsgUHJvdmlkZXJEZWZpbml0aW9uLCBQcm92aWRlcklkLCBQcm92aWRlck1vZGVsIH0gZnJvbSAnQC90eXBlcy9wcm92aWRlcic7XG5cbmV4cG9ydCBjb25zdCBQUk9WSURFUlM6IFByb3ZpZGVyRGVmaW5pdGlvbltdID0gW1xuICB7IGlkOiAnb3BlbmFpJywgbmFtZTogJ09wZW5BSScsIHNob3J0TmFtZTogJ09wZW5BSScsIGRlc2NyaXB0aW9uOiAnQ29ubmVjdCBhbiBPcGVuQUkgQVBJIGtleSB0byBydW4gb3B0aW1pemVkIHByb21wdHMuJywgaWNvbjogJ08nIH0sXG4gIHsgaWQ6ICdnZW1pbmknLCBuYW1lOiAnR29vZ2xlIEdlbWluaScsIHNob3J0TmFtZTogJ0dlbWluaScsIGRlc2NyaXB0aW9uOiAnQ29ubmVjdCBhIEdvb2dsZSBBSSBBUEkga2V5IHRvIHJ1biBvcHRpbWl6ZWQgcHJvbXB0cy4nLCBpY29uOiAnRycgfSxcbiAgeyBpZDogJ2FudGhyb3BpYycsIG5hbWU6ICdBbnRocm9waWMgQ2xhdWRlJywgc2hvcnROYW1lOiAnQ2xhdWRlJywgZGVzY3JpcHRpb246ICdDb25uZWN0IGFuIEFudGhyb3BpYyBBUEkga2V5IHRvIHJ1biBvcHRpbWl6ZWQgcHJvbXB0cy4nLCBpY29uOiAnQScgfSxcbl07XG5cbi8vIERldmVsb3BtZW50LW9ubHkgY2F0YWxvZy4gUmVwbGFjZSB0aGUgbW9kZWwgc2VydmljZSB3aXRoIGJhY2tlbmQgZGlzY292ZXJ5IHdoZW4gYXZhaWxhYmxlLlxuZXhwb3J0IGNvbnN0IERFVkVMT1BNRU5UX01PREVMUzogUmVjb3JkPFByb3ZpZGVySWQsIFByb3ZpZGVyTW9kZWxbXT4gPSB7XG4gIG9wZW5haTogW1xuICAgIHsgaWQ6ICdncHQtNG8nLCBuYW1lOiAnR1BULTRvJywgcHJvdmlkZXI6ICdvcGVuYWknLCBhdmFpbGFiaWxpdHk6ICdkZW1vJyB9LFxuICAgIHsgaWQ6ICdncHQtNG8tbWluaScsIG5hbWU6ICdHUFQtNG8gbWluaScsIHByb3ZpZGVyOiAnb3BlbmFpJywgYXZhaWxhYmlsaXR5OiAnZGVtbycgfSxcbiAgXSxcbiAgZ2VtaW5pOiBbXG4gICAgeyBpZDogJ2dlbWluaS0yLjAtZmxhc2gnLCBuYW1lOiAnR2VtaW5pIDIuMCBGbGFzaCcsIHByb3ZpZGVyOiAnZ2VtaW5pJywgYXZhaWxhYmlsaXR5OiAnZGVtbycgfSxcbiAgICB7IGlkOiAnZ2VtaW5pLTEuNS1wcm8nLCBuYW1lOiAnR2VtaW5pIDEuNSBQcm8nLCBwcm92aWRlcjogJ2dlbWluaScsIGF2YWlsYWJpbGl0eTogJ2RlbW8nIH0sXG4gIF0sXG4gIGFudGhyb3BpYzogW1xuICAgIHsgaWQ6ICdjbGF1ZGUtMy01LXNvbm5ldC1sYXRlc3QnLCBuYW1lOiAnQ2xhdWRlIDMuNSBTb25uZXQnLCBwcm92aWRlcjogJ2FudGhyb3BpYycsIGF2YWlsYWJpbGl0eTogJ2RlbW8nIH0sXG4gICAgeyBpZDogJ2NsYXVkZS0zLTUtaGFpa3UtbGF0ZXN0JywgbmFtZTogJ0NsYXVkZSAzLjUgSGFpa3UnLCBwcm92aWRlcjogJ2FudGhyb3BpYycsIGF2YWlsYWJpbGl0eTogJ2RlbW8nIH0sXG4gIF0sXG59O1xuIl0sIm5hbWVzIjpbIkRFVkVMT1BNRU5UX01PREVMUyIsIlBST1ZJREVSUyIsImlkIiwibmFtZSIsInNob3J0TmFtZSIsImRlc2NyaXB0aW9uIiwiaWNvbiIsIm9wZW5haSIsInByb3ZpZGVyIiwiYXZhaWxhYmlsaXR5IiwiZ2VtaW5pIiwiYW50aHJvcGljIl0sIm1hcHBpbmdzIjoiOzs7Ozs7Ozs7OztJQVNhQSxrQkFBa0I7ZUFBbEJBOztJQVBBQyxTQUFTO2VBQVRBOzs7QUFBTixNQUFNQSxZQUFrQztJQUM3QztRQUFFQyxJQUFJO1FBQVVDLE1BQU07UUFBVUMsV0FBVztRQUFVQyxhQUFhO1FBQXVEQyxNQUFNO0lBQUk7SUFDbkk7UUFBRUosSUFBSTtRQUFVQyxNQUFNO1FBQWlCQyxXQUFXO1FBQVVDLGFBQWE7UUFBeURDLE1BQU07SUFBSTtJQUM1STtRQUFFSixJQUFJO1FBQWFDLE1BQU07UUFBb0JDLFdBQVc7UUFBVUMsYUFBYTtRQUEwREMsTUFBTTtJQUFJO0NBQ3BKO0FBR00sTUFBTU4scUJBQTBEO0lBQ3JFTyxRQUFRO1FBQ047WUFBRUwsSUFBSTtZQUFVQyxNQUFNO1lBQVVLLFVBQVU7WUFBVUMsY0FBYztRQUFPO1FBQ3pFO1lBQUVQLElBQUk7WUFBZUMsTUFBTTtZQUFlSyxVQUFVO1lBQVVDLGNBQWM7UUFBTztLQUNwRjtJQUNEQyxRQUFRO1FBQ047WUFBRVIsSUFBSTtZQUFvQkMsTUFBTTtZQUFvQkssVUFBVTtZQUFVQyxjQUFjO1FBQU87UUFDN0Y7WUFBRVAsSUFBSTtZQUFrQkMsTUFBTTtZQUFrQkssVUFBVTtZQUFVQyxjQUFjO1FBQU87S0FDMUY7SUFDREUsV0FBVztRQUNUO1lBQUVULElBQUk7WUFBNEJDLE1BQU07WUFBcUJLLFVBQVU7WUFBYUMsY0FBYztRQUFPO1FBQ3pHO1lBQUVQLElBQUk7WUFBMkJDLE1BQU07WUFBb0JLLFVBQVU7WUFBYUMsY0FBYztRQUFPO0tBQ3hHO0FBQ0gifQ==

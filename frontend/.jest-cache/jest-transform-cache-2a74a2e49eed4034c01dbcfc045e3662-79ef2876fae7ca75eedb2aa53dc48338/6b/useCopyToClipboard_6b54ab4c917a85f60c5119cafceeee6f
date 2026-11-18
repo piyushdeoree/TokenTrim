@@ -1,0 +1,59 @@
+bcd5c4f83820370182679f305c592d42
+"use strict";
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+Object.defineProperty(exports, "useCopyToClipboard", {
+    enumerable: true,
+    get: function() {
+        return useCopyToClipboard;
+    }
+});
+const _react = require("react");
+function useCopyToClipboard() {
+    const [copied, setCopied] = (0, _react.useState)(false);
+    const [error, setError] = (0, _react.useState)(null);
+    const resetTimer = (0, _react.useRef)(null);
+    (0, _react.useEffect)(()=>()=>{
+            if (resetTimer.current) clearTimeout(resetTimer.current);
+        }, []);
+    const fallbackCopy = (text)=>{
+        const field = document.createElement("textarea");
+        field.value = text;
+        field.setAttribute("readonly", "");
+        field.style.position = "fixed";
+        field.style.opacity = "0";
+        document.body.appendChild(field);
+        field.select();
+        try {
+            return document.execCommand("copy");
+        } finally{
+            document.body.removeChild(field);
+        }
+    };
+    const copy = async (text)=>{
+        setCopied(false);
+        setError(null);
+        try {
+            if (navigator.clipboard?.writeText) await navigator.clipboard.writeText(text);
+            else if (!fallbackCopy(text)) throw new Error("Clipboard copy was declined.");
+        } catch  {
+            try {
+                if (!fallbackCopy(text)) throw new Error("Clipboard copy was declined.");
+            } catch  {
+                setError("Unable to copy automatically. Select and copy the text manually.");
+                return;
+            }
+        }
+        setCopied(true);
+        if (resetTimer.current) clearTimeout(resetTimer.current);
+        resetTimer.current = setTimeout(()=>setCopied(false), 1800);
+    };
+    return {
+        copied,
+        error,
+        copy
+    };
+}
+
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIkQ6XFxQcm9qZWN0c1xcTWFqb3JcXFRva2VuVHJpbVxcZnJvbnRlbmRcXHNyY1xcaG9va3NcXHVzZUNvcHlUb0NsaXBib2FyZC50cyJdLCJzb3VyY2VzQ29udGVudCI6WyJpbXBvcnQgeyB1c2VFZmZlY3QsIHVzZVJlZiwgdXNlU3RhdGUgfSBmcm9tICdyZWFjdCc7XHJcbmV4cG9ydCBmdW5jdGlvbiB1c2VDb3B5VG9DbGlwYm9hcmQoKSB7XHJcbiAgY29uc3QgW2NvcGllZCwgc2V0Q29waWVkXSA9IHVzZVN0YXRlKGZhbHNlKTtcclxuICBjb25zdCBbZXJyb3IsIHNldEVycm9yXSA9IHVzZVN0YXRlPHN0cmluZyB8IG51bGw+KG51bGwpO1xyXG4gIGNvbnN0IHJlc2V0VGltZXIgPSB1c2VSZWY8UmV0dXJuVHlwZTx0eXBlb2Ygc2V0VGltZW91dD4gfCBudWxsPihudWxsKTtcclxuXHJcbiAgdXNlRWZmZWN0KCgpID0+ICgpID0+IHtcclxuICAgIGlmIChyZXNldFRpbWVyLmN1cnJlbnQpIGNsZWFyVGltZW91dChyZXNldFRpbWVyLmN1cnJlbnQpO1xyXG4gIH0sIFtdKTtcclxuXHJcbiAgY29uc3QgZmFsbGJhY2tDb3B5ID0gKHRleHQ6IHN0cmluZykgPT4ge1xyXG4gICAgY29uc3QgZmllbGQgPSBkb2N1bWVudC5jcmVhdGVFbGVtZW50KCd0ZXh0YXJlYScpO1xyXG4gICAgZmllbGQudmFsdWUgPSB0ZXh0O1xyXG4gICAgZmllbGQuc2V0QXR0cmlidXRlKCdyZWFkb25seScsICcnKTtcclxuICAgIGZpZWxkLnN0eWxlLnBvc2l0aW9uID0gJ2ZpeGVkJztcclxuICAgIGZpZWxkLnN0eWxlLm9wYWNpdHkgPSAnMCc7XHJcbiAgICBkb2N1bWVudC5ib2R5LmFwcGVuZENoaWxkKGZpZWxkKTtcclxuICAgIGZpZWxkLnNlbGVjdCgpO1xyXG4gICAgdHJ5IHsgcmV0dXJuIGRvY3VtZW50LmV4ZWNDb21tYW5kKCdjb3B5Jyk7IH1cclxuICAgIGZpbmFsbHkgeyBkb2N1bWVudC5ib2R5LnJlbW92ZUNoaWxkKGZpZWxkKTsgfVxyXG4gIH07XHJcblxyXG4gIGNvbnN0IGNvcHkgPSBhc3luYyAodGV4dDogc3RyaW5nKSA9PiB7XHJcbiAgICBzZXRDb3BpZWQoZmFsc2UpO1xyXG4gICAgc2V0RXJyb3IobnVsbCk7XHJcbiAgICB0cnkge1xyXG4gICAgICBpZiAobmF2aWdhdG9yLmNsaXBib2FyZD8ud3JpdGVUZXh0KSBhd2FpdCBuYXZpZ2F0b3IuY2xpcGJvYXJkLndyaXRlVGV4dCh0ZXh0KTtcclxuICAgICAgZWxzZSBpZiAoIWZhbGxiYWNrQ29weSh0ZXh0KSkgdGhyb3cgbmV3IEVycm9yKCdDbGlwYm9hcmQgY29weSB3YXMgZGVjbGluZWQuJyk7XHJcbiAgICB9IGNhdGNoIHtcclxuICAgICAgdHJ5IHtcclxuICAgICAgICBpZiAoIWZhbGxiYWNrQ29weSh0ZXh0KSkgdGhyb3cgbmV3IEVycm9yKCdDbGlwYm9hcmQgY29weSB3YXMgZGVjbGluZWQuJyk7XHJcbiAgICAgIH0gY2F0Y2gge1xyXG4gICAgICAgIHNldEVycm9yKCdVbmFibGUgdG8gY29weSBhdXRvbWF0aWNhbGx5LiBTZWxlY3QgYW5kIGNvcHkgdGhlIHRleHQgbWFudWFsbHkuJyk7XHJcbiAgICAgICAgcmV0dXJuO1xyXG4gICAgICB9XHJcbiAgICB9XHJcbiAgICBzZXRDb3BpZWQodHJ1ZSk7XHJcbiAgICBpZiAocmVzZXRUaW1lci5jdXJyZW50KSBjbGVhclRpbWVvdXQocmVzZXRUaW1lci5jdXJyZW50KTtcclxuICAgIHJlc2V0VGltZXIuY3VycmVudCA9IHNldFRpbWVvdXQoKCkgPT4gc2V0Q29waWVkKGZhbHNlKSwgMTgwMCk7XHJcbiAgfTtcclxuICByZXR1cm4geyBjb3BpZWQsIGVycm9yLCBjb3B5IH07XHJcbn1cclxuIl0sIm5hbWVzIjpbInVzZUNvcHlUb0NsaXBib2FyZCIsImNvcGllZCIsInNldENvcGllZCIsInVzZVN0YXRlIiwiZXJyb3IiLCJzZXRFcnJvciIsInJlc2V0VGltZXIiLCJ1c2VSZWYiLCJ1c2VFZmZlY3QiLCJjdXJyZW50IiwiY2xlYXJUaW1lb3V0IiwiZmFsbGJhY2tDb3B5IiwidGV4dCIsImZpZWxkIiwiZG9jdW1lbnQiLCJjcmVhdGVFbGVtZW50IiwidmFsdWUiLCJzZXRBdHRyaWJ1dGUiLCJzdHlsZSIsInBvc2l0aW9uIiwib3BhY2l0eSIsImJvZHkiLCJhcHBlbmRDaGlsZCIsInNlbGVjdCIsImV4ZWNDb21tYW5kIiwicmVtb3ZlQ2hpbGQiLCJjb3B5IiwibmF2aWdhdG9yIiwiY2xpcGJvYXJkIiwid3JpdGVUZXh0IiwiRXJyb3IiLCJzZXRUaW1lb3V0Il0sIm1hcHBpbmdzIjoiOzs7OytCQUNnQkE7OztlQUFBQTs7O3VCQUQ0QjtBQUNyQyxTQUFTQTtJQUNkLE1BQU0sQ0FBQ0MsUUFBUUMsVUFBVSxHQUFHQyxJQUFBQSxlQUFRLEVBQUM7SUFDckMsTUFBTSxDQUFDQyxPQUFPQyxTQUFTLEdBQUdGLElBQUFBLGVBQVEsRUFBZ0I7SUFDbEQsTUFBTUcsYUFBYUMsSUFBQUEsYUFBTSxFQUF1QztJQUVoRUMsSUFBQUEsZ0JBQVMsRUFBQyxJQUFNO1lBQ2QsSUFBSUYsV0FBV0csT0FBTyxFQUFFQyxhQUFhSixXQUFXRyxPQUFPO1FBQ3pELEdBQUcsRUFBRTtJQUVMLE1BQU1FLGVBQWUsQ0FBQ0M7UUFDcEIsTUFBTUMsUUFBUUMsU0FBU0MsYUFBYSxDQUFDO1FBQ3JDRixNQUFNRyxLQUFLLEdBQUdKO1FBQ2RDLE1BQU1JLFlBQVksQ0FBQyxZQUFZO1FBQy9CSixNQUFNSyxLQUFLLENBQUNDLFFBQVEsR0FBRztRQUN2Qk4sTUFBTUssS0FBSyxDQUFDRSxPQUFPLEdBQUc7UUFDdEJOLFNBQVNPLElBQUksQ0FBQ0MsV0FBVyxDQUFDVDtRQUMxQkEsTUFBTVUsTUFBTTtRQUNaLElBQUk7WUFBRSxPQUFPVCxTQUFTVSxXQUFXLENBQUM7UUFBUyxTQUNuQztZQUFFVixTQUFTTyxJQUFJLENBQUNJLFdBQVcsQ0FBQ1o7UUFBUTtJQUM5QztJQUVBLE1BQU1hLE9BQU8sT0FBT2Q7UUFDbEJWLFVBQVU7UUFDVkcsU0FBUztRQUNULElBQUk7WUFDRixJQUFJc0IsVUFBVUMsU0FBUyxFQUFFQyxXQUFXLE1BQU1GLFVBQVVDLFNBQVMsQ0FBQ0MsU0FBUyxDQUFDakI7aUJBQ25FLElBQUksQ0FBQ0QsYUFBYUMsT0FBTyxNQUFNLElBQUlrQixNQUFNO1FBQ2hELEVBQUUsT0FBTTtZQUNOLElBQUk7Z0JBQ0YsSUFBSSxDQUFDbkIsYUFBYUMsT0FBTyxNQUFNLElBQUlrQixNQUFNO1lBQzNDLEVBQUUsT0FBTTtnQkFDTnpCLFNBQVM7Z0JBQ1Q7WUFDRjtRQUNGO1FBQ0FILFVBQVU7UUFDVixJQUFJSSxXQUFXRyxPQUFPLEVBQUVDLGFBQWFKLFdBQVdHLE9BQU87UUFDdkRILFdBQVdHLE9BQU8sR0FBR3NCLFdBQVcsSUFBTTdCLFVBQVUsUUFBUTtJQUMxRDtJQUNBLE9BQU87UUFBRUQ7UUFBUUc7UUFBT3NCO0lBQUs7QUFDL0IifQ==

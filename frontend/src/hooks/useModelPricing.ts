@@ -1,6 +1,5 @@
 import { useAsync } from './useAsync';
 import { load } from '@/services/data';
-import type { ModelPricing } from '@/types/model';
 export const useModelPricing = (enabled = true) =>
   useAsync(async () => {
     if (!enabled) return [];

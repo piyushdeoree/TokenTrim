@@ -1,0 +1,32 @@
+e5eddbb4c46de01af90c39e49fe709d0
+"use strict";
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+function _export(target, all) {
+    for(var name in all)Object.defineProperty(target, name, {
+        enumerable: true,
+        get: all[name]
+    });
+}
+_export(exports, {
+    IS_BYOK_DEMO_MODE: function() {
+        return IS_BYOK_DEMO_MODE;
+    },
+    getByokAdapter: function() {
+        return getByokAdapter;
+    }
+});
+const _demoAdapter = require("./demoAdapter");
+const IS_BYOK_DEMO_MODE = process.env.NODE_ENV !== "production";
+// Real API services can replace this adapter after the backend contract is agreed.
+let adapter;
+function getByokAdapter() {
+    if (!IS_BYOK_DEMO_MODE) {
+        throw new Error("BYOK backend integration is not configured.");
+    }
+    adapter ??= (0, _demoAdapter.createDemoAdapter)();
+    return adapter;
+}
+
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIkQ6XFxQcm9qZWN0c1xcTWFqb3JcXFRva2VuVHJpbVxcZnJvbnRlbmRcXHNyY1xcc2VydmljZXNcXGJ5b2tcXGFkYXB0ZXIudHMiXSwic291cmNlc0NvbnRlbnQiOlsiaW1wb3J0IHR5cGUgeyBFeGVjdXRpb25BZGFwdGVyIH0gZnJvbSAnQC90eXBlcy9leGVjdXRpb24nO1xuaW1wb3J0IHsgY3JlYXRlRGVtb0FkYXB0ZXIgfSBmcm9tICcuL2RlbW9BZGFwdGVyJztcblxuZXhwb3J0IGNvbnN0IElTX0JZT0tfREVNT19NT0RFID0gcHJvY2Vzcy5lbnYuTk9ERV9FTlYgIT09ICdwcm9kdWN0aW9uJztcbi8vIFJlYWwgQVBJIHNlcnZpY2VzIGNhbiByZXBsYWNlIHRoaXMgYWRhcHRlciBhZnRlciB0aGUgYmFja2VuZCBjb250cmFjdCBpcyBhZ3JlZWQuXG5sZXQgYWRhcHRlcjogRXhlY3V0aW9uQWRhcHRlciB8IHVuZGVmaW5lZDtcbmV4cG9ydCBmdW5jdGlvbiBnZXRCeW9rQWRhcHRlcigpOiBFeGVjdXRpb25BZGFwdGVyIHtcbiAgaWYgKCFJU19CWU9LX0RFTU9fTU9ERSkge1xuICAgIHRocm93IG5ldyBFcnJvcignQllPSyBiYWNrZW5kIGludGVncmF0aW9uIGlzIG5vdCBjb25maWd1cmVkLicpO1xuICB9XG4gIGFkYXB0ZXIgPz89IGNyZWF0ZURlbW9BZGFwdGVyKCk7XG4gIHJldHVybiBhZGFwdGVyO1xufVxuIl0sIm5hbWVzIjpbIklTX0JZT0tfREVNT19NT0RFIiwiZ2V0Qnlva0FkYXB0ZXIiLCJwcm9jZXNzIiwiZW52IiwiTk9ERV9FTlYiLCJhZGFwdGVyIiwiRXJyb3IiLCJjcmVhdGVEZW1vQWRhcHRlciJdLCJtYXBwaW5ncyI6Ijs7Ozs7Ozs7Ozs7SUFHYUEsaUJBQWlCO2VBQWpCQTs7SUFHR0MsY0FBYztlQUFkQTs7OzZCQUxrQjtBQUUzQixNQUFNRCxvQkFBb0JFLFFBQVFDLEdBQUcsQ0FBQ0MsUUFBUSxLQUFLO0FBQzFELG1GQUFtRjtBQUNuRixJQUFJQztBQUNHLFNBQVNKO0lBQ2QsSUFBSSxDQUFDRCxtQkFBbUI7UUFDdEIsTUFBTSxJQUFJTSxNQUFNO0lBQ2xCO0lBQ0FELFlBQVlFLElBQUFBLDhCQUFpQjtJQUM3QixPQUFPRjtBQUNUIn0=

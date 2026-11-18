@@ -1,0 +1,23 @@
+70c7b7b8828ac3edc8e9913a0b99b683
+"use strict";
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+Object.defineProperty(exports, "getByokAdapter", {
+    enumerable: true,
+    get: function() {
+        return getByokAdapter;
+    }
+});
+const _demoAdapter = require("./demoAdapter");
+// Real API services can replace this adapter after the backend contract is agreed.
+let adapter;
+function getByokAdapter() {
+    if (process.env.NODE_ENV === "production") {
+        throw new Error("BYOK backend integration is not configured.");
+    }
+    adapter ??= (0, _demoAdapter.createDemoAdapter)();
+    return adapter;
+}
+
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIkQ6XFxQcm9qZWN0c1xcTWFqb3JcXFRva2VuVHJpbVxcZnJvbnRlbmRcXHNyY1xcc2VydmljZXNcXGJ5b2tcXGFkYXB0ZXIudHMiXSwic291cmNlc0NvbnRlbnQiOlsiaW1wb3J0IHR5cGUgeyBFeGVjdXRpb25BZGFwdGVyIH0gZnJvbSAnQC90eXBlcy9leGVjdXRpb24nO1xuaW1wb3J0IHsgY3JlYXRlRGVtb0FkYXB0ZXIgfSBmcm9tICcuL2RlbW9BZGFwdGVyJztcblxuLy8gUmVhbCBBUEkgc2VydmljZXMgY2FuIHJlcGxhY2UgdGhpcyBhZGFwdGVyIGFmdGVyIHRoZSBiYWNrZW5kIGNvbnRyYWN0IGlzIGFncmVlZC5cbmxldCBhZGFwdGVyOiBFeGVjdXRpb25BZGFwdGVyIHwgdW5kZWZpbmVkO1xuZXhwb3J0IGZ1bmN0aW9uIGdldEJ5b2tBZGFwdGVyKCk6IEV4ZWN1dGlvbkFkYXB0ZXIge1xuICBpZiAocHJvY2Vzcy5lbnYuTk9ERV9FTlYgPT09ICdwcm9kdWN0aW9uJykge1xuICAgIHRocm93IG5ldyBFcnJvcignQllPSyBiYWNrZW5kIGludGVncmF0aW9uIGlzIG5vdCBjb25maWd1cmVkLicpO1xuICB9XG4gIGFkYXB0ZXIgPz89IGNyZWF0ZURlbW9BZGFwdGVyKCk7XG4gIHJldHVybiBhZGFwdGVyO1xufVxuIl0sIm5hbWVzIjpbImdldEJ5b2tBZGFwdGVyIiwiYWRhcHRlciIsInByb2Nlc3MiLCJlbnYiLCJOT0RFX0VOViIsIkVycm9yIiwiY3JlYXRlRGVtb0FkYXB0ZXIiXSwibWFwcGluZ3MiOiI7Ozs7K0JBS2dCQTs7O2VBQUFBOzs7NkJBSmtCO0FBRWxDLG1GQUFtRjtBQUNuRixJQUFJQztBQUNHLFNBQVNEO0lBQ2QsSUFBSUUsUUFBUUMsR0FBRyxDQUFDQyxRQUFRLEtBQUssY0FBYztRQUN6QyxNQUFNLElBQUlDLE1BQU07SUFDbEI7SUFDQUosWUFBWUssSUFBQUEsOEJBQWlCO0lBQzdCLE9BQU9MO0FBQ1QifQ==

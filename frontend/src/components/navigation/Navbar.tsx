@@ -14,7 +14,7 @@ export function Navbar({ sidebarOpen, mobileOpen, onToggleSidebar, onMenu }: { s
         {user && <button type="button" aria-label="Menu" aria-expanded={mobileOpen} onClick={onMenu} className={`${icon} order-first lg:hidden`}><MenuIcon /></button>}
         {user && <button type="button" aria-label="Toggle sidebar" aria-expanded={sidebarOpen} onClick={onToggleSidebar} className={`${icon} order-first hidden transition-transform duration-500 lg:inline-flex ${sidebarOpen ? '' : 'rotate-180'}`}><PanelLeft /></button>}
         {user && <span className={`order-2 hidden overflow-hidden transition-all duration-500 lg:block ${sidebarOpen ? 'pointer-events-none w-0 scale-95 opacity-0' : 'w-[224px] scale-100 opacity-100'}`}>
-          <a href="/" aria-label="Go to TokenTrim home"><Image src={theme === 'dark' ? '/Token Trim Heading White.png' : '/Token Trim Heading Black.png'} alt="TokenTrim" width={224} height={31} /></a>
+          <Link href="/" aria-label="Go to TokenTrim home"><Image src={theme === 'dark' ? '/Token Trim Heading White.png' : '/Token Trim Heading Black.png'} alt="TokenTrim" width={224} height={31} /></Link>
         </span>}
       </div>
       <div className="flex items-center gap-2 text-sm">

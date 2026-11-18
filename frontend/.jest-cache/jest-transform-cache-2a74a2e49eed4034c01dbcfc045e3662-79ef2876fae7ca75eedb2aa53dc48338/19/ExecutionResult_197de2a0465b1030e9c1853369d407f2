@@ -1,0 +1,213 @@
+5145eb25bae33dae3d58117f74224bcc
+"use strict";
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+Object.defineProperty(exports, "ExecutionResult", {
+    enumerable: true,
+    get: function() {
+        return ExecutionResult;
+    }
+});
+const _jsxruntime = require("react/jsx-runtime");
+const _Card = require("../ui/Card");
+const _Badge = require("../ui/Badge");
+const _providerConfig = require("../../services/byok/providerConfig");
+const _executionUsageService = require("../../services/byok/executionUsageService");
+const _format = require("../../utils/format");
+const _CurrencyContext = require("../../context/CurrencyContext");
+function actualCurrency(amount, currency) {
+    if (amount == null || !Number.isFinite(amount) || !currency) return "Not available";
+    try {
+        return new Intl.NumberFormat(undefined, {
+            style: "currency",
+            currency,
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 8
+        }).format(amount);
+    } catch  {
+        return `${amount.toFixed(8)} ${currency}`;
+    }
+}
+function ExecutionResult({ result, estimatedCost, estimatedSaving }) {
+    const { currency } = (0, _CurrencyContext.useCurrency)();
+    const provider = _providerConfig.PROVIDERS.find((item)=>item.id === result.provider)?.name ?? result.provider;
+    const usage = (0, _executionUsageService.readExecutionUsage)(result.usage);
+    const cost = (0, _executionUsageService.readExecutionCost)(result.actualCost);
+    const tokenValue = (value)=>value == null ? "Not available" : (0, _format.fmtTokens)(value);
+    return /*#__PURE__*/ (0, _jsxruntime.jsxs)("div", {
+        className: "space-y-4",
+        children: [
+            /*#__PURE__*/ (0, _jsxruntime.jsxs)("div", {
+                className: "flex flex-wrap items-center gap-2",
+                children: [
+                    /*#__PURE__*/ (0, _jsxruntime.jsx)("h3", {
+                        className: "text-lg font-semibold",
+                        children: "Execution result"
+                    }),
+                    /*#__PURE__*/ (0, _jsxruntime.jsx)(_Badge.Badge, {
+                        tone: result.isDemo ? "warn" : "good",
+                        children: result.isDemo ? "Demo response \xb7 not from an LLM" : "Completed"
+                    })
+                ]
+            }),
+            result.isDemo && /*#__PURE__*/ (0, _jsxruntime.jsx)("p", {
+                role: "note",
+                className: "rounded-md border border-amber-500/40 bg-amber-50 p-3 text-sm text-amber-950 dark:bg-amber-950/30 dark:text-amber-100",
+                children: "This is a simulated preview. No provider API was called, and its usage and actual cost are unavailable."
+            }),
+            /*#__PURE__*/ (0, _jsxruntime.jsx)(_Card.Card, {
+                title: `${provider} · ${result.model}`,
+                children: /*#__PURE__*/ (0, _jsxruntime.jsx)("pre", {
+                    "aria-label": "Generated response",
+                    className: "max-h-[32rem] overflow-auto whitespace-pre-wrap break-words font-sans text-sm leading-6",
+                    children: result.response
+                })
+            }),
+            /*#__PURE__*/ (0, _jsxruntime.jsx)(_Card.Card, {
+                title: "Execution usage",
+                children: /*#__PURE__*/ (0, _jsxruntime.jsxs)("dl", {
+                    className: "grid grid-cols-2 gap-4 text-sm sm:grid-cols-3",
+                    children: [
+                        /*#__PURE__*/ (0, _jsxruntime.jsxs)("div", {
+                            children: [
+                                /*#__PURE__*/ (0, _jsxruntime.jsx)("dt", {
+                                    className: "opacity-70",
+                                    children: "Input tokens"
+                                }),
+                                /*#__PURE__*/ (0, _jsxruntime.jsx)("dd", {
+                                    className: "mt-1 font-semibold",
+                                    children: tokenValue(usage.inputTokens)
+                                })
+                            ]
+                        }),
+                        /*#__PURE__*/ (0, _jsxruntime.jsxs)("div", {
+                            children: [
+                                /*#__PURE__*/ (0, _jsxruntime.jsx)("dt", {
+                                    className: "opacity-70",
+                                    children: "Output tokens"
+                                }),
+                                /*#__PURE__*/ (0, _jsxruntime.jsx)("dd", {
+                                    className: "mt-1 font-semibold",
+                                    children: tokenValue(usage.outputTokens)
+                                })
+                            ]
+                        }),
+                        /*#__PURE__*/ (0, _jsxruntime.jsxs)("div", {
+                            children: [
+                                /*#__PURE__*/ (0, _jsxruntime.jsx)("dt", {
+                                    className: "opacity-70",
+                                    children: "Total tokens"
+                                }),
+                                /*#__PURE__*/ (0, _jsxruntime.jsx)("dd", {
+                                    className: "mt-1 font-semibold",
+                                    children: tokenValue(usage.totalTokens)
+                                })
+                            ]
+                        }),
+                        /*#__PURE__*/ (0, _jsxruntime.jsxs)("div", {
+                            children: [
+                                /*#__PURE__*/ (0, _jsxruntime.jsx)("dt", {
+                                    className: "opacity-70",
+                                    children: "Actual execution cost"
+                                }),
+                                /*#__PURE__*/ (0, _jsxruntime.jsx)("dd", {
+                                    className: "mt-1 font-semibold",
+                                    children: actualCurrency(cost.amount, cost.currency)
+                                })
+                            ]
+                        }),
+                        /*#__PURE__*/ (0, _jsxruntime.jsxs)("div", {
+                            children: [
+                                /*#__PURE__*/ (0, _jsxruntime.jsx)("dt", {
+                                    className: "opacity-70",
+                                    children: "Execution duration"
+                                }),
+                                /*#__PURE__*/ (0, _jsxruntime.jsx)("dd", {
+                                    className: "mt-1 font-semibold",
+                                    children: result.durationMs == null ? "Not available" : `${result.durationMs.toLocaleString()} ms`
+                                })
+                            ]
+                        }),
+                        /*#__PURE__*/ (0, _jsxruntime.jsxs)("div", {
+                            children: [
+                                /*#__PURE__*/ (0, _jsxruntime.jsx)("dt", {
+                                    className: "opacity-70",
+                                    children: "Completed"
+                                }),
+                                /*#__PURE__*/ (0, _jsxruntime.jsx)("dd", {
+                                    className: "mt-1 font-semibold",
+                                    children: new Date(result.createdAt).toLocaleString()
+                                })
+                            ]
+                        })
+                    ]
+                })
+            }),
+            /*#__PURE__*/ (0, _jsxruntime.jsxs)(_Card.Card, {
+                title: "Estimated and actual costs",
+                children: [
+                    /*#__PURE__*/ (0, _jsxruntime.jsxs)("dl", {
+                        className: "grid gap-3 text-sm sm:grid-cols-3",
+                        children: [
+                            /*#__PURE__*/ (0, _jsxruntime.jsxs)("div", {
+                                children: [
+                                    /*#__PURE__*/ (0, _jsxruntime.jsx)("dt", {
+                                        className: "opacity-70",
+                                        children: "Estimated optimization cost"
+                                    }),
+                                    /*#__PURE__*/ (0, _jsxruntime.jsx)("dd", {
+                                        className: "mt-1 font-semibold",
+                                        children: estimatedCost == null ? "Not available" : (0, _format.fmtCurrency)(estimatedCost, currency)
+                                    })
+                                ]
+                            }),
+                            /*#__PURE__*/ (0, _jsxruntime.jsxs)("div", {
+                                children: [
+                                    /*#__PURE__*/ (0, _jsxruntime.jsx)("dt", {
+                                        className: "opacity-70",
+                                        children: "Actual execution cost"
+                                    }),
+                                    /*#__PURE__*/ (0, _jsxruntime.jsx)("dd", {
+                                        className: "mt-1 font-semibold",
+                                        children: actualCurrency(cost.amount, cost.currency)
+                                    })
+                                ]
+                            }),
+                            /*#__PURE__*/ (0, _jsxruntime.jsxs)("div", {
+                                children: [
+                                    /*#__PURE__*/ (0, _jsxruntime.jsx)("dt", {
+                                        className: "opacity-70",
+                                        children: "Estimated optimization savings"
+                                    }),
+                                    /*#__PURE__*/ (0, _jsxruntime.jsx)("dd", {
+                                        className: "mt-1 font-semibold",
+                                        children: estimatedSaving == null ? "Not available" : (0, _format.fmtCurrency)(estimatedSaving, currency)
+                                    })
+                                ]
+                            }),
+                            /*#__PURE__*/ (0, _jsxruntime.jsxs)("div", {
+                                children: [
+                                    /*#__PURE__*/ (0, _jsxruntime.jsx)("dt", {
+                                        className: "opacity-70",
+                                        children: "Actual execution savings"
+                                    }),
+                                    /*#__PURE__*/ (0, _jsxruntime.jsx)("dd", {
+                                        className: "mt-1 font-semibold",
+                                        children: "Not available"
+                                    })
+                                ]
+                            })
+                        ]
+                    }),
+                    /*#__PURE__*/ (0, _jsxruntime.jsx)("p", {
+                        className: "mt-3 text-xs opacity-65",
+                        children: "Estimated figures are from prompt optimization. Actual figures are returned by the execution service; the demo has no provider usage or cost."
+                    })
+                ]
+            })
+        ]
+    });
+}
+
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIkQ6XFxQcm9qZWN0c1xcTWFqb3JcXFRva2VuVHJpbVxcZnJvbnRlbmRcXHNyY1xcY29tcG9uZW50c1xcZXhlY3V0aW9uXFxFeGVjdXRpb25SZXN1bHQudHN4Il0sInNvdXJjZXNDb250ZW50IjpbImltcG9ydCB7IENhcmQgfSBmcm9tICdAL2NvbXBvbmVudHMvdWkvQ2FyZCc7XG5pbXBvcnQgeyBCYWRnZSB9IGZyb20gJ0AvY29tcG9uZW50cy91aS9CYWRnZSc7XG5pbXBvcnQgeyBQUk9WSURFUlMgfSBmcm9tICdAL3NlcnZpY2VzL2J5b2svcHJvdmlkZXJDb25maWcnO1xuaW1wb3J0IHsgcmVhZEV4ZWN1dGlvbkNvc3QsIHJlYWRFeGVjdXRpb25Vc2FnZSB9IGZyb20gJ0Avc2VydmljZXMvYnlvay9leGVjdXRpb25Vc2FnZVNlcnZpY2UnO1xuaW1wb3J0IHsgZm10Q3VycmVuY3ksIGZtdFRva2VucyB9IGZyb20gJ0AvdXRpbHMvZm9ybWF0JztcbmltcG9ydCB7IHVzZUN1cnJlbmN5IH0gZnJvbSAnQC9jb250ZXh0L0N1cnJlbmN5Q29udGV4dCc7XG5pbXBvcnQgdHlwZSB7IFByb21wdEV4ZWN1dGlvblJlc3VsdCB9IGZyb20gJ0AvdHlwZXMvZXhlY3V0aW9uJztcblxuZnVuY3Rpb24gYWN0dWFsQ3VycmVuY3koYW1vdW50PzogbnVtYmVyIHwgbnVsbCwgY3VycmVuY3k/OiBzdHJpbmcgfCBudWxsKSB7XG4gIGlmIChhbW91bnQgPT0gbnVsbCB8fCAhTnVtYmVyLmlzRmluaXRlKGFtb3VudCkgfHwgIWN1cnJlbmN5KSByZXR1cm4gJ05vdCBhdmFpbGFibGUnO1xuICB0cnkgeyByZXR1cm4gbmV3IEludGwuTnVtYmVyRm9ybWF0KHVuZGVmaW5lZCwgeyBzdHlsZTogJ2N1cnJlbmN5JywgY3VycmVuY3ksIG1pbmltdW1GcmFjdGlvbkRpZ2l0czogMiwgbWF4aW11bUZyYWN0aW9uRGlnaXRzOiA4IH0pLmZvcm1hdChhbW91bnQpOyB9XG4gIGNhdGNoIHsgcmV0dXJuIGAke2Ftb3VudC50b0ZpeGVkKDgpfSAke2N1cnJlbmN5fWA7IH1cbn1cblxuZXhwb3J0IGZ1bmN0aW9uIEV4ZWN1dGlvblJlc3VsdCh7IHJlc3VsdCwgZXN0aW1hdGVkQ29zdCwgZXN0aW1hdGVkU2F2aW5nIH06IHtcbiAgcmVzdWx0OiBQcm9tcHRFeGVjdXRpb25SZXN1bHQ7IGVzdGltYXRlZENvc3Q/OiBudW1iZXIgfCBudWxsOyBlc3RpbWF0ZWRTYXZpbmc/OiBudW1iZXIgfCBudWxsO1xufSkge1xuICBjb25zdCB7IGN1cnJlbmN5IH0gPSB1c2VDdXJyZW5jeSgpO1xuICBjb25zdCBwcm92aWRlciA9IFBST1ZJREVSUy5maW5kKChpdGVtKSA9PiBpdGVtLmlkID09PSByZXN1bHQucHJvdmlkZXIpPy5uYW1lID8/IHJlc3VsdC5wcm92aWRlcjtcbiAgY29uc3QgdXNhZ2UgPSByZWFkRXhlY3V0aW9uVXNhZ2UocmVzdWx0LnVzYWdlKTtcbiAgY29uc3QgY29zdCA9IHJlYWRFeGVjdXRpb25Db3N0KHJlc3VsdC5hY3R1YWxDb3N0KTtcbiAgY29uc3QgdG9rZW5WYWx1ZSA9ICh2YWx1ZT86IG51bWJlciB8IG51bGwpID0+IHZhbHVlID09IG51bGwgPyAnTm90IGF2YWlsYWJsZScgOiBmbXRUb2tlbnModmFsdWUpO1xuICByZXR1cm4gPGRpdiBjbGFzc05hbWU9XCJzcGFjZS15LTRcIj5cbiAgICA8ZGl2IGNsYXNzTmFtZT1cImZsZXggZmxleC13cmFwIGl0ZW1zLWNlbnRlciBnYXAtMlwiPjxoMyBjbGFzc05hbWU9XCJ0ZXh0LWxnIGZvbnQtc2VtaWJvbGRcIj5FeGVjdXRpb24gcmVzdWx0PC9oMz48QmFkZ2UgdG9uZT17cmVzdWx0LmlzRGVtbyA/ICd3YXJuJyA6ICdnb29kJ30+e3Jlc3VsdC5pc0RlbW8gPyAnRGVtbyByZXNwb25zZSDCtyBub3QgZnJvbSBhbiBMTE0nIDogJ0NvbXBsZXRlZCd9PC9CYWRnZT48L2Rpdj5cbiAgICB7cmVzdWx0LmlzRGVtbyAmJiA8cCByb2xlPVwibm90ZVwiIGNsYXNzTmFtZT1cInJvdW5kZWQtbWQgYm9yZGVyIGJvcmRlci1hbWJlci01MDAvNDAgYmctYW1iZXItNTAgcC0zIHRleHQtc20gdGV4dC1hbWJlci05NTAgZGFyazpiZy1hbWJlci05NTAvMzAgZGFyazp0ZXh0LWFtYmVyLTEwMFwiPlRoaXMgaXMgYSBzaW11bGF0ZWQgcHJldmlldy4gTm8gcHJvdmlkZXIgQVBJIHdhcyBjYWxsZWQsIGFuZCBpdHMgdXNhZ2UgYW5kIGFjdHVhbCBjb3N0IGFyZSB1bmF2YWlsYWJsZS48L3A+fVxuICAgIDxDYXJkIHRpdGxlPXtgJHtwcm92aWRlcn0gwrcgJHtyZXN1bHQubW9kZWx9YH0+XG4gICAgICA8cHJlIGFyaWEtbGFiZWw9XCJHZW5lcmF0ZWQgcmVzcG9uc2VcIiBjbGFzc05hbWU9XCJtYXgtaC1bMzJyZW1dIG92ZXJmbG93LWF1dG8gd2hpdGVzcGFjZS1wcmUtd3JhcCBicmVhay13b3JkcyBmb250LXNhbnMgdGV4dC1zbSBsZWFkaW5nLTZcIj57cmVzdWx0LnJlc3BvbnNlfTwvcHJlPlxuICAgIDwvQ2FyZD5cbiAgICA8Q2FyZCB0aXRsZT1cIkV4ZWN1dGlvbiB1c2FnZVwiPlxuICAgICAgPGRsIGNsYXNzTmFtZT1cImdyaWQgZ3JpZC1jb2xzLTIgZ2FwLTQgdGV4dC1zbSBzbTpncmlkLWNvbHMtM1wiPlxuICAgICAgICA8ZGl2PjxkdCBjbGFzc05hbWU9XCJvcGFjaXR5LTcwXCI+SW5wdXQgdG9rZW5zPC9kdD48ZGQgY2xhc3NOYW1lPVwibXQtMSBmb250LXNlbWlib2xkXCI+e3Rva2VuVmFsdWUodXNhZ2UuaW5wdXRUb2tlbnMpfTwvZGQ+PC9kaXY+XG4gICAgICAgIDxkaXY+PGR0IGNsYXNzTmFtZT1cIm9wYWNpdHktNzBcIj5PdXRwdXQgdG9rZW5zPC9kdD48ZGQgY2xhc3NOYW1lPVwibXQtMSBmb250LXNlbWlib2xkXCI+e3Rva2VuVmFsdWUodXNhZ2Uub3V0cHV0VG9rZW5zKX08L2RkPjwvZGl2PlxuICAgICAgICA8ZGl2PjxkdCBjbGFzc05hbWU9XCJvcGFjaXR5LTcwXCI+VG90YWwgdG9rZW5zPC9kdD48ZGQgY2xhc3NOYW1lPVwibXQtMSBmb250LXNlbWlib2xkXCI+e3Rva2VuVmFsdWUodXNhZ2UudG90YWxUb2tlbnMpfTwvZGQ+PC9kaXY+XG4gICAgICAgIDxkaXY+PGR0IGNsYXNzTmFtZT1cIm9wYWNpdHktNzBcIj5BY3R1YWwgZXhlY3V0aW9uIGNvc3Q8L2R0PjxkZCBjbGFzc05hbWU9XCJtdC0xIGZvbnQtc2VtaWJvbGRcIj57YWN0dWFsQ3VycmVuY3koY29zdC5hbW91bnQsIGNvc3QuY3VycmVuY3kpfTwvZGQ+PC9kaXY+XG4gICAgICAgIDxkaXY+PGR0IGNsYXNzTmFtZT1cIm9wYWNpdHktNzBcIj5FeGVjdXRpb24gZHVyYXRpb248L2R0PjxkZCBjbGFzc05hbWU9XCJtdC0xIGZvbnQtc2VtaWJvbGRcIj57cmVzdWx0LmR1cmF0aW9uTXMgPT0gbnVsbCA/ICdOb3QgYXZhaWxhYmxlJyA6IGAke3Jlc3VsdC5kdXJhdGlvbk1zLnRvTG9jYWxlU3RyaW5nKCl9IG1zYH08L2RkPjwvZGl2PlxuICAgICAgICA8ZGl2PjxkdCBjbGFzc05hbWU9XCJvcGFjaXR5LTcwXCI+Q29tcGxldGVkPC9kdD48ZGQgY2xhc3NOYW1lPVwibXQtMSBmb250LXNlbWlib2xkXCI+e25ldyBEYXRlKHJlc3VsdC5jcmVhdGVkQXQpLnRvTG9jYWxlU3RyaW5nKCl9PC9kZD48L2Rpdj5cbiAgICAgIDwvZGw+XG4gICAgPC9DYXJkPlxuICAgIDxDYXJkIHRpdGxlPVwiRXN0aW1hdGVkIGFuZCBhY3R1YWwgY29zdHNcIj5cbiAgICAgIDxkbCBjbGFzc05hbWU9XCJncmlkIGdhcC0zIHRleHQtc20gc206Z3JpZC1jb2xzLTNcIj5cbiAgICAgICAgPGRpdj48ZHQgY2xhc3NOYW1lPVwib3BhY2l0eS03MFwiPkVzdGltYXRlZCBvcHRpbWl6YXRpb24gY29zdDwvZHQ+PGRkIGNsYXNzTmFtZT1cIm10LTEgZm9udC1zZW1pYm9sZFwiPntlc3RpbWF0ZWRDb3N0ID09IG51bGwgPyAnTm90IGF2YWlsYWJsZScgOiBmbXRDdXJyZW5jeShlc3RpbWF0ZWRDb3N0LCBjdXJyZW5jeSl9PC9kZD48L2Rpdj5cbiAgICAgICAgPGRpdj48ZHQgY2xhc3NOYW1lPVwib3BhY2l0eS03MFwiPkFjdHVhbCBleGVjdXRpb24gY29zdDwvZHQ+PGRkIGNsYXNzTmFtZT1cIm10LTEgZm9udC1zZW1pYm9sZFwiPnthY3R1YWxDdXJyZW5jeShjb3N0LmFtb3VudCwgY29zdC5jdXJyZW5jeSl9PC9kZD48L2Rpdj5cbiAgICAgICAgPGRpdj48ZHQgY2xhc3NOYW1lPVwib3BhY2l0eS03MFwiPkVzdGltYXRlZCBvcHRpbWl6YXRpb24gc2F2aW5nczwvZHQ+PGRkIGNsYXNzTmFtZT1cIm10LTEgZm9udC1zZW1pYm9sZFwiPntlc3RpbWF0ZWRTYXZpbmcgPT0gbnVsbCA/ICdOb3QgYXZhaWxhYmxlJyA6IGZtdEN1cnJlbmN5KGVzdGltYXRlZFNhdmluZywgY3VycmVuY3kpfTwvZGQ+PC9kaXY+XG4gICAgICAgIDxkaXY+PGR0IGNsYXNzTmFtZT1cIm9wYWNpdHktNzBcIj5BY3R1YWwgZXhlY3V0aW9uIHNhdmluZ3M8L2R0PjxkZCBjbGFzc05hbWU9XCJtdC0xIGZvbnQtc2VtaWJvbGRcIj5Ob3QgYXZhaWxhYmxlPC9kZD48L2Rpdj5cbiAgICAgIDwvZGw+XG4gICAgICA8cCBjbGFzc05hbWU9XCJtdC0zIHRleHQteHMgb3BhY2l0eS02NVwiPkVzdGltYXRlZCBmaWd1cmVzIGFyZSBmcm9tIHByb21wdCBvcHRpbWl6YXRpb24uIEFjdHVhbCBmaWd1cmVzIGFyZSByZXR1cm5lZCBieSB0aGUgZXhlY3V0aW9uIHNlcnZpY2U7IHRoZSBkZW1vIGhhcyBubyBwcm92aWRlciB1c2FnZSBvciBjb3N0LjwvcD5cbiAgICA8L0NhcmQ+XG4gIDwvZGl2Pjtcbn1cbiJdLCJuYW1lcyI6WyJFeGVjdXRpb25SZXN1bHQiLCJhY3R1YWxDdXJyZW5jeSIsImFtb3VudCIsImN1cnJlbmN5IiwiTnVtYmVyIiwiaXNGaW5pdGUiLCJJbnRsIiwiTnVtYmVyRm9ybWF0IiwidW5kZWZpbmVkIiwic3R5bGUiLCJtaW5pbXVtRnJhY3Rpb25EaWdpdHMiLCJtYXhpbXVtRnJhY3Rpb25EaWdpdHMiLCJmb3JtYXQiLCJ0b0ZpeGVkIiwicmVzdWx0IiwiZXN0aW1hdGVkQ29zdCIsImVzdGltYXRlZFNhdmluZyIsInVzZUN1cnJlbmN5IiwicHJvdmlkZXIiLCJQUk9WSURFUlMiLCJmaW5kIiwiaXRlbSIsImlkIiwibmFtZSIsInVzYWdlIiwicmVhZEV4ZWN1dGlvblVzYWdlIiwiY29zdCIsInJlYWRFeGVjdXRpb25Db3N0IiwiYWN0dWFsQ29zdCIsInRva2VuVmFsdWUiLCJ2YWx1ZSIsImZtdFRva2VucyIsImRpdiIsImNsYXNzTmFtZSIsImgzIiwiQmFkZ2UiLCJ0b25lIiwiaXNEZW1vIiwicCIsInJvbGUiLCJDYXJkIiwidGl0bGUiLCJtb2RlbCIsInByZSIsImFyaWEtbGFiZWwiLCJyZXNwb25zZSIsImRsIiwiZHQiLCJkZCIsImlucHV0VG9rZW5zIiwib3V0cHV0VG9rZW5zIiwidG90YWxUb2tlbnMiLCJkdXJhdGlvbk1zIiwidG9Mb2NhbGVTdHJpbmciLCJEYXRlIiwiY3JlYXRlZEF0IiwiZm10Q3VycmVuY3kiXSwibWFwcGluZ3MiOiI7Ozs7K0JBY2dCQTs7O2VBQUFBOzs7O3NCQWRLO3VCQUNDO2dDQUNJO3VDQUM0Qjt3QkFDZjtpQ0FDWDtBQUc1QixTQUFTQyxlQUFlQyxNQUFzQixFQUFFQyxRQUF3QjtJQUN0RSxJQUFJRCxVQUFVLFFBQVEsQ0FBQ0UsT0FBT0MsUUFBUSxDQUFDSCxXQUFXLENBQUNDLFVBQVUsT0FBTztJQUNwRSxJQUFJO1FBQUUsT0FBTyxJQUFJRyxLQUFLQyxZQUFZLENBQUNDLFdBQVc7WUFBRUMsT0FBTztZQUFZTjtZQUFVTyx1QkFBdUI7WUFBR0MsdUJBQXVCO1FBQUUsR0FBR0MsTUFBTSxDQUFDVjtJQUFTLEVBQ25KLE9BQU07UUFBRSxPQUFPLENBQUMsRUFBRUEsT0FBT1csT0FBTyxDQUFDLEdBQUcsQ0FBQyxFQUFFVixTQUFTLENBQUM7SUFBRTtBQUNyRDtBQUVPLFNBQVNILGdCQUFnQixFQUFFYyxNQUFNLEVBQUVDLGFBQWEsRUFBRUMsZUFBZSxFQUV2RTtJQUNDLE1BQU0sRUFBRWIsUUFBUSxFQUFFLEdBQUdjLElBQUFBLDRCQUFXO0lBQ2hDLE1BQU1DLFdBQVdDLHlCQUFTLENBQUNDLElBQUksQ0FBQyxDQUFDQyxPQUFTQSxLQUFLQyxFQUFFLEtBQUtSLE9BQU9JLFFBQVEsR0FBR0ssUUFBUVQsT0FBT0ksUUFBUTtJQUMvRixNQUFNTSxRQUFRQyxJQUFBQSx5Q0FBa0IsRUFBQ1gsT0FBT1UsS0FBSztJQUM3QyxNQUFNRSxPQUFPQyxJQUFBQSx3Q0FBaUIsRUFBQ2IsT0FBT2MsVUFBVTtJQUNoRCxNQUFNQyxhQUFhLENBQUNDLFFBQTBCQSxTQUFTLE9BQU8sa0JBQWtCQyxJQUFBQSxpQkFBUyxFQUFDRDtJQUMxRixxQkFBTyxzQkFBQ0U7UUFBSUMsV0FBVTs7MEJBQ3BCLHNCQUFDRDtnQkFBSUMsV0FBVTs7a0NBQW9DLHFCQUFDQzt3QkFBR0QsV0FBVTtrQ0FBd0I7O2tDQUFxQixxQkFBQ0UsWUFBSzt3QkFBQ0MsTUFBTXRCLE9BQU91QixNQUFNLEdBQUcsU0FBUztrQ0FBU3ZCLE9BQU91QixNQUFNLEdBQUcsdUNBQW9DOzs7O1lBQ2hOdkIsT0FBT3VCLE1BQU0sa0JBQUkscUJBQUNDO2dCQUFFQyxNQUFLO2dCQUFPTixXQUFVOzBCQUF3SDs7MEJBQ25LLHFCQUFDTyxVQUFJO2dCQUFDQyxPQUFPLENBQUMsRUFBRXZCLFNBQVMsR0FBRyxFQUFFSixPQUFPNEIsS0FBSyxDQUFDLENBQUM7MEJBQzFDLGNBQUEscUJBQUNDO29CQUFJQyxjQUFXO29CQUFxQlgsV0FBVTs4QkFBMkZuQixPQUFPK0IsUUFBUTs7OzBCQUUzSixxQkFBQ0wsVUFBSTtnQkFBQ0MsT0FBTTswQkFDVixjQUFBLHNCQUFDSztvQkFBR2IsV0FBVTs7c0NBQ1osc0JBQUNEOzs4Q0FBSSxxQkFBQ2U7b0NBQUdkLFdBQVU7OENBQWE7OzhDQUFpQixxQkFBQ2U7b0NBQUdmLFdBQVU7OENBQXNCSixXQUFXTCxNQUFNeUIsV0FBVzs7OztzQ0FDakgsc0JBQUNqQjs7OENBQUkscUJBQUNlO29DQUFHZCxXQUFVOzhDQUFhOzs4Q0FBa0IscUJBQUNlO29DQUFHZixXQUFVOzhDQUFzQkosV0FBV0wsTUFBTTBCLFlBQVk7Ozs7c0NBQ25ILHNCQUFDbEI7OzhDQUFJLHFCQUFDZTtvQ0FBR2QsV0FBVTs4Q0FBYTs7OENBQWlCLHFCQUFDZTtvQ0FBR2YsV0FBVTs4Q0FBc0JKLFdBQVdMLE1BQU0yQixXQUFXOzs7O3NDQUNqSCxzQkFBQ25COzs4Q0FBSSxxQkFBQ2U7b0NBQUdkLFdBQVU7OENBQWE7OzhDQUEwQixxQkFBQ2U7b0NBQUdmLFdBQVU7OENBQXNCaEMsZUFBZXlCLEtBQUt4QixNQUFNLEVBQUV3QixLQUFLdkIsUUFBUTs7OztzQ0FDdkksc0JBQUM2Qjs7OENBQUkscUJBQUNlO29DQUFHZCxXQUFVOzhDQUFhOzs4Q0FBdUIscUJBQUNlO29DQUFHZixXQUFVOzhDQUFzQm5CLE9BQU9zQyxVQUFVLElBQUksT0FBTyxrQkFBa0IsQ0FBQyxFQUFFdEMsT0FBT3NDLFVBQVUsQ0FBQ0MsY0FBYyxHQUFHLEdBQUcsQ0FBQzs7OztzQ0FDbkwsc0JBQUNyQjs7OENBQUkscUJBQUNlO29DQUFHZCxXQUFVOzhDQUFhOzs4Q0FBYyxxQkFBQ2U7b0NBQUdmLFdBQVU7OENBQXNCLElBQUlxQixLQUFLeEMsT0FBT3lDLFNBQVMsRUFBRUYsY0FBYzs7Ozs7OzswQkFHL0gsc0JBQUNiLFVBQUk7Z0JBQUNDLE9BQU07O2tDQUNWLHNCQUFDSzt3QkFBR2IsV0FBVTs7MENBQ1osc0JBQUNEOztrREFBSSxxQkFBQ2U7d0NBQUdkLFdBQVU7a0RBQWE7O2tEQUFnQyxxQkFBQ2U7d0NBQUdmLFdBQVU7a0RBQXNCbEIsaUJBQWlCLE9BQU8sa0JBQWtCeUMsSUFBQUEsbUJBQVcsRUFBQ3pDLGVBQWVaOzs7OzBDQUN6SyxzQkFBQzZCOztrREFBSSxxQkFBQ2U7d0NBQUdkLFdBQVU7a0RBQWE7O2tEQUEwQixxQkFBQ2U7d0NBQUdmLFdBQVU7a0RBQXNCaEMsZUFBZXlCLEtBQUt4QixNQUFNLEVBQUV3QixLQUFLdkIsUUFBUTs7OzswQ0FDdkksc0JBQUM2Qjs7a0RBQUkscUJBQUNlO3dDQUFHZCxXQUFVO2tEQUFhOztrREFBbUMscUJBQUNlO3dDQUFHZixXQUFVO2tEQUFzQmpCLG1CQUFtQixPQUFPLGtCQUFrQndDLElBQUFBLG1CQUFXLEVBQUN4QyxpQkFBaUJiOzs7OzBDQUNoTCxzQkFBQzZCOztrREFBSSxxQkFBQ2U7d0NBQUdkLFdBQVU7a0RBQWE7O2tEQUE2QixxQkFBQ2U7d0NBQUdmLFdBQVU7a0RBQXFCOzs7Ozs7a0NBRWxHLHFCQUFDSzt3QkFBRUwsV0FBVTtrQ0FBMEI7Ozs7OztBQUc3QyJ9

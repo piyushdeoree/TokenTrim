@@ -1,13 +1,5 @@
-import { test, expect, Page } from '@playwright/test';
-export async function signIn(page: Page) {
-  await page.goto('/');
-  await page.getByRole('button', { name: 'Sign in' }).click();
-  const d = page.getByRole('dialog');
-  await d.getByLabel('Email').fill('demo@example.com');
-  await d.getByLabel('Password').fill('password123');
-  await d.getByRole('button', { name: 'Sign in' }).click();
-  await expect(page).toHaveURL(/dashboard/);
-}
+import { test, expect } from '@playwright/test';
+import { signIn } from './auth.helper';
 test('home modal login → token trim → analyze → save', async ({ page }) => {
   await signIn(page);
   await expect(page.getByText('Total tokens')).toBeVisible();
