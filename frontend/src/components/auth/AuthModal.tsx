@@ -17,7 +17,11 @@ export function AuthModal({ mode, onModeChange, onClose, onSuccess }: { mode: Au
     if (!/^\S+@\S+\.\S+$/.test(f.email)) return setErr('Enter a valid email address.');
     if (isLogin ? !f.password : f.password.length < 8) return setErr(isLogin ? 'Enter your password.' : 'Password must be at least 8 characters.');
     setBusy(true); setErr('');
-    try { isLogin ? await login(f.email, f.password) : await register(f.name, f.email, f.password); onSuccess(); }
+    try {
+      if (isLogin) await login(f.email, f.password);
+      else await register(f.name, f.email, f.password);
+      onSuccess();
+    }
     catch (error) {
       setErr(authErrorMessage(error, isLogin
         ? 'Sign in failed. Check your email and password.'

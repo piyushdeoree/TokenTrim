@@ -8,6 +8,7 @@ import { CurrencyProvider } from '@/context/CurrencyContext';
 import { ToastProvider } from '@/components/ui/Toast';
 import { AppLayout } from '@/layouts/AppLayout';
 import { LoadingState } from '@/components/states/States';
+import { ProviderProvider } from '@/context/ProviderContext';
 const PUBLIC = ['/', '/login', '/register'];
 function Shell({ Component, pageProps }: AppProps) {
   const { pathname, replace } = useRouter();
@@ -15,7 +16,8 @@ function Shell({ Component, pageProps }: AppProps) {
   const isPublic = PUBLIC.includes(pathname);
   useEffect(() => { if (ready && !user && !isPublic) replace('/?auth=login'); }, [ready, user, isPublic, replace]);
   if (!ready || (!user && !isPublic)) return <LoadingState text="Loading..." />;
-  return <AppLayout><Component {...pageProps} /></AppLayout>;
+  const page = <AppLayout><Component {...pageProps} /></AppLayout>;
+  return user ? <ProviderProvider>{page}</ProviderProvider> : page;
 }
 export default function App(props: AppProps) {
   return <CurrencyProvider><ThemeProvider><ToastProvider><AuthProvider><Shell {...props} /></AuthProvider></ToastProvider></ThemeProvider></CurrencyProvider>;

@@ -1,0 +1,190 @@
+9c842947f4151d86d8bc043c158e3c85
+"use strict";
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+function _export(target, all) {
+    for(var name in all)Object.defineProperty(target, name, {
+        enumerable: true,
+        get: all[name]
+    });
+}
+_export(exports, {
+    ProviderCard: function() {
+        return ProviderCard;
+    },
+    ProviderCards: function() {
+        return ProviderCards;
+    }
+});
+const _jsxruntime = require("react/jsx-runtime");
+const _react = require("react");
+const _Card = require("../ui/Card");
+const _Badge = require("../ui/Badge");
+const _Button = require("../ui/Button");
+const _ProviderConnectionModal = require("./ProviderConnectionModal");
+const _providerCredentialService = require("../../services/byok/providerCredentialService");
+const _providerConfig = require("../../services/byok/providerConfig");
+const _ProviderContext = require("../../context/ProviderContext");
+function ProviderCard({ provider }) {
+    const { connections, connect, disconnect } = (0, _ProviderContext.useProviders)();
+    const connection = connections.find((item)=>item.provider === provider.id);
+    const connected = connection?.status === "connected";
+    const [showModal, setShowModal] = (0, _react.useState)(false);
+    const [busy, setBusy] = (0, _react.useState)(false);
+    const [message, setMessage] = (0, _react.useState)(null);
+    const [error, setError] = (0, _react.useState)(null);
+    const onConnect = async (key)=>{
+        setBusy(true);
+        setError(null);
+        setMessage(null);
+        try {
+            await connect({
+                provider: provider.id,
+                apiKey: key
+            });
+            setMessage("Connected in demo mode. No provider was contacted.");
+        } finally{
+            setBusy(false);
+        }
+    };
+    const onTest = async ()=>{
+        setBusy(true);
+        setError(null);
+        setMessage(null);
+        try {
+            const result = await (0, _providerCredentialService.testProviderConnection)(provider.id);
+            (result.success ? setMessage : setError)(result.message);
+        } catch (e) {
+            setError(e instanceof Error ? e.message : "Connection test failed.");
+        } finally{
+            setBusy(false);
+        }
+    };
+    const onDisconnect = async ()=>{
+        if (!window.confirm(`Disconnect ${provider.name}?`)) return;
+        setBusy(true);
+        setError(null);
+        setMessage(null);
+        try {
+            await disconnect(provider.id);
+            setMessage("Provider disconnected.");
+        } catch (e) {
+            setError(e instanceof Error ? e.message : "Unable to disconnect provider.");
+        } finally{
+            setBusy(false);
+        }
+    };
+    return /*#__PURE__*/ (0, _jsxruntime.jsxs)(_jsxruntime.Fragment, {
+        children: [
+            /*#__PURE__*/ (0, _jsxruntime.jsxs)(_Card.Card, {
+                className: "flex h-full flex-col",
+                children: [
+                    /*#__PURE__*/ (0, _jsxruntime.jsxs)("div", {
+                        className: "flex items-start gap-3",
+                        children: [
+                            /*#__PURE__*/ (0, _jsxruntime.jsx)("span", {
+                                "aria-hidden": "true",
+                                className: "flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-surface text-lg font-bold",
+                                children: provider.icon
+                            }),
+                            /*#__PURE__*/ (0, _jsxruntime.jsxs)("div", {
+                                className: "min-w-0 flex-1",
+                                children: [
+                                    /*#__PURE__*/ (0, _jsxruntime.jsxs)("div", {
+                                        className: "flex flex-wrap items-center gap-2",
+                                        children: [
+                                            /*#__PURE__*/ (0, _jsxruntime.jsx)("h2", {
+                                                className: "font-semibold",
+                                                children: provider.name
+                                            }),
+                                            /*#__PURE__*/ (0, _jsxruntime.jsx)(_Badge.Badge, {
+                                                tone: connected ? "good" : "neutral",
+                                                children: connected ? "Connected" : "Disconnected"
+                                            })
+                                        ]
+                                    }),
+                                    /*#__PURE__*/ (0, _jsxruntime.jsx)("p", {
+                                        className: "mt-1 text-sm opacity-75",
+                                        children: provider.description
+                                    })
+                                ]
+                            })
+                        ]
+                    }),
+                    /*#__PURE__*/ (0, _jsxruntime.jsxs)("div", {
+                        className: "mt-4 min-h-10 text-sm",
+                        children: [
+                            connected && /*#__PURE__*/ (0, _jsxruntime.jsxs)("p", {
+                                className: "font-mono text-xs",
+                                children: [
+                                    "Key: ",
+                                    connection?.maskedKey ?? "Masked by service"
+                                ]
+                            }),
+                            message && /*#__PURE__*/ (0, _jsxruntime.jsx)("p", {
+                                role: "status",
+                                className: "mt-1 text-teal-800 dark:text-teal-300",
+                                children: message
+                            }),
+                            error && /*#__PURE__*/ (0, _jsxruntime.jsx)("p", {
+                                role: "alert",
+                                className: "mt-1 text-red-700 dark:text-red-400",
+                                children: error
+                            })
+                        ]
+                    }),
+                    /*#__PURE__*/ (0, _jsxruntime.jsx)("div", {
+                        className: "mt-auto flex flex-wrap gap-2 pt-3",
+                        children: !connected ? /*#__PURE__*/ (0, _jsxruntime.jsx)(_Button.Button, {
+                            onClick: ()=>{
+                                setError(null);
+                                setShowModal(true);
+                            },
+                            children: "Connect"
+                        }) : /*#__PURE__*/ (0, _jsxruntime.jsxs)(_jsxruntime.Fragment, {
+                            children: [
+                                /*#__PURE__*/ (0, _jsxruntime.jsx)(_Button.Button, {
+                                    onClick: onTest,
+                                    loading: busy,
+                                    disabled: busy,
+                                    children: "Test connection"
+                                }),
+                                /*#__PURE__*/ (0, _jsxruntime.jsx)(_Button.Button, {
+                                    variant: "ghost",
+                                    onClick: ()=>{
+                                        setError(null);
+                                        setShowModal(true);
+                                    },
+                                    disabled: busy,
+                                    children: "Replace key"
+                                }),
+                                /*#__PURE__*/ (0, _jsxruntime.jsx)(_Button.Button, {
+                                    variant: "ghost",
+                                    onClick: onDisconnect,
+                                    disabled: busy,
+                                    children: "Disconnect"
+                                })
+                            ]
+                        })
+                    })
+                ]
+            }),
+            showModal && /*#__PURE__*/ (0, _jsxruntime.jsx)(_ProviderConnectionModal.ProviderConnectionModal, {
+                provider: provider,
+                onClose: ()=>setShowModal(false),
+                onConnect: onConnect
+            })
+        ]
+    });
+}
+function ProviderCards() {
+    return /*#__PURE__*/ (0, _jsxruntime.jsx)("div", {
+        className: "grid gap-4 md:grid-cols-2 xl:grid-cols-3",
+        children: _providerConfig.PROVIDERS.map((provider)=>/*#__PURE__*/ (0, _jsxruntime.jsx)(ProviderCard, {
+                provider: provider
+            }, provider.id))
+    });
+}
+
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIkQ6XFxQcm9qZWN0c1xcTWFqb3JcXFRva2VuVHJpbVxcZnJvbnRlbmRcXHNyY1xcY29tcG9uZW50c1xccHJvdmlkZXJzXFxQcm92aWRlckNhcmQudHN4Il0sInNvdXJjZXNDb250ZW50IjpbImltcG9ydCB7IHVzZVN0YXRlIH0gZnJvbSAncmVhY3QnO1xuaW1wb3J0IHsgQ2FyZCB9IGZyb20gJ0AvY29tcG9uZW50cy91aS9DYXJkJztcbmltcG9ydCB7IEJhZGdlIH0gZnJvbSAnQC9jb21wb25lbnRzL3VpL0JhZGdlJztcbmltcG9ydCB7IEJ1dHRvbiB9IGZyb20gJ0AvY29tcG9uZW50cy91aS9CdXR0b24nO1xuaW1wb3J0IHsgUHJvdmlkZXJDb25uZWN0aW9uTW9kYWwgfSBmcm9tICcuL1Byb3ZpZGVyQ29ubmVjdGlvbk1vZGFsJztcbmltcG9ydCB7IHRlc3RQcm92aWRlckNvbm5lY3Rpb24gfSBmcm9tICdAL3NlcnZpY2VzL2J5b2svcHJvdmlkZXJDcmVkZW50aWFsU2VydmljZSc7XG5pbXBvcnQgeyBQUk9WSURFUlMgfSBmcm9tICdAL3NlcnZpY2VzL2J5b2svcHJvdmlkZXJDb25maWcnO1xuaW1wb3J0IHsgdXNlUHJvdmlkZXJzIH0gZnJvbSAnQC9jb250ZXh0L1Byb3ZpZGVyQ29udGV4dCc7XG5pbXBvcnQgdHlwZSB7IFByb3ZpZGVyRGVmaW5pdGlvbiB9IGZyb20gJ0AvdHlwZXMvcHJvdmlkZXInO1xuXG5leHBvcnQgZnVuY3Rpb24gUHJvdmlkZXJDYXJkKHsgcHJvdmlkZXIgfTogeyBwcm92aWRlcjogUHJvdmlkZXJEZWZpbml0aW9uIH0pIHtcbiAgY29uc3QgeyBjb25uZWN0aW9ucywgY29ubmVjdCwgZGlzY29ubmVjdCB9ID0gdXNlUHJvdmlkZXJzKCk7XG4gIGNvbnN0IGNvbm5lY3Rpb24gPSBjb25uZWN0aW9ucy5maW5kKChpdGVtKSA9PiBpdGVtLnByb3ZpZGVyID09PSBwcm92aWRlci5pZCk7XG4gIGNvbnN0IGNvbm5lY3RlZCA9IGNvbm5lY3Rpb24/LnN0YXR1cyA9PT0gJ2Nvbm5lY3RlZCc7XG4gIGNvbnN0IFtzaG93TW9kYWwsIHNldFNob3dNb2RhbF0gPSB1c2VTdGF0ZShmYWxzZSk7XG4gIGNvbnN0IFtidXN5LCBzZXRCdXN5XSA9IHVzZVN0YXRlKGZhbHNlKTtcbiAgY29uc3QgW21lc3NhZ2UsIHNldE1lc3NhZ2VdID0gdXNlU3RhdGU8c3RyaW5nIHwgbnVsbD4obnVsbCk7XG4gIGNvbnN0IFtlcnJvciwgc2V0RXJyb3JdID0gdXNlU3RhdGU8c3RyaW5nIHwgbnVsbD4obnVsbCk7XG4gIGNvbnN0IG9uQ29ubmVjdCA9IGFzeW5jIChrZXk6IHN0cmluZykgPT4ge1xuICAgIHNldEJ1c3kodHJ1ZSk7IHNldEVycm9yKG51bGwpOyBzZXRNZXNzYWdlKG51bGwpO1xuICAgIHRyeSB7IGF3YWl0IGNvbm5lY3QoeyBwcm92aWRlcjogcHJvdmlkZXIuaWQsIGFwaUtleToga2V5IH0pOyBzZXRNZXNzYWdlKCdDb25uZWN0ZWQgaW4gZGVtbyBtb2RlLiBObyBwcm92aWRlciB3YXMgY29udGFjdGVkLicpOyB9XG4gICAgZmluYWxseSB7IHNldEJ1c3koZmFsc2UpOyB9XG4gIH07XG4gIGNvbnN0IG9uVGVzdCA9IGFzeW5jICgpID0+IHtcbiAgICBzZXRCdXN5KHRydWUpOyBzZXRFcnJvcihudWxsKTsgc2V0TWVzc2FnZShudWxsKTtcbiAgICB0cnkgeyBjb25zdCByZXN1bHQgPSBhd2FpdCB0ZXN0UHJvdmlkZXJDb25uZWN0aW9uKHByb3ZpZGVyLmlkKTsgKHJlc3VsdC5zdWNjZXNzID8gc2V0TWVzc2FnZSA6IHNldEVycm9yKShyZXN1bHQubWVzc2FnZSk7IH1cbiAgICBjYXRjaCAoZSkgeyBzZXRFcnJvcihlIGluc3RhbmNlb2YgRXJyb3IgPyBlLm1lc3NhZ2UgOiAnQ29ubmVjdGlvbiB0ZXN0IGZhaWxlZC4nKTsgfVxuICAgIGZpbmFsbHkgeyBzZXRCdXN5KGZhbHNlKTsgfVxuICB9O1xuICBjb25zdCBvbkRpc2Nvbm5lY3QgPSBhc3luYyAoKSA9PiB7XG4gICAgaWYgKCF3aW5kb3cuY29uZmlybShgRGlzY29ubmVjdCAke3Byb3ZpZGVyLm5hbWV9P2ApKSByZXR1cm47XG4gICAgc2V0QnVzeSh0cnVlKTsgc2V0RXJyb3IobnVsbCk7IHNldE1lc3NhZ2UobnVsbCk7XG4gICAgdHJ5IHsgYXdhaXQgZGlzY29ubmVjdChwcm92aWRlci5pZCk7IHNldE1lc3NhZ2UoJ1Byb3ZpZGVyIGRpc2Nvbm5lY3RlZC4nKTsgfVxuICAgIGNhdGNoIChlKSB7IHNldEVycm9yKGUgaW5zdGFuY2VvZiBFcnJvciA/IGUubWVzc2FnZSA6ICdVbmFibGUgdG8gZGlzY29ubmVjdCBwcm92aWRlci4nKTsgfVxuICAgIGZpbmFsbHkgeyBzZXRCdXN5KGZhbHNlKTsgfVxuICB9O1xuICByZXR1cm4gPD5cbiAgICA8Q2FyZCBjbGFzc05hbWU9XCJmbGV4IGgtZnVsbCBmbGV4LWNvbFwiPlxuICAgICAgPGRpdiBjbGFzc05hbWU9XCJmbGV4IGl0ZW1zLXN0YXJ0IGdhcC0zXCI+XG4gICAgICAgIDxzcGFuIGFyaWEtaGlkZGVuPVwidHJ1ZVwiIGNsYXNzTmFtZT1cImZsZXggaC0xMSB3LTExIHNocmluay0wIGl0ZW1zLWNlbnRlciBqdXN0aWZ5LWNlbnRlciByb3VuZGVkLXhsIGJnLXN1cmZhY2UgdGV4dC1sZyBmb250LWJvbGRcIj57cHJvdmlkZXIuaWNvbn08L3NwYW4+XG4gICAgICAgIDxkaXYgY2xhc3NOYW1lPVwibWluLXctMCBmbGV4LTFcIj48ZGl2IGNsYXNzTmFtZT1cImZsZXggZmxleC13cmFwIGl0ZW1zLWNlbnRlciBnYXAtMlwiPjxoMiBjbGFzc05hbWU9XCJmb250LXNlbWlib2xkXCI+e3Byb3ZpZGVyLm5hbWV9PC9oMj48QmFkZ2UgdG9uZT17Y29ubmVjdGVkID8gJ2dvb2QnIDogJ25ldXRyYWwnfT57Y29ubmVjdGVkID8gJ0Nvbm5lY3RlZCcgOiAnRGlzY29ubmVjdGVkJ308L0JhZGdlPjwvZGl2PjxwIGNsYXNzTmFtZT1cIm10LTEgdGV4dC1zbSBvcGFjaXR5LTc1XCI+e3Byb3ZpZGVyLmRlc2NyaXB0aW9ufTwvcD48L2Rpdj5cbiAgICAgIDwvZGl2PlxuICAgICAgPGRpdiBjbGFzc05hbWU9XCJtdC00IG1pbi1oLTEwIHRleHQtc21cIj5cbiAgICAgICAge2Nvbm5lY3RlZCAmJiA8cCBjbGFzc05hbWU9XCJmb250LW1vbm8gdGV4dC14c1wiPktleToge2Nvbm5lY3Rpb24/Lm1hc2tlZEtleSA/PyAnTWFza2VkIGJ5IHNlcnZpY2UnfTwvcD59XG4gICAgICAgIHttZXNzYWdlICYmIDxwIHJvbGU9XCJzdGF0dXNcIiBjbGFzc05hbWU9XCJtdC0xIHRleHQtdGVhbC04MDAgZGFyazp0ZXh0LXRlYWwtMzAwXCI+e21lc3NhZ2V9PC9wPn1cbiAgICAgICAge2Vycm9yICYmIDxwIHJvbGU9XCJhbGVydFwiIGNsYXNzTmFtZT1cIm10LTEgdGV4dC1yZWQtNzAwIGRhcms6dGV4dC1yZWQtNDAwXCI+e2Vycm9yfTwvcD59XG4gICAgICA8L2Rpdj5cbiAgICAgIDxkaXYgY2xhc3NOYW1lPVwibXQtYXV0byBmbGV4IGZsZXgtd3JhcCBnYXAtMiBwdC0zXCI+XG4gICAgICAgIHshY29ubmVjdGVkID8gPEJ1dHRvbiBvbkNsaWNrPXsoKSA9PiB7IHNldEVycm9yKG51bGwpOyBzZXRTaG93TW9kYWwodHJ1ZSk7IH19PkNvbm5lY3Q8L0J1dHRvbj4gOiA8PlxuICAgICAgICAgIDxCdXR0b24gb25DbGljaz17b25UZXN0fSBsb2FkaW5nPXtidXN5fSBkaXNhYmxlZD17YnVzeX0+VGVzdCBjb25uZWN0aW9uPC9CdXR0b24+XG4gICAgICAgICAgPEJ1dHRvbiB2YXJpYW50PVwiZ2hvc3RcIiBvbkNsaWNrPXsoKSA9PiB7IHNldEVycm9yKG51bGwpOyBzZXRTaG93TW9kYWwodHJ1ZSk7IH19IGRpc2FibGVkPXtidXN5fT5SZXBsYWNlIGtleTwvQnV0dG9uPlxuICAgICAgICAgIDxCdXR0b24gdmFyaWFudD1cImdob3N0XCIgb25DbGljaz17b25EaXNjb25uZWN0fSBkaXNhYmxlZD17YnVzeX0+RGlzY29ubmVjdDwvQnV0dG9uPlxuICAgICAgICA8Lz59XG4gICAgICA8L2Rpdj5cbiAgICA8L0NhcmQ+XG4gICAge3Nob3dNb2RhbCAmJiA8UHJvdmlkZXJDb25uZWN0aW9uTW9kYWwgcHJvdmlkZXI9e3Byb3ZpZGVyfSBvbkNsb3NlPXsoKSA9PiBzZXRTaG93TW9kYWwoZmFsc2UpfSBvbkNvbm5lY3Q9e29uQ29ubmVjdH0gLz59XG4gIDwvPjtcbn1cblxuZXhwb3J0IGZ1bmN0aW9uIFByb3ZpZGVyQ2FyZHMoKSB7IHJldHVybiA8ZGl2IGNsYXNzTmFtZT1cImdyaWQgZ2FwLTQgbWQ6Z3JpZC1jb2xzLTIgeGw6Z3JpZC1jb2xzLTNcIj57UFJPVklERVJTLm1hcCgocHJvdmlkZXIpID0+IDxQcm92aWRlckNhcmQga2V5PXtwcm92aWRlci5pZH0gcHJvdmlkZXI9e3Byb3ZpZGVyfSAvPil9PC9kaXY+OyB9XG4iXSwibmFtZXMiOlsiUHJvdmlkZXJDYXJkIiwiUHJvdmlkZXJDYXJkcyIsInByb3ZpZGVyIiwiY29ubmVjdGlvbnMiLCJjb25uZWN0IiwiZGlzY29ubmVjdCIsInVzZVByb3ZpZGVycyIsImNvbm5lY3Rpb24iLCJmaW5kIiwiaXRlbSIsImlkIiwiY29ubmVjdGVkIiwic3RhdHVzIiwic2hvd01vZGFsIiwic2V0U2hvd01vZGFsIiwidXNlU3RhdGUiLCJidXN5Iiwic2V0QnVzeSIsIm1lc3NhZ2UiLCJzZXRNZXNzYWdlIiwiZXJyb3IiLCJzZXRFcnJvciIsIm9uQ29ubmVjdCIsImtleSIsImFwaUtleSIsIm9uVGVzdCIsInJlc3VsdCIsInRlc3RQcm92aWRlckNvbm5lY3Rpb24iLCJzdWNjZXNzIiwiZSIsIkVycm9yIiwib25EaXNjb25uZWN0Iiwid2luZG93IiwiY29uZmlybSIsIm5hbWUiLCJDYXJkIiwiY2xhc3NOYW1lIiwiZGl2Iiwic3BhbiIsImFyaWEtaGlkZGVuIiwiaWNvbiIsImgyIiwiQmFkZ2UiLCJ0b25lIiwicCIsImRlc2NyaXB0aW9uIiwibWFza2VkS2V5Iiwicm9sZSIsIkJ1dHRvbiIsIm9uQ2xpY2siLCJsb2FkaW5nIiwiZGlzYWJsZWQiLCJ2YXJpYW50IiwiUHJvdmlkZXJDb25uZWN0aW9uTW9kYWwiLCJvbkNsb3NlIiwiUFJPVklERVJTIiwibWFwIl0sIm1hcHBpbmdzIjoiOzs7Ozs7Ozs7OztJQVVnQkEsWUFBWTtlQUFaQTs7SUFpREFDLGFBQWE7ZUFBYkE7Ozs7dUJBM0RTO3NCQUNKO3VCQUNDO3dCQUNDO3lDQUNpQjsyQ0FDRDtnQ0FDYjtpQ0FDRztBQUd0QixTQUFTRCxhQUFhLEVBQUVFLFFBQVEsRUFBb0M7SUFDekUsTUFBTSxFQUFFQyxXQUFXLEVBQUVDLE9BQU8sRUFBRUMsVUFBVSxFQUFFLEdBQUdDLElBQUFBLDZCQUFZO0lBQ3pELE1BQU1DLGFBQWFKLFlBQVlLLElBQUksQ0FBQyxDQUFDQyxPQUFTQSxLQUFLUCxRQUFRLEtBQUtBLFNBQVNRLEVBQUU7SUFDM0UsTUFBTUMsWUFBWUosWUFBWUssV0FBVztJQUN6QyxNQUFNLENBQUNDLFdBQVdDLGFBQWEsR0FBR0MsSUFBQUEsZUFBUSxFQUFDO0lBQzNDLE1BQU0sQ0FBQ0MsTUFBTUMsUUFBUSxHQUFHRixJQUFBQSxlQUFRLEVBQUM7SUFDakMsTUFBTSxDQUFDRyxTQUFTQyxXQUFXLEdBQUdKLElBQUFBLGVBQVEsRUFBZ0I7SUFDdEQsTUFBTSxDQUFDSyxPQUFPQyxTQUFTLEdBQUdOLElBQUFBLGVBQVEsRUFBZ0I7SUFDbEQsTUFBTU8sWUFBWSxPQUFPQztRQUN2Qk4sUUFBUTtRQUFPSSxTQUFTO1FBQU9GLFdBQVc7UUFDMUMsSUFBSTtZQUFFLE1BQU1mLFFBQVE7Z0JBQUVGLFVBQVVBLFNBQVNRLEVBQUU7Z0JBQUVjLFFBQVFEO1lBQUk7WUFBSUosV0FBVztRQUF1RCxTQUN2SDtZQUFFRixRQUFRO1FBQVE7SUFDNUI7SUFDQSxNQUFNUSxTQUFTO1FBQ2JSLFFBQVE7UUFBT0ksU0FBUztRQUFPRixXQUFXO1FBQzFDLElBQUk7WUFBRSxNQUFNTyxTQUFTLE1BQU1DLElBQUFBLGlEQUFzQixFQUFD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

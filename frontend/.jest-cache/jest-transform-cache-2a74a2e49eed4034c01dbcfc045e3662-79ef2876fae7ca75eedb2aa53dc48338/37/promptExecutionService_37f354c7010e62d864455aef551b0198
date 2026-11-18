@@ -1,0 +1,15 @@
+34212aa16fb531c5d540f8566fede16d
+"use strict";
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+Object.defineProperty(exports, "executeOptimizedPrompt", {
+    enumerable: true,
+    get: function() {
+        return executeOptimizedPrompt;
+    }
+});
+const _adapter = require("./adapter");
+const executeOptimizedPrompt = (request)=>(0, _adapter.getByokAdapter)().executePrompt(request);
+
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIkQ6XFxQcm9qZWN0c1xcTWFqb3JcXFRva2VuVHJpbVxcZnJvbnRlbmRcXHNyY1xcc2VydmljZXNcXGJ5b2tcXHByb21wdEV4ZWN1dGlvblNlcnZpY2UudHMiXSwic291cmNlc0NvbnRlbnQiOlsiaW1wb3J0IHR5cGUgeyBQcm9tcHRFeGVjdXRpb25SZXF1ZXN0LCBQcm9tcHRFeGVjdXRpb25SZXN1bHQgfSBmcm9tICdAL3R5cGVzL2V4ZWN1dGlvbic7XG5pbXBvcnQgeyBnZXRCeW9rQWRhcHRlciB9IGZyb20gJy4vYWRhcHRlcic7XG5cbmV4cG9ydCBjb25zdCBleGVjdXRlT3B0aW1pemVkUHJvbXB0ID0gKHJlcXVlc3Q6IFByb21wdEV4ZWN1dGlvblJlcXVlc3QpOiBQcm9taXNlPFByb21wdEV4ZWN1dGlvblJlc3VsdD4gPT5cbiAgZ2V0Qnlva0FkYXB0ZXIoKS5leGVjdXRlUHJvbXB0KHJlcXVlc3QpO1xuIl0sIm5hbWVzIjpbImV4ZWN1dGVPcHRpbWl6ZWRQcm9tcHQiLCJyZXF1ZXN0IiwiZ2V0Qnlva0FkYXB0ZXIiLCJleGVjdXRlUHJvbXB0Il0sIm1hcHBpbmdzIjoiOzs7OytCQUdhQTs7O2VBQUFBOzs7eUJBRmtCO0FBRXhCLE1BQU1BLHlCQUF5QixDQUFDQyxVQUNyQ0MsSUFBQUEsdUJBQWMsSUFBR0MsYUFBYSxDQUFDRiJ9

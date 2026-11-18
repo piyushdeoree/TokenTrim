@@ -7,7 +7,7 @@ type Daily = { date: string; tokens: number; cost: number; requests: number; sav
 type Model = { model: string; tokens: number; cost: number; requests: number };
 type Project = { project: string; tokens: number; cost: number; requests: number };
 export const useDashboardData = (r: DashboardRange) => {
-const result = useAsync(async () => {
+const { state, reload } = useAsync(async () => {
   const days = r.preset === 'monthly' ? 30 : r.preset === 'yearly' ? 365 : 7;
   const usagePath = r.preset === 'custom' && r.from && r.to
     ? `/dashboard/daily-usage?start=${encodeURIComponent(r.from)}&end=${encodeURIComponent(r.to)}`
@@ -28,6 +28,6 @@ const result = useAsync(async () => {
     byProject: byProject.map((x) => ({ name: x.project, tokens: x.tokens })),
   } as DashboardData;
 }, [r.preset, r.from, r.to]);
-useEffect(() => { const refresh = () => result.reload(); window.addEventListener('tokentrim:analysis-saved', refresh); return () => window.removeEventListener('tokentrim:analysis-saved', refresh); }, [result.reload]);
-return result;
+useEffect(() => { window.addEventListener('tokentrim:analysis-saved', reload); return () => window.removeEventListener('tokentrim:analysis-saved', reload); }, [reload]);
+return { state, reload };
 };

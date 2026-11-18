@@ -12,6 +12,7 @@ import { useAnalyzePrompt } from '@/hooks/useAnalyzePrompt';
 import { useAuth } from '@/context/AuthContext';
 import { useTheme } from '@/context/ThemeContext';
 import { validateAnalyzeForm } from '@/utils/validation';
+import { PromptExecutionPanel } from '@/components/execution/PromptExecutionPanel';
 
 export default function TokenTrimPage() {
   const { user } = useAuth(); const { theme } = useTheme();
@@ -44,8 +45,11 @@ export default function TokenTrimPage() {
         {state.status === 'idle' && <EmptyState title="No analysis yet" body="Paste a prompt, pick a model, and select Analyze prompt." />}
         {state.status === 'loading' && <LoadingState />}
         {state.status === 'error' && <ErrorState message={state.message} onRetry={submit} />}
-        {state.status === 'success' && <AnalysisResult data={state.data} original={prompt} onSave={() => setSaving(true)} />}
-        {saving && state.status === 'success' && <SaveAnalysisModal prompt={prompt} model={model} result={state.data} onClose={() => setSaving(false)} />}
+        {state.status === 'success' && <>
+          <AnalysisResult data={state.data} original={prompt} onSave={() => setSaving(true)} />
+          <PromptExecutionPanel optimizedPrompt={state.data.optimized_prompt} estimatedCost={state.data.estimated_cost} estimatedSaving={state.data.potential_saving} />
+        </>}
+        {saving && state.status === 'success' && <SaveAnalysisModal result={state.data} onClose={() => setSaving(false)} />}
       </div>
     </main>
     {!user && <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4 backdrop-blur-md">

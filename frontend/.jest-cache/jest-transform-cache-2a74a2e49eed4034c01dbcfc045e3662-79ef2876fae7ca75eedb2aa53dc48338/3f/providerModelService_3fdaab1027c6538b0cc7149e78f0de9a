@@ -1,0 +1,15 @@
+f8e4bde9bf3c38369b8bf57fee0fa761
+"use strict";
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+Object.defineProperty(exports, "listProviderModels", {
+    enumerable: true,
+    get: function() {
+        return listProviderModels;
+    }
+});
+const _adapter = require("./adapter");
+const listProviderModels = (provider)=>(0, _adapter.getByokAdapter)().listModels(provider);
+
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIkQ6XFxQcm9qZWN0c1xcTWFqb3JcXFRva2VuVHJpbVxcZnJvbnRlbmRcXHNyY1xcc2VydmljZXNcXGJ5b2tcXHByb3ZpZGVyTW9kZWxTZXJ2aWNlLnRzIl0sInNvdXJjZXNDb250ZW50IjpbImltcG9ydCB0eXBlIHsgUHJvdmlkZXJJZCwgUHJvdmlkZXJNb2RlbCB9IGZyb20gJ0AvdHlwZXMvcHJvdmlkZXInO1xuaW1wb3J0IHsgZ2V0Qnlva0FkYXB0ZXIgfSBmcm9tICcuL2FkYXB0ZXInO1xuXG5leHBvcnQgY29uc3QgbGlzdFByb3ZpZGVyTW9kZWxzID0gKHByb3ZpZGVyOiBQcm92aWRlcklkKTogUHJvbWlzZTxQcm92aWRlck1vZGVsW10+ID0+IGdldEJ5b2tBZGFwdGVyKCkubGlzdE1vZGVscyhwcm92aWRlcik7XG4iXSwibmFtZXMiOlsibGlzdFByb3ZpZGVyTW9kZWxzIiwicHJvdmlkZXIiLCJnZXRCeW9rQWRhcHRlciIsImxpc3RNb2RlbHMiXSwibWFwcGluZ3MiOiI7Ozs7K0JBR2FBOzs7ZUFBQUE7Ozt5QkFGa0I7QUFFeEIsTUFBTUEscUJBQXFCLENBQUNDLFdBQW1EQyxJQUFBQSx1QkFBYyxJQUFHQyxVQUFVLENBQUNGIn0=

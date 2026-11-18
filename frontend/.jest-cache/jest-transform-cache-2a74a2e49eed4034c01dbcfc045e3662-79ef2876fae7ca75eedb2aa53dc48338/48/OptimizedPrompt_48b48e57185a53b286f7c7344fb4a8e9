@@ -1,0 +1,52 @@
+5c01cbcc89e77096cac527e0053dc5b2
+"use strict";
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+Object.defineProperty(exports, "OptimizedPrompt", {
+    enumerable: true,
+    get: function() {
+        return OptimizedPrompt;
+    }
+});
+const _jsxruntime = require("react/jsx-runtime");
+const _Button = require("../ui/Button");
+const _PromptComparison = require("./PromptComparison");
+const _useCopyToClipboard = require("../../hooks/useCopyToClipboard");
+function OptimizedPrompt({ original, optimized, onSave }) {
+    const { copied, error, copy } = (0, _useCopyToClipboard.useCopyToClipboard)();
+    return /*#__PURE__*/ (0, _jsxruntime.jsxs)(_jsxruntime.Fragment, {
+        children: [
+            /*#__PURE__*/ (0, _jsxruntime.jsx)(_PromptComparison.PromptComparison, {
+                original: original,
+                optimized: optimized
+            }),
+            /*#__PURE__*/ (0, _jsxruntime.jsxs)("div", {
+                className: "mt-3 flex flex-wrap gap-2",
+                children: [
+                    /*#__PURE__*/ (0, _jsxruntime.jsx)(_Button.Button, {
+                        onClick: ()=>copy(optimized),
+                        children: copied ? "Copied" : "Copy optimized prompt"
+                    }),
+                    onSave && /*#__PURE__*/ (0, _jsxruntime.jsx)(_Button.Button, {
+                        variant: "ghost",
+                        onClick: onSave,
+                        children: "Save analysis"
+                    })
+                ]
+            }),
+            error && /*#__PURE__*/ (0, _jsxruntime.jsx)("p", {
+                role: "alert",
+                className: "mt-2 text-sm text-red-700 dark:text-red-400",
+                children: error
+            }),
+            copied && /*#__PURE__*/ (0, _jsxruntime.jsx)("p", {
+                role: "status",
+                className: "sr-only",
+                children: "Prompt copied to clipboard."
+            })
+        ]
+    });
+}
+
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIkQ6XFxQcm9qZWN0c1xcTWFqb3JcXFRva2VuVHJpbVxcZnJvbnRlbmRcXHNyY1xcY29tcG9uZW50c1xcdG9rZW4tdHJpbVxcT3B0aW1pemVkUHJvbXB0LnRzeCJdLCJzb3VyY2VzQ29udGVudCI6WyJpbXBvcnQgeyBCdXR0b24gfSBmcm9tICdAL2NvbXBvbmVudHMvdWkvQnV0dG9uJztcclxuaW1wb3J0IHsgUHJvbXB0Q29tcGFyaXNvbiB9IGZyb20gJy4vUHJvbXB0Q29tcGFyaXNvbic7XHJcbmltcG9ydCB7IHVzZUNvcHlUb0NsaXBib2FyZCB9IGZyb20gJ0AvaG9va3MvdXNlQ29weVRvQ2xpcGJvYXJkJztcclxuZXhwb3J0IGZ1bmN0aW9uIE9wdGltaXplZFByb21wdCh7IG9yaWdpbmFsLCBvcHRpbWl6ZWQsIG9uU2F2ZSB9OiB7IG9yaWdpbmFsOiBzdHJpbmc7IG9wdGltaXplZDogc3RyaW5nOyBvblNhdmU/OiAoKSA9PiB2b2lkIH0pIHtcclxuICBjb25zdCB7IGNvcGllZCwgZXJyb3IsIGNvcHkgfSA9IHVzZUNvcHlUb0NsaXBib2FyZCgpO1xyXG4gIHJldHVybiAoPD5cclxuICAgIDxQcm9tcHRDb21wYXJpc29uIG9yaWdpbmFsPXtvcmlnaW5hbH0gb3B0aW1pemVkPXtvcHRpbWl6ZWR9IC8+XHJcbiAgICA8ZGl2IGNsYXNzTmFtZT1cIm10LTMgZmxleCBmbGV4LXdyYXAgZ2FwLTJcIj5cclxuICAgICAgPEJ1dHRvbiBvbkNsaWNrPXsoKSA9PiBjb3B5KG9wdGltaXplZCl9Pntjb3BpZWQgPyAnQ29waWVkJyA6ICdDb3B5IG9wdGltaXplZCBwcm9tcHQnfTwvQnV0dG9uPlxyXG4gICAgICB7b25TYXZlICYmIDxCdXR0b24gdmFyaWFudD1cImdob3N0XCIgb25DbGljaz17b25TYXZlfT5TYXZlIGFuYWx5c2lzPC9CdXR0b24+fVxyXG4gICAgPC9kaXY+XHJcbiAgICB7ZXJyb3IgJiYgPHAgcm9sZT1cImFsZXJ0XCIgY2xhc3NOYW1lPVwibXQtMiB0ZXh0LXNtIHRleHQtcmVkLTcwMCBkYXJrOnRleHQtcmVkLTQwMFwiPntlcnJvcn08L3A+fVxyXG4gICAge2NvcGllZCAmJiA8cCByb2xlPVwic3RhdHVzXCIgY2xhc3NOYW1lPVwic3Itb25seVwiPlByb21wdCBjb3BpZWQgdG8gY2xpcGJvYXJkLjwvcD59XHJcbiAgPC8+KTtcclxufVxyXG4iXSwibmFtZXMiOlsiT3B0aW1pemVkUHJvbXB0Iiwib3JpZ2luYWwiLCJvcHRpbWl6ZWQiLCJvblNhdmUiLCJjb3BpZWQiLCJlcnJvciIsImNvcHkiLCJ1c2VDb3B5VG9DbGlwYm9hcmQiLCJQcm9tcHRDb21wYXJpc29uIiwiZGl2IiwiY2xhc3NOYW1lIiwiQnV0dG9uIiwib25DbGljayIsInZhcmlhbnQiLCJwIiwicm9sZSJdLCJtYXBwaW5ncyI6Ijs7OzsrQkFHZ0JBOzs7ZUFBQUE7Ozs7d0JBSE87a0NBQ1U7b0NBQ0U7QUFDNUIsU0FBU0EsZ0JBQWdCLEVBQUVDLFFBQVEsRUFBRUMsU0FBUyxFQUFFQyxNQUFNLEVBQWdFO0lBQzNILE1BQU0sRUFBRUMsTUFBTSxFQUFFQyxLQUFLLEVBQUVDLElBQUksRUFBRSxHQUFHQyxJQUFBQSxzQ0FBa0I7SUFDbEQscUJBQVE7OzBCQUNOLHFCQUFDQyxrQ0FBZ0I7Z0JBQUNQLFVBQVVBO2dCQUFVQyxXQUFXQTs7MEJBQ2pELHNCQUFDTztnQkFBSUMsV0FBVTs7a0NBQ2IscUJBQUNDLGNBQU07d0JBQUNDLFNBQVMsSUFBTU4sS0FBS0o7a0NBQWFFLFNBQVMsV0FBVzs7b0JBQzVERCx3QkFBVSxxQkFBQ1EsY0FBTTt3QkFBQ0UsU0FBUTt3QkFBUUQsU0FBU1Q7a0NBQVE7Ozs7WUFFckRFLHVCQUFTLHFCQUFDUztnQkFBRUMsTUFBSztnQkFBUUwsV0FBVTswQkFBK0NMOztZQUNsRkQsd0JBQVUscUJBQUNVO2dCQUFFQyxNQUFLO2dCQUFTTCxXQUFVOzBCQUFVOzs7O0FBRXBEIn0=

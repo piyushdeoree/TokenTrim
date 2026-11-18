@@ -6,7 +6,7 @@ import { useToast } from '@/components/ui/Toast';
 import { useProjects } from '@/hooks/useProjects';
 import { send } from '@/services/data';
 import type { AnalyzePromptResponse } from '@/types/analysis';
-export function SaveAnalysisModal({ prompt, model, result, onClose }: { prompt: string; model: string; result: AnalyzePromptResponse; onClose: () => void }) {
+export function SaveAnalysisModal({ result, onClose }: { result: AnalyzePromptResponse; onClose: () => void }) {
   const { state } = useProjects(); const toast = useToast();
   const [pid, setPid] = useState(''); const [msg, setMsg] = useState(''); const [busy, setBusy] = useState(false);
   const save = async () => {

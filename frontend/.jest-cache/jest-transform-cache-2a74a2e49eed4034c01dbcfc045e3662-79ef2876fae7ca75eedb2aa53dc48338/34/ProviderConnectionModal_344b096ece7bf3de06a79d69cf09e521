@@ -1,0 +1,107 @@
+c9c5db4005340d70015496e3f5f2d14f
+"use strict";
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+Object.defineProperty(exports, "ProviderConnectionModal", {
+    enumerable: true,
+    get: function() {
+        return ProviderConnectionModal;
+    }
+});
+const _jsxruntime = require("react/jsx-runtime");
+const _react = require("react");
+const _Modal = require("../ui/Modal");
+const _Field = require("../ui/Field");
+const _Button = require("../ui/Button");
+function ProviderConnectionModal({ provider, onClose, onConnect }) {
+    const [key, setKey] = (0, _react.useState)("");
+    const [visible, setVisible] = (0, _react.useState)(false);
+    const [loading, setLoading] = (0, _react.useState)(false);
+    const [error, setError] = (0, _react.useState)(null);
+    const submit = async (event)=>{
+        event.preventDefault();
+        setError(null);
+        if (key.trim().length < 8) {
+            setError("Enter an API key with at least 8 characters.");
+            return;
+        }
+        setLoading(true);
+        try {
+            await onConnect(key.trim());
+            setKey("");
+            onClose();
+        } catch (e) {
+            setError(e instanceof Error ? e.message : "Unable to connect this provider.");
+        } finally{
+            setKey("");
+            setLoading(false);
+        }
+    };
+    return /*#__PURE__*/ (0, _jsxruntime.jsxs)(_Modal.Modal, {
+        title: `Connect ${provider.name}`,
+        onClose: onClose,
+        children: [
+            /*#__PURE__*/ (0, _jsxruntime.jsx)("p", {
+                className: "mb-4 text-sm opacity-75",
+                children: "Your key is submitted to the local demo adapter for this session. It is not saved or sent to the provider."
+            }),
+            /*#__PURE__*/ (0, _jsxruntime.jsxs)("form", {
+                onSubmit: submit,
+                className: "space-y-4",
+                children: [
+                    /*#__PURE__*/ (0, _jsxruntime.jsx)(_Field.Field, {
+                        label: "API key",
+                        type: visible ? "text" : "password",
+                        autoComplete: "off",
+                        value: key,
+                        onChange: (e)=>setKey(e.target.value),
+                        "aria-invalid": !!error,
+                        placeholder: "Paste your API key",
+                        "aria-describedby": error ? "byok-key-error byok-key-note" : "byok-key-note"
+                    }),
+                    /*#__PURE__*/ (0, _jsxruntime.jsx)("p", {
+                        id: "byok-key-note",
+                        className: "text-xs opacity-70",
+                        children: "The key stays in memory only while this form is open."
+                    }),
+                    /*#__PURE__*/ (0, _jsxruntime.jsxs)("label", {
+                        className: "flex items-center gap-2 text-sm",
+                        children: [
+                            /*#__PURE__*/ (0, _jsxruntime.jsx)("input", {
+                                type: "checkbox",
+                                checked: visible,
+                                onChange: (e)=>setVisible(e.target.checked)
+                            }),
+                            " Show API key"
+                        ]
+                    }),
+                    error && /*#__PURE__*/ (0, _jsxruntime.jsx)("p", {
+                        id: "byok-key-error",
+                        role: "alert",
+                        className: "text-sm text-red-700 dark:text-red-400",
+                        children: error
+                    }),
+                    /*#__PURE__*/ (0, _jsxruntime.jsxs)("div", {
+                        className: "flex flex-wrap justify-end gap-2",
+                        children: [
+                            /*#__PURE__*/ (0, _jsxruntime.jsx)(_Button.Button, {
+                                variant: "ghost",
+                                onClick: onClose,
+                                disabled: loading,
+                                children: "Cancel"
+                            }),
+                            /*#__PURE__*/ (0, _jsxruntime.jsx)(_Button.Button, {
+                                type: "submit",
+                                loading: loading,
+                                children: "Connect provider"
+                            })
+                        ]
+                    })
+                ]
+            })
+        ]
+    });
+}
+
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIkQ6XFxQcm9qZWN0c1xcTWFqb3JcXFRva2VuVHJpbVxcZnJvbnRlbmRcXHNyY1xcY29tcG9uZW50c1xccHJvdmlkZXJzXFxQcm92aWRlckNvbm5lY3Rpb25Nb2RhbC50c3giXSwic291cmNlc0NvbnRlbnQiOlsiaW1wb3J0IHsgRm9ybUV2ZW50LCB1c2VTdGF0ZSB9IGZyb20gJ3JlYWN0JztcbmltcG9ydCB7IE1vZGFsIH0gZnJvbSAnQC9jb21wb25lbnRzL3VpL01vZGFsJztcbmltcG9ydCB7IEZpZWxkIH0gZnJvbSAnQC9jb21wb25lbnRzL3VpL0ZpZWxkJztcbmltcG9ydCB7IEJ1dHRvbiB9IGZyb20gJ0AvY29tcG9uZW50cy91aS9CdXR0b24nO1xuaW1wb3J0IHR5cGUgeyBQcm92aWRlckRlZmluaXRpb24gfSBmcm9tICdAL3R5cGVzL3Byb3ZpZGVyJztcblxuZXhwb3J0IGZ1bmN0aW9uIFByb3ZpZGVyQ29ubmVjdGlvbk1vZGFsKHsgcHJvdmlkZXIsIG9uQ2xvc2UsIG9uQ29ubmVjdCB9OiB7XG4gIHByb3ZpZGVyOiBQcm92aWRlckRlZmluaXRpb247IG9uQ2xvc2U6ICgpID0+IHZvaWQ7IG9uQ29ubmVjdDogKGtleTogc3RyaW5nKSA9PiBQcm9taXNlPHZvaWQ+O1xufSkge1xuICBjb25zdCBba2V5LCBzZXRLZXldID0gdXNlU3RhdGUoJycpO1xuICBjb25zdCBbdmlzaWJsZSwgc2V0VmlzaWJsZV0gPSB1c2VTdGF0ZShmYWxzZSk7XG4gIGNvbnN0IFtsb2FkaW5nLCBzZXRMb2FkaW5nXSA9IHVzZVN0YXRlKGZhbHNlKTtcbiAgY29uc3QgW2Vycm9yLCBzZXRFcnJvcl0gPSB1c2VTdGF0ZTxzdHJpbmcgfCBudWxsPihudWxsKTtcbiAgY29uc3Qgc3VibWl0ID0gYXN5bmMgKGV2ZW50OiBGb3JtRXZlbnQpID0+IHtcbiAgICBldmVudC5wcmV2ZW50RGVmYXVsdCgpOyBzZXRFcnJvcihudWxsKTtcbiAgICBpZiAoa2V5LnRyaW0oKS5sZW5ndGggPCA4KSB7IHNldEVycm9yKCdFbnRlciBhbiBBUEkga2V5IHdpdGggYXQgbGVhc3QgOCBjaGFyYWN0ZXJzLicpOyByZXR1cm47IH1cbiAgICBzZXRMb2FkaW5nKHRydWUpO1xuICAgIHRyeSB7IGF3YWl0IG9uQ29ubmVjdChrZXkudHJpbSgpKTsgc2V0S2V5KCcnKTsgb25DbG9zZSgpOyB9XG4gICAgY2F0Y2ggKGUpIHsgc2V0RXJyb3IoZSBpbnN0YW5jZW9mIEVycm9yID8gZS5tZXNzYWdlIDogJ1VuYWJsZSB0byBjb25uZWN0IHRoaXMgcHJvdmlkZXIuJyk7IH1cbiAgICBmaW5hbGx5IHsgc2V0S2V5KCcnKTsgc2V0TG9hZGluZyhmYWxzZSk7IH1cbiAgfTtcbiAgcmV0dXJuIDxNb2RhbCB0aXRsZT17YENvbm5lY3QgJHtwcm92aWRlci5uYW1lfWB9IG9uQ2xvc2U9e29uQ2xvc2V9PlxuICAgIDxwIGNsYXNzTmFtZT1cIm1iLTQgdGV4dC1zbSBvcGFjaXR5LTc1XCI+WW91ciBrZXkgaXMgc3VibWl0dGVkIHRvIHRoZSBsb2NhbCBkZW1vIGFkYXB0ZXIgZm9yIHRoaXMgc2Vzc2lvbi4gSXQgaXMgbm90IHNhdmVkIG9yIHNlbnQgdG8gdGhlIHByb3ZpZGVyLjwvcD5cbiAgICA8Zm9ybSBvblN1Ym1pdD17c3VibWl0fSBjbGFzc05hbWU9XCJzcGFjZS15LTRcIj5cbiAgICAgIDxGaWVsZCBsYWJlbD1cIkFQSSBrZXlcIiB0eXBlPXt2aXNpYmxlID8gJ3RleHQnIDogJ3Bhc3N3b3JkJ30gYXV0b0NvbXBsZXRlPVwib2ZmXCIgdmFsdWU9e2tleX0gb25DaGFuZ2U9eyhlKSA9PiBzZXRLZXkoZS50YXJnZXQudmFsdWUpfSBhcmlhLWludmFsaWQ9eyEhZXJyb3J9IHBsYWNlaG9sZGVyPVwiUGFzdGUgeW91ciBBUEkga2V5XCIgYXJpYS1kZXNjcmliZWRieT17ZXJyb3IgPyAnYnlvay1rZXktZXJyb3IgYnlvay1rZXktbm90ZScgOiAnYnlvay1rZXktbm90ZSd9IC8+XG4gICAgICA8cCBpZD1cImJ5b2sta2V5LW5vdGVcIiBjbGFzc05hbWU9XCJ0ZXh0LXhzIG9wYWNpdHktNzBcIj5UaGUga2V5IHN0YXlzIGluIG1lbW9yeSBvbmx5IHdoaWxlIHRoaXMgZm9ybSBpcyBvcGVuLjwvcD5cbiAgICAgIDxsYWJlbCBjbGFzc05hbWU9XCJmbGV4IGl0ZW1zLWNlbnRlciBnYXAtMiB0ZXh0LXNtXCI+PGlucHV0IHR5cGU9XCJjaGVja2JveFwiIGNoZWNrZWQ9e3Zpc2libGV9IG9uQ2hhbmdlPXsoZSkgPT4gc2V0VmlzaWJsZShlLnRhcmdldC5jaGVja2VkKX0gLz4gU2hvdyBBUEkga2V5PC9sYWJlbD5cbiAgICAgIHtlcnJvciAmJiA8cCBpZD1cImJ5b2sta2V5LWVycm9yXCIgcm9sZT1cImFsZXJ0XCIgY2xhc3NOYW1lPVwidGV4dC1zbSB0ZXh0LXJlZC03MDAgZGFyazp0ZXh0LXJlZC00MDBcIj57ZXJyb3J9PC9wPn1cbiAgICAgIDxkaXYgY2xhc3NOYW1lPVwiZmxleCBmbGV4LXdyYXAganVzdGlmeS1lbmQgZ2FwLTJcIj48QnV0dG9uIHZhcmlhbnQ9XCJnaG9zdFwiIG9uQ2xpY2s9e29uQ2xvc2V9IGRpc2FibGVkPXtsb2FkaW5nfT5DYW5jZWw8L0J1dHRvbj48QnV0dG9uIHR5cGU9XCJzdWJtaXRcIiBsb2FkaW5nPXtsb2FkaW5nfT5Db25uZWN0IHByb3ZpZGVyPC9CdXR0b24+PC9kaXY+XG4gICAgPC9mb3JtPlxuICA8L01vZGFsPjtcbn1cbiJdLCJuYW1lcyI6WyJQcm92aWRlckNvbm5lY3Rpb25Nb2RhbCIsInByb3ZpZGVyIiwib25DbG9zZSIsIm9uQ29ubmVjdCIsImtleSIsInNldEtleSIsInVzZVN0YXRlIiwidmlzaWJsZSIsInNldFZpc2libGUiLCJsb2FkaW5nIiwic2V0TG9hZGluZyIsImVycm9yIiwic2V0RXJyb3IiLCJzdWJtaXQiLCJldmVudCIsInByZXZlbnREZWZhdWx0IiwidHJpbSIsImxlbmd0aCIsImUiLCJFcnJvciIsIm1lc3NhZ2UiLCJNb2RhbCIsInRpdGxlIiwibmFtZSIsInAiLCJjbGFzc05hbWUiLCJmb3JtIiwib25TdWJtaXQiLCJGaWVsZCIsImxhYmVsIiwidHlwZSIsImF1dG9Db21wbGV0ZSIsInZhbHVlIiwib25DaGFuZ2UiLCJ0YXJnZXQiLCJhcmlhLWludmFsaWQiLCJwbGFjZWhvbGRlciIsImFyaWEtZGVzY3JpYmVkYnkiLCJpZCIsImlucHV0IiwiY2hlY2tlZCIsInJvbGUiLCJkaXYiLCJCdXR0b24iLCJ2YXJpYW50Iiwib25DbGljayIsImRpc2FibGVkIl0sIm1hcHBpbmdzIjoiOzs7OytCQU1nQkE7OztlQUFBQTs7Ozt1QkFOb0I7dUJBQ2Q7dUJBQ0E7d0JBQ0M7QUFHaEIsU0FBU0Esd0JBQXdCLEVBQUVDLFFBQVEsRUFBRUMsT0FBTyxFQUFFQyxTQUFTLEVBRXJFO0lBQ0MsTUFBTSxDQUFDQyxLQUFLQyxPQUFPLEdBQUdDLElBQUFBLGVBQVEsRUFBQztJQUMvQixNQUFNLENBQUNDLFNBQVNDLFdBQVcsR0FBR0YsSUFBQUEsZUFBUSxFQUFDO0lBQ3ZDLE1BQU0sQ0FBQ0csU0FBU0MsV0FBVyxHQUFHSixJQUFBQSxlQUFRLEVBQUM7SUFDdkMsTUFBTSxDQUFDSyxPQUFPQyxTQUFTLEdBQUdOLElBQUFBLGVBQVEsRUFBZ0I7SUFDbEQsTUFBTU8sU0FBUyxPQUFPQztRQUNwQkEsTUFBTUMsY0FBYztRQUFJSCxTQUFTO1FBQ2pDLElBQUlSLElBQUlZLElBQUksR0FBR0MsTUFBTSxHQUFHLEdBQUc7WUFBRUwsU0FBUztZQUFpRDtRQUFRO1FBQy9GRixXQUFXO1FBQ1gsSUFBSTtZQUFFLE1BQU1QLFVBQVVDLElBQUlZLElBQUk7WUFBS1gsT0FBTztZQUFLSDtRQUFXLEVBQzFELE9BQU9nQixHQUFHO1lBQUVOLFNBQVNNLGFBQWFDLFFBQVFELEVBQUVFLE9BQU8sR0FBRztRQUFxQyxTQUNuRjtZQUFFZixPQUFPO1lBQUtLLFdBQVc7UUFBUTtJQUMzQztJQUNBLHFCQUFPLHNCQUFDVyxZQUFLO1FBQUNDLE9BQU8sQ0FBQyxRQUFRLEVBQUVyQixTQUFTc0IsSUFBSSxDQUFDLENBQUM7UUFBRXJCLFNBQVNBOzswQkFDeEQscUJBQUNzQjtnQkFBRUMsV0FBVTswQkFBMEI7OzBCQUN2QyxzQkFBQ0M7Z0JBQUtDLFVBQVVkO2dCQUFRWSxXQUFVOztrQ0FDaEMscUJBQUNHLFlBQUs7d0JBQUNDLE9BQU07d0JBQVVDLE1BQU12QixVQUFVLFNBQVM7d0JBQVl3QixjQUFhO3dCQUFNQyxPQUFPNUI7d0JBQUs2QixVQUFVLENBQUNmLElBQU1iLE9BQU9hLEVBQUVnQixNQUFNLENBQUNGLEtBQUs7d0JBQUdHLGdCQUFjLENBQUMsQ0FBQ3hCO3dCQUFPeUIsYUFBWTt3QkFBcUJDLG9CQUFrQjFCLFFBQVEsaUNBQWlDOztrQ0FDdlAscUJBQUNhO3dCQUFFYyxJQUFHO3dCQUFnQmIsV0FBVTtrQ0FBcUI7O2tDQUNyRCxzQkFBQ0k7d0JBQU1KLFdBQVU7OzBDQUFrQyxxQkFBQ2M7Z0NBQU1ULE1BQUs7Z0NBQVdVLFNBQVNqQztnQ0FBUzBCLFVBQVUsQ0FBQ2YsSUFBTVYsV0FBV1UsRUFBRWdCLE1BQU0sQ0FBQ00sT0FBTzs7NEJBQUs7OztvQkFDNUk3Qix1QkFBUyxxQkFBQ2E7d0JBQUVjLElBQUc7d0JBQWlCRyxNQUFLO3dCQUFRaEIsV0FBVTtrQ0FBMENkOztrQ0FDbEcsc0JBQUMrQjt3QkFBSWpCLFdBQVU7OzBDQUFtQyxxQkFBQ2tCLGNBQU07Z0NBQUNDLFNBQVE7Z0NBQVFDLFNBQVMzQztnQ0FBUzRDLFVBQVVyQzswQ0FBUzs7MENBQWUscUJBQUNrQyxjQUFNO2dDQUFDYixNQUFLO2dDQUFTckIsU0FBU0E7MENBQVM7Ozs7Ozs7O0FBRzVLIn0=

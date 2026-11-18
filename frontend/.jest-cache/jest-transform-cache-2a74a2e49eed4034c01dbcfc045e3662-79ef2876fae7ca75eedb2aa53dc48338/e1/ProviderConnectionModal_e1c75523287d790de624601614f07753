@@ -1,0 +1,111 @@
+06ce34144c07cb98e4de211ebfdfec46
+"use strict";
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+Object.defineProperty(exports, "ProviderConnectionModal", {
+    enumerable: true,
+    get: function() {
+        return ProviderConnectionModal;
+    }
+});
+const _jsxruntime = require("react/jsx-runtime");
+const _react = require("react");
+const _Modal = require("../ui/Modal");
+const _Field = require("../ui/Field");
+const _Button = require("../ui/Button");
+const _errors = require("../../services/byok/errors");
+const _adapter = require("../../services/byok/adapter");
+function ProviderConnectionModal({ provider, onClose, onConnect }) {
+    const [key, setKey] = (0, _react.useState)("");
+    const [visible, setVisible] = (0, _react.useState)(false);
+    const [loading, setLoading] = (0, _react.useState)(false);
+    const [error, setError] = (0, _react.useState)(null);
+    const submit = async (event)=>{
+        event.preventDefault();
+        setError(null);
+        if (key.trim().length < 8) {
+            setError("Enter an API key with at least 8 characters.");
+            return;
+        }
+        setLoading(true);
+        try {
+            await onConnect(key.trim());
+            setKey("");
+            onClose();
+        } catch (e) {
+            setError((0, _errors.toSafeByokMessage)(e, "Unable to connect this provider.", [
+                key.trim()
+            ]));
+        } finally{
+            setKey("");
+            setLoading(false);
+        }
+    };
+    return /*#__PURE__*/ (0, _jsxruntime.jsxs)(_Modal.Modal, {
+        title: `Connect ${provider.name}`,
+        onClose: onClose,
+        children: [
+            /*#__PURE__*/ (0, _jsxruntime.jsx)("p", {
+                className: "mb-4 text-sm opacity-75",
+                children: _adapter.IS_BYOK_DEMO_MODE ? "Your key is submitted to the local demo adapter for this session. It is not saved or sent to the provider." : "Your key is submitted only to the TokenTrim backend service over the configured API connection."
+            }),
+            /*#__PURE__*/ (0, _jsxruntime.jsxs)("form", {
+                onSubmit: submit,
+                className: "space-y-4",
+                children: [
+                    /*#__PURE__*/ (0, _jsxruntime.jsx)(_Field.Field, {
+                        label: "API key",
+                        type: visible ? "text" : "password",
+                        autoComplete: "off",
+                        value: key,
+                        onChange: (e)=>setKey(e.target.value),
+                        "aria-invalid": !!error,
+                        placeholder: "Paste your API key",
+                        "aria-describedby": error ? "byok-key-error byok-key-note" : "byok-key-note"
+                    }),
+                    /*#__PURE__*/ (0, _jsxruntime.jsx)("p", {
+                        id: "byok-key-note",
+                        className: "text-xs opacity-70",
+                        children: "The key stays in memory only while this form is open."
+                    }),
+                    /*#__PURE__*/ (0, _jsxruntime.jsxs)("label", {
+                        className: "flex items-center gap-2 text-sm",
+                        children: [
+                            /*#__PURE__*/ (0, _jsxruntime.jsx)("input", {
+                                type: "checkbox",
+                                checked: visible,
+                                onChange: (e)=>setVisible(e.target.checked)
+                            }),
+                            " Show API key"
+                        ]
+                    }),
+                    error && /*#__PURE__*/ (0, _jsxruntime.jsx)("p", {
+                        id: "byok-key-error",
+                        role: "alert",
+                        className: "text-sm text-red-700 dark:text-red-400",
+                        children: error
+                    }),
+                    /*#__PURE__*/ (0, _jsxruntime.jsxs)("div", {
+                        className: "flex flex-wrap justify-end gap-2",
+                        children: [
+                            /*#__PURE__*/ (0, _jsxruntime.jsx)(_Button.Button, {
+                                variant: "ghost",
+                                onClick: onClose,
+                                disabled: loading,
+                                children: "Cancel"
+                            }),
+                            /*#__PURE__*/ (0, _jsxruntime.jsx)(_Button.Button, {
+                                type: "submit",
+                                loading: loading,
+                                children: "Connect provider"
+                            })
+                        ]
+                    })
+                ]
+            })
+        ]
+    });
+}
+
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIkQ6XFxQcm9qZWN0c1xcTWFqb3JcXFRva2VuVHJpbVxcZnJvbnRlbmRcXHNyY1xcY29tcG9uZW50c1xccHJvdmlkZXJzXFxQcm92aWRlckNvbm5lY3Rpb25Nb2RhbC50c3giXSwic291cmNlc0NvbnRlbnQiOlsiaW1wb3J0IHsgRm9ybUV2ZW50LCB1c2VTdGF0ZSB9IGZyb20gJ3JlYWN0JztcbmltcG9ydCB7IE1vZGFsIH0gZnJvbSAnQC9jb21wb25lbnRzL3VpL01vZGFsJztcbmltcG9ydCB7IEZpZWxkIH0gZnJvbSAnQC9jb21wb25lbnRzL3VpL0ZpZWxkJztcbmltcG9ydCB7IEJ1dHRvbiB9IGZyb20gJ0AvY29tcG9uZW50cy91aS9CdXR0b24nO1xuaW1wb3J0IHR5cGUgeyBQcm92aWRlckRlZmluaXRpb24gfSBmcm9tICdAL3R5cGVzL3Byb3ZpZGVyJztcbmltcG9ydCB7IHRvU2FmZUJ5b2tNZXNzYWdlIH0gZnJvbSAnQC9zZXJ2aWNlcy9ieW9rL2Vycm9ycyc7XG5pbXBvcnQgeyBJU19CWU9LX0RFTU9fTU9ERSB9IGZyb20gJ0Avc2VydmljZXMvYnlvay9hZGFwdGVyJztcblxuZXhwb3J0IGZ1bmN0aW9uIFByb3ZpZGVyQ29ubmVjdGlvbk1vZGFsKHsgcHJvdmlkZXIsIG9uQ2xvc2UsIG9uQ29ubmVjdCB9OiB7XG4gIHByb3ZpZGVyOiBQcm92aWRlckRlZmluaXRpb247IG9uQ2xvc2U6ICgpID0+IHZvaWQ7IG9uQ29ubmVjdDogKGtleTogc3RyaW5nKSA9PiBQcm9taXNlPHZvaWQ+O1xufSkge1xuICBjb25zdCBba2V5LCBzZXRLZXldID0gdXNlU3RhdGUoJycpO1xuICBjb25zdCBbdmlzaWJsZSwgc2V0VmlzaWJsZV0gPSB1c2VTdGF0ZShmYWxzZSk7XG4gIGNvbnN0IFtsb2FkaW5nLCBzZXRMb2FkaW5nXSA9IHVzZVN0YXRlKGZhbHNlKTtcbiAgY29uc3QgW2Vycm9yLCBzZXRFcnJvcl0gPSB1c2VTdGF0ZTxzdHJpbmcgfCBudWxsPihudWxsKTtcbiAgY29uc3Qgc3VibWl0ID0gYXN5bmMgKGV2ZW50OiBGb3JtRXZlbnQpID0+IHtcbiAgICBldmVudC5wcmV2ZW50RGVmYXVsdCgpOyBzZXRFcnJvcihudWxsKTtcbiAgICBpZiAoa2V5LnRyaW0oKS5sZW5ndGggPCA4KSB7IHNldEVycm9yKCdFbnRlciBhbiBBUEkga2V5IHdpdGggYXQgbGVhc3QgOCBjaGFyYWN0ZXJzLicpOyByZXR1cm47IH1cbiAgICBzZXRMb2FkaW5nKHRydWUpO1xuICAgIHRyeSB7IGF3YWl0IG9uQ29ubmVjdChrZXkudHJpbSgpKTsgc2V0S2V5KCcnKTsgb25DbG9zZSgpOyB9XG4gICAgY2F0Y2ggKGUpIHsgc2V0RXJyb3IodG9TYWZlQnlva01lc3NhZ2UoZSwgJ1VuYWJsZSB0byBjb25uZWN0IHRoaXMgcHJvdmlkZXIuJywgW2tleS50cmltKCldKSk7IH1cbiAgICBmaW5hbGx5IHsgc2V0S2V5KCcnKTsgc2V0TG9hZGluZyhmYWxzZSk7IH1cbiAgfTtcbiAgcmV0dXJuIDxNb2RhbCB0aXRsZT17YENvbm5lY3QgJHtwcm92aWRlci5uYW1lfWB9IG9uQ2xvc2U9e29uQ2xvc2V9PlxuICAgIDxwIGNsYXNzTmFtZT1cIm1iLTQgdGV4dC1zbSBvcGFjaXR5LTc1XCI+e0lTX0JZT0tfREVNT19NT0RFID8gJ1lvdXIga2V5IGlzIHN1Ym1pdHRlZCB0byB0aGUgbG9jYWwgZGVtbyBhZGFwdGVyIGZvciB0aGlzIHNlc3Npb24uIEl0IGlzIG5vdCBzYXZlZCBvciBzZW50IHRvIHRoZSBwcm92aWRlci4nIDogJ1lvdXIga2V5IGlzIHN1Ym1pdHRlZCBvbmx5IHRvIHRoZSBUb2tlblRyaW0gYmFja2VuZCBzZXJ2aWNlIG92ZXIgdGhlIGNvbmZpZ3VyZWQgQVBJIGNvbm5lY3Rpb24uJ308L3A+XG4gICAgPGZvcm0gb25TdWJtaXQ9e3N1Ym1pdH0gY2xhc3NOYW1lPVwic3BhY2UteS00XCI+XG4gICAgICA8RmllbGQgbGFiZWw9XCJBUEkga2V5XCIgdHlwZT17dmlzaWJsZSA/ICd0ZXh0JyA6ICdwYXNzd29yZCd9IGF1dG9Db21wbGV0ZT1cIm9mZlwiIHZhbHVlPXtrZXl9IG9uQ2hhbmdlPXsoZSkgPT4gc2V0S2V5KGUudGFyZ2V0LnZhbHVlKX0gYXJpYS1pbnZhbGlkPXshIWVycm9yfSBwbGFjZWhvbGRlcj1cIlBhc3RlIHlvdXIgQVBJIGtleVwiIGFyaWEtZGVzY3JpYmVkYnk9e2Vycm9yID8gJ2J5b2sta2V5LWVycm9yIGJ5b2sta2V5LW5vdGUnIDogJ2J5b2sta2V5LW5vdGUnfSAvPlxuICAgICAgPHAgaWQ9XCJieW9rLWtleS1ub3RlXCIgY2xhc3NOYW1lPVwidGV4dC14cyBvcGFjaXR5LTcwXCI+VGhlIGtleSBzdGF5cyBpbiBtZW1vcnkgb25seSB3aGlsZSB0aGlzIGZvcm0gaXMgb3Blbi48L3A+XG4gICAgICA8bGFiZWwgY2xhc3NOYW1lPVwiZmxleCBpdGVtcy1jZW50ZXIgZ2FwLTIgdGV4dC1zbVwiPjxpbnB1dCB0eXBlPVwiY2hlY2tib3hcIiBjaGVja2VkPXt2aXNpYmxlfSBvbkNoYW5nZT17KGUpID0+IHNldFZpc2libGUoZS50YXJnZXQuY2hlY2tlZCl9IC8+IFNob3cgQVBJIGtleTwvbGFiZWw+XG4gICAgICB7ZXJyb3IgJiYgPHAgaWQ9XCJieW9rLWtleS1lcnJvclwiIHJvbGU9XCJhbGVydFwiIGNsYXNzTmFtZT1cInRleHQtc20gdGV4dC1yZWQtNzAwIGRhcms6dGV4dC1yZWQtNDAwXCI+e2Vycm9yfTwvcD59XG4gICAgICA8ZGl2IGNsYXNzTmFtZT1cImZsZXggZmxleC13cmFwIGp1c3RpZnktZW5kIGdhcC0yXCI+PEJ1dHRvbiB2YXJpYW50PVwiZ2hvc3RcIiBvbkNsaWNrPXtvbkNsb3NlfSBkaXNhYmxlZD17bG9hZGluZ30+Q2FuY2VsPC9CdXR0b24+PEJ1dHRvbiB0eXBlPVwic3VibWl0XCIgbG9hZGluZz17bG9hZGluZ30+Q29ubmVjdCBwcm92aWRlcjwvQnV0dG9uPjwvZGl2PlxuICAgIDwvZm9ybT5cbiAgPC9Nb2RhbD47XG59XG4iXSwibmFtZXMiOlsiUHJvdmlkZXJDb25uZWN0aW9uTW9kYWwiLCJwcm92aWRlciIsIm9uQ2xvc2UiLCJvbkNvbm5lY3QiLCJrZXkiLCJzZXRLZXkiLCJ1c2VTdGF0ZSIsInZpc2libGUiLCJzZXRWaXNpYmxlIiwibG9hZGluZyIsInNldExvYWRpbmciLCJlcnJvciIsInNldEVycm9yIiwic3VibWl0IiwiZXZlbnQiLCJwcmV2ZW50RGVmYXVsdCIsInRyaW0iLCJsZW5ndGgiLCJlIiwidG9TYWZlQnlva01lc3NhZ2UiLCJNb2RhbCIsInRpdGxlIiwibmFtZSIsInAiLCJjbGFzc05hbWUiLCJJU19CWU9LX0RFTU9fTU9ERSIsImZvcm0iLCJvblN1Ym1pdCIsIkZpZWxkIiwibGFiZWwiLCJ0eXBlIiwiYXV0b0NvbXBsZXRlIiwidmFsdWUiLCJvbkNoYW5nZSIsInRhcmdldCIsImFyaWEtaW52YWxpZCIsInBsYWNlaG9sZGVyIiwiYXJpYS1kZXNjcmliZWRieSIsImlkIiwiaW5wdXQiLCJjaGVja2VkIiwicm9sZSIsImRpdiIsIkJ1dHRvbiIsInZhcmlhbnQiLCJvbkNsaWNrIiwiZGlzYWJsZWQiXSwibWFwcGluZ3MiOiI7Ozs7K0JBUWdCQTs7O2VBQUFBOzs7O3VCQVJvQjt1QkFDZDt1QkFDQTt3QkFDQzt3QkFFVzt5QkFDQTtBQUUzQixTQUFTQSx3QkFBd0IsRUFBRUMsUUFBUSxFQUFFQyxPQUFPLEVBQUVDLFNBQVMsRUFFckU7SUFDQyxNQUFNLENBQUNDLEtBQUtDLE9BQU8sR0FBR0MsSUFBQUEsZUFBUSxFQUFDO0lBQy9CLE1BQU0sQ0FBQ0MsU0FBU0MsV0FBVyxHQUFHRixJQUFBQSxlQUFRLEVBQUM7SUFDdkMsTUFBTSxDQUFDRyxTQUFTQyxXQUFXLEdBQUdKLElBQUFBLGVBQVEsRUFBQztJQUN2QyxNQUFNLENBQUNLLE9BQU9DLFNBQVMsR0FBR04sSUFBQUEsZUFBUSxFQUFnQjtJQUNsRCxNQUFNTyxTQUFTLE9BQU9DO1FBQ3BCQSxNQUFNQyxjQUFjO1FBQUlILFNBQVM7UUFDakMsSUFBSVIsSUFBSVksSUFBSSxHQUFHQyxNQUFNLEdBQUcsR0FBRztZQUFFTCxTQUFTO1lBQWlEO1FBQVE7UUFDL0ZGLFdBQVc7UUFDWCxJQUFJO1lBQUUsTUFBTVAsVUFBVUMsSUFBSVksSUFBSTtZQUFLWCxPQUFPO1lBQUtIO1FBQVcsRUFDMUQsT0FBT2dCLEdBQUc7WUFBRU4sU0FBU08sSUFBQUEseUJBQWlCLEVBQUNELEdBQUcsb0NBQW9DO2dCQUFDZCxJQUFJWSxJQUFJO2FBQUc7UUFBSSxTQUN0RjtZQUFFWCxPQUFPO1lBQUtLLFdBQVc7UUFBUTtJQUMzQztJQUNBLHFCQUFPLHNCQUFDVSxZQUFLO1FBQUNDLE9BQU8sQ0FBQyxRQUFRLEVBQUVwQixTQUFTcUIsSUFBSSxDQUFDLENBQUM7UUFBRXBCLFNBQVNBOzswQkFDeEQscUJBQUNxQjtnQkFBRUMsV0FBVTswQkFBMkJDLDBCQUFpQixHQUFHLCtHQUErRzs7MEJBQzNLLHNCQUFDQztnQkFBS0MsVUFBVWQ7Z0JBQVFXLFdBQVU7O2tDQUNoQyxxQkFBQ0ksWUFBSzt3QkFBQ0MsT0FBTTt3QkFBVUMsTUFBTXZCLFVBQVUsU0FBUzt3QkFBWXdCLGNBQWE7d0JBQU1DLE9BQU81Qjt3QkFBSzZCLFVBQVUsQ0FBQ2YsSUFBTWIsT0FBT2EsRUFBRWdCLE1BQU0sQ0FBQ0YsS0FBSzt3QkFBR0csZ0JBQWMsQ0FBQyxDQUFDeEI7d0JBQU95QixhQUFZO3dCQUFxQkMsb0JBQWtCMUIsUUFBUSxpQ0FBaUM7O2tDQUN2UCxxQkFBQ1k7d0JBQUVlLElBQUc7d0JBQWdCZCxXQUFVO2tDQUFxQjs7a0NBQ3JELHNCQUFDSzt3QkFBTUwsV0FBVTs7MENBQWtDLHFCQUFDZTtnQ0FBTVQsTUFBSztnQ0FBV1UsU0FBU2pDO2dDQUFTMEIsVUFBVSxDQUFDZixJQUFNVixXQUFXVSxFQUFFZ0IsTUFBTSxDQUFDTSxPQUFPOzs0QkFBSzs7O29CQUM1STdCLHVCQUFTLHFCQUFDWTt3QkFBRWUsSUFBRzt3QkFBaUJHLE1BQUs7d0JBQVFqQixXQUFVO2tDQUEwQ2I7O2tDQUNsRyxzQkFBQytCO3dCQUFJbEIsV0FBVTs7MENBQW1DLHFCQUFDbUIsY0FBTTtnQ0FBQ0MsU0FBUTtnQ0FBUUMsU0FBUzNDO2dDQUFTNEMsVUFBVXJDOzBDQUFTOzswQ0FBZSxxQkFBQ2tDLGNBQU07Z0NBQUNiLE1BQUs7Z0NBQVNyQixTQUFTQTswQ0FBUzs7Ozs7Ozs7QUFHNUsifQ==
