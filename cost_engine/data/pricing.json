@@ -6,11 +6,4949 @@
     "last_verified": null
   },
   "models": [
-    {"model": "gpt-4o", "provider": "openai", "input_price_per_million": 2.50, "output_price_per_million": 10.00, "context_window": 128000, "quality_tier": 3, "notes": "illustrative"},
-    {"model": "gpt-4o-mini", "provider": "openai", "input_price_per_million": 0.15, "output_price_per_million": 0.60, "context_window": 128000, "quality_tier": 2, "notes": "illustrative"},
-    {"model": "claude-sonnet", "provider": "anthropic", "input_price_per_million": 3.00, "output_price_per_million": 15.00, "context_window": 200000, "quality_tier": 3, "notes": "illustrative"},
-    {"model": "claude-haiku", "provider": "anthropic", "input_price_per_million": 1.00, "output_price_per_million": 5.00, "context_window": 200000, "quality_tier": 2, "notes": "illustrative"},
-    {"model": "gemini-pro", "provider": "google", "input_price_per_million": 1.25, "output_price_per_million": 10.00, "context_window": 1000000, "quality_tier": 3, "notes": "illustrative"},
-    {"model": "gemini-flash", "provider": "google", "input_price_per_million": 0.30, "output_price_per_million": 2.50, "context_window": 1000000, "quality_tier": 2, "notes": "illustrative"}
+    {
+      "model": "claude-fable-5",
+      "provider": "anthropic",
+      "input_price_per_million": "10",
+      "output_price_per_million": "50",
+      "context_window": null,
+      "quality_tier": 2,
+      "notes": "Pricing tier variants, prompt thresholds, cache durations, availability and modifiers are retained in pricing_tiers/pricing_conditions.",
+      "display_name": "Claude Fable 5",
+      "cached_input_price_per_million": "1",
+      "cache_write_price_per_million": "12.50",
+      "batch_input_price_per_million": "5",
+      "batch_output_price_per_million": "25",
+      "currency": "USD",
+      "pricing_tier": "standard",
+      "effective_date": null,
+      "source_url": "https://platform.claude.com/docs/en/about-claude/pricing",
+      "last_verified": "2026-11-19T04:47:05.971206+00:00",
+      "pricing_status": "official_verified",
+      "pricing_version": 1,
+      "retrieved_at": "2026-11-19T04:47:05.971206+00:00",
+      "pricing_conditions": {
+        "scope": "Anthropic first-party API",
+        "pricing_tier": "standard",
+        "regional_modifier_published": true
+      },
+      "pricing_tiers": [
+        {
+          "tier": "standard",
+          "input": "10",
+          "output": "50",
+          "cached_input": "1",
+          "cache_write_5m": "12.50",
+          "cache_write_1h": "20",
+          "conditions": {
+            "scope": "global"
+          }
+        },
+        {
+          "tier": "batch",
+          "input": "5",
+          "output": "25",
+          "conditions": {
+            "discount": "50%",
+            "scope": "Anthropic Batch API",
+            "display_condition": "Claude Fable 5"
+          }
+        }
+      ],
+      "pricing_unit": "per 1,000,000 tokens"
+    },
+    {
+      "model": "claude-fable-5-1",
+      "provider": "anthropic",
+      "input_price_per_million": "10",
+      "output_price_per_million": "50",
+      "context_window": null,
+      "quality_tier": 2,
+      "notes": "Pricing tier variants, prompt thresholds, cache durations, availability and modifiers are retained in pricing_tiers/pricing_conditions.",
+      "display_name": "Claude Fable 5.1",
+      "cached_input_price_per_million": "0.25",
+      "cache_write_price_per_million": "12.50",
+      "batch_input_price_per_million": "5",
+      "batch_output_price_per_million": "25",
+      "currency": "USD",
+      "pricing_tier": "standard",
+      "effective_date": null,
+      "source_url": "https://platform.claude.com/docs/en/about-claude/pricing",
+      "last_verified": "2026-11-19T04:47:05.971191+00:00",
+      "pricing_status": "official_verified",
+      "pricing_version": 1,
+      "retrieved_at": "2026-11-19T04:47:05.971191+00:00",
+      "pricing_conditions": {
+        "scope": "Anthropic first-party API",
+        "pricing_tier": "standard",
+        "regional_modifier_published": true
+      },
+      "pricing_tiers": [
+        {
+          "tier": "standard",
+          "input": "10",
+          "output": "50",
+          "cached_input": "0.25",
+          "cache_write_5m": "12.50",
+          "cache_write_1h": "20",
+          "conditions": {
+            "scope": "global"
+          }
+        },
+        {
+          "tier": "batch",
+          "input": "5",
+          "output": "25",
+          "conditions": {
+            "discount": "50%",
+            "scope": "Anthropic Batch API",
+            "display_condition": "Claude Fable 5.1"
+          }
+        }
+      ],
+      "pricing_unit": "per 1,000,000 tokens"
+    },
+    {
+      "model": "claude-fable-5-2",
+      "provider": "anthropic",
+      "input_price_per_million": "8",
+      "output_price_per_million": "40",
+      "context_window": null,
+      "quality_tier": 2,
+      "notes": "Pricing tier variants, prompt thresholds, cache durations, availability and modifiers are retained in pricing_tiers/pricing_conditions.",
+      "display_name": "Claude Fable 5.2",
+      "cached_input_price_per_million": "0.20",
+      "cache_write_price_per_million": "10",
+      "batch_input_price_per_million": "4",
+      "batch_output_price_per_million": "20",
+      "currency": "USD",
+      "pricing_tier": "standard",
+      "effective_date": null,
+      "source_url": "https://platform.claude.com/docs/en/about-claude/pricing",
+      "last_verified": "2026-11-19T04:47:05.971148+00:00",
+      "pricing_status": "official_verified",
+      "pricing_version": 1,
+      "retrieved_at": "2026-11-19T04:47:05.971148+00:00",
+      "pricing_conditions": {
+        "scope": "Anthropic first-party API",
+        "pricing_tier": "standard",
+        "regional_modifier_published": true
+      },
+      "pricing_tiers": [
+        {
+          "tier": "standard",
+          "input": "8",
+          "output": "40",
+          "cached_input": "0.20",
+          "cache_write_5m": "10",
+          "cache_write_1h": "16",
+          "conditions": {
+            "scope": "global"
+          }
+        },
+        {
+          "tier": "fast",
+          "input": "16",
+          "output": "80",
+          "conditions": {
+            "availability": "Fast mode"
+          }
+        },
+        {
+          "tier": "batch",
+          "input": "4",
+          "output": "20",
+          "conditions": {
+            "discount": "50%",
+            "scope": "Anthropic Batch API",
+            "display_condition": "Claude Fable 5.2"
+          }
+        }
+      ],
+      "pricing_unit": "per 1,000,000 tokens"
+    },
+    {
+      "model": "claude-haiku",
+      "provider": "anthropic",
+      "input_price_per_million": "1.00",
+      "output_price_per_million": "5.00",
+      "context_window": 200000,
+      "quality_tier": 2,
+      "notes": "illustrative",
+      "display_name": null,
+      "cached_input_price_per_million": null,
+      "cache_write_price_per_million": null,
+      "batch_input_price_per_million": null,
+      "batch_output_price_per_million": null,
+      "currency": "USD",
+      "pricing_tier": null,
+      "effective_date": null,
+      "source_url": null,
+      "last_verified": null,
+      "pricing_status": "manual_unverified",
+      "pricing_version": 1,
+      "retrieved_at": null,
+      "pricing_conditions": null,
+      "pricing_tiers": null,
+      "pricing_unit": "per 1,000,000 tokens"
+    },
+    {
+      "model": "claude-haiku-4-5",
+      "provider": "anthropic",
+      "input_price_per_million": "1",
+      "output_price_per_million": "5",
+      "context_window": null,
+      "quality_tier": 2,
+      "notes": "Pricing tier variants, prompt thresholds, cache durations, availability and modifiers are retained in pricing_tiers/pricing_conditions.",
+      "display_name": "Claude Haiku 4.5",
+      "cached_input_price_per_million": "0.10",
+      "cache_write_price_per_million": "1.25",
+      "batch_input_price_per_million": "0.50",
+      "batch_output_price_per_million": "2.50",
+      "currency": "USD",
+      "pricing_tier": "standard",
+      "effective_date": null,
+      "source_url": "https://platform.claude.com/docs/en/about-claude/pricing",
+      "last_verified": "2026-11-19T04:47:05.971371+00:00",
+      "pricing_status": "official_verified",
+      "pricing_version": 1,
+      "retrieved_at": "2026-11-19T04:47:05.971371+00:00",
+      "pricing_conditions": {
+        "scope": "Anthropic first-party API",
+        "pricing_tier": "standard",
+        "regional_modifier_published": true
+      },
+      "pricing_tiers": [
+        {
+          "tier": "standard",
+          "input": "1",
+          "output": "5",
+          "cached_input": "0.10",
+          "cache_write_5m": "1.25",
+          "cache_write_1h": "2",
+          "conditions": {
+            "scope": "global"
+          }
+        },
+        {
+          "tier": "batch",
+          "input": "0.50",
+          "output": "2.50",
+          "conditions": {
+            "discount": "50%",
+            "scope": "Anthropic Batch API",
+            "display_condition": "Claude Haiku 4.5"
+          }
+        }
+      ],
+      "pricing_unit": "per 1,000,000 tokens"
+    },
+    {
+      "model": "claude-haiku-5-5",
+      "provider": "anthropic",
+      "input_price_per_million": "0.10",
+      "output_price_per_million": "0.50",
+      "context_window": null,
+      "quality_tier": 2,
+      "notes": "Pricing tier variants, prompt thresholds, cache durations, availability and modifiers are retained in pricing_tiers/pricing_conditions.",
+      "display_name": "Claude Haiku 5.5",
+      "cached_input_price_per_million": "0.01",
+      "cache_write_price_per_million": "0.125",
+      "batch_input_price_per_million": "0.05",
+      "batch_output_price_per_million": "0.25",
+      "currency": "USD",
+      "pricing_tier": "standard",
+      "effective_date": null,
+      "source_url": "https://platform.claude.com/docs/en/about-claude/pricing",
+      "last_verified": "2026-11-19T04:47:05.971364+00:00",
+      "pricing_status": "official_verified",
+      "pricing_version": 1,
+      "retrieved_at": "2026-11-19T04:47:05.971364+00:00",
+      "pricing_conditions": {
+        "scope": "Anthropic first-party API",
+        "pricing_tier": "standard",
+        "regional_modifier_published": true
+      },
+      "pricing_tiers": [
+        {
+          "tier": "standard",
+          "input": "0.10",
+          "output": "0.50",
+          "cached_input": "0.01",
+          "cache_write_5m": "0.125",
+          "cache_write_1h": "0.20",
+          "conditions": {
+            "prompt_tokens": "up to 100000"
+          }
+        },
+        {
+          "tier": "standard",
+          "input": "0.50",
+          "output": "2.50",
+          "cached_input": "0.05",
+          "cache_write_5m": "0.625",
+          "cache_write_1h": "1",
+          "conditions": {
+            "prompt_tokens": "over 100000"
+          }
+        },
+        {
+          "tier": "batch",
+          "input": "0.05",
+          "output": "0.25",
+          "conditions": {
+            "discount": "50%",
+            "scope": "Anthropic Batch API",
+            "display_condition": "Claude Haiku 5.5 (for prompts up to 100,000 tokens)"
+          }
+        },
+        {
+          "tier": "batch",
+          "input": "0.25",
+          "output": "1.25",
+          "conditions": {
+            "discount": "50%",
+            "scope": "Anthropic Batch API",
+            "display_condition": "Claude Haiku 5.5 (for prompts over 100,000 tokens)"
+          }
+        }
+      ],
+      "pricing_unit": "per 1,000,000 tokens"
+    },
+    {
+      "model": "claude-mythos-5",
+      "provider": "anthropic",
+      "input_price_per_million": "10",
+      "output_price_per_million": "50",
+      "context_window": null,
+      "quality_tier": 2,
+      "notes": "Pricing tier variants, prompt thresholds, cache durations, availability and modifiers are retained in pricing_tiers/pricing_conditions.",
+      "display_name": "Claude Mythos 5",
+      "cached_input_price_per_million": "1",
+      "cache_write_price_per_million": "12.50",
+      "batch_input_price_per_million": "5",
+      "batch_output_price_per_million": "25",
+      "currency": "USD",
+      "pricing_tier": "standard",
+      "effective_date": null,
+      "source_url": "https://platform.claude.com/docs/en/about-claude/pricing",
+      "last_verified": "2026-11-19T04:47:05.971214+00:00",
+      "pricing_status": "official_verified",
+      "pricing_version": 1,
+      "retrieved_at": "2026-11-19T04:47:05.971214+00:00",
+      "pricing_conditions": {
+        "scope": "Anthropic first-party API",
+        "pricing_tier": "standard",
+        "availability": "limited availability",
+        "regional_modifier_published": true
+      },
+      "pricing_tiers": [
+        {
+          "tier": "standard",
+          "input": "10",
+          "output": "50",
+          "cached_input": "1",
+          "cache_write_5m": "12.50",
+          "cache_write_1h": "20",
+          "conditions": {
+            "display_condition": "Claude Mythos 5 (limited availability)"
+          }
+        },
+        {
+          "tier": "batch",
+          "input": "5",
+          "output": "25",
+          "conditions": {
+            "discount": "50%",
+            "scope": "Anthropic Batch API",
+            "display_condition": "Claude Mythos 5 (limited availability)"
+          }
+        }
+      ],
+      "pricing_unit": "per 1,000,000 tokens"
+    },
+    {
+      "model": "claude-mythos-5-1",
+      "provider": "anthropic",
+      "input_price_per_million": "10",
+      "output_price_per_million": "50",
+      "context_window": null,
+      "quality_tier": 2,
+      "notes": "Pricing tier variants, prompt thresholds, cache durations, availability and modifiers are retained in pricing_tiers/pricing_conditions.",
+      "display_name": "Claude Mythos 5.1",
+      "cached_input_price_per_million": "0.25",
+      "cache_write_price_per_million": "12.50",
+      "batch_input_price_per_million": "5",
+      "batch_output_price_per_million": "25",
+      "currency": "USD",
+      "pricing_tier": "standard",
+      "effective_date": null,
+      "source_url": "https://platform.claude.com/docs/en/about-claude/pricing",
+      "last_verified": "2026-11-19T04:47:05.971198+00:00",
+      "pricing_status": "official_verified",
+      "pricing_version": 1,
+      "retrieved_at": "2026-11-19T04:47:05.971198+00:00",
+      "pricing_conditions": {
+        "scope": "Anthropic first-party API",
+        "pricing_tier": "standard",
+        "availability": "limited availability",
+        "regional_modifier_published": true
+      },
+      "pricing_tiers": [
+        {
+          "tier": "standard",
+          "input": "10",
+          "output": "50",
+          "cached_input": "0.25",
+          "cache_write_5m": "12.50",
+          "cache_write_1h": "20",
+          "conditions": {
+            "display_condition": "Claude Mythos 5.1 (limited availability)"
+          }
+        },
+        {
+          "tier": "batch",
+          "input": "5",
+          "output": "25",
+          "conditions": {
+            "discount": "50%",
+            "scope": "Anthropic Batch API",
+            "display_condition": "Claude Mythos 5.1 (limited availability)"
+          }
+        }
+      ],
+      "pricing_unit": "per 1,000,000 tokens"
+    },
+    {
+      "model": "claude-mythos-5-2",
+      "provider": "anthropic",
+      "input_price_per_million": "8",
+      "output_price_per_million": "40",
+      "context_window": null,
+      "quality_tier": 2,
+      "notes": "Pricing tier variants, prompt thresholds, cache durations, availability and modifiers are retained in pricing_tiers/pricing_conditions.",
+      "display_name": "Claude Mythos 5.2",
+      "cached_input_price_per_million": "0.20",
+      "cache_write_price_per_million": "10",
+      "batch_input_price_per_million": "4",
+      "batch_output_price_per_million": "20",
+      "currency": "USD",
+      "pricing_tier": "standard",
+      "effective_date": null,
+      "source_url": "https://platform.claude.com/docs/en/about-claude/pricing",
+      "last_verified": "2026-11-19T04:47:05.971181+00:00",
+      "pricing_status": "official_verified",
+      "pricing_version": 1,
+      "retrieved_at": "2026-11-19T04:47:05.971181+00:00",
+      "pricing_conditions": {
+        "scope": "Anthropic first-party API",
+        "pricing_tier": "standard",
+        "availability": "limited availability",
+        "regional_modifier_published": true
+      },
+      "pricing_tiers": [
+        {
+          "tier": "standard",
+          "input": "8",
+          "output": "40",
+          "cached_input": "0.20",
+          "cache_write_5m": "10",
+          "cache_write_1h": "16",
+          "conditions": {
+            "display_condition": "Claude Mythos 5.2 (limited availability)"
+          }
+        },
+        {
+          "tier": "fast",
+          "input": "16",
+          "output": "80",
+          "conditions": {
+            "availability": "Fast mode"
+          }
+        },
+        {
+          "tier": "batch",
+          "input": "4",
+          "output": "20",
+          "conditions": {
+            "discount": "50%",
+            "scope": "Anthropic Batch API",
+            "display_condition": "Claude Mythos 5.2 (limited availability)"
+          }
+        }
+      ],
+      "pricing_unit": "per 1,000,000 tokens"
+    },
+    {
+      "model": "claude-opus-4",
+      "provider": "anthropic",
+      "input_price_per_million": "15",
+      "output_price_per_million": "75",
+      "context_window": null,
+      "quality_tier": 2,
+      "notes": "Pricing tier variants, prompt thresholds, cache durations, availability and modifiers are retained in pricing_tiers/pricing_conditions.",
+      "display_name": "Claude Opus 4)",
+      "cached_input_price_per_million": "1.50",
+      "cache_write_price_per_million": "18.75",
+      "batch_input_price_per_million": "7.50",
+      "batch_output_price_per_million": "37.50",
+      "currency": "USD",
+      "pricing_tier": "standard",
+      "effective_date": null,
+      "source_url": "https://platform.claude.com/docs/en/about-claude/pricing",
+      "last_verified": "2026-11-19T04:47:05.971293+00:00",
+      "pricing_status": "official_verified",
+      "pricing_version": 1,
+      "retrieved_at": "2026-11-19T04:47:05.971293+00:00",
+      "pricing_conditions": {
+        "scope": "Anthropic first-party API",
+        "pricing_tier": "standard",
+        "availability": "retired or platform-limited as stated by provider",
+        "regional_modifier_published": true
+      },
+      "pricing_tiers": [
+        {
+          "tier": "standard",
+          "input": "15",
+          "output": "75",
+          "cached_input": "1.50",
+          "cache_write_5m": "18.75",
+          "cache_write_1h": "30",
+          "conditions": {
+            "display_condition": "Claude Opus 4 (retired, except on Claude Models on Google Cloud (Google managed))"
+          }
+        },
+        {
+          "tier": "batch",
+          "input": "7.50",
+          "output": "37.50",
+          "conditions": {
+            "discount": "50%",
+            "scope": "Anthropic Batch API",
+            "display_condition": "Claude Opus 4 (retired, except on Claude Models on Google Cloud (Google managed))"
+          }
+        }
+      ],
+      "pricing_unit": "per 1,000,000 tokens"
+    },
+    {
+      "model": "claude-opus-4-1",
+      "provider": "anthropic",
+      "input_price_per_million": "15",
+      "output_price_per_million": "75",
+      "context_window": null,
+      "quality_tier": 2,
+      "notes": "Pricing tier variants, prompt thresholds, cache durations, availability and modifiers are retained in pricing_tiers/pricing_conditions.",
+      "display_name": "Claude Opus 4.1 and Bedrock)",
+      "cached_input_price_per_million": "1.50",
+      "cache_write_price_per_million": "18.75",
+      "batch_input_price_per_million": "7.50",
+      "batch_output_price_per_million": "37.50",
+      "currency": "USD",
+      "pricing_tier": "standard",
+      "effective_date": null,
+      "source_url": "https://platform.claude.com/docs/en/about-claude/pricing",
+      "last_verified": "2026-11-19T04:47:05.971279+00:00",
+      "pricing_status": "official_verified",
+      "pricing_version": 1,
+      "retrieved_at": "2026-11-19T04:47:05.971279+00:00",
+      "pricing_conditions": {
+        "scope": "Anthropic first-party API",
+        "pricing_tier": "standard",
+        "availability": "retired or platform-limited as stated by provider",
+        "regional_modifier_published": true
+      },
+      "pricing_tiers": [
+        {
+          "tier": "standard",
+          "input": "15",
+          "output": "75",
+          "cached_input": "1.50",
+          "cache_write_5m": "18.75",
+          "cache_write_1h": "30",
+          "conditions": {
+            "display_condition": "Claude Opus 4.1 (retired, except on Claude Models on Google Cloud (Google managed) and Bedrock)"
+          }
+        },
+        {
+          "tier": "batch",
+          "input": "7.50",
+          "output": "37.50",
+          "conditions": {
+            "discount": "50%",
+            "scope": "Anthropic Batch API",
+            "display_condition": "Claude Opus 4.1 (retired, except on Claude Models on Google Cloud (Google managed) and Bedrock)"
+          }
+        }
+      ],
+      "pricing_unit": "per 1,000,000 tokens"
+    },
+    {
+      "model": "claude-opus-4-5",
+      "provider": "anthropic",
+      "input_price_per_million": "5",
+      "output_price_per_million": "25",
+      "context_window": null,
+      "quality_tier": 2,
+      "notes": "Pricing tier variants, prompt thresholds, cache durations, availability and modifiers are retained in pricing_tiers/pricing_conditions.",
+      "display_name": "Claude Opus 4.5",
+      "cached_input_price_per_million": "0.50",
+      "cache_write_price_per_million": "6.25",
+      "batch_input_price_per_million": "2.50",
+      "batch_output_price_per_million": "12.50",
+      "currency": "USD",
+      "pricing_tier": "standard",
+      "effective_date": null,
+      "source_url": "https://platform.claude.com/docs/en/about-claude/pricing",
+      "last_verified": "2026-11-19T04:47:05.971264+00:00",
+      "pricing_status": "official_verified",
+      "pricing_version": 1,
+      "retrieved_at": "2026-11-19T04:47:05.971264+00:00",
+      "pricing_conditions": {
+        "scope": "Anthropic first-party API",
+        "pricing_tier": "standard",
+        "regional_modifier_published": true
+      },
+      "pricing_tiers": [
+        {
+          "tier": "standard",
+          "input": "5",
+          "output": "25",
+          "cached_input": "0.50",
+          "cache_write_5m": "6.25",
+          "cache_write_1h": "10",
+          "conditions": {
+            "scope": "global"
+          }
+        },
+        {
+          "tier": "batch",
+          "input": "2.50",
+          "output": "12.50",
+          "conditions": {
+            "discount": "50%",
+            "scope": "Anthropic Batch API",
+            "display_condition": "Claude Opus 4.5"
+          }
+        }
+      ],
+      "pricing_unit": "per 1,000,000 tokens"
+    },
+    {
+      "model": "claude-opus-4-6",
+      "provider": "anthropic",
+      "input_price_per_million": "5",
+      "output_price_per_million": "25",
+      "context_window": null,
+      "quality_tier": 2,
+      "notes": "Pricing tier variants, prompt thresholds, cache durations, availability and modifiers are retained in pricing_tiers/pricing_conditions.",
+      "display_name": "Claude Opus 4.6",
+      "cached_input_price_per_million": "0.50",
+      "cache_write_price_per_million": "6.25",
+      "batch_input_price_per_million": "2.50",
+      "batch_output_price_per_million": "12.50",
+      "currency": "USD",
+      "pricing_tier": "standard",
+      "effective_date": null,
+      "source_url": "https://platform.claude.com/docs/en/about-claude/pricing",
+      "last_verified": "2026-11-19T04:47:05.971252+00:00",
+      "pricing_status": "official_verified",
+      "pricing_version": 1,
+      "retrieved_at": "2026-11-19T04:47:05.971252+00:00",
+      "pricing_conditions": {
+        "scope": "Anthropic first-party API",
+        "pricing_tier": "standard",
+        "regional_modifier_published": true
+      },
+      "pricing_tiers": [
+        {
+          "tier": "standard",
+          "input": "5",
+          "output": "25",
+          "cached_input": "0.50",
+          "cache_write_5m": "6.25",
+          "cache_write_1h": "10",
+          "conditions": {
+            "scope": "global"
+          }
+        },
+        {
+          "tier": "batch",
+          "input": "2.50",
+          "output": "12.50",
+          "conditions": {
+            "discount": "50%",
+            "scope": "Anthropic Batch API",
+            "display_condition": "Claude Opus 4.6"
+          }
+        }
+      ],
+      "pricing_unit": "per 1,000,000 tokens"
+    },
+    {
+      "model": "claude-opus-4-7",
+      "provider": "anthropic",
+      "input_price_per_million": "5",
+      "output_price_per_million": "25",
+      "context_window": null,
+      "quality_tier": 2,
+      "notes": "Pricing tier variants, prompt thresholds, cache durations, availability and modifiers are retained in pricing_tiers/pricing_conditions.",
+      "display_name": "Claude Opus 4.7",
+      "cached_input_price_per_million": "0.50",
+      "cache_write_price_per_million": "6.25",
+      "batch_input_price_per_million": "2.50",
+      "batch_output_price_per_million": "12.50",
+      "currency": "USD",
+      "pricing_tier": "standard",
+      "effective_date": null,
+      "source_url": "https://platform.claude.com/docs/en/about-claude/pricing",
+      "last_verified": "2026-11-19T04:47:05.971244+00:00",
+      "pricing_status": "official_verified",
+      "pricing_version": 1,
+      "retrieved_at": "2026-11-19T04:47:05.971244+00:00",
+      "pricing_conditions": {
+        "scope": "Anthropic first-party API",
+        "pricing_tier": "standard",
+        "regional_modifier_published": true
+      },
+      "pricing_tiers": [
+        {
+          "tier": "standard",
+          "input": "5",
+          "output": "25",
+          "cached_input": "0.50",
+          "cache_write_5m": "6.25",
+          "cache_write_1h": "10",
+          "conditions": {
+            "scope": "global"
+          }
+        },
+        {
+          "tier": "batch",
+          "input": "2.50",
+          "output": "12.50",
+          "conditions": {
+            "discount": "50%",
+            "scope": "Anthropic Batch API",
+            "display_condition": "Claude Opus 4.7"
+          }
+        }
+      ],
+      "pricing_unit": "per 1,000,000 tokens"
+    },
+    {
+      "model": "claude-opus-4-8",
+      "provider": "anthropic",
+      "input_price_per_million": "5",
+      "output_price_per_million": "25",
+      "context_window": null,
+      "quality_tier": 2,
+      "notes": "Pricing tier variants, prompt thresholds, cache durations, availability and modifiers are retained in pricing_tiers/pricing_conditions.",
+      "display_name": "Claude Opus 4.8",
+      "cached_input_price_per_million": "0.50",
+      "cache_write_price_per_million": "6.25",
+      "batch_input_price_per_million": "2.50",
+      "batch_output_price_per_million": "12.50",
+      "currency": "USD",
+      "pricing_tier": "standard",
+      "effective_date": null,
+      "source_url": "https://platform.claude.com/docs/en/about-claude/pricing",
+      "last_verified": "2026-11-19T04:47:05.971236+00:00",
+      "pricing_status": "official_verified",
+      "pricing_version": 1,
+      "retrieved_at": "2026-11-19T04:47:05.971236+00:00",
+      "pricing_conditions": {
+        "scope": "Anthropic first-party API",
+        "pricing_tier": "standard",
+        "regional_modifier_published": true
+      },
+      "pricing_tiers": [
+        {
+          "tier": "standard",
+          "input": "5",
+          "output": "25",
+          "cached_input": "0.50",
+          "cache_write_5m": "6.25",
+          "cache_write_1h": "10",
+          "conditions": {
+            "scope": "global"
+          }
+        },
+        {
+          "tier": "batch",
+          "input": "2.50",
+          "output": "12.50",
+          "conditions": {
+            "discount": "50%",
+            "scope": "Anthropic Batch API",
+            "display_condition": "Claude Opus 4.8"
+          }
+        }
+      ],
+      "pricing_unit": "per 1,000,000 tokens"
+    },
+    {
+      "model": "claude-opus-5",
+      "provider": "anthropic",
+      "input_price_per_million": "5",
+      "output_price_per_million": "25",
+      "context_window": null,
+      "quality_tier": 2,
+      "notes": "Pricing tier variants, prompt thresholds, cache durations, availability and modifiers are retained in pricing_tiers/pricing_conditions.",
+      "display_name": "Claude Opus 5",
+      "cached_input_price_per_million": "0.50",
+      "cache_write_price_per_million": "6.25",
+      "batch_input_price_per_million": "2.50",
+      "batch_output_price_per_million": "12.50",
+      "currency": "USD",
+      "pricing_tier": "standard",
+      "effective_date": null,
+      "source_url": "https://platform.claude.com/docs/en/about-claude/pricing",
+      "last_verified": "2026-11-19T04:47:05.971229+00:00",
+      "pricing_status": "official_verified",
+      "pricing_version": 1,
+      "retrieved_at": "2026-11-19T04:47:05.971229+00:00",
+      "pricing_conditions": {
+        "scope": "Anthropic first-party API",
+        "pricing_tier": "standard",
+        "regional_modifier_published": true
+      },
+      "pricing_tiers": [
+        {
+          "tier": "standard",
+          "input": "5",
+          "output": "25",
+          "cached_input": "0.50",
+          "cache_write_5m": "6.25",
+          "cache_write_1h": "10",
+          "conditions": {
+            "scope": "global"
+          }
+        },
+        {
+          "tier": "fast",
+          "input": "10",
+          "output": "50",
+          "conditions": {
+            "availability": "Fast mode"
+          }
+        },
+        {
+          "tier": "batch",
+          "input": "2.50",
+          "output": "12.50",
+          "conditions": {
+            "discount": "50%",
+            "scope": "Anthropic Batch API",
+            "display_condition": "Claude Opus 5"
+          }
+        }
+      ],
+      "pricing_unit": "per 1,000,000 tokens"
+    },
+    {
+      "model": "claude-opus-5-5",
+      "provider": "anthropic",
+      "input_price_per_million": "4",
+      "output_price_per_million": "20",
+      "context_window": null,
+      "quality_tier": 2,
+      "notes": "Pricing tier variants, prompt thresholds, cache durations, availability and modifiers are retained in pricing_tiers/pricing_conditions.",
+      "display_name": "Claude Opus 5.5",
+      "cached_input_price_per_million": "0.20",
+      "cache_write_price_per_million": "5",
+      "batch_input_price_per_million": "2",
+      "batch_output_price_per_million": "10",
+      "currency": "USD",
+      "pricing_tier": "standard",
+      "effective_date": null,
+      "source_url": "https://platform.claude.com/docs/en/about-claude/pricing",
+      "last_verified": "2026-11-19T04:47:05.971221+00:00",
+      "pricing_status": "official_verified",
+      "pricing_version": 1,
+      "retrieved_at": "2026-11-19T04:47:05.971221+00:00",
+      "pricing_conditions": {
+        "scope": "Anthropic first-party API",
+        "pricing_tier": "standard",
+        "regional_modifier_published": true
+      },
+      "pricing_tiers": [
+        {
+          "tier": "standard",
+          "input": "4",
+          "output": "20",
+          "cached_input": "0.20",
+          "cache_write_5m": "5",
+          "cache_write_1h": "8",
+          "conditions": {
+            "scope": "global"
+          }
+        },
+        {
+          "tier": "fast",
+          "input": "8",
+          "output": "40",
+          "conditions": {
+            "availability": "Fast mode"
+          }
+        },
+        {
+          "tier": "batch",
+          "input": "2",
+          "output": "10",
+          "conditions": {
+            "discount": "50%",
+            "scope": "Anthropic Batch API",
+            "display_condition": "Claude Opus 5.5"
+          }
+        }
+      ],
+      "pricing_unit": "per 1,000,000 tokens"
+    },
+    {
+      "model": "claude-sonnet",
+      "provider": "anthropic",
+      "input_price_per_million": "3.00",
+      "output_price_per_million": "15.00",
+      "context_window": 200000,
+      "quality_tier": 3,
+      "notes": "illustrative",
+      "display_name": null,
+      "cached_input_price_per_million": null,
+      "cache_write_price_per_million": null,
+      "batch_input_price_per_million": null,
+      "batch_output_price_per_million": null,
+      "currency": "USD",
+      "pricing_tier": null,
+      "effective_date": null,
+      "source_url": null,
+      "last_verified": null,
+      "pricing_status": "manual_unverified",
+      "pricing_version": 1,
+      "retrieved_at": null,
+      "pricing_conditions": null,
+      "pricing_tiers": null,
+      "pricing_unit": "per 1,000,000 tokens"
+    },
+    {
+      "model": "claude-sonnet-4",
+      "provider": "anthropic",
+      "input_price_per_million": "3",
+      "output_price_per_million": "15",
+      "context_window": null,
+      "quality_tier": 2,
+      "notes": "Pricing tier variants, prompt thresholds, cache durations, availability and modifiers are retained in pricing_tiers/pricing_conditions.",
+      "display_name": "Claude Sonnet 4 and Bedrock)",
+      "cached_input_price_per_million": "0.30",
+      "cache_write_price_per_million": "3.75",
+      "batch_input_price_per_million": "1.50",
+      "batch_output_price_per_million": "7.50",
+      "currency": "USD",
+      "pricing_tier": "standard",
+      "effective_date": null,
+      "source_url": "https://platform.claude.com/docs/en/about-claude/pricing",
+      "last_verified": "2026-11-19T04:47:05.971357+00:00",
+      "pricing_status": "official_verified",
+      "pricing_version": 1,
+      "retrieved_at": "2026-11-19T04:47:05.971357+00:00",
+      "pricing_conditions": {
+        "scope": "Anthropic first-party API",
+        "pricing_tier": "standard",
+        "availability": "retired or platform-limited as stated by provider",
+        "regional_modifier_published": true
+      },
+      "pricing_tiers": [
+        {
+          "tier": "standard",
+          "input": "3",
+          "output": "15",
+          "cached_input": "0.30",
+          "cache_write_5m": "3.75",
+          "cache_write_1h": "6",
+          "conditions": {
+            "display_condition": "Claude Sonnet 4 (retired, except on Claude Models on Google Cloud (Google managed) and Bedrock)"
+          }
+        },
+        {
+          "tier": "batch",
+          "input": "1.50",
+          "output": "7.50",
+          "conditions": {
+            "discount": "50%",
+            "scope": "Anthropic Batch API",
+            "display_condition": "Claude Sonnet 4 (retired, except on Claude Models on Google Cloud (Google managed) and Bedrock)"
+          }
+        }
+      ],
+      "pricing_unit": "per 1,000,000 tokens"
+    },
+    {
+      "model": "claude-sonnet-4-5",
+      "provider": "anthropic",
+      "input_price_per_million": "3",
+      "output_price_per_million": "15",
+      "context_window": null,
+      "quality_tier": 2,
+      "notes": "Pricing tier variants, prompt thresholds, cache durations, availability and modifiers are retained in pricing_tiers/pricing_conditions.",
+      "display_name": "Claude Sonnet 4.5",
+      "cached_input_price_per_million": "0.30",
+      "cache_write_price_per_million": "3.75",
+      "batch_input_price_per_million": "1.50",
+      "batch_output_price_per_million": "7.50",
+      "currency": "USD",
+      "pricing_tier": "standard",
+      "effective_date": null,
+      "source_url": "https://platform.claude.com/docs/en/about-claude/pricing",
+      "last_verified": "2026-11-19T04:47:05.971349+00:00",
+      "pricing_status": "official_verified",
+      "pricing_version": 1,
+      "retrieved_at": "2026-11-19T04:47:05.971349+00:00",
+      "pricing_conditions": {
+        "scope": "Anthropic first-party API",
+        "pricing_tier": "standard",
+        "regional_modifier_published": true
+      },
+      "pricing_tiers": [
+        {
+          "tier": "standard",
+          "input": "3",
+          "output": "15",
+          "cached_input": "0.30",
+          "cache_write_5m": "3.75",
+          "cache_write_1h": "6",
+          "conditions": {
+            "scope": "global"
+          }
+        },
+        {
+          "tier": "batch",
+          "input": "1.50",
+          "output": "7.50",
+          "conditions": {
+            "discount": "50%",
+            "scope": "Anthropic Batch API",
+            "display_condition": "Claude Sonnet 4.5"
+          }
+        }
+      ],
+      "pricing_unit": "per 1,000,000 tokens"
+    },
+    {
+      "model": "claude-sonnet-4-6",
+      "provider": "anthropic",
+      "input_price_per_million": "3",
+      "output_price_per_million": "15",
+      "context_window": null,
+      "quality_tier": 2,
+      "notes": "Pricing tier variants, prompt thresholds, cache durations, availability and modifiers are retained in pricing_tiers/pricing_conditions.",
+      "display_name": "Claude Sonnet 4.6",
+      "cached_input_price_per_million": "0.30",
+      "cache_write_price_per_million": "3.75",
+      "batch_input_price_per_million": "1.50",
+      "batch_output_price_per_million": "7.50",
+      "currency": "USD",
+      "pricing_tier": "standard",
+      "effective_date": null,
+      "source_url": "https://platform.claude.com/docs/en/about-claude/pricing",
+      "last_verified": "2026-11-19T04:47:05.971342+00:00",
+      "pricing_status": "official_verified",
+      "pricing_version": 1,
+      "retrieved_at": "2026-11-19T04:47:05.971342+00:00",
+      "pricing_conditions": {
+        "scope": "Anthropic first-party API",
+        "pricing_tier": "standard",
+        "regional_modifier_published": true
+      },
+      "pricing_tiers": [
+        {
+          "tier": "standard",
+          "input": "3",
+          "output": "15",
+          "cached_input": "0.30",
+          "cache_write_5m": "3.75",
+          "cache_write_1h": "6",
+          "conditions": {
+            "scope": "global"
+          }
+        },
+        {
+          "tier": "batch",
+          "input": "1.50",
+          "output": "7.50",
+          "conditions": {
+            "discount": "50%",
+            "scope": "Anthropic Batch API",
+            "display_condition": "Claude Sonnet 4.6"
+          }
+        }
+      ],
+      "pricing_unit": "per 1,000,000 tokens"
+    },
+    {
+      "model": "claude-sonnet-5",
+      "provider": "anthropic",
+      "input_price_per_million": "2",
+      "output_price_per_million": "10",
+      "context_window": null,
+      "quality_tier": 2,
+      "notes": "Pricing tier variants, prompt thresholds, cache durations, availability and modifiers are retained in pricing_tiers/pricing_conditions.",
+      "display_name": "Claude Sonnet 5",
+      "cached_input_price_per_million": "0.20",
+      "cache_write_price_per_million": "2.50",
+      "batch_input_price_per_million": "1",
+      "batch_output_price_per_million": "5",
+      "currency": "USD",
+      "pricing_tier": "standard",
+      "effective_date": null,
+      "source_url": "https://platform.claude.com/docs/en/about-claude/pricing",
+      "last_verified": "2026-11-19T04:47:05.971334+00:00",
+      "pricing_status": "official_verified",
+      "pricing_version": 1,
+      "retrieved_at": "2026-11-19T04:47:05.971334+00:00",
+      "pricing_conditions": {
+        "scope": "Anthropic first-party API",
+        "pricing_tier": "standard",
+        "regional_modifier_published": true
+      },
+      "pricing_tiers": [
+        {
+          "tier": "standard",
+          "input": "2",
+          "output": "10",
+          "cached_input": "0.20",
+          "cache_write_5m": "2.50",
+          "cache_write_1h": "4",
+          "conditions": {
+            "scope": "global"
+          }
+        },
+        {
+          "tier": "batch",
+          "input": "1",
+          "output": "5",
+          "conditions": {
+            "discount": "50%",
+            "scope": "Anthropic Batch API",
+            "display_condition": "Claude Sonnet 5"
+          }
+        }
+      ],
+      "pricing_unit": "per 1,000,000 tokens"
+    },
+    {
+      "model": "claude-sonnet-5-5",
+      "provider": "anthropic",
+      "input_price_per_million": "2",
+      "output_price_per_million": "10",
+      "context_window": null,
+      "quality_tier": 2,
+      "notes": "Pricing tier variants, prompt thresholds, cache durations, availability and modifiers are retained in pricing_tiers/pricing_conditions.",
+      "display_name": "Claude Sonnet 5.5",
+      "cached_input_price_per_million": "0.10",
+      "cache_write_price_per_million": "2.50",
+      "batch_input_price_per_million": "1",
+      "batch_output_price_per_million": "5",
+      "currency": "USD",
+      "pricing_tier": "standard",
+      "effective_date": null,
+      "source_url": "https://platform.claude.com/docs/en/about-claude/pricing",
+      "last_verified": "2026-11-19T04:47:05.971304+00:00",
+      "pricing_status": "official_verified",
+      "pricing_version": 1,
+      "retrieved_at": "2026-11-19T04:47:05.971304+00:00",
+      "pricing_conditions": {
+        "scope": "Anthropic first-party API",
+        "pricing_tier": "standard",
+        "regional_modifier_published": true
+      },
+      "pricing_tiers": [
+        {
+          "tier": "standard",
+          "input": "2",
+          "output": "10",
+          "cached_input": "0.10",
+          "cache_write_5m": "2.50",
+          "cache_write_1h": "4",
+          "conditions": {
+            "scope": "global"
+          }
+        },
+        {
+          "tier": "batch",
+          "input": "1",
+          "output": "5",
+          "conditions": {
+            "discount": "50%",
+            "scope": "Anthropic Batch API",
+            "display_condition": "Claude Sonnet 5.5"
+          }
+        }
+      ],
+      "pricing_unit": "per 1,000,000 tokens"
+    },
+    {
+      "model": "gemini-2.5-flash",
+      "provider": "google",
+      "input_price_per_million": "0.30",
+      "output_price_per_million": "2.50",
+      "context_window": null,
+      "quality_tier": 2,
+      "notes": "Gemini pricing can change by effective date; the parser selects the currently effective Standard/Batch value and retains tier conditions.",
+      "display_name": "Gemini 2.5 Flash",
+      "cached_input_price_per_million": "0.03",
+      "cache_write_price_per_million": null,
+      "batch_input_price_per_million": "0.15",
+      "batch_output_price_per_million": "1.25",
+      "currency": "USD",
+      "pricing_tier": "standard",
+      "effective_date": null,
+      "source_url": "https://ai.google.dev/gemini-api/docs/pricing",
+      "last_verified": "2026-11-19T04:47:08.260724+00:00",
+      "pricing_status": "official_verified",
+      "pricing_version": 1,
+      "retrieved_at": "2026-11-19T04:47:08.260724+00:00",
+      "pricing_conditions": {
+        "service_tier": "Standard",
+        "cache_storage_usd_per_million_tokens_hour": "1.00",
+        "effective_dates": []
+      },
+      "pricing_tiers": [
+        {
+          "tier": "standard",
+          "input": "0.30",
+          "output": "2.50",
+          "cached_input": "0.03",
+          "conditions": {
+            "service_tier": "Standard",
+            "cache_storage_usd_per_million_tokens_hour": "1.00"
+          }
+        },
+        {
+          "tier": "batch",
+          "input": "0.15",
+          "output": "1.25",
+          "cached_input": "0.03",
+          "conditions": {
+            "service_tier": "Batch",
+            "available": true,
+            "effective_dates": []
+          }
+        },
+        {
+          "tier": "flex",
+          "input": "0.15",
+          "output": "1.25",
+          "cached_input": "0.03",
+          "conditions": {
+            "service_tier": "Flex",
+            "available": true,
+            "effective_dates": []
+          }
+        },
+        {
+          "tier": "priority",
+          "input": "0.54",
+          "output": "4.50",
+          "cached_input": "0.054",
+          "conditions": {
+            "service_tier": "Priority",
+            "available": true,
+            "effective_dates": []
+          }
+        }
+      ],
+      "pricing_unit": "per 1,000,000 tokens"
+    },
+    {
+      "model": "gemini-2.5-flash-lite",
+      "provider": "google",
+      "input_price_per_million": "0.10",
+      "output_price_per_million": "0.40",
+      "context_window": null,
+      "quality_tier": 2,
+      "notes": "Gemini pricing can change by effective date; the parser selects the currently effective Standard/Batch value and retains tier conditions.",
+      "display_name": "Gemini 2.5 Flash-Lite",
+      "cached_input_price_per_million": "0.01",
+      "cache_write_price_per_million": null,
+      "batch_input_price_per_million": "0.05",
+      "batch_output_price_per_million": "0.20",
+      "currency": "USD",
+      "pricing_tier": "standard",
+      "effective_date": null,
+      "source_url": "https://ai.google.dev/gemini-api/docs/pricing",
+      "last_verified": "2026-11-19T04:47:08.260858+00:00",
+      "pricing_status": "official_verified",
+      "pricing_version": 1,
+      "retrieved_at": "2026-11-19T04:47:08.260858+00:00",
+      "pricing_conditions": {
+        "service_tier": "Standard",
+        "cache_storage_usd_per_million_tokens_hour": "1.00",
+        "effective_dates": []
+      },
+      "pricing_tiers": [
+        {
+          "tier": "standard",
+          "input": "0.10",
+          "output": "0.40",
+          "cached_input": "0.01",
+          "conditions": {
+            "service_tier": "Standard",
+            "cache_storage_usd_per_million_tokens_hour": "1.00"
+          }
+        },
+        {
+          "tier": "batch",
+          "input": "0.05",
+          "output": "0.20",
+          "cached_input": "0.01",
+          "conditions": {
+            "service_tier": "Batch",
+            "available": true,
+            "effective_dates": []
+          }
+        },
+        {
+          "tier": "flex",
+          "input": "0.05",
+          "output": "0.20",
+          "cached_input": "0.01",
+          "conditions": {
+            "service_tier": "Flex",
+            "available": true,
+            "effective_dates": []
+          }
+        },
+        {
+          "tier": "priority",
+          "input": "0.18",
+          "output": "0.72",
+          "cached_input": "0.018",
+          "conditions": {
+            "service_tier": "Priority",
+            "available": true,
+            "effective_dates": []
+          }
+        }
+      ],
+      "pricing_unit": "per 1,000,000 tokens"
+    },
+    {
+      "model": "gemini-2.5-flash-preview-tts",
+      "provider": "google",
+      "input_price_per_million": "0.50",
+      "output_price_per_million": "10.00",
+      "context_window": null,
+      "quality_tier": 2,
+      "notes": "Gemini pricing can change by effective date; the parser selects the currently effective Standard/Batch value and retains tier conditions.",
+      "display_name": "Gemini 2.5 Flash Preview TTS",
+      "cached_input_price_per_million": null,
+      "cache_write_price_per_million": null,
+      "batch_input_price_per_million": "0.25",
+      "batch_output_price_per_million": "5.00",
+      "currency": "USD",
+      "pricing_tier": "standard",
+      "effective_date": null,
+      "source_url": "https://ai.google.dev/gemini-api/docs/pricing",
+      "last_verified": "2026-11-19T04:47:08.260981+00:00",
+      "pricing_status": "official_verified",
+      "pricing_version": 1,
+      "retrieved_at": "2026-11-19T04:47:08.260981+00:00",
+      "pricing_conditions": {
+        "service_tier": "Standard",
+        "effective_dates": []
+      },
+      "pricing_tiers": [
+        {
+          "tier": "standard",
+          "input": "0.50",
+          "output": "10.00",
+          "cached_input": null,
+          "conditions": {
+            "service_tier": "Standard"
+          }
+        },
+        {
+          "tier": "batch",
+          "input": "0.25",
+          "output": "5.00",
+          "cached_input": null,
+          "conditions": {
+            "service_tier": "Batch",
+            "available": true,
+            "effective_dates": []
+          }
+        }
+      ],
+      "pricing_unit": "per 1,000,000 tokens"
+    },
+    {
+      "model": "gemini-2.5-pro",
+      "provider": "google",
+      "input_price_per_million": "1.25",
+      "output_price_per_million": "10.00",
+      "context_window": null,
+      "quality_tier": 2,
+      "notes": "Gemini pricing can change by effective date; the parser selects the currently effective Standard/Batch value and retains tier conditions.",
+      "display_name": "Gemini 2.5 Pro",
+      "cached_input_price_per_million": "0.125",
+      "cache_write_price_per_million": null,
+      "batch_input_price_per_million": "0.625",
+      "batch_output_price_per_million": "5.00",
+      "currency": "USD",
+      "pricing_tier": "standard",
+      "effective_date": null,
+      "source_url": "https://ai.google.dev/gemini-api/docs/pricing",
+      "last_verified": "2026-11-19T04:47:08.260592+00:00",
+      "pricing_status": "official_verified",
+      "pricing_version": 1,
+      "retrieved_at": "2026-11-19T04:47:08.260592+00:00",
+      "pricing_conditions": {
+        "service_tier": "Standard",
+        "cache_storage_usd_per_million_tokens_hour": "4.50",
+        "effective_dates": []
+      },
+      "pricing_tiers": [
+        {
+          "tier": "standard",
+          "input": "1.25",
+          "output": "10.00",
+          "cached_input": "0.125",
+          "conditions": {
+            "service_tier": "Standard",
+            "cache_storage_usd_per_million_tokens_hour": "4.50"
+          }
+        },
+        {
+          "tier": "batch",
+          "input": "0.625",
+          "output": "5.00",
+          "cached_input": "0.125",
+          "conditions": {
+            "service_tier": "Batch",
+            "available": true,
+            "effective_dates": []
+          }
+        },
+        {
+          "tier": "flex",
+          "input": "0.625",
+          "output": "5.00",
+          "cached_input": "0.125",
+          "conditions": {
+            "service_tier": "Flex",
+            "available": true,
+            "effective_dates": []
+          }
+        },
+        {
+          "tier": "priority",
+          "input": "2.25",
+          "output": "18.00",
+          "cached_input": "0.225",
+          "conditions": {
+            "service_tier": "Priority",
+            "available": true,
+            "effective_dates": []
+          }
+        }
+      ],
+      "pricing_unit": "per 1,000,000 tokens"
+    },
+    {
+      "model": "gemini-2.5-pro-preview-tts",
+      "provider": "google",
+      "input_price_per_million": "1.00",
+      "output_price_per_million": "20.00",
+      "context_window": null,
+      "quality_tier": 2,
+      "notes": "Gemini pricing can change by effective date; the parser selects the currently effective Standard/Batch value and retains tier conditions.",
+      "display_name": "Gemini 2.5 Pro Preview TTS",
+      "cached_input_price_per_million": null,
+      "cache_write_price_per_million": null,
+      "batch_input_price_per_million": "0.50",
+      "batch_output_price_per_million": "10.00",
+      "currency": "USD",
+      "pricing_tier": "standard",
+      "effective_date": null,
+      "source_url": "https://ai.google.dev/gemini-api/docs/pricing",
+      "last_verified": "2026-11-19T04:47:08.261054+00:00",
+      "pricing_status": "official_verified",
+      "pricing_version": 1,
+      "retrieved_at": "2026-11-19T04:47:08.261054+00:00",
+      "pricing_conditions": {
+        "service_tier": "Standard",
+        "effective_dates": []
+      },
+      "pricing_tiers": [
+        {
+          "tier": "standard",
+          "input": "1.00",
+          "output": "20.00",
+          "cached_input": null,
+          "conditions": {
+            "service_tier": "Standard"
+          }
+        },
+        {
+          "tier": "batch",
+          "input": "0.50",
+          "output": "10.00",
+          "cached_input": null,
+          "conditions": {
+            "service_tier": "Batch",
+            "available": true,
+            "effective_dates": []
+          }
+        }
+      ],
+      "pricing_unit": "per 1,000,000 tokens"
+    },
+    {
+      "model": "gemini-3-flash-preview",
+      "provider": "google",
+      "input_price_per_million": "0.50",
+      "output_price_per_million": "3.00",
+      "context_window": null,
+      "quality_tier": 2,
+      "notes": "Gemini pricing can change by effective date; the parser selects the currently effective Standard/Batch value and retains tier conditions.",
+      "display_name": "Gemini 3 Flash Preview",
+      "cached_input_price_per_million": "0.05",
+      "cache_write_price_per_million": null,
+      "batch_input_price_per_million": "0.25",
+      "batch_output_price_per_million": "1.50",
+      "currency": "USD",
+      "pricing_tier": "standard",
+      "effective_date": null,
+      "source_url": "https://ai.google.dev/gemini-api/docs/pricing",
+      "last_verified": "2026-11-19T04:47:08.260348+00:00",
+      "pricing_status": "official_verified",
+      "pricing_version": 1,
+      "retrieved_at": "2026-11-19T04:47:08.260348+00:00",
+      "pricing_conditions": {
+        "service_tier": "Standard",
+        "cache_storage_usd_per_million_tokens_hour": "1.00",
+        "effective_dates": []
+      },
+      "pricing_tiers": [
+        {
+          "tier": "standard",
+          "input": "0.50",
+          "output": "3.00",
+          "cached_input": "0.05",
+          "conditions": {
+            "service_tier": "Standard",
+            "cache_storage_usd_per_million_tokens_hour": "1.00"
+          }
+        },
+        {
+          "tier": "batch",
+          "input": "0.25",
+          "output": "1.50",
+          "cached_input": "0.05",
+          "conditions": {
+            "service_tier": "Batch",
+            "available": true,
+            "effective_dates": []
+          }
+        },
+        {
+          "tier": "flex",
+          "input": "0.25",
+          "output": "1.50",
+          "cached_input": "0.05",
+          "conditions": {
+            "service_tier": "Flex",
+            "available": true,
+            "effective_dates": []
+          }
+        },
+        {
+          "tier": "priority",
+          "input": "0.90",
+          "output": "5.40",
+          "cached_input": "0.09",
+          "conditions": {
+            "service_tier": "Priority",
+            "available": true,
+            "effective_dates": []
+          }
+        }
+      ],
+      "pricing_unit": "per 1,000,000 tokens"
+    },
+    {
+      "model": "gemini-3-pro-image",
+      "provider": "google",
+      "input_price_per_million": "2.00",
+      "output_price_per_million": "12.00",
+      "context_window": null,
+      "quality_tier": 2,
+      "notes": "Gemini pricing can change by effective date; the parser selects the currently effective Standard/Batch value and retains tier conditions.",
+      "display_name": "Gemini 3 Pro Image (Nano Banana Pro) \ud83c\udf4c",
+      "cached_input_price_per_million": null,
+      "cache_write_price_per_million": null,
+      "batch_input_price_per_million": null,
+      "batch_output_price_per_million": null,
+      "currency": "USD",
+      "pricing_tier": "standard",
+      "effective_date": null,
+      "source_url": "https://ai.google.dev/gemini-api/docs/pricing",
+      "last_verified": "2026-11-19T04:47:08.260444+00:00",
+      "pricing_status": "official_verified",
+      "pricing_version": 1,
+      "retrieved_at": "2026-11-19T04:47:08.260444+00:00",
+      "pricing_conditions": {
+        "service_tier": "Standard",
+        "effective_dates": []
+      },
+      "pricing_tiers": [
+        {
+          "tier": "standard",
+          "input": "2.00",
+          "output": "12.00",
+          "cached_input": null,
+          "conditions": {
+            "service_tier": "Standard"
+          }
+        }
+      ],
+      "pricing_unit": "per 1,000,000 tokens"
+    },
+    {
+      "model": "gemini-3.1-flash-image",
+      "provider": "google",
+      "input_price_per_million": "0.50",
+      "output_price_per_million": "3",
+      "context_window": null,
+      "quality_tier": 2,
+      "notes": "Gemini pricing can change by effective date; the parser selects the currently effective Standard/Batch value and retains tier conditions.",
+      "display_name": "Gemini 3.1 Flash Image (Nano Banana 2) \ud83c\udf4c",
+      "cached_input_price_per_million": null,
+      "cache_write_price_per_million": null,
+      "batch_input_price_per_million": null,
+      "batch_output_price_per_million": null,
+      "currency": "USD",
+      "pricing_tier": "standard",
+      "effective_date": null,
+      "source_url": "https://ai.google.dev/gemini-api/docs/pricing",
+      "last_verified": "2026-11-19T04:47:08.259500+00:00",
+      "pricing_status": "official_verified",
+      "pricing_version": 1,
+      "retrieved_at": "2026-11-19T04:47:08.259500+00:00",
+      "pricing_conditions": {
+        "service_tier": "Standard",
+        "effective_dates": []
+      },
+      "pricing_tiers": [
+        {
+          "tier": "standard",
+          "input": "0.50",
+          "output": "3",
+          "cached_input": null,
+          "conditions": {
+            "service_tier": "Standard"
+          }
+        }
+      ],
+      "pricing_unit": "per 1,000,000 tokens"
+    },
+    {
+      "model": "gemini-3.1-flash-lite",
+      "provider": "google",
+      "input_price_per_million": "0.25",
+      "output_price_per_million": "1.50",
+      "context_window": null,
+      "quality_tier": 2,
+      "notes": "Gemini pricing can change by effective date; the parser selects the currently effective Standard/Batch value and retains tier conditions.",
+      "display_name": "Gemini 3.1 Flash-Lite",
+      "cached_input_price_per_million": "0.025",
+      "cache_write_price_per_million": null,
+      "batch_input_price_per_million": "0.125",
+      "batch_output_price_per_million": "0.75",
+      "currency": "USD",
+      "pricing_tier": "standard",
+      "effective_date": null,
+      "source_url": "https://ai.google.dev/gemini-api/docs/pricing",
+      "last_verified": "2026-11-19T04:47:08.259096+00:00",
+      "pricing_status": "official_verified",
+      "pricing_version": 1,
+      "retrieved_at": "2026-11-19T04:47:08.259096+00:00",
+      "pricing_conditions": {
+        "service_tier": "Standard",
+        "cache_storage_usd_per_million_tokens_hour": "1.00",
+        "effective_dates": []
+      },
+      "pricing_tiers": [
+        {
+          "tier": "standard",
+          "input": "0.25",
+          "output": "1.50",
+          "cached_input": "0.025",
+          "conditions": {
+            "service_tier": "Standard",
+            "cache_storage_usd_per_million_tokens_hour": "1.00"
+          }
+        },
+        {
+          "tier": "batch",
+          "input": "0.125",
+          "output": "0.75",
+          "cached_input": "0.0125",
+          "conditions": {
+            "service_tier": "Batch",
+            "available": true,
+            "effective_dates": []
+          }
+        },
+        {
+          "tier": "flex",
+          "input": "0.125",
+          "output": "0.75",
+          "cached_input": "0.0125",
+          "conditions": {
+            "service_tier": "Flex",
+            "available": true,
+            "effective_dates": []
+          }
+        },
+        {
+          "tier": "priority",
+          "input": "0.45",
+          "output": "2.70",
+          "cached_input": "0.045",
+          "conditions": {
+            "service_tier": "Priority",
+            "available": true,
+            "effective_dates": []
+          }
+        }
+      ],
+      "pricing_unit": "per 1,000,000 tokens"
+    },
+    {
+      "model": "gemini-3.1-flash-lite-image",
+      "provider": "google",
+      "input_price_per_million": "0.25",
+      "output_price_per_million": "1.50",
+      "context_window": null,
+      "quality_tier": 2,
+      "notes": "Gemini pricing can change by effective date; the parser selects the currently effective Standard/Batch value and retains tier conditions.",
+      "display_name": "Gemini 3.1 Flash Lite Image (Nano Banana 2 Lite) \ud83c\udf4c",
+      "cached_input_price_per_million": null,
+      "cache_write_price_per_million": null,
+      "batch_input_price_per_million": "0.125",
+      "batch_output_price_per_million": "0.75",
+      "currency": "USD",
+      "pricing_tier": "standard",
+      "effective_date": null,
+      "source_url": "https://ai.google.dev/gemini-api/docs/pricing",
+      "last_verified": "2026-11-19T04:47:08.259593+00:00",
+      "pricing_status": "official_verified",
+      "pricing_version": 1,
+      "retrieved_at": "2026-11-19T04:47:08.259593+00:00",
+      "pricing_conditions": {
+        "service_tier": "Standard",
+        "effective_dates": []
+      },
+      "pricing_tiers": [
+        {
+          "tier": "standard",
+          "input": "0.25",
+          "output": "1.50",
+          "cached_input": null,
+          "conditions": {
+            "service_tier": "Standard"
+          }
+        },
+        {
+          "tier": "batch",
+          "input": "0.125",
+          "output": "0.75",
+          "cached_input": null,
+          "conditions": {
+            "service_tier": "Batch",
+            "available": true,
+            "effective_dates": []
+          }
+        }
+      ],
+      "pricing_unit": "per 1,000,000 tokens"
+    },
+    {
+      "model": "gemini-3.1-flash-tts-preview",
+      "provider": "google",
+      "input_price_per_million": "1.00",
+      "output_price_per_million": "20.00",
+      "context_window": null,
+      "quality_tier": 2,
+      "notes": "Gemini pricing can change by effective date; the parser selects the currently effective Standard/Batch value and retains tier conditions.",
+      "display_name": "Gemini 3.1 Flash TTS Preview",
+      "cached_input_price_per_million": null,
+      "cache_write_price_per_million": null,
+      "batch_input_price_per_million": "0.50",
+      "batch_output_price_per_million": "10.00",
+      "currency": "USD",
+      "pricing_tier": "standard",
+      "effective_date": null,
+      "source_url": "https://ai.google.dev/gemini-api/docs/pricing",
+      "last_verified": "2026-11-19T04:47:08.260207+00:00",
+      "pricing_status": "official_verified",
+      "pricing_version": 1,
+      "retrieved_at": "2026-11-19T04:47:08.260207+00:00",
+      "pricing_conditions": {
+        "service_tier": "Standard",
+        "effective_dates": []
+      },
+      "pricing_tiers": [
+        {
+          "tier": "standard",
+          "input": "1.00",
+          "output": "20.00",
+          "cached_input": null,
+          "conditions": {
+            "service_tier": "Standard"
+          }
+        },
+        {
+          "tier": "batch",
+          "input": "0.50",
+          "output": "10.00",
+          "cached_input": null,
+          "conditions": {
+            "service_tier": "Batch",
+            "available": true,
+            "effective_dates": []
+          }
+        }
+      ],
+      "pricing_unit": "per 1,000,000 tokens"
+    },
+    {
+      "model": "gemini-3.1-pro-preview",
+      "provider": "google",
+      "input_price_per_million": "2.00",
+      "output_price_per_million": "12.00",
+      "context_window": null,
+      "quality_tier": 2,
+      "notes": "Gemini pricing can change by effective date; the parser selects the currently effective Standard/Batch value and retains tier conditions.",
+      "display_name": "Gemini 3.1 Pro Preview",
+      "cached_input_price_per_million": "0.20",
+      "cache_write_price_per_million": null,
+      "batch_input_price_per_million": "1.00",
+      "batch_output_price_per_million": "6.00",
+      "currency": "USD",
+      "pricing_tier": "standard",
+      "effective_date": null,
+      "source_url": "https://ai.google.dev/gemini-api/docs/pricing",
+      "last_verified": "2026-11-19T04:47:08.259265+00:00",
+      "pricing_status": "official_verified",
+      "pricing_version": 1,
+      "retrieved_at": "2026-11-19T04:47:08.259265+00:00",
+      "pricing_conditions": {
+        "service_tier": "Standard",
+        "cache_storage_usd_per_million_tokens_hour": "4.50",
+        "effective_dates": []
+      },
+      "pricing_tiers": [
+        {
+          "tier": "standard",
+          "input": "2.00",
+          "output": "12.00",
+          "cached_input": "0.20",
+          "conditions": {
+            "service_tier": "Standard",
+            "cache_storage_usd_per_million_tokens_hour": "4.50"
+          }
+        },
+        {
+          "tier": "batch",
+          "input": "1.00",
+          "output": "6.00",
+          "cached_input": "0.20",
+          "conditions": {
+            "service_tier": "Batch",
+            "available": true,
+            "effective_dates": []
+          }
+        },
+        {
+          "tier": "flex",
+          "input": "1.00",
+          "output": "6.00",
+          "cached_input": "0.20",
+          "conditions": {
+            "service_tier": "Flex",
+            "available": true,
+            "effective_dates": []
+          }
+        },
+        {
+          "tier": "priority",
+          "input": "3.60",
+          "output": "21.60",
+          "cached_input": "0.36",
+          "conditions": {
+            "service_tier": "Priority",
+            "available": true,
+            "effective_dates": []
+          }
+        }
+      ],
+      "pricing_unit": "per 1,000,000 tokens"
+    },
+    {
+      "model": "gemini-3.5-flash-lite",
+      "provider": "google",
+      "input_price_per_million": "0.30",
+      "output_price_per_million": "2.50",
+      "context_window": null,
+      "quality_tier": 2,
+      "notes": "Gemini pricing can change by effective date; the parser selects the currently effective Standard/Batch value and retains tier conditions.",
+      "display_name": "Gemini 3.5 Flash-Lite",
+      "cached_input_price_per_million": "0.03",
+      "cache_write_price_per_million": null,
+      "batch_input_price_per_million": "0.15",
+      "batch_output_price_per_million": "1.25",
+      "currency": "USD",
+      "pricing_tier": "standard",
+      "effective_date": null,
+      "source_url": "https://ai.google.dev/gemini-api/docs/pricing",
+      "last_verified": "2026-11-19T04:47:08.258587+00:00",
+      "pricing_status": "official_verified",
+      "pricing_version": 1,
+      "retrieved_at": "2026-11-19T04:47:08.258587+00:00",
+      "pricing_conditions": {
+        "service_tier": "Standard",
+        "cache_storage_usd_per_million_tokens_hour": "1.00",
+        "effective_dates": []
+      },
+      "pricing_tiers": [
+        {
+          "tier": "standard",
+          "input": "0.30",
+          "output": "2.50",
+          "cached_input": "0.03",
+          "conditions": {
+            "service_tier": "Standard",
+            "cache_storage_usd_per_million_tokens_hour": "1.00"
+          }
+        },
+        {
+          "tier": "batch",
+          "input": "0.15",
+          "output": "1.25",
+          "cached_input": "0.015",
+          "conditions": {
+            "service_tier": "Batch",
+            "available": true,
+            "effective_dates": []
+          }
+        },
+        {
+          "tier": "flex",
+          "input": "0.15",
+          "output": "1.25",
+          "cached_input": "0.02",
+          "conditions": {
+            "service_tier": "Flex",
+            "available": true,
+            "effective_dates": []
+          }
+        },
+        {
+          "tier": "priority",
+          "input": "0.54",
+          "output": "4.50",
+          "cached_input": "0.05",
+          "conditions": {
+            "service_tier": "Priority",
+            "available": true,
+            "effective_dates": []
+          }
+        }
+      ],
+      "pricing_unit": "per 1,000,000 tokens"
+    },
+    {
+      "model": "gemini-3.5-live-translate-preview",
+      "provider": "google",
+      "input_price_per_million": "3.50",
+      "output_price_per_million": "21.00",
+      "context_window": null,
+      "quality_tier": 2,
+      "notes": "Gemini pricing can change by effective date; the parser selects the currently effective Standard/Batch value and retains tier conditions.",
+      "display_name": "Gemini 3.5 Live Translate",
+      "cached_input_price_per_million": null,
+      "cache_write_price_per_million": null,
+      "batch_input_price_per_million": null,
+      "batch_output_price_per_million": null,
+      "currency": "USD",
+      "pricing_tier": "standard",
+      "effective_date": null,
+      "source_url": "https://ai.google.dev/gemini-api/docs/pricing",
+      "last_verified": "2026-11-19T04:47:08.258927+00:00",
+      "pricing_status": "official_verified",
+      "pricing_version": 1,
+      "retrieved_at": "2026-11-19T04:47:08.258927+00:00",
+      "pricing_conditions": {
+        "service_tier": "Standard",
+        "effective_dates": []
+      },
+      "pricing_tiers": [
+        {
+          "tier": "standard",
+          "input": "3.50",
+          "output": "21.00",
+          "cached_input": null,
+          "conditions": {
+            "service_tier": "Standard"
+          }
+        }
+      ],
+      "pricing_unit": "per 1,000,000 tokens"
+    },
+    {
+      "model": "gemini-3.5-transcribe",
+      "provider": "google",
+      "input_price_per_million": "2.00",
+      "output_price_per_million": "12.00",
+      "context_window": null,
+      "quality_tier": 2,
+      "notes": "Gemini pricing can change by effective date; the parser selects the currently effective Standard/Batch value and retains tier conditions.",
+      "display_name": "Gemini 3.5 Transcribe",
+      "cached_input_price_per_million": null,
+      "cache_write_price_per_million": null,
+      "batch_input_price_per_million": null,
+      "batch_output_price_per_million": null,
+      "currency": "USD",
+      "pricing_tier": "standard",
+      "effective_date": null,
+      "source_url": "https://ai.google.dev/gemini-api/docs/pricing",
+      "last_verified": "2026-11-19T04:47:08.258444+00:00",
+      "pricing_status": "official_verified",
+      "pricing_version": 1,
+      "retrieved_at": "2026-11-19T04:47:08.258444+00:00",
+      "pricing_conditions": {
+        "service_tier": "Standard",
+        "effective_dates": []
+      },
+      "pricing_tiers": [
+        {
+          "tier": "standard",
+          "input": "2.00",
+          "output": "12.00",
+          "cached_input": null,
+          "conditions": {
+            "service_tier": "Standard"
+          }
+        }
+      ],
+      "pricing_unit": "per 1,000,000 tokens"
+    },
+    {
+      "model": "gemini-3.5-transcribe-live",
+      "provider": "google",
+      "input_price_per_million": "3.50",
+      "output_price_per_million": "21.00",
+      "context_window": null,
+      "quality_tier": 2,
+      "notes": "Gemini pricing can change by effective date; the parser selects the currently effective Standard/Batch value and retains tier conditions.",
+      "display_name": "Gemini 3.5 Transcribe Live",
+      "cached_input_price_per_million": null,
+      "cache_write_price_per_million": null,
+      "batch_input_price_per_million": null,
+      "batch_output_price_per_million": null,
+      "currency": "USD",
+      "pricing_tier": "standard",
+      "effective_date": null,
+      "source_url": "https://ai.google.dev/gemini-api/docs/pricing",
+      "last_verified": "2026-11-19T04:47:08.258362+00:00",
+      "pricing_status": "official_verified",
+      "pricing_version": 1,
+      "retrieved_at": "2026-11-19T04:47:08.258362+00:00",
+      "pricing_conditions": {
+        "service_tier": "Standard",
+        "effective_dates": []
+      },
+      "pricing_tiers": [
+        {
+          "tier": "standard",
+          "input": "3.50",
+          "output": "21.00",
+          "cached_input": null,
+          "conditions": {
+            "service_tier": "Standard"
+          }
+        }
+      ],
+      "pricing_unit": "per 1,000,000 tokens"
+    },
+    {
+      "model": "gemini-3.6-flash",
+      "provider": "google",
+      "input_price_per_million": "0.75",
+      "output_price_per_million": "3.75",
+      "context_window": null,
+      "quality_tier": 2,
+      "notes": "Gemini pricing can change by effective date; the parser selects the currently effective Standard/Batch value and retains tier conditions.",
+      "display_name": "Gemini 3.6 Flash",
+      "cached_input_price_per_million": "0.075",
+      "cache_write_price_per_million": null,
+      "batch_input_price_per_million": "0.375",
+      "batch_output_price_per_million": "1.875",
+      "currency": "USD",
+      "pricing_tier": "standard",
+      "effective_date": null,
+      "source_url": "https://ai.google.dev/gemini-api/docs/pricing",
+      "last_verified": "2026-11-19T04:47:08.258054+00:00",
+      "pricing_status": "official_verified",
+      "pricing_version": 1,
+      "retrieved_at": "2026-11-19T04:47:08.258054+00:00",
+      "pricing_conditions": {
+        "service_tier": "Standard",
+        "cache_storage_usd_per_million_tokens_hour": "0.50",
+        "effective_dates": []
+      },
+      "pricing_tiers": [
+        {
+          "tier": "standard",
+          "input": "0.75",
+          "output": "3.75",
+          "cached_input": "0.075",
+          "conditions": {
+            "service_tier": "Standard",
+            "cache_storage_usd_per_million_tokens_hour": "0.50"
+          }
+        },
+        {
+          "tier": "batch",
+          "input": "0.375",
+          "output": "1.875",
+          "cached_input": "0.0375",
+          "conditions": {
+            "service_tier": "Batch",
+            "available": true,
+            "effective_dates": []
+          }
+        },
+        {
+          "tier": "flex",
+          "input": "0.375",
+          "output": "1.875",
+          "cached_input": "0.0375",
+          "conditions": {
+            "service_tier": "Flex",
+            "available": true,
+            "effective_dates": []
+          }
+        },
+        {
+          "tier": "priority",
+          "input": "1.35",
+          "output": "6.75",
+          "cached_input": "0.135",
+          "conditions": {
+            "service_tier": "Priority",
+            "available": true,
+            "effective_dates": []
+          }
+        }
+      ],
+      "pricing_unit": "per 1,000,000 tokens"
+    },
+    {
+      "model": "gemini-3.8-flash",
+      "provider": "google",
+      "input_price_per_million": "0.75",
+      "output_price_per_million": "3.75",
+      "context_window": null,
+      "quality_tier": 2,
+      "notes": "Gemini pricing can change by effective date; the parser selects the currently effective Standard/Batch value and retains tier conditions.",
+      "display_name": "Gemini 3.8 Flash",
+      "cached_input_price_per_million": "0.075",
+      "cache_write_price_per_million": null,
+      "batch_input_price_per_million": "0.375",
+      "batch_output_price_per_million": "1.875",
+      "currency": "USD",
+      "pricing_tier": "standard",
+      "effective_date": null,
+      "source_url": "https://ai.google.dev/gemini-api/docs/pricing",
+      "last_verified": "2026-11-19T04:47:08.257732+00:00",
+      "pricing_status": "official_verified",
+      "pricing_version": 1,
+      "retrieved_at": "2026-11-19T04:47:08.257732+00:00",
+      "pricing_conditions": {
+        "service_tier": "Standard",
+        "cache_storage_usd_per_million_tokens_hour": "0.50",
+        "effective_dates": []
+      },
+      "pricing_tiers": [
+        {
+          "tier": "standard",
+          "input": "0.75",
+          "output": "3.75",
+          "cached_input": "0.075",
+          "conditions": {
+            "service_tier": "Standard",
+            "cache_storage_usd_per_million_tokens_hour": "0.50"
+          }
+        },
+        {
+          "tier": "batch",
+          "input": "0.375",
+          "output": "1.875",
+          "cached_input": "0.0375",
+          "conditions": {
+            "service_tier": "Batch",
+            "available": true,
+            "effective_dates": []
+          }
+        },
+        {
+          "tier": "flex",
+          "input": "0.375",
+          "output": "1.875",
+          "cached_input": "0.0375",
+          "conditions": {
+            "service_tier": "Flex",
+            "available": true,
+            "effective_dates": []
+          }
+        },
+        {
+          "tier": "priority",
+          "input": "1.35",
+          "output": "6.75",
+          "cached_input": "0.135",
+          "conditions": {
+            "service_tier": "Priority",
+            "available": true,
+            "effective_dates": []
+          }
+        }
+      ],
+      "pricing_unit": "per 1,000,000 tokens"
+    },
+    {
+      "model": "gemini-3.8-flash-lite-tts",
+      "provider": "google",
+      "input_price_per_million": "0.50",
+      "output_price_per_million": "6.00",
+      "context_window": null,
+      "quality_tier": 2,
+      "notes": "Gemini pricing can change by effective date; the parser selects the currently effective Standard/Batch value and retains tier conditions.",
+      "display_name": "Gemini 3.8 Flash-Lite TTS",
+      "cached_input_price_per_million": null,
+      "cache_write_price_per_million": null,
+      "batch_input_price_per_million": "0.25",
+      "batch_output_price_per_million": "3.00",
+      "currency": "USD",
+      "pricing_tier": "standard",
+      "effective_date": null,
+      "source_url": "https://ai.google.dev/gemini-api/docs/pricing",
+      "last_verified": "2026-11-19T04:47:08.260128+00:00",
+      "pricing_status": "official_verified",
+      "pricing_version": 1,
+      "retrieved_at": "2026-11-19T04:47:08.260128+00:00",
+      "pricing_conditions": {
+        "service_tier": "Standard",
+        "effective_dates": []
+      },
+      "pricing_tiers": [
+        {
+          "tier": "standard",
+          "input": "0.50",
+          "output": "6.00",
+          "cached_input": null,
+          "conditions": {
+            "service_tier": "Standard"
+          }
+        },
+        {
+          "tier": "batch",
+          "input": "0.25",
+          "output": "3.00",
+          "cached_input": null,
+          "conditions": {
+            "service_tier": "Batch",
+            "available": true,
+            "effective_dates": []
+          }
+        },
+        {
+          "tier": "flex",
+          "input": "0.25",
+          "output": "3.00",
+          "cached_input": null,
+          "conditions": {
+            "service_tier": "Flex",
+            "available": true,
+            "effective_dates": []
+          }
+        },
+        {
+          "tier": "priority",
+          "input": "0.90",
+          "output": "10.80",
+          "cached_input": null,
+          "conditions": {
+            "service_tier": "Priority",
+            "available": true,
+            "effective_dates": []
+          }
+        }
+      ],
+      "pricing_unit": "per 1,000,000 tokens"
+    },
+    {
+      "model": "gemini-3.8-flash-tts",
+      "provider": "google",
+      "input_price_per_million": "0.50",
+      "output_price_per_million": "9.00",
+      "context_window": null,
+      "quality_tier": 2,
+      "notes": "Gemini pricing can change by effective date; the parser selects the currently effective Standard/Batch value and retains tier conditions.",
+      "display_name": "Gemini 3.8 Flash TTS",
+      "cached_input_price_per_million": null,
+      "cache_write_price_per_million": null,
+      "batch_input_price_per_million": "0.25",
+      "batch_output_price_per_million": "4.50",
+      "currency": "USD",
+      "pricing_tier": "standard",
+      "effective_date": null,
+      "source_url": "https://ai.google.dev/gemini-api/docs/pricing",
+      "last_verified": "2026-11-19T04:47:08.259873+00:00",
+      "pricing_status": "official_verified",
+      "pricing_version": 1,
+      "retrieved_at": "2026-11-19T04:47:08.259873+00:00",
+      "pricing_conditions": {
+        "service_tier": "Standard",
+        "effective_dates": []
+      },
+      "pricing_tiers": [
+        {
+          "tier": "standard",
+          "input": "0.50",
+          "output": "9.00",
+          "cached_input": null,
+          "conditions": {
+            "service_tier": "Standard"
+          }
+        },
+        {
+          "tier": "batch",
+          "input": "0.25",
+          "output": "4.50",
+          "cached_input": null,
+          "conditions": {
+            "service_tier": "Batch",
+            "available": true,
+            "effective_dates": []
+          }
+        },
+        {
+          "tier": "flex",
+          "input": "0.25",
+          "output": "4.50",
+          "cached_input": null,
+          "conditions": {
+            "service_tier": "Flex",
+            "available": true,
+            "effective_dates": []
+          }
+        },
+        {
+          "tier": "priority",
+          "input": "0.90",
+          "output": "16.20",
+          "cached_input": null,
+          "conditions": {
+            "service_tier": "Priority",
+            "available": true,
+            "effective_dates": []
+          }
+        }
+      ],
+      "pricing_unit": "per 1,000,000 tokens"
+    },
+    {
+      "model": "gemini-4-argon",
+      "provider": "google",
+      "input_price_per_million": "2.00",
+      "output_price_per_million": "10.00",
+      "context_window": null,
+      "quality_tier": 2,
+      "notes": "Gemini pricing can change by effective date; the parser selects the currently effective Standard/Batch value and retains tier conditions.",
+      "display_name": "Gemini 4 Argon",
+      "cached_input_price_per_million": "0.10",
+      "cache_write_price_per_million": null,
+      "batch_input_price_per_million": "1.00",
+      "batch_output_price_per_million": "5.00",
+      "currency": "USD",
+      "pricing_tier": "standard",
+      "effective_date": null,
+      "source_url": "https://ai.google.dev/gemini-api/docs/pricing",
+      "last_verified": "2026-11-19T04:47:08.257133+00:00",
+      "pricing_status": "official_verified",
+      "pricing_version": 1,
+      "retrieved_at": "2026-11-19T04:47:08.257133+00:00",
+      "pricing_conditions": {
+        "service_tier": "Standard",
+        "effective_dates": []
+      },
+      "pricing_tiers": [
+        {
+          "tier": "standard",
+          "input": "2.00",
+          "output": "10.00",
+          "cached_input": "0.10",
+          "conditions": {
+            "service_tier": "Standard"
+          }
+        },
+        {
+          "tier": "batch",
+          "input": "1.00",
+          "output": "5.00",
+          "cached_input": "0.05",
+          "conditions": {
+            "service_tier": "Batch",
+            "available": true,
+            "effective_dates": []
+          }
+        },
+        {
+          "tier": "flex",
+          "input": "1.00",
+          "output": "5.00",
+          "cached_input": "0.05",
+          "conditions": {
+            "service_tier": "Flex",
+            "available": true,
+            "effective_dates": []
+          }
+        },
+        {
+          "tier": "priority",
+          "input": "3.60",
+          "output": "18.00",
+          "cached_input": "0.18",
+          "conditions": {
+            "service_tier": "Priority",
+            "available": true,
+            "effective_dates": []
+          }
+        }
+      ],
+      "pricing_unit": "per 1,000,000 tokens"
+    },
+    {
+      "model": "gemini-4-carbon",
+      "provider": "google",
+      "input_price_per_million": "2.00",
+      "output_price_per_million": "10.00",
+      "context_window": null,
+      "quality_tier": 2,
+      "notes": "Gemini pricing can change by effective date; the parser selects the currently effective Standard/Batch value and retains tier conditions.",
+      "display_name": "Gemini 4 Carbon",
+      "cached_input_price_per_million": "0.10",
+      "cache_write_price_per_million": null,
+      "batch_input_price_per_million": "1.00",
+      "batch_output_price_per_million": "5.00",
+      "currency": "USD",
+      "pricing_tier": "standard",
+      "effective_date": null,
+      "source_url": "https://ai.google.dev/gemini-api/docs/pricing",
+      "last_verified": "2026-11-19T04:47:08.256775+00:00",
+      "pricing_status": "official_verified",
+      "pricing_version": 1,
+      "retrieved_at": "2026-11-19T04:47:08.256775+00:00",
+      "pricing_conditions": {
+        "service_tier": "Standard",
+        "effective_dates": []
+      },
+      "pricing_tiers": [
+        {
+          "tier": "standard",
+          "input": "2.00",
+          "output": "10.00",
+          "cached_input": "0.10",
+          "conditions": {
+            "service_tier": "Standard"
+          }
+        },
+        {
+          "tier": "batch",
+          "input": "1.00",
+          "output": "5.00",
+          "cached_input": "0.05",
+          "conditions": {
+            "service_tier": "Batch",
+            "available": true,
+            "effective_dates": []
+          }
+        },
+        {
+          "tier": "flex",
+          "input": "1.00",
+          "output": "5.00",
+          "cached_input": "0.05",
+          "conditions": {
+            "service_tier": "Flex",
+            "available": true,
+            "effective_dates": []
+          }
+        },
+        {
+          "tier": "priority",
+          "input": "3.60",
+          "output": "18.00",
+          "cached_input": "0.18",
+          "conditions": {
+            "service_tier": "Priority",
+            "available": true,
+            "effective_dates": []
+          }
+        }
+      ],
+      "pricing_unit": "per 1,000,000 tokens"
+    },
+    {
+      "model": "gemini-4-hydrogen",
+      "provider": "google",
+      "input_price_per_million": "1.50",
+      "output_price_per_million": "7.50",
+      "context_window": null,
+      "quality_tier": 2,
+      "notes": "Gemini pricing can change by effective date; the parser selects the currently effective Standard/Batch value and retains tier conditions.",
+      "display_name": "Gemini 4 Hydrogen",
+      "cached_input_price_per_million": "0.075",
+      "cache_write_price_per_million": null,
+      "batch_input_price_per_million": "0.75",
+      "batch_output_price_per_million": "3.75",
+      "currency": "USD",
+      "pricing_tier": "standard",
+      "effective_date": null,
+      "source_url": "https://ai.google.dev/gemini-api/docs/pricing",
+      "last_verified": "2026-11-19T04:47:08.257398+00:00",
+      "pricing_status": "official_verified",
+      "pricing_version": 1,
+      "retrieved_at": "2026-11-19T04:47:08.257398+00:00",
+      "pricing_conditions": {
+        "service_tier": "Standard",
+        "effective_dates": []
+      },
+      "pricing_tiers": [
+        {
+          "tier": "standard",
+          "input": "1.50",
+          "output": "7.50",
+          "cached_input": "0.075",
+          "conditions": {
+            "service_tier": "Standard"
+          }
+        },
+        {
+          "tier": "batch",
+          "input": "0.75",
+          "output": "3.75",
+          "cached_input": "0.0375",
+          "conditions": {
+            "service_tier": "Batch",
+            "available": true,
+            "effective_dates": []
+          }
+        },
+        {
+          "tier": "flex",
+          "input": "0.75",
+          "output": "3.75",
+          "cached_input": "0.0375",
+          "conditions": {
+            "service_tier": "Flex",
+            "available": true,
+            "effective_dates": []
+          }
+        },
+        {
+          "tier": "priority",
+          "input": "2.70",
+          "output": "13.50",
+          "cached_input": "0.135",
+          "conditions": {
+            "service_tier": "Priority",
+            "available": true,
+            "effective_dates": []
+          }
+        }
+      ],
+      "pricing_unit": "per 1,000,000 tokens"
+    },
+    {
+      "model": "gemini-4-neon",
+      "provider": "google",
+      "input_price_per_million": "3.00",
+      "output_price_per_million": "15.00",
+      "context_window": null,
+      "quality_tier": 2,
+      "notes": "Gemini pricing can change by effective date; the parser selects the currently effective Standard/Batch value and retains tier conditions.",
+      "display_name": "Gemini 4 Neon",
+      "cached_input_price_per_million": "0.15",
+      "cache_write_price_per_million": null,
+      "batch_input_price_per_million": "1.50",
+      "batch_output_price_per_million": "7.50",
+      "currency": "USD",
+      "pricing_tier": "standard",
+      "effective_date": null,
+      "source_url": "https://ai.google.dev/gemini-api/docs/pricing",
+      "last_verified": "2026-11-19T04:47:08.257263+00:00",
+      "pricing_status": "official_verified",
+      "pricing_version": 1,
+      "retrieved_at": "2026-11-19T04:47:08.257263+00:00",
+      "pricing_conditions": {
+        "service_tier": "Standard",
+        "effective_dates": []
+      },
+      "pricing_tiers": [
+        {
+          "tier": "standard",
+          "input": "3.00",
+          "output": "15.00",
+          "cached_input": "0.15",
+          "conditions": {
+            "service_tier": "Standard"
+          }
+        },
+        {
+          "tier": "batch",
+          "input": "1.50",
+          "output": "7.50",
+          "cached_input": "0.075",
+          "conditions": {
+            "service_tier": "Batch",
+            "available": true,
+            "effective_dates": []
+          }
+        },
+        {
+          "tier": "flex",
+          "input": "1.50",
+          "output": "7.50",
+          "cached_input": "0.075",
+          "conditions": {
+            "service_tier": "Flex",
+            "available": true,
+            "effective_dates": []
+          }
+        },
+        {
+          "tier": "priority",
+          "input": "5.40",
+          "output": "27.00",
+          "cached_input": "0.27",
+          "conditions": {
+            "service_tier": "Priority",
+            "available": true,
+            "effective_dates": []
+          }
+        }
+      ],
+      "pricing_unit": "per 1,000,000 tokens"
+    },
+    {
+      "model": "gemini-flash",
+      "provider": "google",
+      "input_price_per_million": "0.30",
+      "output_price_per_million": "2.50",
+      "context_window": 1000000,
+      "quality_tier": 2,
+      "notes": "illustrative",
+      "display_name": null,
+      "cached_input_price_per_million": null,
+      "cache_write_price_per_million": null,
+      "batch_input_price_per_million": null,
+      "batch_output_price_per_million": null,
+      "currency": "USD",
+      "pricing_tier": null,
+      "effective_date": null,
+      "source_url": null,
+      "last_verified": null,
+      "pricing_status": "manual_unverified",
+      "pricing_version": 1,
+      "retrieved_at": null,
+      "pricing_conditions": null,
+      "pricing_tiers": null,
+      "pricing_unit": "per 1,000,000 tokens"
+    },
+    {
+      "model": "gemini-nano-banana-2.1",
+      "provider": "google",
+      "input_price_per_million": "1.50",
+      "output_price_per_million": "7.50",
+      "context_window": null,
+      "quality_tier": 2,
+      "notes": "Gemini pricing can change by effective date; the parser selects the currently effective Standard/Batch value and retains tier conditions.",
+      "display_name": "Gemini Nano Banana 2.1 \ud83c\udf4c",
+      "cached_input_price_per_million": null,
+      "cache_write_price_per_million": null,
+      "batch_input_price_per_million": "0.75",
+      "batch_output_price_per_million": "3.75",
+      "currency": "USD",
+      "pricing_tier": "standard",
+      "effective_date": null,
+      "source_url": "https://ai.google.dev/gemini-api/docs/pricing",
+      "last_verified": "2026-11-19T04:47:08.259410+00:00",
+      "pricing_status": "official_verified",
+      "pricing_version": 1,
+      "retrieved_at": "2026-11-19T04:47:08.259410+00:00",
+      "pricing_conditions": {
+        "service_tier": "Standard",
+        "effective_dates": []
+      },
+      "pricing_tiers": [
+        {
+          "tier": "standard",
+          "input": "1.50",
+          "output": "7.50",
+          "cached_input": null,
+          "conditions": {
+            "service_tier": "Standard"
+          }
+        },
+        {
+          "tier": "batch",
+          "input": "0.75",
+          "output": "3.75",
+          "cached_input": null,
+          "conditions": {
+            "service_tier": "Batch",
+            "available": true,
+            "effective_dates": []
+          }
+        }
+      ],
+      "pricing_unit": "per 1,000,000 tokens"
+    },
+    {
+      "model": "gemini-omni-1.1-flash",
+      "provider": "google",
+      "input_price_per_million": "1.50",
+      "output_price_per_million": "9.00",
+      "context_window": null,
+      "quality_tier": 2,
+      "notes": "Gemini pricing can change by effective date; the parser selects the currently effective Standard/Batch value and retains tier conditions.",
+      "display_name": "Gemini Omni 1.1 Flash",
+      "cached_input_price_per_million": null,
+      "cache_write_price_per_million": null,
+      "batch_input_price_per_million": null,
+      "batch_output_price_per_million": null,
+      "currency": "USD",
+      "pricing_tier": "standard",
+      "effective_date": null,
+      "source_url": "https://ai.google.dev/gemini-api/docs/pricing",
+      "last_verified": "2026-11-19T04:47:08.258745+00:00",
+      "pricing_status": "official_verified",
+      "pricing_version": 1,
+      "retrieved_at": "2026-11-19T04:47:08.258745+00:00",
+      "pricing_conditions": {
+        "service_tier": "Standard",
+        "effective_dates": []
+      },
+      "pricing_tiers": [
+        {
+          "tier": "standard",
+          "input": "1.50",
+          "output": "9.00",
+          "cached_input": null,
+          "conditions": {
+            "service_tier": "Standard"
+          }
+        }
+      ],
+      "pricing_unit": "per 1,000,000 tokens"
+    },
+    {
+      "model": "gemini-omni-1.2-flash",
+      "provider": "google",
+      "input_price_per_million": "1.50",
+      "output_price_per_million": "9.00",
+      "context_window": null,
+      "quality_tier": 2,
+      "notes": "Gemini pricing can change by effective date; the parser selects the currently effective Standard/Batch value and retains tier conditions.",
+      "display_name": "Gemini Omni 1.2 Flash",
+      "cached_input_price_per_million": null,
+      "cache_write_price_per_million": null,
+      "batch_input_price_per_million": null,
+      "batch_output_price_per_million": null,
+      "currency": "USD",
+      "pricing_tier": "standard",
+      "effective_date": null,
+      "source_url": "https://ai.google.dev/gemini-api/docs/pricing",
+      "last_verified": "2026-11-19T04:47:08.258670+00:00",
+      "pricing_status": "official_verified",
+      "pricing_version": 1,
+      "retrieved_at": "2026-11-19T04:47:08.258670+00:00",
+      "pricing_conditions": {
+        "service_tier": "Standard",
+        "effective_dates": []
+      },
+      "pricing_tiers": [
+        {
+          "tier": "standard",
+          "input": "1.50",
+          "output": "9.00",
+          "cached_input": null,
+          "conditions": {
+            "service_tier": "Standard"
+          }
+        }
+      ],
+      "pricing_unit": "per 1,000,000 tokens"
+    },
+    {
+      "model": "gemini-pro",
+      "provider": "google",
+      "input_price_per_million": "1.25",
+      "output_price_per_million": "10.00",
+      "context_window": 1000000,
+      "quality_tier": 3,
+      "notes": "illustrative",
+      "display_name": null,
+      "cached_input_price_per_million": null,
+      "cache_write_price_per_million": null,
+      "batch_input_price_per_million": null,
+      "batch_output_price_per_million": null,
+      "currency": "USD",
+      "pricing_tier": null,
+      "effective_date": null,
+      "source_url": null,
+      "last_verified": null,
+      "pricing_status": "manual_unverified",
+      "pricing_version": 1,
+      "retrieved_at": null,
+      "pricing_conditions": null,
+      "pricing_tiers": null,
+      "pricing_unit": "per 1,000,000 tokens"
+    },
+    {
+      "model": "gemini-robotics-er-2-preview",
+      "provider": "google",
+      "input_price_per_million": "1.00",
+      "output_price_per_million": "5.00",
+      "context_window": null,
+      "quality_tier": 2,
+      "notes": "Gemini pricing can change by effective date; the parser selects the currently effective Standard/Batch value and retains tier conditions.",
+      "display_name": "Gemini Robotics ER 2 Preview",
+      "cached_input_price_per_million": "0.10",
+      "cache_write_price_per_million": null,
+      "batch_input_price_per_million": "0.50",
+      "batch_output_price_per_million": "2.50",
+      "currency": "USD",
+      "pricing_tier": "standard",
+      "effective_date": null,
+      "source_url": "https://ai.google.dev/gemini-api/docs/pricing",
+      "last_verified": "2026-11-19T04:47:08.261345+00:00",
+      "pricing_status": "official_verified",
+      "pricing_version": 1,
+      "retrieved_at": "2026-11-19T04:47:08.261345+00:00",
+      "pricing_conditions": {
+        "service_tier": "Standard",
+        "cache_storage_usd_per_million_tokens_hour": "0.50",
+        "effective_dates": []
+      },
+      "pricing_tiers": [
+        {
+          "tier": "standard",
+          "input": "1.00",
+          "output": "5.00",
+          "cached_input": "0.10",
+          "conditions": {
+            "service_tier": "Standard",
+            "cache_storage_usd_per_million_tokens_hour": "0.50"
+          }
+        },
+        {
+          "tier": "batch",
+          "input": "0.50",
+          "output": "2.50",
+          "cached_input": "0.05",
+          "conditions": {
+            "service_tier": "Batch",
+            "available": true,
+            "effective_dates": []
+          }
+        }
+      ],
+      "pricing_unit": "per 1,000,000 tokens"
+    },
+    {
+      "model": "gemini-robotics-er-2-streaming-preview",
+      "provider": "google",
+      "input_price_per_million": "1.00",
+      "output_price_per_million": "5.00",
+      "context_window": null,
+      "quality_tier": 2,
+      "notes": "Gemini pricing can change by effective date; the parser selects the currently effective Standard/Batch value and retains tier conditions.",
+      "display_name": "Gemini Robotics ER 2 Streaming Preview",
+      "cached_input_price_per_million": null,
+      "cache_write_price_per_million": null,
+      "batch_input_price_per_million": null,
+      "batch_output_price_per_million": null,
+      "currency": "USD",
+      "pricing_tier": "standard",
+      "effective_date": null,
+      "source_url": "https://ai.google.dev/gemini-api/docs/pricing",
+      "last_verified": "2026-11-19T04:47:08.261458+00:00",
+      "pricing_status": "official_verified",
+      "pricing_version": 1,
+      "retrieved_at": "2026-11-19T04:47:08.261458+00:00",
+      "pricing_conditions": {
+        "service_tier": "Standard",
+        "effective_dates": []
+      },
+      "pricing_tiers": [
+        {
+          "tier": "standard",
+          "input": "1.00",
+          "output": "5.00",
+          "cached_input": null,
+          "conditions": {
+            "service_tier": "Standard"
+          }
+        }
+      ],
+      "pricing_unit": "per 1,000,000 tokens"
+    },
+    {
+      "model": "gpt-4.1",
+      "provider": "openai",
+      "input_price_per_million": "2.00",
+      "output_price_per_million": "8.00",
+      "context_window": null,
+      "quality_tier": 2,
+      "notes": "Short-context rates are the default when provider table distinguishes short/long context; all listed variants are retained in pricing_tiers.",
+      "display_name": "gpt-4.1",
+      "cached_input_price_per_million": "0.50",
+      "cache_write_price_per_million": null,
+      "batch_input_price_per_million": "1.00",
+      "batch_output_price_per_million": "4.00",
+      "currency": "USD",
+      "pricing_tier": "standard",
+      "effective_date": null,
+      "source_url": "https://developers.openai.com/api/docs/pricing",
+      "last_verified": "2026-11-19T04:47:05.436938+00:00",
+      "pricing_status": "official_verified",
+      "pricing_version": 1,
+      "retrieved_at": "2026-11-19T04:47:05.436938+00:00",
+      "pricing_conditions": {
+        "service_tier": "standard",
+        "source_modifiers": [
+          "Regional processing (data residency) endpoints are charged a 10% uplift for models released on or after March 5, 2026. FedRAMP endpoints are also charged a 10% uplift. Priority processing was renamed Fast mode on July 30, 2026. GPT-5.6 Sol\u2019s promotional pricing is available until November 30, 2026."
+        ]
+      },
+      "pricing_tiers": [
+        {
+          "tier": "batch",
+          "input": "1.00",
+          "output": "4.00",
+          "cached_input": null,
+          "cache_write_30m": null,
+          "cache_write_12h": null,
+          "conditions": {
+            "context": "short",
+            "service_tier": "batch",
+            "available": true
+          }
+        },
+        {
+          "tier": "fast",
+          "input": "3.50",
+          "output": "14.00",
+          "cached_input": "0.875",
+          "conditions": {
+            "service_tier": "fast"
+          }
+        }
+      ],
+      "pricing_unit": "per 1,000,000 tokens"
+    },
+    {
+      "model": "gpt-4.1-mini",
+      "provider": "openai",
+      "input_price_per_million": "0.40",
+      "output_price_per_million": "1.60",
+      "context_window": null,
+      "quality_tier": 2,
+      "notes": "Short-context rates are the default when provider table distinguishes short/long context; all listed variants are retained in pricing_tiers.",
+      "display_name": "gpt-4.1-mini",
+      "cached_input_price_per_million": "0.10",
+      "cache_write_price_per_million": null,
+      "batch_input_price_per_million": "0.20",
+      "batch_output_price_per_million": "0.80",
+      "currency": "USD",
+      "pricing_tier": "standard",
+      "effective_date": null,
+      "source_url": "https://developers.openai.com/api/docs/pricing",
+      "last_verified": "2026-11-19T04:47:05.437106+00:00",
+      "pricing_status": "official_verified",
+      "pricing_version": 1,
+      "retrieved_at": "2026-11-19T04:47:05.437106+00:00",
+      "pricing_conditions": {
+        "service_tier": "standard",
+        "source_modifiers": [
+          "Regional processing (data residency) endpoints are charged a 10% uplift for models released on or after March 5, 2026. FedRAMP endpoints are also charged a 10% uplift. Priority processing was renamed Fast mode on July 30, 2026. GPT-5.6 Sol\u2019s promotional pricing is available until November 30, 2026."
+        ]
+      },
+      "pricing_tiers": [
+        {
+          "tier": "batch",
+          "input": "0.20",
+          "output": "0.80",
+          "cached_input": null,
+          "cache_write_30m": null,
+          "cache_write_12h": null,
+          "conditions": {
+            "context": "short",
+            "service_tier": "batch",
+            "available": true
+          }
+        },
+        {
+          "tier": "fast",
+          "input": "0.70",
+          "output": "2.80",
+          "cached_input": "0.175",
+          "conditions": {
+            "service_tier": "fast"
+          }
+        }
+      ],
+      "pricing_unit": "per 1,000,000 tokens"
+    },
+    {
+      "model": "gpt-4o",
+      "provider": "openai",
+      "input_price_per_million": "2.50",
+      "output_price_per_million": "10.00",
+      "context_window": null,
+      "quality_tier": 2,
+      "notes": "Short-context rates are the default when provider table distinguishes short/long context; all listed variants are retained in pricing_tiers.",
+      "display_name": "gpt-4o",
+      "cached_input_price_per_million": "1.25",
+      "cache_write_price_per_million": null,
+      "batch_input_price_per_million": "1.25",
+      "batch_output_price_per_million": "5.00",
+      "currency": "USD",
+      "pricing_tier": "standard",
+      "effective_date": null,
+      "source_url": "https://developers.openai.com/api/docs/pricing",
+      "last_verified": "2026-11-19T04:47:05.437267+00:00",
+      "pricing_status": "official_verified",
+      "pricing_version": 2,
+      "retrieved_at": "2026-11-19T04:47:05.437267+00:00",
+      "pricing_conditions": {
+        "service_tier": "standard",
+        "source_modifiers": [
+          "Regional processing (data residency) endpoints are charged a 10% uplift for models released on or after March 5, 2026. FedRAMP endpoints are also charged a 10% uplift. Priority processing was renamed Fast mode on July 30, 2026. GPT-5.6 Sol\u2019s promotional pricing is available until November 30, 2026."
+        ]
+      },
+      "pricing_tiers": [
+        {
+          "tier": "batch",
+          "input": "1.25",
+          "output": "5.00",
+          "cached_input": null,
+          "cache_write_30m": null,
+          "cache_write_12h": null,
+          "conditions": {
+            "context": "short",
+            "service_tier": "batch",
+            "available": true
+          }
+        },
+        {
+          "tier": "fast",
+          "input": "4.25",
+          "output": "17.00",
+          "cached_input": "2.125",
+          "conditions": {
+            "service_tier": "fast"
+          }
+        }
+      ],
+      "pricing_unit": "per 1,000,000 tokens"
+    },
+    {
+      "model": "gpt-4o-mini",
+      "provider": "openai",
+      "input_price_per_million": "0.15",
+      "output_price_per_million": "0.60",
+      "context_window": null,
+      "quality_tier": 2,
+      "notes": "Short-context rates are the default when provider table distinguishes short/long context; all listed variants are retained in pricing_tiers.",
+      "display_name": "gpt-4o-mini",
+      "cached_input_price_per_million": "0.075",
+      "cache_write_price_per_million": null,
+      "batch_input_price_per_million": "0.075",
+      "batch_output_price_per_million": "0.30",
+      "currency": "USD",
+      "pricing_tier": "standard",
+      "effective_date": null,
+      "source_url": "https://developers.openai.com/api/docs/pricing",
+      "last_verified": "2026-11-19T04:47:05.437472+00:00",
+      "pricing_status": "official_verified",
+      "pricing_version": 2,
+      "retrieved_at": "2026-11-19T04:47:05.437472+00:00",
+      "pricing_conditions": {
+        "service_tier": "standard",
+        "source_modifiers": [
+          "Regional processing (data residency) endpoints are charged a 10% uplift for models released on or after March 5, 2026. FedRAMP endpoints are also charged a 10% uplift. Priority processing was renamed Fast mode on July 30, 2026. GPT-5.6 Sol\u2019s promotional pricing is available until November 30, 2026."
+        ]
+      },
+      "pricing_tiers": [
+        {
+          "tier": "batch",
+          "input": "0.075",
+          "output": "0.30",
+          "cached_input": null,
+          "cache_write_30m": null,
+          "cache_write_12h": null,
+          "conditions": {
+            "context": "short",
+            "service_tier": "batch",
+            "available": true
+          }
+        },
+        {
+          "tier": "fast",
+          "input": "0.25",
+          "output": "1.00",
+          "cached_input": "0.125",
+          "conditions": {
+            "service_tier": "fast"
+          }
+        }
+      ],
+      "pricing_unit": "per 1,000,000 tokens"
+    },
+    {
+      "model": "gpt-5",
+      "provider": "openai",
+      "input_price_per_million": "1.25",
+      "output_price_per_million": "10.00",
+      "context_window": null,
+      "quality_tier": 2,
+      "notes": "Short-context rates are the default when provider table distinguishes short/long context; all listed variants are retained in pricing_tiers.",
+      "display_name": "gpt-5",
+      "cached_input_price_per_million": "0.125",
+      "cache_write_price_per_million": null,
+      "batch_input_price_per_million": "0.625",
+      "batch_output_price_per_million": "5.00",
+      "currency": "USD",
+      "pricing_tier": "standard",
+      "effective_date": null,
+      "source_url": "https://developers.openai.com/api/docs/pricing",
+      "last_verified": "2026-11-19T04:47:05.436275+00:00",
+      "pricing_status": "official_verified",
+      "pricing_version": 1,
+      "retrieved_at": "2026-11-19T04:47:05.436275+00:00",
+      "pricing_conditions": {
+        "service_tier": "standard",
+        "source_modifiers": [
+          "Regional processing (data residency) endpoints are charged a 10% uplift for models released on or after March 5, 2026. FedRAMP endpoints are also charged a 10% uplift. Priority processing was renamed Fast mode on July 30, 2026. GPT-5.6 Sol\u2019s promotional pricing is available until November 30, 2026."
+        ],
+        "promotional_price_until": "November 30, 2026"
+      },
+      "pricing_tiers": [
+        {
+          "tier": "batch",
+          "input": "0.625",
+          "output": "5.00",
+          "cached_input": null,
+          "cache_write_30m": null,
+          "cache_write_12h": null,
+          "conditions": {
+            "context": "short",
+            "service_tier": "batch",
+            "available": true
+          }
+        },
+        {
+          "tier": "flex",
+          "input": "0.625",
+          "output": "5.00",
+          "cached_input": "0.0625",
+          "conditions": {
+            "service_tier": "flex"
+          }
+        },
+        {
+          "tier": "fast",
+          "input": "2.50",
+          "output": "20.00",
+          "cached_input": "0.25",
+          "conditions": {
+            "service_tier": "fast"
+          }
+        }
+      ],
+      "pricing_unit": "per 1,000,000 tokens"
+    },
+    {
+      "model": "gpt-5-mini",
+      "provider": "openai",
+      "input_price_per_million": "0.25",
+      "output_price_per_million": "2.00",
+      "context_window": null,
+      "quality_tier": 2,
+      "notes": "Short-context rates are the default when provider table distinguishes short/long context; all listed variants are retained in pricing_tiers.",
+      "display_name": "gpt-5-mini",
+      "cached_input_price_per_million": "0.025",
+      "cache_write_price_per_million": null,
+      "batch_input_price_per_million": "0.125",
+      "batch_output_price_per_million": "1.00",
+      "currency": "USD",
+      "pricing_tier": "standard",
+      "effective_date": null,
+      "source_url": "https://developers.openai.com/api/docs/pricing",
+      "last_verified": "2026-11-19T04:47:05.436441+00:00",
+      "pricing_status": "official_verified",
+      "pricing_version": 1,
+      "retrieved_at": "2026-11-19T04:47:05.436441+00:00",
+      "pricing_conditions": {
+        "service_tier": "standard",
+        "source_modifiers": [
+          "Regional processing (data residency) endpoints are charged a 10% uplift for models released on or after March 5, 2026. FedRAMP endpoints are also charged a 10% uplift. Priority processing was renamed Fast mode on July 30, 2026. GPT-5.6 Sol\u2019s promotional pricing is available until November 30, 2026."
+        ]
+      },
+      "pricing_tiers": [
+        {
+          "tier": "batch",
+          "input": "0.125",
+          "output": "1.00",
+          "cached_input": null,
+          "cache_write_30m": null,
+          "cache_write_12h": null,
+          "conditions": {
+            "context": "short",
+            "service_tier": "batch",
+            "available": true
+          }
+        },
+        {
+          "tier": "flex",
+          "input": "0.125",
+          "output": "1.00",
+          "cached_input": "0.0125",
+          "conditions": {
+            "service_tier": "flex"
+          }
+        },
+        {
+          "tier": "fast",
+          "input": "0.45",
+          "output": "3.60",
+          "cached_input": "0.045",
+          "conditions": {
+            "service_tier": "fast"
+          }
+        }
+      ],
+      "pricing_unit": "per 1,000,000 tokens"
+    },
+    {
+      "model": "gpt-5-nano",
+      "provider": "openai",
+      "input_price_per_million": "0.05",
+      "output_price_per_million": "0.40",
+      "context_window": null,
+      "quality_tier": 2,
+      "notes": "Short-context rates are the default when provider table distinguishes short/long context; all listed variants are retained in pricing_tiers.",
+      "display_name": "gpt-5-nano",
+      "cached_input_price_per_million": "0.005",
+      "cache_write_price_per_million": null,
+      "batch_input_price_per_million": "0.025",
+      "batch_output_price_per_million": "0.20",
+      "currency": "USD",
+      "pricing_tier": "standard",
+      "effective_date": null,
+      "source_url": "https://developers.openai.com/api/docs/pricing",
+      "last_verified": "2026-11-19T04:47:05.436606+00:00",
+      "pricing_status": "official_verified",
+      "pricing_version": 1,
+      "retrieved_at": "2026-11-19T04:47:05.436606+00:00",
+      "pricing_conditions": {
+        "service_tier": "standard",
+        "source_modifiers": [
+          "Regional processing (data residency) endpoints are charged a 10% uplift for models released on or after March 5, 2026. FedRAMP endpoints are also charged a 10% uplift. Priority processing was renamed Fast mode on July 30, 2026. GPT-5.6 Sol\u2019s promotional pricing is available until November 30, 2026."
+        ]
+      },
+      "pricing_tiers": [
+        {
+          "tier": "batch",
+          "input": "0.025",
+          "output": "0.20",
+          "cached_input": null,
+          "cache_write_30m": null,
+          "cache_write_12h": null,
+          "conditions": {
+            "context": "short",
+            "service_tier": "batch",
+            "available": true
+          }
+        },
+        {
+          "tier": "flex",
+          "input": "0.025",
+          "output": "0.20",
+          "cached_input": "0.0025",
+          "conditions": {
+            "service_tier": "flex"
+          }
+        }
+      ],
+      "pricing_unit": "per 1,000,000 tokens"
+    },
+    {
+      "model": "gpt-5-pro",
+      "provider": "openai",
+      "input_price_per_million": "15.00",
+      "output_price_per_million": "120.00",
+      "context_window": null,
+      "quality_tier": 2,
+      "notes": "Short-context rates are the default when provider table distinguishes short/long context; all listed variants are retained in pricing_tiers.",
+      "display_name": "gpt-5-pro",
+      "cached_input_price_per_million": null,
+      "cache_write_price_per_million": null,
+      "batch_input_price_per_million": "7.50",
+      "batch_output_price_per_million": "60.00",
+      "currency": "USD",
+      "pricing_tier": "standard",
+      "effective_date": null,
+      "source_url": "https://developers.openai.com/api/docs/pricing",
+      "last_verified": "2026-11-19T04:47:05.436768+00:00",
+      "pricing_status": "official_verified",
+      "pricing_version": 1,
+      "retrieved_at": "2026-11-19T04:47:05.436768+00:00",
+      "pricing_conditions": {
+        "service_tier": "standard",
+        "source_modifiers": [
+          "Regional processing (data residency) endpoints are charged a 10% uplift for models released on or after March 5, 2026. FedRAMP endpoints are also charged a 10% uplift. Priority processing was renamed Fast mode on July 30, 2026. GPT-5.6 Sol\u2019s promotional pricing is available until November 30, 2026."
+        ]
+      },
+      "pricing_tiers": [
+        {
+          "tier": "batch",
+          "input": "7.50",
+          "output": "60.00",
+          "cached_input": null,
+          "cache_write_30m": null,
+          "cache_write_12h": null,
+          "conditions": {
+            "context": "short",
+            "service_tier": "batch",
+            "available": true
+          }
+        }
+      ],
+      "pricing_unit": "per 1,000,000 tokens"
+    },
+    {
+      "model": "gpt-5.1",
+      "provider": "openai",
+      "input_price_per_million": "1.25",
+      "output_price_per_million": "10.00",
+      "context_window": null,
+      "quality_tier": 2,
+      "notes": "Short-context rates are the default when provider table distinguishes short/long context; all listed variants are retained in pricing_tiers.",
+      "display_name": "gpt-5.1",
+      "cached_input_price_per_million": "0.125",
+      "cache_write_price_per_million": null,
+      "batch_input_price_per_million": "0.625",
+      "batch_output_price_per_million": "5.00",
+      "currency": "USD",
+      "pricing_tier": "standard",
+      "effective_date": null,
+      "source_url": "https://developers.openai.com/api/docs/pricing",
+      "last_verified": "2026-11-19T04:47:05.436099+00:00",
+      "pricing_status": "official_verified",
+      "pricing_version": 1,
+      "retrieved_at": "2026-11-19T04:47:05.436099+00:00",
+      "pricing_conditions": {
+        "service_tier": "standard",
+        "source_modifiers": [
+          "Regional processing (data residency) endpoints are charged a 10% uplift for models released on or after March 5, 2026. FedRAMP endpoints are also charged a 10% uplift. Priority processing was renamed Fast mode on July 30, 2026. GPT-5.6 Sol\u2019s promotional pricing is available until November 30, 2026."
+        ]
+      },
+      "pricing_tiers": [
+        {
+          "tier": "batch",
+          "input": "0.625",
+          "output": "5.00",
+          "cached_input": null,
+          "cache_write_30m": null,
+          "cache_write_12h": null,
+          "conditions": {
+            "context": "short",
+            "service_tier": "batch",
+            "available": true
+          }
+        },
+        {
+          "tier": "flex",
+          "input": "0.625",
+          "output": "5.00",
+          "cached_input": "0.0625",
+          "conditions": {
+            "service_tier": "flex"
+          }
+        },
+        {
+          "tier": "fast",
+          "input": "2.50",
+          "output": "20.00",
+          "cached_input": "0.25",
+          "conditions": {
+            "service_tier": "fast"
+          }
+        }
+      ],
+      "pricing_unit": "per 1,000,000 tokens"
+    },
+    {
+      "model": "gpt-5.2",
+      "provider": "openai",
+      "input_price_per_million": "1.75",
+      "output_price_per_million": "14.00",
+      "context_window": null,
+      "quality_tier": 2,
+      "notes": "Short-context rates are the default when provider table distinguishes short/long context; all listed variants are retained in pricing_tiers.",
+      "display_name": "gpt-5.2",
+      "cached_input_price_per_million": "0.175",
+      "cache_write_price_per_million": null,
+      "batch_input_price_per_million": "0.875",
+      "batch_output_price_per_million": "7.00",
+      "currency": "USD",
+      "pricing_tier": "standard",
+      "effective_date": null,
+      "source_url": "https://developers.openai.com/api/docs/pricing",
+      "last_verified": "2026-11-19T04:47:05.435751+00:00",
+      "pricing_status": "official_verified",
+      "pricing_version": 1,
+      "retrieved_at": "2026-11-19T04:47:05.435751+00:00",
+      "pricing_conditions": {
+        "service_tier": "standard",
+        "source_modifiers": [
+          "Regional processing (data residency) endpoints are charged a 10% uplift for models released on or after March 5, 2026. FedRAMP endpoints are also charged a 10% uplift. Priority processing was renamed Fast mode on July 30, 2026. GPT-5.6 Sol\u2019s promotional pricing is available until November 30, 2026."
+        ]
+      },
+      "pricing_tiers": [
+        {
+          "tier": "batch",
+          "input": "0.875",
+          "output": "7.00",
+          "cached_input": null,
+          "cache_write_30m": null,
+          "cache_write_12h": null,
+          "conditions": {
+            "context": "short",
+            "service_tier": "batch",
+            "available": true
+          }
+        },
+        {
+          "tier": "flex",
+          "input": "0.875",
+          "output": "7.00",
+          "cached_input": "0.0875",
+          "conditions": {
+            "service_tier": "flex"
+          }
+        },
+        {
+          "tier": "fast",
+          "input": "3.50",
+          "output": "28.00",
+          "cached_input": "0.35",
+          "conditions": {
+            "service_tier": "fast"
+          }
+        }
+      ],
+      "pricing_unit": "per 1,000,000 tokens"
+    },
+    {
+      "model": "gpt-5.2-pro",
+      "provider": "openai",
+      "input_price_per_million": "21.00",
+      "output_price_per_million": "168.00",
+      "context_window": null,
+      "quality_tier": 2,
+      "notes": "Short-context rates are the default when provider table distinguishes short/long context; all listed variants are retained in pricing_tiers.",
+      "display_name": "gpt-5.2-pro",
+      "cached_input_price_per_million": null,
+      "cache_write_price_per_million": null,
+      "batch_input_price_per_million": "10.50",
+      "batch_output_price_per_million": "84.00",
+      "currency": "USD",
+      "pricing_tier": "standard",
+      "effective_date": null,
+      "source_url": "https://developers.openai.com/api/docs/pricing",
+      "last_verified": "2026-11-19T04:47:05.435932+00:00",
+      "pricing_status": "official_verified",
+      "pricing_version": 1,
+      "retrieved_at": "2026-11-19T04:47:05.435932+00:00",
+      "pricing_conditions": {
+        "service_tier": "standard",
+        "source_modifiers": [
+          "Regional processing (data residency) endpoints are charged a 10% uplift for models released on or after March 5, 2026. FedRAMP endpoints are also charged a 10% uplift. Priority processing was renamed Fast mode on July 30, 2026. GPT-5.6 Sol\u2019s promotional pricing is available until November 30, 2026."
+        ]
+      },
+      "pricing_tiers": [
+        {
+          "tier": "batch",
+          "input": "10.50",
+          "output": "84.00",
+          "cached_input": null,
+          "cache_write_30m": null,
+          "cache_write_12h": null,
+          "conditions": {
+            "context": "short",
+            "service_tier": "batch",
+            "available": true
+          }
+        }
+      ],
+      "pricing_unit": "per 1,000,000 tokens"
+    },
+    {
+      "model": "gpt-5.4",
+      "provider": "openai",
+      "input_price_per_million": "2.50",
+      "output_price_per_million": "15.00",
+      "context_window": null,
+      "quality_tier": 2,
+      "notes": "Short-context rates are the default when provider table distinguishes short/long context; all listed variants are retained in pricing_tiers.",
+      "display_name": "gpt-5.4",
+      "cached_input_price_per_million": "0.25",
+      "cache_write_price_per_million": null,
+      "batch_input_price_per_million": "1.25",
+      "batch_output_price_per_million": "7.50",
+      "currency": "USD",
+      "pricing_tier": "standard",
+      "effective_date": null,
+      "source_url": "https://developers.openai.com/api/docs/pricing",
+      "last_verified": "2026-11-19T04:47:05.434650+00:00",
+      "pricing_status": "official_verified",
+      "pricing_version": 1,
+      "retrieved_at": "2026-11-19T04:47:05.434650+00:00",
+      "pricing_conditions": {
+        "service_tier": "standard",
+        "source_modifiers": [
+          "Regional processing (data residency) endpoints are charged a 10% uplift for models released on or after March 5, 2026. FedRAMP endpoints are also charged a 10% uplift. Priority processing was renamed Fast mode on July 30, 2026. GPT-5.6 Sol\u2019s promotional pricing is available until November 30, 2026."
+        ]
+      },
+      "pricing_tiers": [
+        {
+          "input": "2.50",
+          "output": "15.00",
+          "cached_input": "0.25",
+          "cache_write_30m": null,
+          "cache_write_12h": null,
+          "conditions": {
+            "context": "short",
+            "threshold": "272K"
+          }
+        },
+        {
+          "input": "5.00",
+          "output": "22.50",
+          "cached_input": "0.50",
+          "cache_write_30m": null,
+          "cache_write_12h": null,
+          "conditions": {
+            "context": "long",
+            "available": true,
+            "threshold": ">272K input tokens."
+          }
+        },
+        {
+          "tier": "batch",
+          "input": "1.25",
+          "output": "7.50",
+          "cached_input": "0.13",
+          "cache_write_30m": null,
+          "cache_write_12h": null,
+          "conditions": {
+            "context": "short",
+            "service_tier": "batch",
+            "available": true
+          }
+        },
+        {
+          "tier": "flex",
+          "input": "1.25",
+          "output": "7.50",
+          "cached_input": "0.13",
+          "conditions": {
+            "service_tier": "flex"
+          }
+        },
+        {
+          "tier": "fast",
+          "input": "5.00",
+          "output": "30.00",
+          "cached_input": "0.50",
+          "conditions": {
+            "service_tier": "fast"
+          }
+        }
+      ],
+      "pricing_unit": "per 1,000,000 tokens"
+    },
+    {
+      "model": "gpt-5.4-mini",
+      "provider": "openai",
+      "input_price_per_million": "0.75",
+      "output_price_per_million": "4.50",
+      "context_window": null,
+      "quality_tier": 2,
+      "notes": "Short-context rates are the default when provider table distinguishes short/long context; all listed variants are retained in pricing_tiers.",
+      "display_name": "gpt-5.4-mini",
+      "cached_input_price_per_million": "0.075",
+      "cache_write_price_per_million": null,
+      "batch_input_price_per_million": "0.375",
+      "batch_output_price_per_million": "2.25",
+      "currency": "USD",
+      "pricing_tier": "standard",
+      "effective_date": null,
+      "source_url": "https://developers.openai.com/api/docs/pricing",
+      "last_verified": "2026-11-19T04:47:05.435231+00:00",
+      "pricing_status": "official_verified",
+      "pricing_version": 1,
+      "retrieved_at": "2026-11-19T04:47:05.435231+00:00",
+      "pricing_conditions": {
+        "service_tier": "standard",
+        "source_modifiers": [
+          "Regional processing (data residency) endpoints are charged a 10% uplift for models released on or after March 5, 2026. FedRAMP endpoints are also charged a 10% uplift. Priority processing was renamed Fast mode on July 30, 2026. GPT-5.6 Sol\u2019s promotional pricing is available until November 30, 2026."
+        ]
+      },
+      "pricing_tiers": [
+        {
+          "tier": "batch",
+          "input": "0.375",
+          "output": "2.25",
+          "cached_input": null,
+          "cache_write_30m": null,
+          "cache_write_12h": null,
+          "conditions": {
+            "context": "short",
+            "service_tier": "batch",
+            "available": true
+          }
+        },
+        {
+          "tier": "flex",
+          "input": "0.375",
+          "output": "2.25",
+          "cached_input": "0.0375",
+          "conditions": {
+            "service_tier": "flex"
+          }
+        },
+        {
+          "tier": "fast",
+          "input": "1.50",
+          "output": "9.00",
+          "cached_input": "0.15",
+          "conditions": {
+            "service_tier": "fast"
+          }
+        }
+      ],
+      "pricing_unit": "per 1,000,000 tokens"
+    },
+    {
+      "model": "gpt-5.4-nano",
+      "provider": "openai",
+      "input_price_per_million": "0.20",
+      "output_price_per_million": "1.25",
+      "context_window": null,
+      "quality_tier": 2,
+      "notes": "Short-context rates are the default when provider table distinguishes short/long context; all listed variants are retained in pricing_tiers.",
+      "display_name": "gpt-5.4-nano",
+      "cached_input_price_per_million": "0.02",
+      "cache_write_price_per_million": null,
+      "batch_input_price_per_million": "0.10",
+      "batch_output_price_per_million": "0.625",
+      "currency": "USD",
+      "pricing_tier": "standard",
+      "effective_date": null,
+      "source_url": "https://developers.openai.com/api/docs/pricing",
+      "last_verified": "2026-11-19T04:47:05.435556+00:00",
+      "pricing_status": "official_verified",
+      "pricing_version": 1,
+      "retrieved_at": "2026-11-19T04:47:05.435556+00:00",
+      "pricing_conditions": {
+        "service_tier": "standard",
+        "source_modifiers": [
+          "Regional processing (data residency) endpoints are charged a 10% uplift for models released on or after March 5, 2026. FedRAMP endpoints are also charged a 10% uplift. Priority processing was renamed Fast mode on July 30, 2026. GPT-5.6 Sol\u2019s promotional pricing is available until November 30, 2026."
+        ]
+      },
+      "pricing_tiers": [
+        {
+          "tier": "batch",
+          "input": "0.10",
+          "output": "0.625",
+          "cached_input": null,
+          "cache_write_30m": null,
+          "cache_write_12h": null,
+          "conditions": {
+            "context": "short",
+            "service_tier": "batch",
+            "available": true
+          }
+        },
+        {
+          "tier": "flex",
+          "input": "0.10",
+          "output": "0.625",
+          "cached_input": "0.01",
+          "conditions": {
+            "service_tier": "flex"
+          }
+        }
+      ],
+      "pricing_unit": "per 1,000,000 tokens"
+    },
+    {
+      "model": "gpt-5.4-pro",
+      "provider": "openai",
+      "input_price_per_million": "30.00",
+      "output_price_per_million": "180.00",
+      "context_window": null,
+      "quality_tier": 2,
+      "notes": "Short-context rates are the default when provider table distinguishes short/long context; all listed variants are retained in pricing_tiers.",
+      "display_name": "gpt-5.4-pro",
+      "cached_input_price_per_million": null,
+      "cache_write_price_per_million": null,
+      "batch_input_price_per_million": "15.00",
+      "batch_output_price_per_million": "90.00",
+      "currency": "USD",
+      "pricing_tier": "standard",
+      "effective_date": null,
+      "source_url": "https://developers.openai.com/api/docs/pricing",
+      "last_verified": "2026-11-19T04:47:05.434932+00:00",
+      "pricing_status": "official_verified",
+      "pricing_version": 1,
+      "retrieved_at": "2026-11-19T04:47:05.434932+00:00",
+      "pricing_conditions": {
+        "service_tier": "standard",
+        "source_modifiers": [
+          "Regional processing (data residency) endpoints are charged a 10% uplift for models released on or after March 5, 2026. FedRAMP endpoints are also charged a 10% uplift. Priority processing was renamed Fast mode on July 30, 2026. GPT-5.6 Sol\u2019s promotional pricing is available until November 30, 2026."
+        ]
+      },
+      "pricing_tiers": [
+        {
+          "input": "30.00",
+          "output": "180.00",
+          "cached_input": null,
+          "cache_write_30m": null,
+          "cache_write_12h": null,
+          "conditions": {
+            "context": "short",
+            "threshold": "272K"
+          }
+        },
+        {
+          "input": "60.00",
+          "output": "270.00",
+          "cached_input": null,
+          "cache_write_30m": null,
+          "cache_write_12h": null,
+          "conditions": {
+            "context": "long",
+            "available": true,
+            "threshold": ">272K input tokens."
+          }
+        },
+        {
+          "tier": "batch",
+          "input": "15.00",
+          "output": "90.00",
+          "cached_input": null,
+          "cache_write_30m": null,
+          "cache_write_12h": null,
+          "conditions": {
+            "context": "short",
+            "service_tier": "batch",
+            "available": true
+          }
+        },
+        {
+          "tier": "flex",
+          "input": "15.00",
+          "output": "90.00",
+          "cached_input": null,
+          "conditions": {
+            "service_tier": "flex"
+          }
+        }
+      ],
+      "pricing_unit": "per 1,000,000 tokens"
+    },
+    {
+      "model": "gpt-5.5",
+      "provider": "openai",
+      "input_price_per_million": "5.00",
+      "output_price_per_million": "30.00",
+      "context_window": null,
+      "quality_tier": 2,
+      "notes": "Short-context rates are the default when provider table distinguishes short/long context; all listed variants are retained in pricing_tiers.",
+      "display_name": "gpt-5.5",
+      "cached_input_price_per_million": "0.50",
+      "cache_write_price_per_million": null,
+      "batch_input_price_per_million": "2.50",
+      "batch_output_price_per_million": "15.00",
+      "currency": "USD",
+      "pricing_tier": "standard",
+      "effective_date": null,
+      "source_url": "https://developers.openai.com/api/docs/pricing",
+      "last_verified": "2026-11-19T04:47:05.434082+00:00",
+      "pricing_status": "official_verified",
+      "pricing_version": 1,
+      "retrieved_at": "2026-11-19T04:47:05.434082+00:00",
+      "pricing_conditions": {
+        "service_tier": "standard",
+        "source_modifiers": [
+          "Regional processing (data residency) endpoints are charged a 10% uplift for models released on or after March 5, 2026. FedRAMP endpoints are also charged a 10% uplift. Priority processing was renamed Fast mode on July 30, 2026. GPT-5.6 Sol\u2019s promotional pricing is available until November 30, 2026."
+        ]
+      },
+      "pricing_tiers": [
+        {
+          "input": "5.00",
+          "output": "30.00",
+          "cached_input": "0.50",
+          "cache_write_30m": null,
+          "cache_write_12h": null,
+          "conditions": {
+            "context": "short",
+            "threshold": "272K"
+          }
+        },
+        {
+          "input": "10.00",
+          "output": "45.00",
+          "cached_input": "1.00",
+          "cache_write_30m": null,
+          "cache_write_12h": null,
+          "conditions": {
+            "context": "long",
+            "available": true,
+            "threshold": ">272K input tokens."
+          }
+        },
+        {
+          "tier": "batch",
+          "input": "2.50",
+          "output": "15.00",
+          "cached_input": "0.25",
+          "cache_write_30m": null,
+          "cache_write_12h": null,
+          "conditions": {
+            "context": "short",
+            "service_tier": "batch",
+            "available": true
+          }
+        },
+        {
+          "tier": "flex",
+          "input": "2.50",
+          "output": "15.00",
+          "cached_input": "0.25",
+          "conditions": {
+            "service_tier": "flex"
+          }
+        },
+        {
+          "tier": "fast",
+          "input": "12.50",
+          "output": "75.00",
+          "cached_input": "1.25",
+          "conditions": {
+            "service_tier": "fast"
+          }
+        }
+      ],
+      "pricing_unit": "per 1,000,000 tokens"
+    },
+    {
+      "model": "gpt-5.5-pro",
+      "provider": "openai",
+      "input_price_per_million": "30.00",
+      "output_price_per_million": "180.00",
+      "context_window": null,
+      "quality_tier": 2,
+      "notes": "Short-context rates are the default when provider table distinguishes short/long context; all listed variants are retained in pricing_tiers.",
+      "display_name": "gpt-5.5-pro",
+      "cached_input_price_per_million": null,
+      "cache_write_price_per_million": null,
+      "batch_input_price_per_million": "15.00",
+      "batch_output_price_per_million": "90.00",
+      "currency": "USD",
+      "pricing_tier": "standard",
+      "effective_date": null,
+      "source_url": "https://developers.openai.com/api/docs/pricing",
+      "last_verified": "2026-11-19T04:47:05.434370+00:00",
+      "pricing_status": "official_verified",
+      "pricing_version": 1,
+      "retrieved_at": "2026-11-19T04:47:05.434370+00:00",
+      "pricing_conditions": {
+        "service_tier": "standard",
+        "source_modifiers": [
+          "Regional processing (data residency) endpoints are charged a 10% uplift for models released on or after March 5, 2026. FedRAMP endpoints are also charged a 10% uplift. Priority processing was renamed Fast mode on July 30, 2026. GPT-5.6 Sol\u2019s promotional pricing is available until November 30, 2026."
+        ]
+      },
+      "pricing_tiers": [
+        {
+          "input": "30.00",
+          "output": "180.00",
+          "cached_input": null,
+          "cache_write_30m": null,
+          "cache_write_12h": null,
+          "conditions": {
+            "context": "short",
+            "threshold": "272K"
+          }
+        },
+        {
+          "input": "60.00",
+          "output": "270.00",
+          "cached_input": null,
+          "cache_write_30m": null,
+          "cache_write_12h": null,
+          "conditions": {
+            "context": "long",
+            "available": true,
+            "threshold": ">272K input tokens."
+          }
+        },
+        {
+          "tier": "batch",
+          "input": "15.00",
+          "output": "90.00",
+          "cached_input": null,
+          "cache_write_30m": null,
+          "cache_write_12h": null,
+          "conditions": {
+            "context": "short",
+            "service_tier": "batch",
+            "available": true
+          }
+        },
+        {
+          "tier": "flex",
+          "input": "15.00",
+          "output": "90.00",
+          "cached_input": null,
+          "conditions": {
+            "service_tier": "flex"
+          }
+        }
+      ],
+      "pricing_unit": "per 1,000,000 tokens"
+    },
+    {
+      "model": "gpt-5.6-luna",
+      "provider": "openai",
+      "input_price_per_million": "0.20",
+      "output_price_per_million": "1.20",
+      "context_window": null,
+      "quality_tier": 2,
+      "notes": "Short-context rates are the default when provider table distinguishes short/long context; all listed variants are retained in pricing_tiers.",
+      "display_name": "gpt-5.6-luna",
+      "cached_input_price_per_million": "0.02",
+      "cache_write_price_per_million": "0.25",
+      "batch_input_price_per_million": "0.10",
+      "batch_output_price_per_million": "0.60",
+      "currency": "USD",
+      "pricing_tier": "standard",
+      "effective_date": null,
+      "source_url": "https://developers.openai.com/api/docs/pricing",
+      "last_verified": "2026-11-19T04:47:05.433777+00:00",
+      "pricing_status": "official_verified",
+      "pricing_version": 1,
+      "retrieved_at": "2026-11-19T04:47:05.433777+00:00",
+      "pricing_conditions": {
+        "service_tier": "standard",
+        "source_modifiers": [
+          "Regional processing (data residency) endpoints are charged a 10% uplift for models released on or after March 5, 2026. FedRAMP endpoints are also charged a 10% uplift. Priority processing was renamed Fast mode on July 30, 2026. GPT-5.6 Sol\u2019s promotional pricing is available until November 30, 2026."
+        ]
+      },
+      "pricing_tiers": [
+        {
+          "input": "0.20",
+          "output": "1.20",
+          "cached_input": "0.02",
+          "cache_write_30m": "0.25",
+          "cache_write_12h": "0.50",
+          "conditions": {
+            "context": "short",
+            "threshold": "272K"
+          }
+        },
+        {
+          "input": "0.40",
+          "output": "1.80",
+          "cached_input": "0.04",
+          "cache_write_30m": "0.50",
+          "cache_write_12h": "1.00",
+          "conditions": {
+            "context": "long",
+            "available": true,
+            "threshold": ">272K input tokens."
+          }
+        },
+        {
+          "tier": "batch",
+          "input": "0.10",
+          "output": "0.60",
+          "cached_input": "0.01",
+          "cache_write_30m": "0.125",
+          "cache_write_12h": "0.25",
+          "conditions": {
+            "context": "short",
+            "service_tier": "batch",
+            "available": true
+          }
+        },
+        {
+          "tier": "flex",
+          "input": "0.10",
+          "output": "0.60",
+          "cached_input": "0.01",
+          "conditions": {
+            "service_tier": "flex"
+          }
+        },
+        {
+          "tier": "fast",
+          "input": "0.40",
+          "output": "2.40",
+          "cached_input": "0.04",
+          "conditions": {
+            "service_tier": "fast"
+          }
+        }
+      ],
+      "pricing_unit": "per 1,000,000 tokens"
+    },
+    {
+      "model": "gpt-5.6-sol",
+      "provider": "openai",
+      "input_price_per_million": "4.00",
+      "output_price_per_million": "20.00",
+      "context_window": null,
+      "quality_tier": 2,
+      "notes": "Short-context rates are the default when provider table distinguishes short/long context; all listed variants are retained in pricing_tiers.",
+      "display_name": "gpt-5.6-sol",
+      "cached_input_price_per_million": "0.40",
+      "cache_write_price_per_million": "5.00",
+      "batch_input_price_per_million": "2.00",
+      "batch_output_price_per_million": "10.00",
+      "currency": "USD",
+      "pricing_tier": "standard",
+      "effective_date": null,
+      "source_url": "https://developers.openai.com/api/docs/pricing",
+      "last_verified": "2026-11-19T04:47:05.433123+00:00",
+      "pricing_status": "official_verified",
+      "pricing_version": 1,
+      "retrieved_at": "2026-11-19T04:47:05.433123+00:00",
+      "pricing_conditions": {
+        "service_tier": "standard",
+        "source_modifiers": [
+          "Regional processing (data residency) endpoints are charged a 10% uplift for models released on or after March 5, 2026. FedRAMP endpoints are also charged a 10% uplift. Priority processing was renamed Fast mode on July 30, 2026. GPT-5.6 Sol\u2019s promotional pricing is available until November 30, 2026."
+        ]
+      },
+      "pricing_tiers": [
+        {
+          "input": "4.00",
+          "output": "20.00",
+          "cached_input": "0.40",
+          "cache_write_30m": "5.00",
+          "cache_write_12h": "10.00",
+          "conditions": {
+            "context": "short",
+            "threshold": "272K"
+          }
+        },
+        {
+          "input": "8.00",
+          "output": "30.00",
+          "cached_input": "0.80",
+          "cache_write_30m": "10.00",
+          "cache_write_12h": "20.00",
+          "conditions": {
+            "context": "long",
+            "available": true,
+            "threshold": ">272K input tokens."
+          }
+        },
+        {
+          "tier": "batch",
+          "input": "2.00",
+          "output": "10.00",
+          "cached_input": "0.20",
+          "cache_write_30m": "2.50",
+          "cache_write_12h": "5.00",
+          "conditions": {
+            "context": "short",
+            "service_tier": "batch",
+            "available": true
+          }
+        },
+        {
+          "tier": "flex",
+          "input": "2.00",
+          "output": "10.00",
+          "cached_input": "0.20",
+          "conditions": {
+            "service_tier": "flex"
+          }
+        },
+        {
+          "tier": "fast",
+          "input": "8.00",
+          "output": "40.00",
+          "cached_input": "0.80",
+          "conditions": {
+            "service_tier": "fast"
+          }
+        }
+      ],
+      "pricing_unit": "per 1,000,000 tokens"
+    },
+    {
+      "model": "gpt-5.6-terra",
+      "provider": "openai",
+      "input_price_per_million": "2.00",
+      "output_price_per_million": "12.00",
+      "context_window": null,
+      "quality_tier": 2,
+      "notes": "Short-context rates are the default when provider table distinguishes short/long context; all listed variants are retained in pricing_tiers.",
+      "display_name": "gpt-5.6-terra",
+      "cached_input_price_per_million": "0.20",
+      "cache_write_price_per_million": "2.50",
+      "batch_input_price_per_million": "1.00",
+      "batch_output_price_per_million": "6.00",
+      "currency": "USD",
+      "pricing_tier": "standard",
+      "effective_date": null,
+      "source_url": "https://developers.openai.com/api/docs/pricing",
+      "last_verified": "2026-11-19T04:47:05.433456+00:00",
+      "pricing_status": "official_verified",
+      "pricing_version": 1,
+      "retrieved_at": "2026-11-19T04:47:05.433456+00:00",
+      "pricing_conditions": {
+        "service_tier": "standard",
+        "source_modifiers": [
+          "Regional processing (data residency) endpoints are charged a 10% uplift for models released on or after March 5, 2026. FedRAMP endpoints are also charged a 10% uplift. Priority processing was renamed Fast mode on July 30, 2026. GPT-5.6 Sol\u2019s promotional pricing is available until November 30, 2026."
+        ]
+      },
+      "pricing_tiers": [
+        {
+          "input": "2.00",
+          "output": "12.00",
+          "cached_input": "0.20",
+          "cache_write_30m": "2.50",
+          "cache_write_12h": "5.00",
+          "conditions": {
+            "context": "short",
+            "threshold": "272K"
+          }
+        },
+        {
+          "input": "4.00",
+          "output": "18.00",
+          "cached_input": "0.40",
+          "cache_write_30m": "5.00",
+          "cache_write_12h": "10.00",
+          "conditions": {
+            "context": "long",
+            "available": true,
+            "threshold": ">272K input tokens."
+          }
+        },
+        {
+          "tier": "batch",
+          "input": "1.00",
+          "output": "6.00",
+          "cached_input": "0.10",
+          "cache_write_30m": "1.25",
+          "cache_write_12h": "2.50",
+          "conditions": {
+            "context": "short",
+            "service_tier": "batch",
+            "available": true
+          }
+        },
+        {
+          "tier": "flex",
+          "input": "1.00",
+          "output": "6.00",
+          "cached_input": "0.10",
+          "conditions": {
+            "service_tier": "flex"
+          }
+        },
+        {
+          "tier": "fast",
+          "input": "4.00",
+          "output": "24.00",
+          "cached_input": "0.40",
+          "conditions": {
+            "service_tier": "fast"
+          }
+        }
+      ],
+      "pricing_unit": "per 1,000,000 tokens"
+    },
+    {
+      "model": "gpt-6-astra",
+      "provider": "openai",
+      "input_price_per_million": "10.00",
+      "output_price_per_million": "50.00",
+      "context_window": null,
+      "quality_tier": 2,
+      "notes": "Short-context rates are the default when provider table distinguishes short/long context; all listed variants are retained in pricing_tiers.",
+      "display_name": "gpt-6-astra",
+      "cached_input_price_per_million": "1.00",
+      "cache_write_price_per_million": "12.50",
+      "batch_input_price_per_million": "5.00",
+      "batch_output_price_per_million": "25.00",
+      "currency": "USD",
+      "pricing_tier": "standard",
+      "effective_date": null,
+      "source_url": "https://developers.openai.com/api/docs/pricing",
+      "last_verified": "2026-11-19T04:47:05.432235+00:00",
+      "pricing_status": "official_verified",
+      "pricing_version": 1,
+      "retrieved_at": "2026-11-19T04:47:05.432235+00:00",
+      "pricing_conditions": {
+        "service_tier": "standard",
+        "source_modifiers": [
+          "Regional processing (data residency) endpoints are charged a 10% uplift for models released on or after March 5, 2026. FedRAMP endpoints are also charged a 10% uplift. Priority processing was renamed Fast mode on July 30, 2026. GPT-5.6 Sol\u2019s promotional pricing is available until November 30, 2026."
+        ]
+      },
+      "pricing_tiers": [
+        {
+          "input": "10.00",
+          "output": "50.00",
+          "cached_input": "1.00",
+          "cache_write_30m": "12.50",
+          "cache_write_12h": "25.00",
+          "conditions": {
+            "context": "short",
+            "threshold": "272K"
+          }
+        },
+        {
+          "input": "20.00",
+          "output": "75.00",
+          "cached_input": "2.00",
+          "cache_write_30m": "25.00",
+          "cache_write_12h": "50.00",
+          "conditions": {
+            "context": "long",
+            "available": true,
+            "threshold": ">272K input tokens."
+          }
+        },
+        {
+          "tier": "batch",
+          "input": "5.00",
+          "output": "25.00",
+          "cached_input": "0.50",
+          "cache_write_30m": "6.25",
+          "cache_write_12h": "12.50",
+          "conditions": {
+            "context": "short",
+            "service_tier": "batch",
+            "available": true
+          }
+        },
+        {
+          "tier": "flex",
+          "input": "5.00",
+          "output": "25.00",
+          "cached_input": "0.50",
+          "conditions": {
+            "service_tier": "flex"
+          }
+        },
+        {
+          "tier": "fast",
+          "input": "20.00",
+          "output": "100.00",
+          "cached_input": "2.00",
+          "conditions": {
+            "service_tier": "fast"
+          }
+        },
+        {
+          "tier": "ultrafast",
+          "input": "60.00",
+          "output": "300.00",
+          "cached_input": "6.00",
+          "conditions": {
+            "service_tier": "ultrafast"
+          }
+        }
+      ],
+      "pricing_unit": "per 1,000,000 tokens"
+    },
+    {
+      "model": "gpt-6-luna",
+      "provider": "openai",
+      "input_price_per_million": "0.10",
+      "output_price_per_million": "0.50",
+      "context_window": null,
+      "quality_tier": 2,
+      "notes": "Short-context rates are the default when provider table distinguishes short/long context; all listed variants are retained in pricing_tiers.",
+      "display_name": "gpt-6-luna",
+      "cached_input_price_per_million": "0.01",
+      "cache_write_price_per_million": "0.125",
+      "batch_input_price_per_million": "0.05",
+      "batch_output_price_per_million": "0.25",
+      "currency": "USD",
+      "pricing_tier": "standard",
+      "effective_date": null,
+      "source_url": "https://developers.openai.com/api/docs/pricing",
+      "last_verified": "2026-11-19T04:47:05.432740+00:00",
+      "pricing_status": "official_verified",
+      "pricing_version": 1,
+      "retrieved_at": "2026-11-19T04:47:05.432740+00:00",
+      "pricing_conditions": {
+        "service_tier": "standard",
+        "source_modifiers": [
+          "Regional processing (data residency) endpoints are charged a 10% uplift for models released on or after March 5, 2026. FedRAMP endpoints are also charged a 10% uplift. Priority processing was renamed Fast mode on July 30, 2026. GPT-5.6 Sol\u2019s promotional pricing is available until November 30, 2026."
+        ]
+      },
+      "pricing_tiers": [
+        {
+          "input": "0.10",
+          "output": "0.50",
+          "cached_input": "0.01",
+          "cache_write_30m": "0.125",
+          "cache_write_12h": "0.25",
+          "conditions": {
+            "context": "short",
+            "threshold": "272K"
+          }
+        },
+        {
+          "input": "0.20",
+          "output": "0.75",
+          "cached_input": "0.02",
+          "cache_write_30m": "0.25",
+          "cache_write_12h": "0.50",
+          "conditions": {
+            "context": "long",
+            "available": true,
+            "threshold": ">272K input tokens."
+          }
+        },
+        {
+          "tier": "batch",
+          "input": "0.05",
+          "output": "0.25",
+          "cached_input": "0.005",
+          "cache_write_30m": "0.0625",
+          "cache_write_12h": "0.125",
+          "conditions": {
+            "context": "short",
+            "service_tier": "batch",
+            "available": true
+          }
+        },
+        {
+          "tier": "flex",
+          "input": "0.05",
+          "output": "0.25",
+          "cached_input": "0.005",
+          "conditions": {
+            "service_tier": "flex"
+          }
+        },
+        {
+          "tier": "fast",
+          "input": "0.20",
+          "output": "1.00",
+          "cached_input": "0.02",
+          "conditions": {
+            "service_tier": "fast"
+          }
+        }
+      ],
+      "pricing_unit": "per 1,000,000 tokens"
+    },
+    {
+      "model": "gpt-6-sol",
+      "provider": "openai",
+      "input_price_per_million": "2.00",
+      "output_price_per_million": "10.00",
+      "context_window": null,
+      "quality_tier": 2,
+      "notes": "Short-context rates are the default when provider table distinguishes short/long context; all listed variants are retained in pricing_tiers.",
+      "display_name": "gpt-6-sol",
+      "cached_input_price_per_million": "0.20",
+      "cache_write_price_per_million": "2.50",
+      "batch_input_price_per_million": "1.00",
+      "batch_output_price_per_million": "5.00",
+      "currency": "USD",
+      "pricing_tier": "standard",
+      "effective_date": null,
+      "source_url": "https://developers.openai.com/api/docs/pricing",
+      "last_verified": "2026-11-19T04:47:05.432930+00:00",
+      "pricing_status": "official_verified",
+      "pricing_version": 1,
+      "retrieved_at": "2026-11-19T04:47:05.432930+00:00",
+      "pricing_conditions": {
+        "service_tier": "standard",
+        "source_modifiers": [
+          "Regional processing (data residency) endpoints are charged a 10% uplift for models released on or after March 5, 2026. FedRAMP endpoints are also charged a 10% uplift. Priority processing was renamed Fast mode on July 30, 2026. GPT-5.6 Sol\u2019s promotional pricing is available until November 30, 2026."
+        ]
+      },
+      "pricing_tiers": [
+        {
+          "input": "2.00",
+          "output": "10.00",
+          "cached_input": "0.20",
+          "cache_write_30m": "2.50",
+          "cache_write_12h": "5.00",
+          "conditions": {
+            "context": "short",
+            "threshold": "272K"
+          }
+        },
+        {
+          "input": "4.00",
+          "output": "15.00",
+          "cached_input": "0.40",
+          "cache_write_30m": "5.00",
+          "cache_write_12h": "10.00",
+          "conditions": {
+            "context": "long",
+            "available": true,
+            "threshold": ">272K input tokens."
+          }
+        },
+        {
+          "tier": "batch",
+          "input": "1.00",
+          "output": "5.00",
+          "cached_input": "0.10",
+          "cache_write_30m": "1.25",
+          "cache_write_12h": "2.50",
+          "conditions": {
+            "context": "short",
+            "service_tier": "batch",
+            "available": true
+          }
+        },
+        {
+          "tier": "flex",
+          "input": "1.00",
+          "output": "5.00",
+          "cached_input": "0.10",
+          "conditions": {
+            "service_tier": "flex"
+          }
+        },
+        {
+          "tier": "fast",
+          "input": "4.00",
+          "output": "20.00",
+          "cached_input": "0.40",
+          "conditions": {
+            "service_tier": "fast"
+          }
+        }
+      ],
+      "pricing_unit": "per 1,000,000 tokens"
+    },
+    {
+      "model": "gpt-6.1-sol",
+      "provider": "openai",
+      "input_price_per_million": "2.00",
+      "output_price_per_million": "10.00",
+      "context_window": null,
+      "quality_tier": 2,
+      "notes": "Short-context rates are the default when provider table distinguishes short/long context; all listed variants are retained in pricing_tiers.",
+      "display_name": "gpt-6.1-sol",
+      "cached_input_price_per_million": "0.10",
+      "cache_write_price_per_million": "2.50",
+      "batch_input_price_per_million": "1.00",
+      "batch_output_price_per_million": "5.00",
+      "currency": "USD",
+      "pricing_tier": "standard",
+      "effective_date": null,
+      "source_url": "https://developers.openai.com/api/docs/pricing",
+      "last_verified": "2026-11-19T04:47:05.432404+00:00",
+      "pricing_status": "official_verified",
+      "pricing_version": 1,
+      "retrieved_at": "2026-11-19T04:47:05.432404+00:00",
+      "pricing_conditions": {
+        "service_tier": "standard",
+        "source_modifiers": [
+          "Regional processing (data residency) endpoints are charged a 10% uplift for models released on or after March 5, 2026. FedRAMP endpoints are also charged a 10% uplift. Priority processing was renamed Fast mode on July 30, 2026. GPT-5.6 Sol\u2019s promotional pricing is available until November 30, 2026."
+        ]
+      },
+      "pricing_tiers": [
+        {
+          "input": "2.00",
+          "output": "10.00",
+          "cached_input": "0.10",
+          "cache_write_30m": "2.50",
+          "cache_write_12h": "5.00",
+          "conditions": {
+            "context": "short",
+            "threshold": "272K"
+          }
+        },
+        {
+          "input": "4.00",
+          "output": "15.00",
+          "cached_input": "0.20",
+          "cache_write_30m": "5.00",
+          "cache_write_12h": "10.00",
+          "conditions": {
+            "context": "long",
+            "available": true,
+            "threshold": ">272K input tokens."
+          }
+        },
+        {
+          "tier": "batch",
+          "input": "1.00",
+          "output": "5.00",
+          "cached_input": "0.05",
+          "cache_write_30m": "1.25",
+          "cache_write_12h": "2.50",
+          "conditions": {
+            "context": "short",
+            "service_tier": "batch",
+            "available": true
+          }
+        },
+        {
+          "tier": "flex",
+          "input": "1.00",
+          "output": "5.00",
+          "cached_input": "0.05",
+          "conditions": {
+            "service_tier": "flex"
+          }
+        },
+        {
+          "tier": "fast",
+          "input": "4.00",
+          "output": "20.00",
+          "cached_input": "0.20",
+          "conditions": {
+            "service_tier": "fast"
+          }
+        },
+        {
+          "tier": "ultrafast",
+          "input": "12.00",
+          "output": "60.00",
+          "cached_input": "0.60",
+          "conditions": {
+            "service_tier": "ultrafast"
+          }
+        }
+      ],
+      "pricing_unit": "per 1,000,000 tokens"
+    },
+    {
+      "model": "gpt-6.1-terra",
+      "provider": "openai",
+      "input_price_per_million": "1.00",
+      "output_price_per_million": "5.00",
+      "context_window": null,
+      "quality_tier": 2,
+      "notes": "Short-context rates are the default when provider table distinguishes short/long context; all listed variants are retained in pricing_tiers.",
+      "display_name": "gpt-6.1-terra",
+      "cached_input_price_per_million": "0.05",
+      "cache_write_price_per_million": "1.25",
+      "batch_input_price_per_million": "0.50",
+      "batch_output_price_per_million": "2.50",
+      "currency": "USD",
+      "pricing_tier": "standard",
+      "effective_date": null,
+      "source_url": "https://developers.openai.com/api/docs/pricing",
+      "last_verified": "2026-11-19T04:47:05.432574+00:00",
+      "pricing_status": "official_verified",
+      "pricing_version": 1,
+      "retrieved_at": "2026-11-19T04:47:05.432574+00:00",
+      "pricing_conditions": {
+        "service_tier": "standard",
+        "source_modifiers": [
+          "Regional processing (data residency) endpoints are charged a 10% uplift for models released on or after March 5, 2026. FedRAMP endpoints are also charged a 10% uplift. Priority processing was renamed Fast mode on July 30, 2026. GPT-5.6 Sol\u2019s promotional pricing is available until November 30, 2026."
+        ]
+      },
+      "pricing_tiers": [
+        {
+          "input": "1.00",
+          "output": "5.00",
+          "cached_input": "0.05",
+          "cache_write_30m": "1.25",
+          "cache_write_12h": "2.50",
+          "conditions": {
+            "context": "short",
+            "threshold": "272K"
+          }
+        },
+        {
+          "input": "2.00",
+          "output": "7.50",
+          "cached_input": "0.10",
+          "cache_write_30m": "2.50",
+          "cache_write_12h": "5.00",
+          "conditions": {
+            "context": "long",
+            "available": true,
+            "threshold": ">272K input tokens."
+          }
+        },
+        {
+          "tier": "batch",
+          "input": "0.50",
+          "output": "2.50",
+          "cached_input": "0.025",
+          "cache_write_30m": "0.625",
+          "cache_write_12h": "1.25",
+          "conditions": {
+            "context": "short",
+            "service_tier": "batch",
+            "available": true
+          }
+        },
+        {
+          "tier": "flex",
+          "input": "0.50",
+          "output": "2.50",
+          "cached_input": "0.025",
+          "conditions": {
+            "service_tier": "flex"
+          }
+        },
+        {
+          "tier": "fast",
+          "input": "2.00",
+          "output": "10.00",
+          "cached_input": "0.10",
+          "conditions": {
+            "service_tier": "fast"
+          }
+        }
+      ],
+      "pricing_unit": "per 1,000,000 tokens"
+    },
+    {
+      "model": "gpt-6.2-astra",
+      "provider": "openai",
+      "input_price_per_million": "8.00",
+      "output_price_per_million": "40.00",
+      "context_window": null,
+      "quality_tier": 2,
+      "notes": "Short-context rates are the default when provider table distinguishes short/long context; all listed variants are retained in pricing_tiers.",
+      "display_name": "gpt-6.2-astra",
+      "cached_input_price_per_million": "0.40",
+      "cache_write_price_per_million": "10.00",
+      "batch_input_price_per_million": "4.00",
+      "batch_output_price_per_million": "20.00",
+      "currency": "USD",
+      "pricing_tier": "standard",
+      "effective_date": null,
+      "source_url": "https://developers.openai.com/api/docs/pricing",
+      "last_verified": "2026-11-19T04:47:05.431882+00:00",
+      "pricing_status": "official_verified",
+      "pricing_version": 1,
+      "retrieved_at": "2026-11-19T04:47:05.431882+00:00",
+      "pricing_conditions": {
+        "service_tier": "standard",
+        "source_modifiers": [
+          "Regional processing (data residency) endpoints are charged a 10% uplift for models released on or after March 5, 2026. FedRAMP endpoints are also charged a 10% uplift. Priority processing was renamed Fast mode on July 30, 2026. GPT-5.6 Sol\u2019s promotional pricing is available until November 30, 2026."
+        ]
+      },
+      "pricing_tiers": [
+        {
+          "input": "8.00",
+          "output": "40.00",
+          "cached_input": "0.40",
+          "cache_write_30m": "10.00",
+          "cache_write_12h": "20.00",
+          "conditions": {
+            "context": "short",
+            "threshold": "272K"
+          }
+        },
+        {
+          "input": "16.00",
+          "output": "60.00",
+          "cached_input": "0.80",
+          "cache_write_30m": "20.00",
+          "cache_write_12h": "40.00",
+          "conditions": {
+            "context": "long",
+            "available": true,
+            "threshold": ">272K input tokens."
+          }
+        },
+        {
+          "tier": "batch",
+          "input": "4.00",
+          "output": "20.00",
+          "cached_input": "0.20",
+          "cache_write_30m": "5.00",
+          "cache_write_12h": "10.00",
+          "conditions": {
+            "context": "short",
+            "service_tier": "batch",
+            "available": true
+          }
+        },
+        {
+          "tier": "fast",
+          "input": "16.00",
+          "output": "80.00",
+          "cached_input": "0.80",
+          "conditions": {
+            "service_tier": "fast"
+          }
+        },
+        {
+          "tier": "ultrafast",
+          "input": "24.00",
+          "output": "120.00",
+          "cached_input": "1.20",
+          "conditions": {
+            "service_tier": "ultrafast"
+          }
+        },
+        {
+          "tier": "ultrafast",
+          "input": "48.00",
+          "output": "240.00",
+          "cached_input": "2.40",
+          "conditions": {
+            "service_tier": "ultrafast"
+          }
+        }
+      ],
+      "pricing_unit": "per 1,000,000 tokens"
+    },
+    {
+      "model": "gpt-6.2-sol",
+      "provider": "openai",
+      "input_price_per_million": "2.00",
+      "output_price_per_million": "10.00",
+      "context_window": null,
+      "quality_tier": 2,
+      "notes": "Short-context rates are the default when provider table distinguishes short/long context; all listed variants are retained in pricing_tiers.",
+      "display_name": "gpt-6.2-sol",
+      "cached_input_price_per_million": "0.10",
+      "cache_write_price_per_million": "2.50",
+      "batch_input_price_per_million": "1.00",
+      "batch_output_price_per_million": "5.00",
+      "currency": "USD",
+      "pricing_tier": "standard",
+      "effective_date": null,
+      "source_url": "https://developers.openai.com/api/docs/pricing",
+      "last_verified": "2026-11-19T04:47:05.432064+00:00",
+      "pricing_status": "official_verified",
+      "pricing_version": 1,
+      "retrieved_at": "2026-11-19T04:47:05.432064+00:00",
+      "pricing_conditions": {
+        "service_tier": "standard",
+        "source_modifiers": [
+          "Regional processing (data residency) endpoints are charged a 10% uplift for models released on or after March 5, 2026. FedRAMP endpoints are also charged a 10% uplift. Priority processing was renamed Fast mode on July 30, 2026. GPT-5.6 Sol\u2019s promotional pricing is available until November 30, 2026."
+        ]
+      },
+      "pricing_tiers": [
+        {
+          "input": "2.00",
+          "output": "10.00",
+          "cached_input": "0.10",
+          "cache_write_30m": "2.50",
+          "cache_write_12h": "5.00",
+          "conditions": {
+            "context": "short",
+            "threshold": "272K"
+          }
+        },
+        {
+          "input": "4.00",
+          "output": "15.00",
+          "cached_input": "0.20",
+          "cache_write_30m": "5.00",
+          "cache_write_12h": "10.00",
+          "conditions": {
+            "context": "long",
+            "available": true,
+            "threshold": ">272K input tokens."
+          }
+        },
+        {
+          "tier": "batch",
+          "input": "1.00",
+          "output": "5.00",
+          "cached_input": "0.05",
+          "cache_write_30m": "1.25",
+          "cache_write_12h": "2.50",
+          "conditions": {
+            "context": "short",
+            "service_tier": "batch",
+            "available": true
+          }
+        },
+        {
+          "tier": "fast",
+          "input": "4.00",
+          "output": "20.00",
+          "cached_input": "0.20",
+          "conditions": {
+            "service_tier": "fast"
+          }
+        },
+        {
+          "tier": "ultrafast",
+          "input": "6.00",
+          "output": "30.00",
+          "cached_input": "0.30",
+          "conditions": {
+            "service_tier": "ultrafast"
+          }
+        },
+        {
+          "tier": "ultrafast",
+          "input": "12.00",
+          "output": "60.00",
+          "cached_input": "0.60",
+          "conditions": {
+            "service_tier": "ultrafast"
+          }
+        }
+      ],
+      "pricing_unit": "per 1,000,000 tokens"
+    },
+    {
+      "model": "o3",
+      "provider": "openai",
+      "input_price_per_million": "2.00",
+      "output_price_per_million": "8.00",
+      "context_window": null,
+      "quality_tier": 2,
+      "notes": "Short-context rates are the default when provider table distinguishes short/long context; all listed variants are retained in pricing_tiers.",
+      "display_name": "o3",
+      "cached_input_price_per_million": "0.50",
+      "cache_write_price_per_million": null,
+      "batch_input_price_per_million": "1.00",
+      "batch_output_price_per_million": "4.00",
+      "currency": "USD",
+      "pricing_tier": "standard",
+      "effective_date": null,
+      "source_url": "https://developers.openai.com/api/docs/pricing",
+      "last_verified": "2026-11-19T04:47:05.438104+00:00",
+      "pricing_status": "official_verified",
+      "pricing_version": 1,
+      "retrieved_at": "2026-11-19T04:47:05.438104+00:00",
+      "pricing_conditions": {
+        "service_tier": "standard",
+        "source_modifiers": [
+          "Regional processing (data residency) endpoints are charged a 10% uplift for models released on or after March 5, 2026. FedRAMP endpoints are also charged a 10% uplift. Priority processing was renamed Fast mode on July 30, 2026. GPT-5.6 Sol\u2019s promotional pricing is available until November 30, 2026."
+        ]
+      },
+      "pricing_tiers": [
+        {
+          "tier": "batch",
+          "input": "1.00",
+          "output": "4.00",
+          "cached_input": null,
+          "cache_write_30m": null,
+          "cache_write_12h": null,
+          "conditions": {
+            "context": "short",
+            "service_tier": "batch",
+            "available": true
+          }
+        },
+        {
+          "tier": "flex",
+          "input": "1.00",
+          "output": "4.00",
+          "cached_input": "0.25",
+          "conditions": {
+            "service_tier": "flex"
+          }
+        },
+        {
+          "tier": "fast",
+          "input": "3.50",
+          "output": "14.00",
+          "cached_input": "0.875",
+          "conditions": {
+            "service_tier": "fast"
+          }
+        }
+      ],
+      "pricing_unit": "per 1,000,000 tokens"
+    },
+    {
+      "model": "o3-pro",
+      "provider": "openai",
+      "input_price_per_million": "20.00",
+      "output_price_per_million": "80.00",
+      "context_window": null,
+      "quality_tier": 2,
+      "notes": "Short-context rates are the default when provider table distinguishes short/long context; all listed variants are retained in pricing_tiers.",
+      "display_name": "o3-pro",
+      "cached_input_price_per_million": null,
+      "cache_write_price_per_million": null,
+      "batch_input_price_per_million": "10.00",
+      "batch_output_price_per_million": "40.00",
+      "currency": "USD",
+      "pricing_tier": "standard",
+      "effective_date": null,
+      "source_url": "https://developers.openai.com/api/docs/pricing",
+      "last_verified": "2026-11-19T04:47:05.437740+00:00",
+      "pricing_status": "official_verified",
+      "pricing_version": 1,
+      "retrieved_at": "2026-11-19T04:47:05.437740+00:00",
+      "pricing_conditions": {
+        "service_tier": "standard",
+        "source_modifiers": [
+          "Regional processing (data residency) endpoints are charged a 10% uplift for models released on or after March 5, 2026. FedRAMP endpoints are also charged a 10% uplift. Priority processing was renamed Fast mode on July 30, 2026. GPT-5.6 Sol\u2019s promotional pricing is available until November 30, 2026."
+        ]
+      },
+      "pricing_tiers": [
+        {
+          "tier": "batch",
+          "input": "10.00",
+          "output": "40.00",
+          "cached_input": null,
+          "cache_write_30m": null,
+          "cache_write_12h": null,
+          "conditions": {
+            "context": "short",
+            "service_tier": "batch",
+            "available": true
+          }
+        }
+      ],
+      "pricing_unit": "per 1,000,000 tokens"
+    }
   ]
 }

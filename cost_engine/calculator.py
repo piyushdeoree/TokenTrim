@@ -15,8 +15,12 @@ import math
 from typing import Iterable, Optional
 
 from . import config
-from .models import CostBreakdown, CostEstimate, SavingsResult
-from .pricing import UnknownModelError, _get_pricing_cached, get_pricing_version
+from .currency import is_valid_currency, normalize_currency
+from .models import ActualCostResult, CostBreakdown, CostEstimate, SavingsResult
+from .pricing import (
+    UnknownModelError, _get_pricing_cached, get_pricing_version,
+    is_supported_provider, normalize_provider,
+)
 
 
 def _check_tokens(value, name: str) -> int:
@@ -29,6 +33,28 @@ def _check_tokens(value, name: str) -> int:
     if int(value) != value:
         raise ValueError(f"{name} must be a whole number, got {value}")
     return int(value)
+
+
+def _validate_actual_tokens(value, name: str) -> int:
+    """Strictly validate provider-reported actual token counts."""
+    if isinstance(value, bool):
+        raise TypeError(f"{name} must be an integer, got bool")
+    if not isinstance(value, (int, float, Decimal)):
+        raise TypeError(f"{name} must be a number, got {type(value).__name__}")
+    if isinstance(value, float):
+        if not math.isfinite(value):
+            raise ValueError(f"{name} must be finite")
+        if int(value) != value:
+            raise ValueError(f"{name} must be a whole number, got {value}")
+    if isinstance(value, Decimal):
+        if not value.is_finite():
+            raise ValueError(f"{name} must be finite")
+        if int(value) != value:
+            raise ValueError(f"{name} must be a whole number, got {value}")
+    val_int = int(value)
+    if val_int < 0:
+        raise ValueError(f"{name} must be >= 0, got {value}")
+    return val_int
 
 
 def _compat_float(value: Decimal) -> float:
@@ -62,7 +88,26 @@ def calculate_cost(model: str, input_tokens: int, output_tokens: int, *,
                                         batch=batch, pricing_tier=pricing_tier)
 
 
-def _calculate_cost_with_pricing(model, p, inp, out, cached, cache_write, *, batch=False, pricing_tier=None):
+def calculate_cost_decimal(model: str, input_tokens: int, output_tokens: int, *,
+                           cached_input_tokens: int = 0, cache_write_tokens: int = 0,
+                           batch: bool = False, pricing_tier: Optional[str] = None,
+                           pricing_version: Optional[int] = None) -> Decimal:
+    """Return the exact Decimal total for internal integrations and persistence."""
+    inp = _check_tokens(input_tokens, "input_tokens")
+    out = _check_tokens(output_tokens, "output_tokens")
+    cached = _check_tokens(cached_input_tokens, "cached_input_tokens")
+    cache_write = _check_tokens(cache_write_tokens, "cache_write_tokens")
+    if cached + cache_write > inp:
+        raise ValueError("cached_input_tokens + cache_write_tokens cannot exceed input_tokens")
+    if not isinstance(batch, bool):
+        raise TypeError("batch must be a boolean")
+    p = get_pricing_version(model, pricing_version) if pricing_version is not None else _get_pricing_cached(model)
+    amounts = _calculate_decimal_amounts(model, p, inp, out, cached, cache_write,
+                                         batch=batch, pricing_tier=pricing_tier)
+    return amounts["total_cost"]
+
+
+def _calculate_decimal_amounts(model, p, inp, out, cached, cache_write, *, batch=False, pricing_tier=None):
     if pricing_tier is not None and not isinstance(pricing_tier, str):
         raise TypeError("pricing_tier must be a string")
     if not isinstance(batch, bool):
@@ -120,8 +165,24 @@ def _calculate_cost_with_pricing(model, p, inp, out, cached, cache_write, *, bat
         input_cost_d += Decimal(cached) / scale * cache_rate
     output_cost_d = Decimal(out) / scale * output_rate
     other_d = Decimal(cache_write) / scale * (cache_write_rate or Decimal(0))
+    return {
+        "input_cost": input_cost_d,
+        "output_cost": output_cost_d,
+        "other_charges": other_d,
+        "total_cost": input_cost_d + output_cost_d + other_d,
+        "input_rate": ordinary_rate,
+        "output_rate": output_rate,
+        "requested_tier": requested_tier or "standard",
+    }
+
+
+def _calculate_cost_with_pricing(model, p, inp, out, cached, cache_write, *, batch=False, pricing_tier=None):
+    amounts = _calculate_decimal_amounts(model, p, inp, out, cached, cache_write,
+                                         batch=batch, pricing_tier=pricing_tier)
     # Keep Decimal through all arithmetic; floats are emitted only for backwards-compatible serialization.
-    input_cost, output_cost, other = _compat_float(input_cost_d), _compat_float(output_cost_d), _compat_float(other_d)
+    input_cost = _compat_float(amounts["input_cost"])
+    output_cost = _compat_float(amounts["output_cost"])
+    other = _compat_float(amounts["other_charges"])
     return CostBreakdown(
         model=model,
         input_tokens=inp,
@@ -129,15 +190,15 @@ def _calculate_cost_with_pricing(model, p, inp, out, cached, cache_write, *, bat
         total_tokens=inp + out,
         input_cost=input_cost,
         output_cost=output_cost,
-        total_cost=_compat_float(input_cost_d + output_cost_d + other_d),
+        total_cost=_compat_float(amounts["total_cost"]),
         provider=p.provider,
         pricing_version=p.pricing_version,
         cached_input_tokens=cached,
         cache_write_tokens=cache_write,
         batch=batch,
-        pricing_tier=requested_tier or "standard",
-        applied_input_rate=_compat_float(ordinary_rate),
-        applied_output_rate=_compat_float(output_rate),
+        pricing_tier=amounts["requested_tier"],
+        applied_input_rate=_compat_float(amounts["input_rate"]),
+        applied_output_rate=_compat_float(amounts["output_rate"]),
         other_charges=other,
         currency=p.currency,
         calculation_timestamp=datetime.now(timezone.utc).isoformat(),
@@ -274,8 +335,326 @@ def calculate_savings(
         original_tokens=orig,
         optimized_tokens=opt,
         tokens_saved=saved,
-        optimization_percentage=round(pct, 4),
+        optimization_percentage=pct,
         original_input_cost=_compat_float(orig_cost_d),
         optimized_input_cost=_compat_float(opt_cost_d),
         input_cost_saved=_compat_float(orig_cost_d - opt_cost_d),
     ).to_dict()
+
+
+def calculate_actual_cost(
+    provider: str,
+    model: str,
+    actual_input_tokens: Optional[int] = None,
+    actual_output_tokens: Optional[int] = None,
+    *,
+    input_tokens: Optional[int] = None,
+    output_tokens: Optional[int] = None,
+    cached_input_tokens: int = 0,
+    cache_write_tokens: int = 0,
+    currency: Optional[str] = None,
+    pricing_tier: Optional[str] = None,
+    pricing_version: Optional[int] = None,
+    additional_usage: Optional[dict] = None,
+    raise_on_error: bool = False,
+    **kwargs,
+) -> ActualCostResult:
+    """Calculate actual execution cost for BYOK requests using real provider-reported usage.
+
+    Parameters:
+        provider: Provider identifier ('openai', 'google', 'gemini', 'anthropic', 'claude').
+        model: Exact model identifier (e.g. 'gpt-4o', 'claude-sonnet', 'gemini-pro').
+        actual_input_tokens: Actual input token count reported by provider (or via input_tokens).
+        actual_output_tokens: Actual output token count reported by provider (or via output_tokens).
+        cached_input_tokens: Optional cached prompt input tokens reported by provider.
+        cache_write_tokens: Optional cache write prompt tokens reported by provider.
+        currency: Optional ISO 4217 currency code (e.g. 'USD').
+        pricing_tier: Optional provider pricing tier (e.g. 'standard', 'batch').
+        pricing_version: Optional historical pricing catalog version.
+        additional_usage: Optional dict of extra provider-reported usage categories.
+        raise_on_error: If True, raise exceptions on errors instead of returning an error result.
+        **kwargs: Extra usage parameters (e.g. reasoning_tokens, batch=True).
+
+    Returns:
+        ActualCostResult: Standardized result structure.
+    """
+    # 1. Resolve and validate token counts
+    raw_inp = actual_input_tokens if actual_input_tokens is not None else input_tokens
+    raw_out = actual_output_tokens if actual_output_tokens is not None else output_tokens
+
+    if actual_input_tokens is not None and input_tokens is not None and actual_input_tokens != input_tokens:
+        err = "actual_input_tokens and input_tokens conflict"
+        if raise_on_error: raise ValueError(err)
+        return ActualCostResult(provider=str(provider), model=str(model), input_tokens=None, output_tokens=None, total_tokens=None, actual_cost=None, currency=currency, pricing_status="invalid_usage_data", pricing_verification=None, error_details=err)
+
+    if actual_output_tokens is not None and output_tokens is not None and actual_output_tokens != output_tokens:
+        err = "actual_output_tokens and output_tokens conflict"
+        if raise_on_error: raise ValueError(err)
+        return ActualCostResult(provider=str(provider), model=str(model), input_tokens=None, output_tokens=None, total_tokens=None, actual_cost=None, currency=currency, pricing_status="invalid_usage_data", pricing_verification=None, error_details=err)
+
+    if raw_inp is None or raw_out is None:
+        err = "Both input and output token counts are required"
+        if raise_on_error: raise ValueError(err)
+        return ActualCostResult(provider=str(provider), model=str(model), input_tokens=None, output_tokens=None, total_tokens=None, actual_cost=None, currency=currency, pricing_status="invalid_usage_data", pricing_verification=None, error_details=err)
+
+    try:
+        inp = _validate_actual_tokens(raw_inp, "input_tokens")
+        out = _validate_actual_tokens(raw_out, "output_tokens")
+        cached = _validate_actual_tokens(cached_input_tokens, "cached_input_tokens")
+        cache_write = _validate_actual_tokens(cache_write_tokens, "cache_write_tokens")
+        if cached + cache_write > inp:
+            raise ValueError("cached_input_tokens + cache_write_tokens cannot exceed input_tokens")
+    except (ValueError, TypeError) as exc:
+        if raise_on_error: raise
+        return ActualCostResult(provider=str(provider), model=str(model), input_tokens=None, output_tokens=None, total_tokens=None, actual_cost=None, currency=currency, pricing_status="invalid_usage_data", pricing_verification=None, error_details=str(exc))
+
+    # 2. Validate Provider
+    if not isinstance(provider, str) or not provider.strip():
+        err = "Provider identifier must be a non-empty string"
+        if raise_on_error: raise ValueError(err)
+        return ActualCostResult(provider=str(provider), model=str(model), input_tokens=inp, output_tokens=out, total_tokens=inp+out, actual_cost=None, currency=currency, pricing_status="invalid_provider", pricing_verification=None, error_details=err)
+
+    if not is_supported_provider(provider):
+        err = f"Provider {provider!r} is not supported. Supported providers: ['openai', 'google', 'anthropic']"
+        if raise_on_error: raise ValueError(err)
+        return ActualCostResult(provider=str(provider), model=str(model), input_tokens=inp, output_tokens=out, total_tokens=inp+out, actual_cost=None, currency=currency, pricing_status="unsupported_provider", pricing_verification=None, error_details=err)
+
+    canonical_prov = normalize_provider(provider)
+
+    # 3. Validate Model and Lookup Pricing
+    if not isinstance(model, str) or not model.strip():
+        err = "Model identifier must be a non-empty string"
+        if raise_on_error: raise ValueError(err)
+        return ActualCostResult(provider=canonical_prov, model=str(model), input_tokens=inp, output_tokens=out, total_tokens=inp+out, actual_cost=None, currency=currency, pricing_status="model_not_registered", pricing_verification="unavailable", error_details=err)
+
+    model_clean = model.strip()
+    try:
+        if pricing_version is not None:
+            p = get_pricing_version(model_clean, pricing_version)
+        else:
+            p = _get_pricing_cached(model_clean)
+    except UnknownModelError:
+        err = f"Model {model_clean!r} is not registered in the pricing catalogue."
+        if raise_on_error: raise
+        return ActualCostResult(provider=canonical_prov, model=model_clean, input_tokens=inp, output_tokens=out, total_tokens=inp+out, actual_cost=None, currency=currency, pricing_status="model_not_registered", pricing_verification="unavailable", error_details=err)
+
+    # Check that model belongs to provider
+    model_canonical_prov = normalize_provider(p.provider)
+    if canonical_prov != model_canonical_prov:
+        err = f"Model {model_clean!r} is registered under provider {p.provider!r}, not {provider!r}."
+        if raise_on_error: raise ValueError(err)
+        return ActualCostResult(provider=canonical_prov, model=model_clean, input_tokens=inp, output_tokens=out, total_tokens=inp+out, actual_cost=None, currency=p.currency, pricing_status="model_not_registered", pricing_verification="unavailable", error_details=err)
+
+    # Check that basic rate info exists
+    if p.input_price_per_million is None or p.output_price_per_million is None:
+        err = f"Complete pricing information is unavailable for model {model_clean!r}."
+        if raise_on_error: raise ValueError(err)
+        return ActualCostResult(provider=canonical_prov, model=model_clean, input_tokens=inp, output_tokens=out, total_tokens=inp+out, actual_cost=None, currency=p.currency, pricing_status="pricing_unavailable", pricing_verification=p.pricing_status, error_details=err)
+
+    # 4. Currency validation
+    effective_currency = p.currency
+    if currency is not None:
+        if not is_valid_currency(currency):
+            err = f"Invalid ISO 4217 currency code: {currency!r}"
+            if raise_on_error: raise ValueError(err)
+            return ActualCostResult(provider=canonical_prov, model=model_clean, input_tokens=inp, output_tokens=out, total_tokens=inp+out, actual_cost=None, currency=str(currency), pricing_status="invalid_currency", pricing_verification=p.pricing_status, error_details=err)
+        norm_currency = currency.strip().upper()
+        if norm_currency != p.currency.upper():
+            err = f"Requested currency '{norm_currency}' does not match model pricing currency '{p.currency}'; automatic exchange rate conversion is not performed in BYOK cost calculation."
+            if raise_on_error: raise ValueError(err)
+            return ActualCostResult(provider=canonical_prov, model=model_clean, input_tokens=inp, output_tokens=out, total_tokens=inp+out, actual_cost=None, currency=norm_currency, pricing_status="currency_mismatch", pricing_verification=p.pricing_status, error_details=err)
+        effective_currency = norm_currency
+
+    # 5. Unsupported pricing structures & categories
+    unsupported = []
+    if additional_usage:
+        if not isinstance(additional_usage, dict):
+            err = "additional_usage must be a dictionary"
+            if raise_on_error: raise TypeError(err)
+            return ActualCostResult(provider=canonical_prov, model=model_clean, input_tokens=inp, output_tokens=out, total_tokens=inp+out, actual_cost=None, currency=effective_currency, pricing_status="invalid_usage_data", pricing_verification=p.pricing_status, error_details=err)
+        for k, v in additional_usage.items():
+            if v and (not isinstance(v, (int, float, Decimal)) or v > 0):
+                unsupported.append(str(k))
+    known_unsupported_keys = ("reasoning_tokens", "thinking_tokens", "audio_tokens", "search_tokens", "image_tokens")
+    for k in known_unsupported_keys:
+        if k in kwargs and kwargs[k]:
+            unsupported.append(k)
+
+    if unsupported:
+        err = f"Provider reported unsupported usage categories: {sorted(unsupported)}. Standard token pricing does not cover these components."
+        if raise_on_error: raise ValueError(err)
+        return ActualCostResult(provider=canonical_prov, model=model_clean, input_tokens=inp, output_tokens=out, total_tokens=inp+out, actual_cost=None, currency=effective_currency, pricing_status="unsupported_pricing_structure", pricing_verification=p.pricing_status, unsupported_components=sorted(unsupported), error_details=err)
+
+    if cached and p.cached_input_price_per_million is None:
+        err = f"Cached input pricing is unavailable for model {model_clean!r}"
+        if raise_on_error: raise ValueError(err)
+        return ActualCostResult(provider=canonical_prov, model=model_clean, input_tokens=inp, output_tokens=out, total_tokens=inp+out, actual_cost=None, currency=effective_currency, pricing_status="unsupported_pricing_structure", pricing_verification=p.pricing_status, unsupported_components=["cached_input_tokens"], error_details=err)
+
+    if cache_write and p.cache_write_price_per_million is None:
+        err = f"Cache write pricing is unavailable for model {model_clean!r}"
+        if raise_on_error: raise ValueError(err)
+        return ActualCostResult(provider=canonical_prov, model=model_clean, input_tokens=inp, output_tokens=out, total_tokens=inp+out, actual_cost=None, currency=effective_currency, pricing_status="unsupported_pricing_structure", pricing_verification=p.pricing_status, unsupported_components=["cache_write_tokens"], error_details=err)
+
+    is_batch = kwargs.get("batch", False) or (pricing_tier and pricing_tier.casefold() == "batch")
+    if is_batch:
+        if p.batch_input_price_per_million is None or p.batch_output_price_per_million is None:
+            err = f"Batch pricing is unavailable for model {model_clean!r}"
+            if raise_on_error: raise ValueError(err)
+            return ActualCostResult(provider=canonical_prov, model=model_clean, input_tokens=inp, output_tokens=out, total_tokens=inp+out, actual_cost=None, currency=effective_currency, pricing_status="unsupported_pricing_structure", pricing_verification=p.pricing_status, unsupported_components=["batch_pricing"], error_details=err)
+        input_rate = Decimal(str(p.batch_input_price_per_million))
+        output_rate = Decimal(str(p.batch_output_price_per_million))
+        cached_rate = Decimal(0)
+        cache_write_rate = Decimal(0)
+    else:
+        input_rate = Decimal(str(p.input_price_per_million))
+        output_rate = Decimal(str(p.output_price_per_million))
+        cached_rate = Decimal(str(p.cached_input_price_per_million)) if p.cached_input_price_per_million is not None else Decimal(0)
+        cache_write_rate = Decimal(str(p.cache_write_price_per_million)) if p.cache_write_price_per_million is not None else Decimal(0)
+
+    # 6. Decimal arithmetic without intermediate rounding
+    scale = Decimal(config.TOKENS_PER_MILLION)
+    ordinary = Decimal(inp - cached - cache_write)
+    input_cost_d = ordinary / scale * input_rate
+    if cached:
+        input_cost_d += Decimal(cached) / scale * cached_rate
+    output_cost_d = Decimal(out) / scale * output_rate
+    other_d = Decimal(cache_write) / scale * cache_write_rate
+    actual_cost_d = input_cost_d + output_cost_d + other_d
+
+    warnings = [
+        "Calculation covers standard input/output tokens (and cached input if specified). "
+        "Provider-specific billing categories such as reasoning tokens, audio, web search tools, "
+        "or regional surcharges are not included in this calculation."
+    ]
+
+    return ActualCostResult(
+        provider=canonical_prov,
+        model=model_clean,
+        input_tokens=inp,
+        output_tokens=out,
+        total_tokens=inp + out,
+        actual_cost=_compat_float(actual_cost_d),
+        currency=effective_currency,
+        pricing_status="available",
+        pricing_verification=p.pricing_status,
+        actual_cost_decimal=actual_cost_d,
+        input_cost=_compat_float(input_cost_d),
+        output_cost=_compat_float(output_cost_d),
+        input_cost_decimal=input_cost_d,
+        output_cost_decimal=output_cost_d,
+        cached_input_tokens=cached,
+        cache_write_tokens=cache_write,
+        pricing_unit=getattr(p, "pricing_unit", "per 1,000,000 tokens"),
+        pricing_source=p.source_url,
+        last_verified=p.last_verified,
+        pricing_version=p.pricing_version,
+        estimate_type="actual",
+        calculation_timestamp=datetime.now(timezone.utc).isoformat(),
+        applied_input_rate=_compat_float(input_rate),
+        applied_output_rate=_compat_float(output_rate),
+        unsupported_components=[],
+        error_details=None,
+        warnings=warnings,
+    )
+
+
+def calculate_actual_cost_decimal(
+    provider: str,
+    model: str,
+    actual_input_tokens: Optional[int] = None,
+    actual_output_tokens: Optional[int] = None,
+    *,
+    input_tokens: Optional[int] = None,
+    output_tokens: Optional[int] = None,
+    cached_input_tokens: int = 0,
+    cache_write_tokens: int = 0,
+    currency: Optional[str] = None,
+    pricing_tier: Optional[str] = None,
+    pricing_version: Optional[int] = None,
+    additional_usage: Optional[dict] = None,
+    raise_on_error: bool = True,
+    **kwargs,
+) -> Optional[Decimal]:
+    """Calculate exact Decimal actual cost for persistence and financial precision."""
+    res = calculate_actual_cost(
+        provider=provider,
+        model=model,
+        actual_input_tokens=actual_input_tokens,
+        actual_output_tokens=actual_output_tokens,
+        input_tokens=input_tokens,
+        output_tokens=output_tokens,
+        cached_input_tokens=cached_input_tokens,
+        cache_write_tokens=cache_write_tokens,
+        currency=currency,
+        pricing_tier=pricing_tier,
+        pricing_version=pricing_version,
+        additional_usage=additional_usage,
+        raise_on_error=raise_on_error,
+        **kwargs,
+    )
+    if res.pricing_status != "available":
+        if raise_on_error:
+            raise ValueError(res.error_details or f"Cost calculation unavailable: {res.pricing_status}")
+        return None
+    return res.actual_cost_decimal
+
+
+def calculate_actual_cost_batch(
+    execution_records: Iterable[dict],
+    *,
+    raise_on_error: bool = False,
+) -> list[dict]:
+    """Calculate actual costs for a batch of execution usage records."""
+    results = []
+    for index, record in enumerate(execution_records):
+        record_id = record.get("id") if isinstance(record, dict) else None
+        try:
+            if not isinstance(record, dict):
+                raise TypeError("execution record must be a mapping")
+            provider = record.get("provider")
+            model = record.get("model")
+            inp = record.get("actual_input_tokens", record.get("input_tokens"))
+            out = record.get("actual_output_tokens", record.get("output_tokens"))
+            cached = record.get("cached_input_tokens", 0)
+            write = record.get("cache_write_tokens", 0)
+            curr = record.get("currency")
+            tier = record.get("pricing_tier")
+            version = record.get("pricing_version")
+            add_usage = record.get("additional_usage")
+            res = calculate_actual_cost(
+                provider=provider,
+                model=model,
+                actual_input_tokens=inp,
+                actual_output_tokens=out,
+                cached_input_tokens=cached,
+                cache_write_tokens=write,
+                currency=curr,
+                pricing_tier=tier,
+                pricing_version=version,
+                additional_usage=add_usage,
+                raise_on_error=raise_on_error,
+            )
+            results.append({"index": index, "id": record_id, **res.to_dict()})
+        except Exception as exc:
+            if raise_on_error:
+                raise
+            results.append({
+                "index": index,
+                "id": record_id,
+                "provider": record.get("provider") if isinstance(record, dict) else None,
+                "model": record.get("model") if isinstance(record, dict) else None,
+                "input_tokens": None,
+                "output_tokens": None,
+                "total_tokens": None,
+                "actual_cost": None,
+                "currency": None,
+                "pricing_status": "invalid_usage_data",
+                "pricing_verification": None,
+                "error_details": str(exc),
+            })
+    return results
+
+
+calculate_execution_cost = calculate_actual_cost
+calculate_execution_cost_decimal = calculate_actual_cost_decimal
+

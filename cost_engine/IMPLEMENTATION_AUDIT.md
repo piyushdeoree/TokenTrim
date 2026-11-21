@@ -34,7 +34,7 @@ Audit scope: all Python modules, tests, fixtures, pricing data, predictor artifa
 
 The pre-change full suite passed **68 tests with 3 optional live tests skipped**. The baseline benchmark used the same script/methodology later added to `tests/benchmark_suite.py`; measured baseline and current results are recorded in `PERFORMANCE_BENCHMARKS.md`.
 
-Current verification is run with the project `.fenv` (Python 3.12, scikit-learn 1.9.1), which matches the predictor artifact metadata. The system-wide `python` in this workspace is a separate scikit-learn 1.9.0 install; it safely chooses fallback for the 1.9.1 artifact and reports the mismatch.
+The persisted predictor metadata records scikit-learn 1.9.1. The ignored `backend/.venv` was created with Python 3.12 and the corrected requirements, including scikit-learn 1.9.1; the trained predictor loads and model-specific tests pass in that environment without `InconsistentVersionWarning`. The system-wide `python` remains Python 3.14.6 with scikit-learn 1.9.0; there the runtime validates metadata before unpickling, logs the version mismatch and safely uses the configured ratio fallback. Nine model-specific tests skip only when run under that mismatched system interpreter.
 
 The final requested test command completed with **82 passed, 3 skipped** (the three optional live provider tests). `python -m cost_engine.tests.benchmark_suite` also completed; its measured baseline/current values and known regressions are in `PERFORMANCE_BENCHMARKS.md`. Current timings varied considerably between repeated runs on this shared Windows host.
 

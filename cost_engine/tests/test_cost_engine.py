@@ -4,9 +4,9 @@ import math
 import pytest
 
 from cost_engine import (
-    calculate_cost, calculate_savings, compare_models, estimate_cost,
+    analyze_savings, calculate_cost, calculate_cost_batch, calculate_cost_decimal, calculate_savings, compare_models, estimate_cost,
     estimate_cost_api, forecast_cost, get_pricing, list_models,
-    predict_output_tokens, recommend_model, UnknownModelError,
+    predict_output_tokens, recommend_model, UnknownModelError, reload_pricing,
 )
 from cost_engine import config, prediction
 
@@ -89,6 +89,37 @@ def test_savings_inconsistent_inputs():
 
 def test_savings_zero_original():
     assert calculate_savings("gpt-4o", 0, 0)["optimization_percentage"] == 0.0
+
+
+def test_small_savings_and_percentage_keep_unrounded_precision():
+    from decimal import Decimal
+    from cost_engine import upsert_pricing
+    from cost_engine.models import ModelPricing
+    model = "precision-regression-tiny"
+    upsert_pricing(ModelPricing(model=model, provider="test", input_price_per_million="0.0001",
+                                output_price_per_million="0.0002"), persist=False)
+    try:
+        result = calculate_savings(model, 194, 182)
+        assert Decimal(str(result["input_cost_saved"])) == Decimal("0.0000000012")
+        assert abs(result["optimization_percentage"] - 12 / 194 * 100) < 1e-12
+        assert result["optimization_percentage"] != round(result["optimization_percentage"], 4)
+        batch = calculate_cost_batch([{"model": model, "input_tokens": 12, "output_tokens": 0}])[0]
+        assert Decimal(str(batch["total_cost"])) == Decimal("0.0000000012")
+        analytics = analyze_savings([{"model": model, "provider": "test", "cost": "0.0000000012"}])
+        assert Decimal(analytics["actual_historical_cost"]) == Decimal("0.0000000012")
+    finally:
+        reload_pricing()
+
+
+def test_decimal_cost_matches_configured_rates_without_rounding():
+    from decimal import Decimal
+    from cost_engine.pricing import get_pricing_decimal
+    entries = [get_pricing_decimal(model) for model in list_models()]
+    assert len(entries) == 6
+    for entry in entries:
+        expected = (Decimal(194) * entry.input_price_per_million
+                    + Decimal(306) * entry.output_price_per_million) / Decimal(1_000_000)
+        assert calculate_cost_decimal(entry.model, 194, 306) == expected
 
 
 # ---- Prediction ---------------------------------------------------------------
