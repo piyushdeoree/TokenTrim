@@ -13,6 +13,7 @@ def compare_models(
     models: Optional[Iterable[str]] = None,
     *, cached_input_tokens: int = 0, context_window_required: Optional[int] = None,
     provider: Optional[str] = None, batch: bool = False, pricing_tier: Optional[str] = None,
+    currency: Optional[str] = None,
 ) -> dict:
     """Estimated cost per model, sorted cheapest first.
 
@@ -36,8 +37,12 @@ def compare_models(
         raise TypeError("pricing_tier must be a string")
     if provider is not None and not isinstance(provider, str):
         raise TypeError("provider must be a string")
+    if currency is not None and not isinstance(currency, str):
+        raise TypeError("currency must be a string")
+    target_currency = currency.strip().upper() if currency else None
     unavailable = []
     rows = []
+    base_currency = None
     for m in names:
         try:
             pricing = _get_pricing_cached(m)
@@ -47,6 +52,18 @@ def compare_models(
         if provider and pricing.provider.casefold()!=provider.casefold():
             unavailable.append({"model": m, "available": False, "reason": "provider_filter"})
             continue
+        if target_currency and pricing.currency.upper() != target_currency:
+            unavailable.append({"model": m, "available": False, "reason": "currency_mismatch",
+                                "currency": pricing.currency, "target_currency": target_currency})
+            continue
+        if not target_currency:
+            if base_currency is None:
+                base_currency = pricing.currency.upper()
+            elif pricing.currency.upper() != base_currency:
+                unavailable.append({"model": m, "available": False,
+                                    "reason": "currency_mismatch: cannot compare raw monetary values across different currencies without conversion",
+                                    "currency": pricing.currency, "base_currency": base_currency})
+                continue
         needed=max(input_tokens+predicted_output_tokens,context_window_required or 0)
         if pricing.context_window is not None and pricing.context_window<needed:
             unavailable.append({"model": m, "available": False, "reason": "context_window_too_small",

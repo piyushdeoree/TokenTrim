@@ -5,8 +5,8 @@ directly (or wrap them in Pydantic models).
 """
 from __future__ import annotations
 
-from dataclasses import dataclass, asdict
-from typing import Optional
+from dataclasses import dataclass, asdict, field
+from typing import Optional, Any
 from decimal import Decimal, InvalidOperation
 
 
@@ -34,6 +34,19 @@ class ModelPricing:
     retrieved_at: Optional[str] = None
     pricing_conditions: Optional[dict] = None
     pricing_tiers: Optional[list] = None
+    pricing_unit: str = "per 1,000,000 tokens"
+
+    @property
+    def pricing_source(self) -> Optional[str]:
+        return self.source_url
+
+    @property
+    def verification_status(self) -> str:
+        return self.pricing_status
+
+    @property
+    def last_updated(self) -> Optional[str]:
+        return self.last_verified or self.retrieved_at
 
     def __post_init__(self):
         for name in ("input_price_per_million", "output_price_per_million",
@@ -141,3 +154,67 @@ class SavingsResult:
 
     def to_dict(self) -> dict:
         return asdict(self)
+
+
+@dataclass
+class ActualCostResult:
+    """Calculated execution cost using actual provider-reported token usage.
+
+    Standardized result contract for BYOK (Bring Your Own API Key) integrations.
+    """
+    provider: str
+    model: str
+    input_tokens: Optional[int]
+    output_tokens: Optional[int]
+    total_tokens: Optional[int]
+    actual_cost: Optional[float]
+    currency: Optional[str]
+    pricing_status: str
+    pricing_verification: Optional[str]
+    actual_cost_decimal: Optional[Decimal] = None
+    input_cost: Optional[float] = None
+    output_cost: Optional[float] = None
+    input_cost_decimal: Optional[Decimal] = None
+    output_cost_decimal: Optional[Decimal] = None
+    cached_input_tokens: int = 0
+    cache_write_tokens: int = 0
+    pricing_unit: str = "per 1,000,000 tokens"
+    pricing_source: Optional[str] = None
+    last_verified: Optional[str] = None
+    pricing_version: Optional[int] = None
+    estimate_type: str = "actual"
+    calculation_timestamp: Optional[str] = None
+    applied_input_rate: Optional[float] = None
+    applied_output_rate: Optional[float] = None
+    unsupported_components: list[str] = field(default_factory=list)
+    error_details: Optional[str] = None
+    warnings: list[str] = field(default_factory=list)
+
+    def to_dict(self) -> dict:
+        data = asdict(self)
+        if self.actual_cost_decimal is not None:
+            data["actual_cost_decimal"] = str(self.actual_cost_decimal)
+        if self.input_cost_decimal is not None:
+            data["input_cost_decimal"] = str(self.input_cost_decimal)
+        if self.output_cost_decimal is not None:
+            data["output_cost_decimal"] = str(self.output_cost_decimal)
+        return data
+
+    def __getitem__(self, key: str) -> Any:
+        return self.to_dict()[key]
+
+    def get(self, key: str, default: Any = None) -> Any:
+        return self.to_dict().get(key, default)
+
+    def __contains__(self, key: str) -> bool:
+        return key in self.to_dict()
+
+    def keys(self):
+        return self.to_dict().keys()
+
+    def values(self):
+        return self.to_dict().values()
+
+    def items(self):
+        return self.to_dict().items()
+

@@ -17,7 +17,30 @@ import math
 from typing import Dict, List, Optional
 
 from . import config
+from .currency import is_valid_currency, normalize_currency
 from .models import ModelPricing
+
+SUPPORTED_PROVIDERS = {"openai", "google", "gemini", "anthropic", "claude"}
+
+PROVIDER_CANONICAL = {
+    "openai": "openai",
+    "google": "google",
+    "gemini": "google",
+    "anthropic": "anthropic",
+    "claude": "anthropic",
+}
+
+def is_supported_provider(provider: str) -> bool:
+    """Check if the provider name is supported."""
+    if not isinstance(provider, str):
+        return False
+    return provider.strip().casefold() in SUPPORTED_PROVIDERS
+
+def normalize_provider(provider: str) -> str:
+    """Normalize a provider alias to its canonical name."""
+    if not isinstance(provider, str) or not is_supported_provider(provider):
+        raise ValueError(f"Unsupported provider: {provider!r}. Supported providers: ['openai', 'google', 'anthropic']")
+    return PROVIDER_CANONICAL[provider.strip().casefold()]
 
 _lock = threading.RLock()
 _registry: Optional[Dict[str, ModelPricing]] = None
@@ -63,8 +86,8 @@ def _validate(mp: ModelPricing) -> None:
         raise ValueError("quality_tier must be one of 1, 2, or 3")
     if mp.pricing_tier is not None and (not isinstance(mp.pricing_tier, str) or not mp.pricing_tier.strip()):
         raise ValueError("pricing_tier must be a non-empty string when provided")
-    if mp.currency != "USD":
-        raise ValueError("Provider catalogue rates must use USD; convert for display separately")
+    if not isinstance(mp.currency, str) or not is_valid_currency(mp.currency):
+        raise ValueError(f"Invalid currency code {mp.currency!r}; must be a valid ISO 4217 code")
     if isinstance(mp.pricing_version,bool) or not isinstance(mp.pricing_version,int) or mp.pricing_version < 1:
         raise ValueError("pricing_version must be >= 1")
     if mp.pricing_status not in {"official_verified", "manual_unverified", "estimated", "stale"}:
@@ -138,7 +161,14 @@ def _get_registry() -> Dict[str, ModelPricing]:
 def _build_provider_index(registry: Dict[str, ModelPricing]) -> Dict[str, set[str]]:
     index: Dict[str, set[str]] = {}
     for model, entry in registry.items():
-        index.setdefault(entry.provider.casefold(), set()).add(model)
+        prov = entry.provider.casefold()
+        canonical = PROVIDER_CANONICAL.get(prov, prov)
+        index.setdefault(prov, set()).add(model)
+        index.setdefault(canonical, set()).add(model)
+        if canonical == "google":
+            index.setdefault("gemini", set()).add(model)
+        elif canonical == "anthropic":
+            index.setdefault("claude", set()).add(model)
     return index
 
 
@@ -313,8 +343,8 @@ def save_pricing(path=None) -> None:
 
 def _changed_price_fields(old: ModelPricing, new: ModelPricing) -> list[str]:
     fields=(*_PRICE_FIELDS,"pricing_tier","pricing_conditions","pricing_tiers","currency",
-            "effective_date","context_window","provider")
-    return [field for field in fields if getattr(old,field)!=getattr(new,field)]
+            "effective_date","context_window","provider","pricing_unit")
+    return [field for field in fields if getattr(old,field,None)!=getattr(new,field,None)]
 
 
 def _is_older_verification(old: ModelPricing, new: ModelPricing) -> bool:

@@ -1,0 +1,202 @@
+{
+  "models": {
+    "gpt-4o": [
+      {
+        "changed_at": "2026-11-19T04:47:05.440943+00:00",
+        "retrieved_at": "2026-11-19T04:47:05.437267+00:00",
+        "verified_at": "2026-11-19T04:47:05.437267+00:00",
+        "effective_date": null,
+        "source_url": "https://developers.openai.com/api/docs/pricing",
+        "model": "gpt-4o",
+        "provider": "openai",
+        "pricing_version": 2,
+        "changed_fields": [
+          "cached_input_price_per_million",
+          "batch_input_price_per_million",
+          "batch_output_price_per_million",
+          "pricing_tier",
+          "pricing_conditions",
+          "pricing_tiers",
+          "context_window"
+        ],
+        "previous": {
+          "model": "gpt-4o",
+          "provider": "openai",
+          "input_price_per_million": "2.50",
+          "output_price_per_million": "10.00",
+          "context_window": 128000,
+          "quality_tier": 3,
+          "notes": "illustrative",
+          "display_name": null,
+          "cached_input_price_per_million": null,
+          "cache_write_price_per_million": null,
+          "batch_input_price_per_million": null,
+          "batch_output_price_per_million": null,
+          "currency": "USD",
+          "pricing_tier": null,
+          "effective_date": null,
+          "source_url": null,
+          "last_verified": null,
+          "pricing_status": "manual_unverified",
+          "pricing_version": 1,
+          "retrieved_at": null,
+          "pricing_conditions": null,
+          "pricing_tiers": null,
+          "pricing_unit": "per 1,000,000 tokens"
+        },
+        "current": {
+          "model": "gpt-4o",
+          "provider": "openai",
+          "input_price_per_million": "2.50",
+          "output_price_per_million": "10.00",
+          "context_window": null,
+          "quality_tier": 2,
+          "notes": "Short-context rates are the default when provider table distinguishes short/long context; all listed variants are retained in pricing_tiers.",
+          "display_name": "gpt-4o",
+          "cached_input_price_per_million": "1.25",
+          "cache_write_price_per_million": null,
+          "batch_input_price_per_million": "1.25",
+          "batch_output_price_per_million": "5.00",
+          "currency": "USD",
+          "pricing_tier": "standard",
+          "effective_date": null,
+          "source_url": "https://developers.openai.com/api/docs/pricing",
+          "last_verified": "2026-11-19T04:47:05.437267+00:00",
+          "pricing_status": "official_verified",
+          "pricing_version": 2,
+          "retrieved_at": "2026-11-19T04:47:05.437267+00:00",
+          "pricing_conditions": {
+            "service_tier": "standard",
+            "source_modifiers": [
+              "Regional processing (data residency) endpoints are charged a 10% uplift for models released on or after March 5, 2026. FedRAMP endpoints are also charged a 10% uplift. Priority processing was renamed Fast mode on July 30, 2026. GPT-5.6 Sol\u2019s promotional pricing is available until November 30, 2026."
+            ]
+          },
+          "pricing_tiers": [
+            {
+              "tier": "batch",
+              "input": "1.25",
+              "output": "5.00",
+              "cached_input": null,
+              "cache_write_30m": null,
+              "cache_write_12h": null,
+              "conditions": {
+                "context": "short",
+                "service_tier": "batch",
+                "available": true
+              }
+            },
+            {
+              "tier": "fast",
+              "input": "4.25",
+              "output": "17.00",
+              "cached_input": "2.125",
+              "conditions": {
+                "service_tier": "fast"
+              }
+            }
+          ],
+          "pricing_unit": "per 1,000,000 tokens"
+        }
+      }
+    ],
+    "gpt-4o-mini": [
+      {
+        "changed_at": "2026-11-19T04:47:05.441005+00:00",
+        "retrieved_at": "2026-11-19T04:47:05.437472+00:00",
+        "verified_at": "2026-11-19T04:47:05.437472+00:00",
+        "effective_date": null,
+        "source_url": "https://developers.openai.com/api/docs/pricing",
+        "model": "gpt-4o-mini",
+        "provider": "openai",
+        "pricing_version": 2,
+        "changed_fields": [
+          "cached_input_price_per_million",
+          "batch_input_price_per_million",
+          "batch_output_price_per_million",
+          "pricing_tier",
+          "pricing_conditions",
+          "pricing_tiers",
+          "context_window"
+        ],
+        "previous": {
+          "model": "gpt-4o-mini",
+          "provider": "openai",
+          "input_price_per_million": "0.15",
+          "output_price_per_million": "0.60",
+          "context_window": 128000,
+          "quality_tier": 2,
+          "notes": "illustrative",
+          "display_name": null,
+          "cached_input_price_per_million": null,
+          "cache_write_price_per_million": null,
+          "batch_input_price_per_million": null,
+          "batch_output_price_per_million": null,
+          "currency": "USD",
+          "pricing_tier": null,
+          "effective_date": null,
+          "source_url": null,
+          "last_verified": null,
+          "pricing_status": "manual_unverified",
+          "pricing_version": 1,
+          "retrieved_at": null,
+          "pricing_conditions": null,
+          "pricing_tiers": null,
+          "pricing_unit": "per 1,000,000 tokens"
+        },
+        "current": {
+          "model": "gpt-4o-mini",
+          "provider": "openai",
+          "input_price_per_million": "0.15",
+          "output_price_per_million": "0.60",
+          "context_window": null,
+          "quality_tier": 2,
+          "notes": "Short-context rates are the default when provider table distinguishes short/long context; all listed variants are retained in pricing_tiers.",
+          "display_name": "gpt-4o-mini",
+          "cached_input_price_per_million": "0.075",
+          "cache_write_price_per_million": null,
+          "batch_input_price_per_million": "0.075",
+          "batch_output_price_per_million": "0.30",
+          "currency": "USD",
+          "pricing_tier": "standard",
+          "effective_date": null,
+          "source_url": "https://developers.openai.com/api/docs/pricing",
+          "last_verified": "2026-11-19T04:47:05.437472+00:00",
+          "pricing_status": "official_verified",
+          "pricing_version": 2,
+          "retrieved_at": "2026-11-19T04:47:05.437472+00:00",
+          "pricing_conditions": {
+            "service_tier": "standard",
+            "source_modifiers": [
+              "Regional processing (data residency) endpoints are charged a 10% uplift for models released on or after March 5, 2026. FedRAMP endpoints are also charged a 10% uplift. Priority processing was renamed Fast mode on July 30, 2026. GPT-5.6 Sol\u2019s promotional pricing is available until November 30, 2026."
+            ]
+          },
+          "pricing_tiers": [
+            {
+              "tier": "batch",
+              "input": "0.075",
+              "output": "0.30",
+              "cached_input": null,
+              "cache_write_30m": null,
+              "cache_write_12h": null,
+              "conditions": {
+                "context": "short",
+                "service_tier": "batch",
+                "available": true
+              }
+            },
+            {
+              "tier": "fast",
+              "input": "0.25",
+              "output": "1.00",
+              "cached_input": "0.125",
+              "conditions": {
+                "service_tier": "fast"
+              }
+            }
+          ],
+          "pricing_unit": "per 1,000,000 tokens"
+        }
+      }
+    ]
+  }
+}

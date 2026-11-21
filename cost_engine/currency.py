@@ -10,6 +10,37 @@ import threading
 import urllib.request
 from . import config
 
+ISO_4217_CODES = {
+    "AED", "AFN", "ALL", "AMD", "ANG", "AOA", "ARS", "AUD", "AWG", "AZN",
+    "BAM", "BBD", "BDT", "BGN", "BHD", "BIF", "BMD", "BND", "BOB", "BRL",
+    "BSD", "BTN", "BWP", "BYN", "BZD", "CAD", "CDF", "CHF", "CLP", "CNY",
+    "COP", "CRC", "CUC", "CUP", "CVE", "CZK", "DJF", "DKK", "DOP", "DZD",
+    "EGP", "ERN", "ETB", "EUR", "FJD", "FKP", "GBP", "GEL", "GHS", "GIP",
+    "GMD", "GNF", "GTQ", "GYD", "HKD", "HNL", "HRK", "HTG", "HUF", "IDR",
+    "ILS", "INR", "IQD", "IRR", "ISK", "JMD", "JOD", "JPY", "KES", "KGS",
+    "KHR", "KMF", "KPW", "KRW", "KWD", "KYD", "KZT", "LAK", "LBP", "LKR",
+    "LRD", "LSL", "LYD", "MAD", "MDL", "MGA", "MKD", "MMK", "MNT", "MOP",
+    "MRU", "MUR", "MVR", "MWK", "MXN", "MYR", "MZN", "NAD", "NGN", "NIO",
+    "NOK", "NPR", "NZD", "OMR", "PAB", "PEN", "PGK", "PHP", "PKR", "PLN",
+    "PYG", "QAR", "RON", "RSD", "RUB", "RWF", "SAR", "SBD", "SCR", "SDG",
+    "SEK", "SGD", "SHP", "SLL", "SOS", "SRD", "SSP", "STN", "SVC", "SYP",
+    "SZL", "THB", "TJS", "TMT", "TND", "TOP", "TRY", "TTD", "TWD", "TZS",
+    "UAH", "UGX", "USD", "UYU", "UZS", "VES", "VND", "VUV", "WST", "XAF",
+    "XCD", "XOF", "XPF", "YER", "ZAR", "ZMW", "ZWL",
+}
+
+def is_valid_currency(currency: str) -> bool:
+    """Validate whether currency is a recognized ISO 4217 code."""
+    if not isinstance(currency, str):
+        return False
+    return currency.strip().upper() in ISO_4217_CODES
+
+def normalize_currency(currency: str) -> str:
+    """Normalize and validate an ISO 4217 currency code."""
+    if not isinstance(currency, str) or not is_valid_currency(currency):
+        raise ValueError(f"Invalid ISO 4217 currency code: {currency!r}")
+    return currency.strip().upper()
+
 RATE_FILE=config.DATA_DIR/"exchange_rate.json"
 RATE_URL="https://api.frankfurter.app/latest?from=USD&to=INR"
 _logger = logging.getLogger(__name__)
