@@ -1,103 +1,37 @@
-# TokenTrim — AI Cost Intelligence & Prompt Optimization Platform
+# TokenTrim Frontend
 
-**Optimize Prompts. Reduce Tokens. Control AI Costs.**
+The TokenTrim frontend is a Next.js and TypeScript application that provides the user interface for the TokenTrim AI Cost Intelligence and Prompt Optimization Platform.
 
-TokenTrim is an AI cost intelligence and prompt optimization platform designed to help users reduce unnecessary prompt tokens, estimate LLM usage costs, compare model pricing, and monitor AI-related expenses.
+It allows users to analyze and optimize prompts, review token usage, estimate LLM costs, compare model pricing, and manage provider integrations through a web interface.
 
-The platform combines a rule-based Natural Language Processing (NLP) Engine, a dedicated Cost Engine, a backend API, and a web-based frontend.
+## 1. Features
 
----
+### Prompt Analysis and Optimization
+- Submit prompts for analysis and optimization.
+- Display prompt analysis results.
+- Present original and optimized prompt information.
+- Show token usage and potential cost savings.
 
-## Table of Contents
+### AI Cost Intelligence
+- Display estimated LLM costs.
+- Present original versus optimized cost comparisons.
+- Format small monetary values with appropriate precision.
+- Support multiple display currencies.
 
-1. [Project Overview](#1-project-overview)
-2. [Key Features](#2-key-features)
-3. [System Architecture](#3-system-architecture)
-4. [Technology Stack](#4-technology-stack)
-5. [Project Structure](#5-project-structure)
-6. [Core Modules](#6-core-modules)
-7. [Supported LLM Providers](#7-supported-llm-providers)
-8. [Installation and Setup](#8-installation-and-setup)
-9. [Environment Configuration](#9-environment-configuration)
-10. [Running the Application](#10-running-the-application)
-11. [API Documentation](#11-api-documentation)
-12. [Testing](#12-testing)
-13. [Cost Calculation Methodology](#13-cost-calculation-methodology)
-14. [NLP Engine Methodology](#14-nlp-engine-methodology)
-15. [Security Considerations](#15-security-considerations)
-16. [Project Team](#16-project-team)
-17. [Limitations and Future Enhancements](#17-limitations-and-future-enhancements)
+### Compare Across LLMs
+- Compare estimated prompt costs across supported models.
+- Display original and optimized cost estimates.
+- Present pricing-based comparisons using backend Cost Engine results.
+- Identify the lowest-cost eligible model based on available verified pricing.
 
----
-
-## 1. Project Overview
-
-Large Language Model (LLM) applications commonly incur costs based on input and output token consumption. Long prompts, redundant instructions, unnecessary context, and inefficient prompt structures can increase these costs.
-
-TokenTrim addresses this problem through two primary capabilities:
-
-- **Prompt Intelligence:** Analyzes prompts and identifies opportunities to remove unnecessary tokens while preserving important instructions and constraints.
-- **Cost Intelligence:** Calculates estimated LLM costs, compares supported models, and identifies potential savings from prompt optimization.
-
-The platform is designed around a modular architecture in which prompt analysis, cost calculation, backend services, and frontend presentation operate as separate components.
-
-### Project Objectives
-
-- Identify unnecessary token usage in prompts.
-- Optimize prompts using conservative, explainable transformations.
-- Preserve important instructions, constraints, and technical information.
-- Estimate token consumption and associated API costs.
-- Compare the costs of using different LLM models.
+### BYOK Integration
 - Support Bring Your Own Key (BYOK) workflows.
-- Provide cost analytics and usage visibility.
+- Allow users to work with supported provider credentials.
+- Display provider execution information and results.
+- Keep credential handling within the backend integration rather than exposing stored credentials in the interface.
 
----
-
-## 2. Key Features
-
-### 2.1 Prompt Analysis and Optimization
-
-- Detects repeated instructions and redundant constraints.
-- Identifies verbose phrases, filler words, and unnecessary polite lead-ins.
-- Detects generic personas and excessive context.
-- Identifies formatting overload and potential instruction conflicts.
-- Suggests conservative prompt improvements.
-- Validates optimized prompts before accepting them.
-- Falls back to the exact original prompt when an optimization is rejected.
-
-### 2.2 AI Cost Intelligence
-
-- Calculates estimated input and output token costs.
-- Supports provider-specific model pricing.
-- Compares original and optimized prompt costs.
-- Estimates potential savings from prompt optimization.
-- Maintains pricing information and historical pricing data.
-- Supports multiple currencies for cost presentation.
-
-### 2.3 Compare Across LLMs
-
-- Compares estimated costs across supported models.
-- Uses provider-specific pricing information.
-- Displays original and optimized prompt costs.
-- Identifies the lowest-cost eligible model using available verified pricing.
-
-### 2.4 Bring Your Own Key (BYOK)
-
-- Allows users to configure their own supported provider credentials.
-- Supports provider-specific execution workflows.
-- Keeps provider credentials separate from application pricing calculations.
-- Uses backend-side credential handling and encryption.
-
-### 2.5 Dashboard and Analytics
-
-- Presents AI usage and cost information.
-- Displays potential savings.
-- Provides cost-related insights.
-- Supports monitoring of recorded usage and execution information.
-
-### 2.6 Currency Selection
-
-The application supports the following display currencies:
+### Currency Selection
+The frontend supports the following display currencies:
 
 - USD — US Dollar
 - INR — Indian Rupee
@@ -107,701 +41,198 @@ The application supports the following display currencies:
 - CAD — Canadian Dollar
 - AUD — Australian Dollar
 
-Configured reference conversion rates are used for display. These rates are not live foreign-exchange market quotes.
+Currency conversion uses configured reference rates. These are not live foreign-exchange rates.
 
-### 2.7 Team Management
+## 2. Technology Stack
 
-The project includes team-management functionality intended to support collaborative usage and access management.
+| Technology | Purpose |
+|---|---|
+| Next.js | Frontend framework |
+| React | UI components |
+| TypeScript | Type-safe application development |
+| CSS / frontend styling | User interface presentation |
+| Jest / frontend test tooling | Component and unit testing |
+| ESLint | Code quality and linting |
+| npm | Dependency management and scripts |
 
----
+## 3. Project Structure
 
-## 3. System Architecture
-
-TokenTrim follows a modular architecture that separates frontend presentation, backend services, NLP processing, cost calculations, and database persistence.
-
-```text
-                    USER
-                     |
-                     v
-          FRONTEND — NEXT.JS
-          React + TypeScript
-                     |
-                     v
-             BACKEND — FASTAPI
-                     |
-          +----------+----------+
-          |                     |
-          v                     v
-     NLP ENGINE             COST ENGINE
-   Prompt Analysis        Cost Calculation
-   Redundancy Detection   Pricing Management
-   Optimization           Model Comparison
-   Validation             Currency Conversion
-          |                     |
-          +----------+----------+
-                     |
-                     v
-              DATABASE
-              PostgreSQL
-              SQLAlchemy
-              Alembic
-                     |
-                     v
-           EXTERNAL LLM PROVIDERS
-           OpenAI / Anthropic / Google
-```
-
-### Component Responsibilities
-
-| Component     | Responsibility                                                           |
-| ------------- | ------------------------------------------------------------------------ |
-| Frontend      | User interface, prompt submission, results, analytics, and configuration |
-| Backend       | API endpoints, application services, authentication, and orchestration   |
-| NLP Engine    | Prompt analysis, optimization, and validation                            |
-| Cost Engine   | Token cost calculations, pricing, comparison, and savings estimation     |
-| Database      | Persistent application and usage data                                    |
-| LLM Providers | External model execution through supported provider integrations         |
-
----
-
-## 4. Technology Stack
-
-| Layer                | Technologies                            |
-| -------------------- | --------------------------------------- |
-| Frontend             | Next.js, React, TypeScript              |
-| Backend              | Python, FastAPI                         |
-| NLP Processing       | Python, rule-based NLP, scikit-learn    |
-| Tokenization         | tiktoken and heuristic token estimation |
-| Cost Intelligence    | Custom Python Cost Engine               |
-| Database             | PostgreSQL                              |
-| ORM and Migrations   | SQLAlchemy, Alembic                     |
-| Testing              | Pytest, frontend testing tools          |
-| Version Control      | Git and GitHub                          |
-| External AI Services | OpenAI, Anthropic, Google               |
-
-Optional semantic similarity functionality uses NumPy and Sentence-Transformers when explicitly enabled and available.
-
----
-
-## 5. Project Structure
-
-The repository is organized into separate modules.
+The frontend source code is organized into the following areas:
 
 ```text
-TokenTrim/
-|
-+-- backend/
-|   +-- app/
-|   |   +-- api/
-|   |   +-- services/
-|   |   +-- schemas/
-|   |   +-- models/
-|   |   +-- main.py
-|   +-- alembic/
-|   +-- tests/
-|
-+-- frontend/
-|   +-- src/
-|   |   +-- components/
-|   |   +-- context/
-|   |   +-- hooks/
-|   |   +-- pages/
-|   |   +-- services/
-|   |   +-- types/
-|   |   +-- utils/
-|   +-- tests/
-|
-+-- nlp_engine/
-|   +-- analyzer.py
-|   +-- complexity.py
-|   +-- config.py
-|   +-- models.py
-|   +-- optimizer.py
-|   +-- redundancy.py
-|   +-- semantic_similarity.py
-|   +-- textutils.py
-|   +-- tokenizer.py
-|   +-- validator.py
-|   +-- requirements.txt
-|   +-- README.md
-|   +-- docs/
-|   +-- tests/
-|
-+-- cost_engine/
-|   +-- data/
-|   |   +-- pricing.json
-|   |   +-- pricing_history.json
-|   +-- pricing_adapters/
-|   +-- analytics.py
-|   +-- calculator.py
-|   +-- comparison.py
-|   +-- currency.py
-|   +-- models.py
-|   +-- nlp_adapter.py
-|   +-- pricing.py
-|   +-- pricing_engine.py
-|   +-- tests/
-|
-+-- docs/
-|
-+-- README.md
+frontend/
+├── src/
+│   ├── components/
+│   │   └── token-trim/
+│   ├── context/
+│   ├── hooks/
+│   ├── pages/
+│   ├── services/
+│   ├── types/
+│   └── utils/
+├── tests/
+│   ├── components/
+│   └── unit/
+├── public/
+├── package.json
+└── README.md
 ```
 
-*Note: This is a logical overview of the project modules. Some implementation-specific files and subdirectories may vary across branches.*
+### Main directories
 
----
+- `components/` — Reusable UI components and TokenTrim feature components.
+- `context/` — Shared application state and context providers.
+- `hooks/` — Reusable React hooks.
+- `pages/` — Application pages and routing.
+- `services/` — API communication and frontend service logic.
+- `types/` — TypeScript interfaces and type definitions.
+- `utils/` — Formatting and utility functions.
+- `tests/` — Component and unit tests.
 
-## 6. Core Modules
-
-### 6.1 NLP Engine
-
-The NLP Engine is responsible for analyzing and optimizing user prompts.
-
-Its primary modules include:
-
-| File                     | Responsibility                                                     |
-| ------------------------ | ------------------------------------------------------------------ |
-| `analyzer.py`            | Coordinates prompt analysis and produces analysis results          |
-| `complexity.py`          | Calculates heuristic prompt complexity features and scores         |
-| `config.py`              | Stores optimization rules, thresholds, and configuration           |
-| `models.py`              | Defines request, response, and result data structures              |
-| `optimizer.py`           | Applies conservative prompt optimization rules                     |
-| `redundancy.py`          | Detects repeated instructions and redundant clauses                |
-| `semantic_similarity.py` | Provides optional advisory semantic similarity functionality       |
-| `textutils.py`           | Handles text preparation, segmentation, masking, and normalization |
-| `tokenizer.py`           | Counts tokens and manages tokenizer selection                      |
-| `validator.py`           | Checks whether an optimized prompt preserves important information |
-
-The NLP Engine is documented in greater detail in `nlp_engine/README.md` and `nlp_engine/docs/DOCUMENTATION.md`.
-
-### 6.2 Cost Engine
-
-The Cost Engine handles token-based cost estimation and model pricing.
-
-Its primary modules include:
-
-| File                | Responsibility                                       |
-| ------------------- | ---------------------------------------------------- |
-| `calculator.py`     | Calculates estimated model usage costs               |
-| `pricing.py`        | Provides pricing-related functionality               |
-| `pricing_engine.py` | Coordinates pricing operations                       |
-| `pricing_adapters/` | Provider-specific pricing adapters                   |
-| `comparison.py`     | Compares model costs                                 |
-| `currency.py`       | Handles currency conversion                          |
-| `analytics.py`      | Provides cost and savings analytics                  |
-| `models.py`         | Defines cost-related data structures                 |
-| `nlp_adapter.py`    | Connects NLP analysis results with cost calculations |
-| `data/`             | Stores pricing information and pricing history       |
-
-The Cost Engine is designed to keep pricing and financial calculations separate from prompt optimization logic.
-
-### 6.3 Backend
-
-The backend provides the application API and coordinates interactions between the frontend, NLP Engine, Cost Engine, database, and external services.
-
-Responsibilities include:
-
-- API request handling.
-- Authentication and authorization.
-- Application service orchestration.
-- Database persistence.
-- Provider credential management.
-- LLM execution workflows.
-- Cost and model comparison endpoints.
-
-### 6.4 Frontend
-
-The frontend provides the user-facing interface.
-
-Responsibilities include:
-
-- Prompt input and analysis.
-- Optimization result presentation.
-- Model cost comparison.
-- Currency selection.
-- Dashboard and usage analytics.
-- BYOK configuration.
-- Team-management interfaces.
-
----
-
-## 7. Supported LLM Providers
-
-TokenTrim includes pricing and integration support for the following providers:
-
-| Provider  | Model Family  |
-| --------- | ------------- |
-| OpenAI    | GPT models    |
-| Anthropic | Claude models |
-| Google    | Gemini models |
-
-Actual model availability, pricing coverage, and execution support depend on the configured provider integrations and available pricing records.
-
----
-
-## 8. Installation and Setup
+## 4. Installation
 
 ### Prerequisites
 
-Install the following tools before setting up the project:
+- Node.js
+- npm
+- A running TokenTrim backend
 
-- Python 3.10 or a compatible project-supported version.
-- Node.js and npm.
-- PostgreSQL.
-- Git.
-
-Use the Python version and package versions specified by the project's dependency files when available.
-
-### Step 1: Clone the Repository
+### Clone the repository
 
 ```bash
 git clone <repository-url>
 cd TokenTrim
 ```
 
-### Step 2: Set Up the Backend
-
-Navigate to the backend directory:
-
-```bash
-cd backend
-```
-
-Create a virtual environment:
-
-```bash
-python -m venv .venv
-```
-
-Activate it on Windows PowerShell:
-
-```powershell
-.\.venv\Scripts\Activate.ps1
-```
-
-Install the backend dependencies using the dependency file provided in the backend directory.
-
-```bash
-pip install -r requirements.txt
-```
-
-If the backend dependency file has a different name or location, use the actual file provided by the repository.
-
-### Step 3: Set Up the NLP Engine
-
-From the repository root:
-
-```bash
-pip install -r nlp_engine/requirements.txt
-```
-
-### Step 4: Set Up the Frontend
-
-Navigate to the frontend directory:
+### Navigate to the frontend
 
 ```bash
 cd frontend
 ```
 
-Install dependencies:
+### Install dependencies
 
 ```bash
 npm install
 ```
 
-### Step 5: Configure PostgreSQL
+## 5. Environment Configuration
 
-Create or configure the PostgreSQL database using the project's backend configuration.
+The frontend communicates with the TokenTrim backend through its configured API service.
 
-Set the required database connection details in the appropriate environment configuration file.
+Configure the backend API address using the environment-variable name expected by the existing frontend configuration. Do not commit private credentials, API keys, or other secrets.
 
-### Step 6: Configure Environment Variables
+Refer to the frontend configuration and service files for the exact environment-variable names and expected values.
 
-Configure the backend and frontend environment variables using their respective example environment files.
+## 6. Running the Application
 
-Do not commit real API keys, database passwords, encryption keys, or other secrets.
-
----
-
-## 9. Environment Configuration
-
-TokenTrim requires environment-specific configuration for backend services, database connectivity, authentication, and provider integrations.
-
-Configuration should be maintained in local environment files rather than committed source files.
-
-### NLP Engine Optional Configuration
-
-The NLP Engine supports these optional semantic-model settings:
-
-| Variable                          | Default                                  | Description                                 |
-| --------------------------------- | ---------------------------------------- | ------------------------------------------- |
-| `TOKENTRIM_ENABLE_SEMANTIC_MODEL` | `false`                                  | Enables optional semantic-model loading     |
-| `TOKENTRIM_SEMANTIC_MODEL`        | `sentence-transformers/all-MiniLM-L6-v2` | Selects the model identifier or local path  |
-| `TOKENTRIM_SEMANTIC_DEVICE`       | `cpu`                                    | Selects the semantic-model execution device |
-
-Semantic-model loading is disabled by default. When enabled, the implementation uses local-only model loading and does not initiate network downloads at runtime.
-
-Backend environment variable names and frontend environment variable names should be taken from the current example configuration files in their respective directories.
-
----
-
-## 10. Running the Application
-
-### Start the Backend
-
-From the backend directory, activate the virtual environment and run the FastAPI application using the project's configured application entry point.
-
-For an installation where the entry point is `app.main:app`, the command is:
-
-```bash
-python -m uvicorn app.main:app --host 127.0.0.1 --port 8000 --reload
-```
-
-### Start the Frontend
-
-From the frontend directory:
+Start the development server:
 
 ```bash
 npm run dev
 ```
 
-The frontend development server will display its local address in the terminal.
-
-### Start the Database
-
-Ensure PostgreSQL is running and the backend database connection configuration is correct before using database-dependent features.
-
-Apply migrations only when required by the current database state and project instructions.
-
----
-
-## 11. API Documentation
-
-The backend uses FastAPI for API development.
-
-When the backend is running, its interactive Swagger documentation is typically available at:
+Open the local frontend address shown in the terminal, typically:
 
 ```text
-http://127.0.0.1:8000/docs
+http://localhost:3000
 ```
 
-The OpenAPI specification is typically available at:
+Ensure the backend is running and accessible before testing features that require API communication.
 
-```text
-http://127.0.0.1:8000/openapi.json
-```
+## 7. Validation and Testing
 
-The actual API routes, request schemas, authentication requirements, and response formats should be taken from the current backend implementation and its generated OpenAPI specification.
+Run the available frontend checks from the `frontend/` directory.
 
----
-
-## 12. Testing
-
-TokenTrim includes tests for its NLP Engine, Cost Engine, backend, and frontend.
-
-### 12.1 NLP Engine Tests
-
-Run from the repository root:
-
-```bash
-python -m pytest nlp_engine/tests/
-```
-
-The NLP Engine also provides standalone evaluation and performance scripts:
-
-```bash
-python -m nlp_engine.tests.run_evaluation
-```
-
-```bash
-python -m nlp_engine.tests.run_realistic_evaluation
-```
-
-```bash
-python -m nlp_engine.tests.run_performance_benchmark
-```
-
-These scripts evaluate prompt behavior and performance separately from ordinary pytest collection.
-
-### 12.2 Cost Engine Tests
-
-Run:
-
-```bash
-python -m pytest cost_engine/tests/
-```
-
-### 12.3 Backend Tests
-
-Run from the backend directory:
-
-```bash
-pytest
-```
-
-### 12.4 Frontend Checks
-
-Run from the frontend directory:
+### Run tests
 
 ```bash
 npm test
 ```
 
-TypeScript validation:
+### TypeScript validation
 
 ```bash
 npx tsc --noEmit
 ```
 
-Linting:
+### ESLint
 
 ```bash
 npm run lint
 ```
 
-Production build:
+### Production build
 
 ```bash
 npm run build
 ```
 
-### NLP Evaluation Evidence
+A successful production build confirms that the application can be compiled for deployment. Resolve build errors before deployment.
 
-The NLP Engine's documented evaluation includes:
+## 8. Backend Integration
 
-- A 39-case realistic prompt corpus.
-- Safe optimization acceptance checks.
-- Unsafe candidate rejection checks.
-- Exact-original fallback checks.
-- Preservation checks for numbers, negation, constraints, identifiers, code, and output formats.
+The frontend integrates with the TokenTrim backend for application functionality such as:
 
-A documented evaluation run matched all 39 expected cases, with zero false removals and 180 estimated tokens saved. These are results from a curated evaluation corpus, not a guarantee of general correctness.
+- User authentication and application data.
+- Prompt analysis and optimization.
+- Cost estimation and model comparisons.
+- Provider credential management.
+- LLM provider execution.
+- Cost and usage information.
 
-A documented full NLP test run passed 326 tests. Test totals should be taken from fresh test output because they change as tests are added.
+The backend is responsible for API processing, database operations, provider communication, and Cost Engine integration.
+
+## 9. Cost Comparison and Currency Handling
+
+The Compare Across LLMs interface uses backend-provided cost comparison results.
+
+The frontend displays original and optimized cost estimates for supported models. Pricing eligibility and cost calculations are handled by the backend and Cost Engine.
+
+Currency selection changes the monetary display using configured reference conversion rates. The application does not represent these rates as live market exchange rates.
+
+## 10. Development Guidelines
+
+- Use TypeScript for new frontend functionality.
+- Prefer reusable components over duplicated UI code.
+- Keep API communication within the service layer.
+- Use shared context for application-wide state where appropriate.
+- Add or update tests when modifying components or utility functions.
+- Run linting, TypeScript validation, tests, and the production build before submitting changes.
+- Never commit API keys, credentials, or environment files containing secrets.
+
+## 11. Build for Production
+
+Create an optimized production build:
+
+```bash
+npm run build
+```
+
+Start the production server using:
+
+```bash
+npm start
+```
+
+The frontend must be configured with the correct backend API address for the deployment environment.
+
+## 12. Team Responsibility
+
+The frontend is maintained by the frontend development team.
+
+Responsibilities include:
+
+- User interface development.
+- Frontend application architecture.
+- API integration.
+- Authentication and application workflows.
+- Cost comparison and currency presentation.
+- BYOK user interface integration.
+- Component testing and frontend quality checks.
 
 ---
 
-## 13. Cost Calculation Methodology
+**TokenTrim — AI Cost Intelligence & Prompt Optimization Platform**
 
-The Cost Engine calculates estimated LLM usage costs using token counts and configured model pricing.
-
-For a model with input and output pricing:
-
-**Input Cost**
-
-```text
-Input Cost = (Input Tokens / 1,000,000) × Input Price per Million Tokens
-```
-
-**Output Cost**
-
-```text
-Output Cost = (Output Tokens / 1,000,000) × Output Price per Million Tokens
-```
-
-**Total Cost**
-
-```text
-Total Cost = Input Cost + Output Cost
-```
-
-**Potential Savings**
-
-```text
-Potential Savings = Original Cost - Optimized Cost
-```
-
-**Savings Percentage**
-
-```text
-Savings Percentage =
-((Original Cost - Optimized Cost) / Original Cost) × 100
-```
-
-The savings percentage is undefined when the original cost is zero and should be handled accordingly.
-
-The Cost Engine uses provider-specific pricing information and separates input and output token rates.
-
-Pricing eligibility and verification status matter when determining the lowest-cost model. Unverified pricing should not be presented as officially verified pricing.
-
----
-
-## 14. NLP Engine Methodology
-
-The NLP Engine uses a conservative, modular, rule-based approach.
-
-Its purpose is to reduce unnecessary prompt tokens without removing important information.
-
-### 14.1 Processing Pipeline
-
-```text
-Original Prompt
-      |
-      v
-Text Preparation and Protected-Span Masking
-      |
-      v
-Segmentation and Classification
-      |
-      v
-Prompt Analysis
-      |
-      v
-Redundancy and Verbosity Detection
-      |
-      v
-Complexity Analysis
-      |
-      v
-Optimization Candidate
-      |
-      v
-Validation
-      |
-      +---------------------+
-      |                     |
-      v                     v
-   Accepted              Rejected
-      |                     |
-      v                     v
-Optimized Prompt       Original Prompt
-```
-
-### 14.2 Token Counting
-
-The engine uses `tiktoken` for supported OpenAI model encodings when the required encoding is available.
-
-For Claude, Gemini, and unknown models, it uses a heuristic token estimator.
-
-Token-count results therefore distinguish exact tokenizer counts from estimates.
-
-Exact `tiktoken` counts represent encoding of the input string, not provider-specific request framing or billing overhead.
-
-### 14.3 Prompt Analysis
-
-The engine analyzes:
-
-- Repeated instructions.
-- Duplicate constraints.
-- Repeated phrases.
-- Verbosity.
-- Excessive context.
-- Formatting overload.
-- Potential instruction conflicts.
-- Prompt complexity.
-
-### 14.4 Optimization
-
-The optimizer applies conservative transformations such as:
-
-- Removing generic personas.
-- Simplifying polite lead-ins.
-- Replacing wordy phrases.
-- Removing filler words.
-- Removing safely redundant clauses.
-- Preserving original prompt layout where possible.
-
-Context, formatting requirements, specific personas, conflicting instructions, and protected text are not automatically removed.
-
-### 14.5 Validation and Fallback
-
-The validator checks important information, including:
-
-- Numbers and numeric limits.
-- Negation and polarity.
-- Named entities and identifiers.
-- Protected spans.
-- Required output formats.
-- Constraint coverage.
-- Explicit instruction ordering.
-- Keyword coverage and lexical similarity.
-
-An optimization is accepted only when validation succeeds and the selected tokenizer establishes positive token savings.
-
-If validation fails or the candidate does not save tokens, the engine returns the exact original prompt with zero reported savings.
-
-### 14.6 Optional Semantic Similarity
-
-Semantic similarity is optional and disabled by default.
-
-It is advisory and does not independently authorize the deletion of prompt content.
-
-### 14.7 Known Limitations
-
-- The engine is English-focused.
-- It does not guarantee mathematical or general semantic equivalence.
-- Token counts for unsupported model families are estimates.
-- Complexity scores use heuristic weights and are not calibrated measurements.
-- Conflict detection is based on surface-level rules and may miss paraphrased contradictions.
-- No documented maximum prompt length is defined.
-- Large prompts can incur significant processing time and memory usage.
-- Savings may be modest for already well-written prompts.
-
-The engine is designed to remove unnecessary wording, not to compress ideas or change the user's intended meaning.
-
----
-
-## 15. Security Considerations
-
-Security is important because TokenTrim can process prompts, provider credentials, usage information, and application data.
-
-The project incorporates security considerations such as:
-
-- Backend-side provider credential handling.
-- Encryption for stored provider credentials.
-- Separation of provider credentials from frontend presentation.
-- Authentication and authorization controls.
-- Environment-based secret configuration.
-- Database-backed application data management.
-
-### Important Practices
-
-- Never commit API keys or passwords to Git.
-- Never expose provider credentials in frontend code or logs.
-- Keep encryption keys outside source control.
-- Validate user input at backend boundaries.
-- Apply authorization checks on protected operations.
-- Avoid logging sensitive prompt or credential information unnecessarily.
-
----
-
-## 16. Project Team
-
-TokenTrim is developed as a collaborative final-year project.
-
-| Team Member                 | Primary Responsibility                                                  |
-| --------------------------- | ----------------------------------------------------------------------- |
-| Person 1                    | NLP Engine — prompt analysis and optimization                           |
-| Person 2                    | Cost Engine — token cost calculations, pricing, comparison, and savings |
-| Person 3                    | Backend — FastAPI, database, and migrations                             |
-| Person 4                    | Frontend — Next.js, TypeScript, and user interface                      |
-| Additional integration work | Frontend BYOK integration                                               |
-
-The modules are developed independently and integrated through defined interfaces.
-
----
-
-## 17. Future Enhancements
-
-### Future Enhancements
-
-- Provider-native token-counting support for additional model families.
-- Expanded multilingual prompt analysis.
-- More advanced NLP-based clause and dependency analysis.
-- Broader independently reviewed prompt evaluation datasets.
-- Better detection of paraphrased instruction conflicts.
-- More extensive model pricing coverage.
-- Deployment-specific performance benchmarking.
-- Improved cost forecasting and usage analytics.
-- More comprehensive team collaboration and access controls.
-- Evaluation of answer quality before and after prompt optimization.
-
----
-
-## Conclusion
-
-TokenTrim brings prompt optimization and AI cost intelligence into one modular platform.
-
-By combining conservative NLP-based prompt optimization with a dedicated Cost Engine, TokenTrim aims to reduce unnecessary token consumption, improve cost visibility, and help users make informed decisions about LLM usage.
-
-**TokenTrim — Optimize Prompts. Reduce Tokens. Control AI Costs.**
+Frontend application built with Next.js, React, and TypeScript.
